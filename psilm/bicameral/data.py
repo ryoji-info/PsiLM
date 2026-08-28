@@ -35,7 +35,14 @@ class ExampleBuilder:
     def __init__(self, tokenizer):
         self.tok = tokenizer
         self.wait_id = tokenizer.encode(".", add_special_tokens=False)[0]
-        self.aux_prompt_ids = tokenizer.encode(AUX_PROMPT, add_special_tokens=False)
+        # The prompt ends with literal wait tokens: the first window token is
+        # predicted from the (uncoupled) last prompt position, so the frozen
+        # model must already be inclined to continue with waits — otherwise
+        # free-running generation derails before the coupling can act.
+        self.aux_prompt_ids = (
+            tokenizer.encode(AUX_PROMPT, add_special_tokens=False)
+            + [self.wait_id] * 4
+        )
         self.eos_id = tokenizer.eos_token_id
 
     def prompt_ids(self, a, b):

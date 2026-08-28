@@ -91,7 +91,7 @@ class Bicameral:
         return p.finish()[:, -1], a.finish()[:, -1]
 
     @torch.no_grad()
-    def generate(self, builder, a_val, b_val, max_new=48):
+    def generate(self, builder, a_val, b_val, max_new=48, bootstrap_waits=2):
         """Lockstep generation with the calculator tool. Greedy.
 
         Invariant: before step t, the primary stream holds tokens 0..t-1 and
@@ -120,8 +120,13 @@ class Bicameral:
                 a_ids = torch.tensor([a_list], device=device)
                 logits_p, logits_a = self._step_logits(p_ids, a_ids, Pa)
 
-            # auxiliary token for position t
-            if force_queue:
+            # auxiliary token for position t. The first couple of window
+            # tokens are forced waits: that position is predicted from the
+            # uncoupled prompt tail, which training cannot influence, and the
+            # protocol defines the auxiliary as idle until it acts.
+            if t < bootstrap_waits:
+                a_next, forced = builder.wait_id, True
+            elif force_queue:
                 a_next, forced = force_queue.pop(0), True
             else:
                 a_next, forced = int(logits_a.argmax(-1)), False
