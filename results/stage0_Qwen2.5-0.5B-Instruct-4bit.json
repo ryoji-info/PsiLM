@@ -1,0 +1,1515 @@
+{
+ "model": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+ "n": 60,
+ "summary": {
+  "total": {
+   "alone": {
+    "correct": 21,
+    "n": 60,
+    "acc": 0.35
+   },
+   "tool": {
+    "correct": 19,
+    "n": 60,
+    "acc": 0.3167
+   }
+  },
+  "per_scene": {
+   "incline": {
+    "alone": {
+     "correct": 4,
+     "n": 12,
+     "acc": 0.3333
+    },
+    "tool": {
+     "correct": 4,
+     "n": 12,
+     "acc": 0.3333
+    }
+   },
+   "friction_slide": {
+    "alone": {
+     "correct": 4,
+     "n": 12,
+     "acc": 0.3333
+    },
+    "tool": {
+     "correct": 2,
+     "n": 12,
+     "acc": 0.1667
+    }
+   },
+   "free_fall": {
+    "alone": {
+     "correct": 7,
+     "n": 12,
+     "acc": 0.5833
+    },
+    "tool": {
+     "correct": 4,
+     "n": 12,
+     "acc": 0.3333
+    }
+   },
+   "projectile": {
+    "alone": {
+     "correct": 4,
+     "n": 12,
+     "acc": 0.3333
+    },
+    "tool": {
+     "correct": 5,
+     "n": 12,
+     "acc": 0.4167
+    }
+   },
+   "elastic_collision": {
+    "alone": {
+     "correct": 2,
+     "n": 12,
+     "acc": 0.1667
+    },
+    "tool": {
+     "correct": 4,
+     "n": 12,
+     "acc": 0.3333
+    }
+   }
+  },
+  "tool_call_success": {
+   "ok": 60,
+   "n": 60,
+   "rate": 1.0
+  }
+ },
+ "records": [
+  {
+   "id": "incline_053",
+   "scene": "incline",
+   "answer": "A",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "angle_a_deg": 40.0,
+     "mu_a": 0.33,
+     "angle_b_deg": 30.0,
+     "mu_b": 0.33,
+     "length": 11.2
+    },
+    "sim": {
+     "t_a": 2.4209,
+     "t_b": 3.2666
+    }
+   }
+  },
+  {
+   "id": "friction_slide_029",
+   "scene": "friction_slide",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 3.2,
+     "mu_a": 0.42,
+     "v_b": 8.7,
+     "mu_b": 0.41
+    },
+    "sim": {
+     "d_a": 1.2439,
+     "d_b": 9.4189
+    }
+   }
+  },
+  {
+   "id": "incline_057",
+   "scene": "incline",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "angle_a_deg": 30.0,
+     "mu_a": 0.16,
+     "angle_b_deg": 50.0,
+     "mu_b": 0.08,
+     "length": 6.3
+    },
+    "sim": {
+     "t_a": 1.8861,
+     "t_b": 1.3413
+    }
+   }
+  },
+  {
+   "id": "free_fall_005",
+   "scene": "free_fall",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "h_a": 50.8,
+     "h_b": 50.8
+    },
+    "sim": {
+     "t_a": 3.2198,
+     "t_b": 3.2198
+    }
+   }
+  },
+  {
+   "id": "free_fall_008",
+   "scene": "free_fall",
+   "answer": "A",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "h_a": 73.7,
+     "h_b": 12.0
+    },
+    "sim": {
+     "t_a": 3.8782,
+     "t_b": 1.5649
+    }
+   }
+  },
+  {
+   "id": "projectile_013",
+   "scene": "projectile",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 34.4,
+     "angle_a_deg": 40.0,
+     "v_b": 34.4,
+     "angle_b_deg": 50.0
+    },
+    "sim": {
+     "range_a": 118.9165,
+     "range_b": 118.9165
+    }
+   }
+  },
+  {
+   "id": "projectile_023",
+   "scene": "projectile",
+   "answer": "A",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 35.5,
+     "angle_a_deg": 50.0,
+     "v_b": 36.9,
+     "angle_b_deg": 70.0
+    },
+    "sim": {
+     "range_a": 126.6433,
+     "range_b": 89.3088
+    }
+   }
+  },
+  {
+   "id": "incline_048",
+   "scene": "incline",
+   "answer": "A",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "angle_a_deg": 50.0,
+     "mu_a": 0.34,
+     "angle_b_deg": 20.0,
+     "mu_b": 0.25,
+     "length": 3.2
+    },
+    "sim": {
+     "t_a": 1.0922,
+     "t_b": 2.4694
+    }
+   }
+  },
+  {
+   "id": "projectile_022",
+   "scene": "projectile",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 25.7,
+     "angle_a_deg": 25.0,
+     "v_b": 25.7,
+     "angle_b_deg": 65.0
+    },
+    "sim": {
+     "range_a": 51.6291,
+     "range_b": 51.6291
+    }
+   }
+  },
+  {
+   "id": "projectile_017",
+   "scene": "projectile",
+   "answer": "A",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 34.6,
+     "angle_a_deg": 60.0,
+     "v_b": 11.0,
+     "angle_b_deg": 40.0
+    },
+    "sim": {
+     "range_a": 105.793,
+     "range_b": 12.1594
+    }
+   }
+  },
+  {
+   "id": "elastic_collision_037",
+   "scene": "elastic_collision",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "m1": 5.0,
+     "v1": 3.2,
+     "m2": 3.0,
+     "v2": 3.8
+    },
+    "sim": {
+     "speed_1_after": 3.65,
+     "speed_2_after": 3.05
+    }
+   }
+  },
+  {
+   "id": "projectile_015",
+   "scene": "projectile",
+   "answer": "A",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 18.6,
+     "angle_a_deg": 70.0,
+     "v_b": 12.7,
+     "angle_b_deg": 45.0
+    },
+    "sim": {
+     "range_a": 22.6917,
+     "range_b": 16.4582
+    }
+   }
+  },
+  {
+   "id": "projectile_016",
+   "scene": "projectile",
+   "answer": "A",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 19.5,
+     "angle_a_deg": 30.0,
+     "v_b": 17.3,
+     "angle_b_deg": 30.0
+    },
+    "sim": {
+     "range_a": 33.6027,
+     "range_b": 26.4482
+    }
+   }
+  },
+  {
+   "id": "projectile_014",
+   "scene": "projectile",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 16.1,
+     "angle_a_deg": 50.0,
+     "v_b": 34.0,
+     "angle_b_deg": 50.0
+    },
+    "sim": {
+     "range_a": 26.0482,
+     "range_b": 116.1671
+    }
+   }
+  },
+  {
+   "id": "incline_055",
+   "scene": "incline",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "angle_a_deg": 40.0,
+     "mu_a": 0.21,
+     "angle_b_deg": 40.0,
+     "mu_b": 0.21,
+     "length": 11.5
+    },
+    "sim": {
+     "t_a": 2.2068,
+     "t_b": 2.2068
+    }
+   }
+  },
+  {
+   "id": "friction_slide_032",
+   "scene": "friction_slide",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 4.9,
+     "mu_a": 0.57,
+     "v_b": 10.2,
+     "mu_b": 0.16
+    },
+    "sim": {
+     "d_a": 2.1491,
+     "d_b": 33.176
+    }
+   }
+  },
+  {
+   "id": "friction_slide_034",
+   "scene": "friction_slide",
+   "answer": "A",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 8.8,
+     "mu_a": 0.23,
+     "v_b": 6.2,
+     "mu_b": 0.38
+    },
+    "sim": {
+     "d_a": 17.1783,
+     "d_b": 5.1611
+    }
+   }
+  },
+  {
+   "id": "incline_059",
+   "scene": "incline",
+   "answer": "A",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "angle_a_deg": 30.0,
+     "mu_a": 0.19,
+     "angle_b_deg": 20.0,
+     "mu_b": 0.12,
+     "length": 14.8
+    },
+    "sim": {
+     "t_a": 3.0007,
+     "t_b": 3.6297
+    }
+   }
+  },
+  {
+   "id": "free_fall_000",
+   "scene": "free_fall",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "h_a": 42.9,
+     "h_b": 42.9
+    },
+    "sim": {
+     "t_a": 2.9589,
+     "t_b": 2.9589
+    }
+   }
+  },
+  {
+   "id": "friction_slide_028",
+   "scene": "friction_slide",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 10.4,
+     "mu_a": 0.44,
+     "v_b": 0.0,
+     "mu_b": 0.44
+    },
+    "sim": {
+     "d_a": 12.5417,
+     "d_b": 0.0
+    }
+   }
+  },
+  {
+   "id": "free_fall_001",
+   "scene": "free_fall",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "h_a": 23.8,
+     "h_b": 73.2
+    },
+    "sim": {
+     "t_a": 2.2039,
+     "t_b": 3.8651
+    }
+   }
+  },
+  {
+   "id": "elastic_collision_038",
+   "scene": "elastic_collision",
+   "answer": "A",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "m1": 2.0,
+     "v1": 4.8,
+     "m2": 5.0,
+     "v2": -2.2
+    },
+    "sim": {
+     "speed_1_after": 5.2,
+     "speed_2_after": 1.8
+    }
+   }
+  },
+  {
+   "id": "incline_056",
+   "scene": "incline",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "angle_a_deg": 45.0,
+     "mu_a": 0.12,
+     "angle_b_deg": 45.0,
+     "mu_b": 0.12,
+     "length": 5.5
+    },
+    "sim": {
+     "t_a": 1.3431,
+     "t_b": 1.3431
+    }
+   }
+  },
+  {
+   "id": "friction_slide_024",
+   "scene": "friction_slide",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 7.4,
+     "mu_a": 0.53,
+     "v_b": 8.7,
+     "mu_b": 0.26
+    },
+    "sim": {
+     "d_a": 5.2715,
+     "d_b": 14.8528
+    }
+   }
+  },
+  {
+   "id": "elastic_collision_036",
+   "scene": "elastic_collision",
+   "answer": "A",
+   "alone": {
+    "choice": "A",
+    "raw": "Answer: A"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "m1": 1.0,
+     "v1": 9.4,
+     "m2": 8.0,
+     "v2": 0.0
+    },
+    "sim": {
+     "speed_1_after": 7.3111,
+     "speed_2_after": 2.0889
+    }
+   }
+  },
+  {
+   "id": "elastic_collision_045",
+   "scene": "elastic_collision",
+   "answer": "B",
+   "alone": {
+    "choice": "A",
+    "raw": "Answer: A"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "m1": 1.0,
+     "v1": 5.6,
+     "m2": 2.0,
+     "v2": 0.0
+    },
+    "sim": {
+     "speed_1_after": 1.8667,
+     "speed_2_after": 3.7333
+    }
+   }
+  },
+  {
+   "id": "elastic_collision_039",
+   "scene": "elastic_collision",
+   "answer": "B",
+   "alone": {
+    "choice": "A",
+    "raw": "Answer: A"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "m1": 2.0,
+     "v1": 5.1,
+     "m2": 3.0,
+     "v2": 0.0
+    },
+    "sim": {
+     "speed_1_after": 1.02,
+     "speed_2_after": 4.08
+    }
+   }
+  },
+  {
+   "id": "incline_051",
+   "scene": "incline",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "angle_a_deg": 40.0,
+     "mu_a": 0.25,
+     "angle_b_deg": 50.0,
+     "mu_b": 0.15,
+     "length": 4.6
+    },
+    "sim": {
+     "t_a": 1.4423,
+     "t_b": 1.184
+    }
+   }
+  },
+  {
+   "id": "projectile_012",
+   "scene": "projectile",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 26.5,
+     "angle_a_deg": 50.0,
+     "v_b": 31.2,
+     "angle_b_deg": 40.0
+    },
+    "sim": {
+     "range_a": 70.5695,
+     "range_b": 97.8216
+    }
+   }
+  },
+  {
+   "id": "projectile_018",
+   "scene": "projectile",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 24.3,
+     "angle_a_deg": 20.0,
+     "v_b": 24.3,
+     "angle_b_deg": 70.0
+    },
+    "sim": {
+     "range_a": 38.7306,
+     "range_b": 38.7306
+    }
+   }
+  },
+  {
+   "id": "projectile_020",
+   "scene": "projectile",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 35.3,
+     "angle_a_deg": 40.0,
+     "v_b": 35.3,
+     "angle_b_deg": 50.0
+    },
+    "sim": {
+     "range_a": 125.2203,
+     "range_b": 125.2203
+    }
+   }
+  },
+  {
+   "id": "free_fall_010",
+   "scene": "free_fall",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "h_a": 30.0,
+     "h_b": 59.8
+    },
+    "sim": {
+     "t_a": 2.4744,
+     "t_b": 3.4934
+    }
+   }
+  },
+  {
+   "id": "free_fall_009",
+   "scene": "free_fall",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "h_a": 68.0,
+     "h_b": 68.0
+    },
+    "sim": {
+     "t_a": 3.7253,
+     "t_b": 3.7253
+    }
+   }
+  },
+  {
+   "id": "elastic_collision_041",
+   "scene": "elastic_collision",
+   "answer": "B",
+   "alone": {
+    "choice": "A",
+    "raw": "Answer: A"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "m1": 3.0,
+     "v1": 3.3,
+     "m2": 3.0,
+     "v2": 0.0
+    },
+    "sim": {
+     "speed_1_after": 0.0,
+     "speed_2_after": 3.3
+    }
+   }
+  },
+  {
+   "id": "incline_049",
+   "scene": "incline",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "angle_a_deg": 30.0,
+     "mu_a": 0.26,
+     "angle_b_deg": 30.0,
+     "mu_b": 0.1,
+     "length": 10.3
+    },
+    "sim": {
+     "t_a": 2.7656,
+     "t_b": 2.2549
+    }
+   }
+  },
+  {
+   "id": "free_fall_002",
+   "scene": "free_fall",
+   "answer": "A",
+   "alone": {
+    "choice": "A",
+    "raw": "Answer: A"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "h_a": 72.7,
+     "h_b": 28.3
+    },
+    "sim": {
+     "t_a": 3.8518,
+     "t_b": 2.4032
+    }
+   }
+  },
+  {
+   "id": "friction_slide_027",
+   "scene": "friction_slide",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 10.0,
+     "mu_a": 0.53,
+     "v_b": 0.0,
+     "mu_b": 0.53
+    },
+    "sim": {
+     "d_a": 9.6265,
+     "d_b": 0.0
+    }
+   }
+  },
+  {
+   "id": "friction_slide_031",
+   "scene": "friction_slide",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 3.2,
+     "mu_a": 0.23,
+     "v_b": 11.6,
+     "mu_b": 0.21
+    },
+    "sim": {
+     "d_a": 2.2715,
+     "d_b": 32.6919
+    }
+   }
+  },
+  {
+   "id": "elastic_collision_040",
+   "scene": "elastic_collision",
+   "answer": "B",
+   "alone": {
+    "choice": "A",
+    "raw": "Answer: A"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "m1": 1.0,
+     "v1": 6.8,
+     "m2": 1.0,
+     "v2": 0.0
+    },
+    "sim": {
+     "speed_1_after": 0.0,
+     "speed_2_after": 6.8
+    }
+   }
+  },
+  {
+   "id": "elastic_collision_043",
+   "scene": "elastic_collision",
+   "answer": "B",
+   "alone": {
+    "choice": "A",
+    "raw": "Answer: A"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "m1": 1.0,
+     "v1": 5.2,
+     "m2": 1.0,
+     "v2": 0.0
+    },
+    "sim": {
+     "speed_1_after": 0.0,
+     "speed_2_after": 5.2
+    }
+   }
+  },
+  {
+   "id": "free_fall_007",
+   "scene": "free_fall",
+   "answer": "B",
+   "alone": {
+    "choice": "A",
+    "raw": "Answer: A"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "h_a": 9.7,
+     "h_b": 73.9
+    },
+    "sim": {
+     "t_a": 1.407,
+     "t_b": 3.8835
+    }
+   }
+  },
+  {
+   "id": "elastic_collision_042",
+   "scene": "elastic_collision",
+   "answer": "A",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "m1": 2.0,
+     "v1": 5.0,
+     "m2": 5.0,
+     "v2": -4.0
+    },
+    "sim": {
+     "speed_1_after": 7.8571,
+     "speed_2_after": 1.1429
+    }
+   }
+  },
+  {
+   "id": "incline_050",
+   "scene": "incline",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "angle_a_deg": 35.0,
+     "mu_a": 0.29,
+     "angle_b_deg": 50.0,
+     "mu_b": 0.31,
+     "length": 8.7
+    },
+    "sim": {
+     "t_a": 2.2987,
+     "t_b": 1.7699
+    }
+   }
+  },
+  {
+   "id": "elastic_collision_044",
+   "scene": "elastic_collision",
+   "answer": "B",
+   "alone": {
+    "choice": "A",
+    "raw": "Answer: A"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "m1": 4.0,
+     "v1": 8.2,
+     "m2": 4.0,
+     "v2": 0.0
+    },
+    "sim": {
+     "speed_1_after": 0.0,
+     "speed_2_after": 8.2
+    }
+   }
+  },
+  {
+   "id": "friction_slide_030",
+   "scene": "friction_slide",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 6.5,
+     "mu_a": 0.59,
+     "v_b": 6.3,
+     "mu_b": 0.17
+    },
+    "sim": {
+     "d_a": 3.6536,
+     "d_b": 11.9118
+    }
+   }
+  },
+  {
+   "id": "friction_slide_035",
+   "scene": "friction_slide",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 3.4,
+     "mu_a": 0.59,
+     "v_b": 3.9,
+     "mu_b": 0.24
+    },
+    "sim": {
+     "d_a": 0.9997,
+     "d_b": 3.2334
+    }
+   }
+  },
+  {
+   "id": "elastic_collision_047",
+   "scene": "elastic_collision",
+   "answer": "A",
+   "alone": {
+    "choice": "A",
+    "raw": "Answer: A"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "m1": 1.0,
+     "v1": 4.6,
+     "m2": 5.0,
+     "v2": 0.0
+    },
+    "sim": {
+     "speed_1_after": 3.0667,
+     "speed_2_after": 1.5333
+    }
+   }
+  },
+  {
+   "id": "free_fall_006",
+   "scene": "free_fall",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "h_a": 40.8,
+     "h_b": 40.8
+    },
+    "sim": {
+     "t_a": 2.8856,
+     "t_b": 2.8856
+    }
+   }
+  },
+  {
+   "id": "friction_slide_026",
+   "scene": "friction_slide",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 10.2,
+     "mu_a": 0.3,
+     "v_b": 0.0,
+     "mu_b": 0.3
+    },
+    "sim": {
+     "d_a": 17.6939,
+     "d_b": 0.0
+    }
+   }
+  },
+  {
+   "id": "incline_052",
+   "scene": "incline",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "angle_a_deg": 30.0,
+     "mu_a": 0.06,
+     "angle_b_deg": 50.0,
+     "mu_b": 0.06,
+     "length": 13.5
+    },
+    "sim": {
+     "t_a": 2.4798,
+     "t_b": 1.9461
+    }
+   }
+  },
+  {
+   "id": "projectile_021",
+   "scene": "projectile",
+   "answer": "B",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 30.5,
+     "angle_a_deg": 50.0,
+     "v_b": 35.1,
+     "angle_b_deg": 40.0
+    },
+    "sim": {
+     "range_a": 93.4814,
+     "range_b": 123.8054
+    }
+   }
+  },
+  {
+   "id": "friction_slide_025",
+   "scene": "friction_slide",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 9.6,
+     "mu_a": 0.2,
+     "v_b": 9.6,
+     "mu_b": 0.2
+    },
+    "sim": {
+     "d_a": 23.5102,
+     "d_b": 23.5102
+    }
+   }
+  },
+  {
+   "id": "incline_058",
+   "scene": "incline",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "angle_a_deg": 25.0,
+     "mu_a": 0.06,
+     "angle_b_deg": 25.0,
+     "mu_b": 0.06,
+     "length": 12.4
+    },
+    "sim": {
+     "t_a": 2.6215,
+     "t_b": 2.6215
+    }
+   }
+  },
+  {
+   "id": "free_fall_004",
+   "scene": "free_fall",
+   "answer": "B",
+   "alone": {
+    "choice": "A",
+    "raw": "Answer: A"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "h_a": 12.6,
+     "h_b": 37.6
+    },
+    "sim": {
+     "t_a": 1.6036,
+     "t_b": 2.7701
+    }
+   }
+  },
+  {
+   "id": "elastic_collision_046",
+   "scene": "elastic_collision",
+   "answer": "B",
+   "alone": {
+    "choice": "A",
+    "raw": "Answer: A"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "m1": 5.0,
+     "v1": 9.1,
+     "m2": 8.0,
+     "v2": 0.0
+    },
+    "sim": {
+     "speed_1_after": 2.1,
+     "speed_2_after": 7.0
+    }
+   }
+  },
+  {
+   "id": "friction_slide_033",
+   "scene": "friction_slide",
+   "answer": "A",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 6.8,
+     "mu_a": 0.27,
+     "v_b": 3.9,
+     "mu_b": 0.25
+    },
+    "sim": {
+     "d_a": 8.7377,
+     "d_b": 3.1041
+    }
+   }
+  },
+  {
+   "id": "incline_054",
+   "scene": "incline",
+   "answer": "C",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "C",
+    "raw": "Answer: C",
+    "tool_ok": true,
+    "extracted": {
+     "angle_a_deg": 25.0,
+     "mu_a": 0.26,
+     "angle_b_deg": 25.0,
+     "mu_b": 0.26,
+     "length": 13.9
+    },
+    "sim": {
+     "t_a": 3.8951,
+     "t_b": 3.8951
+    }
+   }
+  },
+  {
+   "id": "free_fall_011",
+   "scene": "free_fall",
+   "answer": "A",
+   "alone": {
+    "choice": "A",
+    "raw": "Answer: A"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "h_a": 57.8,
+     "h_b": 9.7
+    },
+    "sim": {
+     "t_a": 3.4345,
+     "t_b": 1.407
+    }
+   }
+  },
+  {
+   "id": "projectile_019",
+   "scene": "projectile",
+   "answer": "A",
+   "alone": {
+    "choice": "C",
+    "raw": "Answer: C"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "v_a": 30.4,
+     "angle_a_deg": 30.0,
+     "v_b": 13.9,
+     "angle_b_deg": 20.0
+    },
+    "sim": {
+     "range_a": 81.668,
+     "range_b": 12.6728
+    }
+   }
+  },
+  {
+   "id": "free_fall_003",
+   "scene": "free_fall",
+   "answer": "A",
+   "alone": {
+    "choice": "A",
+    "raw": "Answer: A"
+   },
+   "tool": {
+    "choice": "A",
+    "raw": "Answer: A",
+    "tool_ok": true,
+    "extracted": {
+     "h_a": 56.3,
+     "h_b": 40.4
+    },
+    "sim": {
+     "t_a": 3.3897,
+     "t_b": 2.8714
+    }
+   }
+  }
+ ]
+}

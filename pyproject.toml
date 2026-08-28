@@ -1,0 +1,26 @@
+[project]
+name = "psilm"
+version = "0.0.1"
+description = "PsiLM: a language model coupled with a physics model, two hemispheres producing one output"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [{ name = "Ryoji Furui" }]
+dependencies = [
+    "mlx>=0.32",
+    "mlx-lm>=0.24",
+    "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+stage1 = [
+    "torch>=2.4",
+    "transformers>=4.51",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["psilm"]
