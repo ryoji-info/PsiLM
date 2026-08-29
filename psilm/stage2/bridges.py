@@ -21,12 +21,12 @@ class ForwardBridge(nn.Module):
 
     N_BINS = 100  # x0 is always two decimals: classify, don't regress
 
-    def __init__(self, d_model: int = 896, d_hidden: int = 256):
+    def __init__(self, d_model: int = 896, d_hidden: int = 256, n_params: int = 3):
         super().__init__()
         self.query = nn.Parameter(torch.randn(d_model) / math.sqrt(d_model))
         self.key = nn.Linear(d_model, d_model)
         self.mlp = nn.Sequential(
-            nn.Linear(d_model, d_hidden), nn.GELU(), nn.Linear(d_hidden, 3)
+            nn.Linear(d_model, d_hidden), nn.GELU(), nn.Linear(d_hidden, n_params)
         )
         self.x0_query = nn.Parameter(torch.randn(d_model) / math.sqrt(d_model))
         self.x0_key = nn.Linear(d_model, d_model)
@@ -60,6 +60,22 @@ def build_ic(params, n: int = 128):
     x = torch.linspace(0, 1, n + 1, device=params.device)[:-1]
     two_pi_x = 2 * math.pi * x
     return a * (torch.sin(two_pi_x) * sc[:, 1:2] + torch.cos(two_pi_x) * sc[:, 0:1])
+
+
+def build_ic_multi(params, n: int = 128):
+    """u0 = sum_m a_m sin(2 pi m x + phi_m); params (B, 3*n_modes) as
+    (a, sin phi, cos phi) triplets. Absent modes have a ~ 0, which zeroes
+    their term regardless of the (sin, cos) readout."""
+    n_modes = params.shape[1] // 3
+    x = torch.linspace(0, 1, n + 1, device=params.device)[:-1]
+    u0 = torch.zeros(params.shape[0], n, device=params.device)
+    for m in range(1, n_modes + 1):
+        a = params[:, 3 * m - 3: 3 * m - 2]
+        sc = params[:, 3 * m - 2: 3 * m]
+        sc = sc / (sc.norm(dim=-1, keepdim=True) + 1e-6)
+        arg = 2 * math.pi * m * x
+        u0 = u0 + a * (torch.sin(arg) * sc[:, 1:2] + torch.cos(arg) * sc[:, 0:1])
+    return u0
 
 
 class ReverseBridge(nn.Module):
@@ -139,9 +155,9 @@ class GatedCrossAttention(nn.Module):
 
 
 class PsiBridges(nn.Module):
-    def __init__(self, **kw):
+    def __init__(self, n_params: int = 3, **kw):
         super().__init__()
-        self.fwd = ForwardBridge()
+        self.fwd = ForwardBridge(n_params=n_params)
         self.rev = ReverseBridge(**kw)
         self.inject = GatedCrossAttention()
 

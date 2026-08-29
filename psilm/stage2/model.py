@@ -12,11 +12,12 @@ L_REV = 15    # inject physics tokens here
 
 
 class PsiLM:
-    def __init__(self, model, tokenizer, fno, bridges):
+    def __init__(self, model, tokenizer, fno, bridges, ic_fn=build_ic):
         self.model = model
         self.tok = tokenizer
         self.fno = fno
         self.phi = bridges
+        self.ic_fn = ic_fn
         for p in self.model.parameters():
             p.requires_grad_(False)
         for p in self.fno.parameters():
@@ -29,7 +30,7 @@ class PsiLM:
         """
         stream.run(0, L_FWD)
         params_hat, x0_hat, x0_logits = self.phi.fwd(stream.hidden, prompt_mask)
-        ic = build_ic(params_hat)
+        ic = self.ic_fn(params_hat)
         feats = self.fno.features(ic)                       # (B, N, W) fp32
         u_field = self.fno.proj(feats).squeeze(-1)          # (B, N)
         phys_tokens, u_hat = self.phi.rev(feats, u_field, x0_hat)
@@ -47,8 +48,9 @@ class PsiLM:
             batch["p_labels"][:, 1:].reshape(-1),
             ignore_index=-100,
         )
-        loss_param = F.mse_loss(params_hat, batch["params"][:, :3])
-        x0_target = (batch["params"][:, 3] * 100).round().long().clamp(0, 99)
+        mask_p = batch["param_mask"]
+        loss_param = (mask_p * (params_hat - batch["params"]) ** 2).sum() / mask_p.sum()
+        x0_target = (batch["x0"] * 100).round().long().clamp(0, 99)
         loss_x0 = F.cross_entropy(x0_logits, x0_target)
         loss_u = F.mse_loss(u_hat, batch["u_true"])
         mask = batch["p_attn"].bool()
@@ -58,7 +60,7 @@ class PsiLM:
             "loss_param": loss_param.detach(),
             "loss_x0": loss_x0.detach(),
             "loss_u": loss_u.detach(),
-            "x0_err": (x0_hat.detach() - batch["params"][:, 3]).abs().mean(),
+            "x0_err": (x0_hat.detach() - batch["x0"]).abs().mean(),
             "gate": sigma.detach()[mask.unsqueeze(-1).expand_as(sigma)].mean(),
         }
 

@@ -31,6 +31,14 @@ def initial_condition(a: float, phi: float):
     return a * np.sin(2 * np.pi * _x + phi)
 
 
+def initial_condition_multi(modes):
+    """modes: iterable of (m, a, phi) — u0 = sum a sin(2 pi m x + phi)."""
+    u0 = np.zeros_like(_x)
+    for m, a, phi in modes:
+        u0 += a * np.sin(2 * np.pi * m * _x + phi)
+    return u0
+
+
 def _nonlinear(u_hat):
     u = np.fft.irfft(u_hat, n=N)
     ux = np.fft.irfft(1j * _k * u_hat, n=N)
