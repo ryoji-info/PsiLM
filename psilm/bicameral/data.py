@@ -125,9 +125,10 @@ def sample_operands(rng, lo=2, hi=10**6):
 def make_batch(builder, rng, batch_size, device, lo=2, hi=10**6, pad_multiple=8):
     exs = [builder.build(*sample_operands(rng, lo, hi)) for _ in range(batch_size)]
     Lp = max(len(e["p_ids"]) for e in exs)
-    La = max(len(e["a_ids"]) for e in exs)
     Lp = ((Lp + pad_multiple - 1) // pad_multiple) * pad_multiple
-    La = ((La + pad_multiple - 1) // pad_multiple) * pad_multiple
+    # the aux stream must cover aux_prompt + the full padded primary length,
+    # so the coupled window slice [Pa : Pa+Lp] always exists
+    La = exs[0]["aux_prompt_len"] + Lp
     pad = builder.tok.pad_token_id or builder.eos_id
 
     def pack(key, labels_key, L):
