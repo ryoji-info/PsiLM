@@ -6,3 +6,5 @@ __pycache__/
 data/cache/
 results/stage1/*.pt
 results/stage1/supervisor.log
+results/stage2/*.pt
+results/stage2/supervisor.log
