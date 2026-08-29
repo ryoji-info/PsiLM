@@ -23,7 +23,7 @@ that gap, on consumer hardware first (Apple Silicon, 24 GB unified memory).
 | Stage | What | Status |
 |---|---|---|
 | **0** | Loop-level coupling: LLM extracts parameters → simulator computes → result returns to context (the Mind's Eye pattern, local). Establishes the eval harness and the baseline arms. | **done — first results below** |
-| **1** | Reproduce the Bicameral Model at 0.5B: two frozen Qwen2.5-0.5B twins, trainable gated hidden-state interface, PyTorch-MPS. | next |
+| **1** | Reproduce the Bicameral Model at 0.5B: two frozen Qwen2.5-0.5B twins, trainable gated hidden-state interface, PyTorch-MPS. | **mechanism reproduced — results below** |
 | **2** | Swap the twin for a physics hemisphere (DPOT / FNO / Poseidon): physics→language P-Former first, then bidirectional gated coupling. | planned |
 | **3** | Port the loop to MLX; ship as a Mac app. | planned |
 
@@ -72,6 +72,51 @@ it, echoing the Bicameral Model's finding that coupling injects noise when the
 receiving model cannot exploit the channel. **(2) Extraction is not the
 bottleneck; evidence-use is** — which is precisely the step a *trained*
 interface (Stage 1) is supposed to absorb.
+
+## Stage 1
+
+A reproduction of the Bicameral Model (arXiv:2605.11167) — to our knowledge
+the first public one. Two frozen Qwen2.5-0.5B-Instruct streams generate in
+lockstep on Apple Silicon (PyTorch MPS, fp16 backbones), coupled by a 6.2M
+trainable interface (`psilm/bicameral/`): forward coupling p→a at layer 10,
+reverse a→p at layer 15, each an fp32 MLP translation network plus a
+suppression gate that reads the receiver ("pull" design). The auxiliary
+stream drives a calculator; tool output is forced into the auxiliary stream
+only — the primary receives results purely through the hidden-state channel.
+Trained with dual-target SFT on procedurally generated multiplication
+(log-uniform operands, causality-aligned aux traces), 12,000 steps × batch 16
+= 192k samples, ~3.5 s/step on an M2 24 GB.
+
+**The paper's phase transition reproduces, in its causal order.** Forward
+coupling strengthens first; exact tool recall then jumps 0.00 → 1.00 in one
+chunk (~112k samples); answer accuracy onsets after. Teacher-forced
+diagnostics at 96k samples: the auxiliary spells `calc(A*B)` at 92% token
+accuracy reading the operands purely through the channel; the primary's
+result digits reach 61.5% (chance 10%).
+
+Held-out eval (n=40, operands ∈ [10³, 10⁵], products 7–10 digits, greedy):
+
+| arm | exact answer | exact tool call | digit similarity |
+|---|---:|---:|---:|
+| Qwen2.5-0.5B alone | 0.0% | — | 0.371 |
+| Bicameral (coupled) | 2.5% | **100%** | **0.689** |
+
+The forward channel is essentially solved: every held-out rollout emits the
+exact `calc(A*B)`. The reverse channel carries the leading 4–6 result digits
+reliably and degrades toward the tail (`77298035 → 77299015`), so exact match
+understates it badly; on shorter (6–7 digit) products it reaches ~38–50%
+exact. Loss plateaued for the last 5k steps, so the remaining fidelity gap is
+an optimization/capacity question — the paper's arithmetic configuration used
+a 16M interface and its multiplication study ran to 320k samples. Two
+reproduction lessons worth recording: (1) the first auxiliary window token is
+predicted from the *uncoupled* prompt tail, which training can never
+influence — free-running generation derails without a protocol-level
+bootstrap (we force two initial wait tokens; the paper does not discuss
+this); (2) coupling injects noise below the capability threshold, confirmed
+independently in Stage 0.
+
+Reproduce: `python eval/stage1_train.py --steps 1000 --batch 16` (chunked,
+resumable), then `python eval/stage1_eval.py`.
 
 ## Repository layout
 

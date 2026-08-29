@@ -292,3 +292,297 @@
 {"step": 6000, "sample": {"a": 4855, "b": 333, "answer": "Let me work it out. 4855 * 333 equals 1600015.", "aux": " The. and wait. happen in sequence every 5 seconds.0,0 is in.\n\nmultiplication pr", "tool_ok": false, "correct": false}}
 {"step": 6000, "sample": {"a": 4567, "b": 1160, "answer": "Let me work it out. 4567 * 1160 equals 5200720.", "aux": " The. and wait. happen in sequence every 5 seconds.0,0 is in.\n\nin total. the tot", "tool_ok": false, "correct": false}}
 {"step": 6000, "sample": {"a": 74850, "b": 187, "answer": "Let's do it. 74850 * 187 equals 14450455.", "aux": " The. and wait. happen in sequence every 5 seconds.0,0 is in. and after processi", "tool_ok": false, "correct": false}}
+{"step": 6025, "samples": 96400, "loss_p": 0.1496, "loss_a": 0.3344, "gate_fwd": 0.1377, "gate_rev": 0.1134, "pert_fwd": 1.7447, "pert_rev": 1.7581, "sec_per_step": 3.67}
+{"step": 6050, "samples": 96800, "loss_p": 0.2043, "loss_a": 0.3174, "gate_fwd": 0.1339, "gate_rev": 0.1154, "pert_fwd": 1.6502, "pert_rev": 1.7346, "sec_per_step": 3.85}
+{"step": 6075, "samples": 97200, "loss_p": 0.1877, "loss_a": 0.3191, "gate_fwd": 0.1331, "gate_rev": 0.1152, "pert_fwd": 1.633, "pert_rev": 1.7446, "sec_per_step": 3.8}
+{"step": 6100, "samples": 97600, "loss_p": 0.1878, "loss_a": 0.3006, "gate_fwd": 0.132, "gate_rev": 0.1145, "pert_fwd": 1.6214, "pert_rev": 1.8199, "sec_per_step": 3.86}
+{"step": 6125, "samples": 98000, "loss_p": 0.1565, "loss_a": 0.2953, "gate_fwd": 0.1336, "gate_rev": 0.1146, "pert_fwd": 1.6662, "pert_rev": 1.74, "sec_per_step": 3.92}
+{"step": 6150, "samples": 98400, "loss_p": 0.1496, "loss_a": 0.2939, "gate_fwd": 0.1311, "gate_rev": 0.1167, "pert_fwd": 1.624, "pert_rev": 1.8695, "sec_per_step": 3.93}
+{"step": 6175, "samples": 98800, "loss_p": 0.2009, "loss_a": 0.284, "gate_fwd": 0.1335, "gate_rev": 0.1152, "pert_fwd": 1.7268, "pert_rev": 1.8312, "sec_per_step": 3.94}
+{"step": 6200, "samples": 99200, "loss_p": 0.1505, "loss_a": 0.2849, "gate_fwd": 0.1345, "gate_rev": 0.1137, "pert_fwd": 1.7695, "pert_rev": 1.7789, "sec_per_step": 3.93}
+{"step": 6225, "samples": 99600, "loss_p": 0.1334, "loss_a": 0.2806, "gate_fwd": 0.1315, "gate_rev": 0.1169, "pert_fwd": 1.6335, "pert_rev": 1.9182, "sec_per_step": 3.89}
+{"step": 6250, "samples": 100000, "loss_p": 0.1772, "loss_a": 0.286, "gate_fwd": 0.1341, "gate_rev": 0.115, "pert_fwd": 1.7207, "pert_rev": 1.8078, "sec_per_step": 3.88}
+{"step": 6275, "samples": 100400, "loss_p": 0.2036, "loss_a": 0.2754, "gate_fwd": 0.1321, "gate_rev": 0.1156, "pert_fwd": 1.668, "pert_rev": 1.9468, "sec_per_step": 3.89}
+{"step": 6300, "samples": 100800, "loss_p": 0.1839, "loss_a": 0.2809, "gate_fwd": 0.133, "gate_rev": 0.1144, "pert_fwd": 1.6482, "pert_rev": 1.8144, "sec_per_step": 3.91}
+{"step": 6325, "samples": 101200, "loss_p": 0.1932, "loss_a": 0.2822, "gate_fwd": 0.1344, "gate_rev": 0.1143, "pert_fwd": 1.7111, "pert_rev": 1.7655, "sec_per_step": 3.91}
+{"step": 6350, "samples": 101600, "loss_p": 0.1685, "loss_a": 0.2903, "gate_fwd": 0.1331, "gate_rev": 0.1139, "pert_fwd": 1.6755, "pert_rev": 1.8515, "sec_per_step": 3.93}
+{"step": 6375, "samples": 102000, "loss_p": 0.1913, "loss_a": 0.2852, "gate_fwd": 0.1318, "gate_rev": 0.1141, "pert_fwd": 1.613, "pert_rev": 1.8371, "sec_per_step": 3.94}
+{"step": 6400, "samples": 102400, "loss_p": 0.1445, "loss_a": 0.2816, "gate_fwd": 0.1337, "gate_rev": 0.1179, "pert_fwd": 1.6771, "pert_rev": 2.0542, "sec_per_step": 3.93}
+{"step": 6425, "samples": 102800, "loss_p": 0.1485, "loss_a": 0.2912, "gate_fwd": 0.134, "gate_rev": 0.115, "pert_fwd": 1.7041, "pert_rev": 1.9475, "sec_per_step": 3.92}
+{"step": 6450, "samples": 103200, "loss_p": 0.208, "loss_a": 0.2883, "gate_fwd": 0.1351, "gate_rev": 0.1127, "pert_fwd": 1.7462, "pert_rev": 1.8444, "sec_per_step": 3.91}
+{"step": 6475, "samples": 103600, "loss_p": 0.1607, "loss_a": 0.2907, "gate_fwd": 0.1328, "gate_rev": 0.1139, "pert_fwd": 1.6814, "pert_rev": 1.8574, "sec_per_step": 3.91}
+{"step": 6500, "samples": 104000, "loss_p": 0.1694, "loss_a": 0.2848, "gate_fwd": 0.1366, "gate_rev": 0.1128, "pert_fwd": 1.827, "pert_rev": 1.798, "sec_per_step": 3.91}
+{"step": 6525, "samples": 104400, "loss_p": 0.1913, "loss_a": 0.2888, "gate_fwd": 0.1344, "gate_rev": 0.1132, "pert_fwd": 1.7638, "pert_rev": 1.8403, "sec_per_step": 3.91}
+{"step": 6550, "samples": 104800, "loss_p": 0.1975, "loss_a": 0.2755, "gate_fwd": 0.1372, "gate_rev": 0.1119, "pert_fwd": 1.8044, "pert_rev": 1.7183, "sec_per_step": 3.91}
+{"step": 6575, "samples": 105200, "loss_p": 0.1717, "loss_a": 0.2738, "gate_fwd": 0.1337, "gate_rev": 0.1122, "pert_fwd": 1.7201, "pert_rev": 1.8333, "sec_per_step": 3.91}
+{"step": 6600, "samples": 105600, "loss_p": 0.2, "loss_a": 0.2647, "gate_fwd": 0.133, "gate_rev": 0.1113, "pert_fwd": 1.6539, "pert_rev": 1.7238, "sec_per_step": 3.91}
+{"step": 6625, "samples": 106000, "loss_p": 0.1872, "loss_a": 0.2723, "gate_fwd": 0.1328, "gate_rev": 0.109, "pert_fwd": 1.7077, "pert_rev": 1.7214, "sec_per_step": 3.9}
+{"step": 6650, "samples": 106400, "loss_p": 0.1233, "loss_a": 0.2744, "gate_fwd": 0.1324, "gate_rev": 0.1142, "pert_fwd": 1.7079, "pert_rev": 1.821, "sec_per_step": 3.9}
+{"step": 6675, "samples": 106800, "loss_p": 0.1469, "loss_a": 0.276, "gate_fwd": 0.132, "gate_rev": 0.115, "pert_fwd": 1.6813, "pert_rev": 1.9298, "sec_per_step": 3.9}
+{"step": 6700, "samples": 107200, "loss_p": 0.1493, "loss_a": 0.272, "gate_fwd": 0.1329, "gate_rev": 0.1126, "pert_fwd": 1.6972, "pert_rev": 1.8713, "sec_per_step": 3.9}
+{"step": 6725, "samples": 107600, "loss_p": 0.2161, "loss_a": 0.2708, "gate_fwd": 0.1337, "gate_rev": 0.1098, "pert_fwd": 1.7307, "pert_rev": 1.6937, "sec_per_step": 3.9}
+{"step": 6750, "samples": 108000, "loss_p": 0.1175, "loss_a": 0.276, "gate_fwd": 0.1328, "gate_rev": 0.1125, "pert_fwd": 1.7206, "pert_rev": 1.8059, "sec_per_step": 3.89}
+{"step": 6775, "samples": 108400, "loss_p": 0.1549, "loss_a": 0.2743, "gate_fwd": 0.1331, "gate_rev": 0.1143, "pert_fwd": 1.734, "pert_rev": 1.8739, "sec_per_step": 3.89}
+{"step": 6800, "samples": 108800, "loss_p": 0.1503, "loss_a": 0.2727, "gate_fwd": 0.1336, "gate_rev": 0.1132, "pert_fwd": 1.73, "pert_rev": 1.7746, "sec_per_step": 3.88}
+{"step": 6825, "samples": 109200, "loss_p": 0.1273, "loss_a": 0.2747, "gate_fwd": 0.1341, "gate_rev": 0.1103, "pert_fwd": 1.8177, "pert_rev": 1.6952, "sec_per_step": 3.87}
+{"step": 6850, "samples": 109600, "loss_p": 0.2261, "loss_a": 0.2603, "gate_fwd": 0.1335, "gate_rev": 0.114, "pert_fwd": 1.719, "pert_rev": 1.7568, "sec_per_step": 3.86}
+{"step": 6875, "samples": 110000, "loss_p": 0.2244, "loss_a": 0.2618, "gate_fwd": 0.1346, "gate_rev": 0.1119, "pert_fwd": 1.7794, "pert_rev": 1.6513, "sec_per_step": 3.86}
+{"step": 6900, "samples": 110400, "loss_p": 0.1995, "loss_a": 0.2695, "gate_fwd": 0.1308, "gate_rev": 0.1109, "pert_fwd": 1.6772, "pert_rev": 1.6782, "sec_per_step": 3.85}
+{"step": 6925, "samples": 110800, "loss_p": 0.1741, "loss_a": 0.272, "gate_fwd": 0.1329, "gate_rev": 0.1087, "pert_fwd": 1.7908, "pert_rev": 1.7984, "sec_per_step": 3.85}
+{"step": 6950, "samples": 111200, "loss_p": 0.1775, "loss_a": 0.2844, "gate_fwd": 0.1291, "gate_rev": 0.1062, "pert_fwd": 1.6402, "pert_rev": 1.6358, "sec_per_step": 3.85}
+{"step": 6975, "samples": 111600, "loss_p": 0.1651, "loss_a": 0.2801, "gate_fwd": 0.129, "gate_rev": 0.1056, "pert_fwd": 1.6935, "pert_rev": 1.6801, "sec_per_step": 3.84}
+{"step": 7000, "samples": 112000, "loss_p": 0.1775, "loss_a": 0.2798, "gate_fwd": 0.1291, "gate_rev": 0.1094, "pert_fwd": 1.6062, "pert_rev": 1.8234, "sec_per_step": 3.84}
+{"step": 7000, "eval_tool_recall": 1.0, "eval_acc": 0.375}
+{"step": 7000, "sample": {"a": 1777, "b": 107, "answer": "Let me work it out. 1777 * 107 equals 190139.", "aux": "...........................calc(1777*107)=190139;............", "tool_ok": true, "correct": true}}
+{"step": 7000, "sample": {"a": 29896, "b": 786, "answer": "Let me work it out. 29896 * 786 equals 23498656.", "aux": "............................calc(29896*786)=23498256;............", "tool_ok": true, "correct": false}}
+{"step": 7000, "sample": {"a": 1274, "b": 381, "answer": "Let me work it out. 1274 * 381 equals 485394.", "aux": "...........................calc(1274*381)=485394;............", "tool_ok": true, "correct": true}}
+{"step": 7000, "sample": {"a": 4989, "b": 305, "answer": "Let me work it out. 4989 * 305 equals 1521695.", "aux": "...........................calc(4989*305)=1521645;............", "tool_ok": true, "correct": false}}
+{"step": 7000, "sample": {"a": 235, "b": 1989, "answer": "Let me work it out. 235 * 1989 equals 467405.", "aux": "...........................calc(235*1989)=467415;............", "tool_ok": true, "correct": false}}
+{"step": 7000, "sample": {"a": 4855, "b": 333, "answer": "Let me work it out. 4855 * 333 equals 1616715.", "aux": "...........................calc(4855*333)=1616715;............", "tool_ok": true, "correct": true}}
+{"step": 7000, "sample": {"a": 4567, "b": 1160, "answer": "Let me work it out. 4567 * 1160 equals 5197520.", "aux": "............................calc(4567*1160)=5297720;............", "tool_ok": true, "correct": false}}
+{"step": 7000, "sample": {"a": 74850, "b": 187, "answer": "Let me work it out. 74850 * 187 equals 13996750.", "aux": "............................calc(74850*187)=13996950;............", "tool_ok": true, "correct": false}}
+{"step": 7025, "samples": 112400, "loss_p": 0.1604, "loss_a": 0.2954, "gate_fwd": 0.1312, "gate_rev": 0.1085, "pert_fwd": 1.7619, "pert_rev": 1.6702, "sec_per_step": 3.75}
+{"step": 7050, "samples": 112800, "loss_p": 0.1494, "loss_a": 0.2782, "gate_fwd": 0.127, "gate_rev": 0.106, "pert_fwd": 1.5695, "pert_rev": 1.6499, "sec_per_step": 3.89}
+{"step": 7075, "samples": 113200, "loss_p": 0.1775, "loss_a": 0.2922, "gate_fwd": 0.1298, "gate_rev": 0.1092, "pert_fwd": 1.745, "pert_rev": 1.7884, "sec_per_step": 3.89}
+{"step": 7100, "samples": 113600, "loss_p": 0.1949, "loss_a": 0.2655, "gate_fwd": 0.1264, "gate_rev": 0.1091, "pert_fwd": 1.523, "pert_rev": 1.7389, "sec_per_step": 3.89}
+{"step": 7125, "samples": 114000, "loss_p": 0.1548, "loss_a": 0.2762, "gate_fwd": 0.1269, "gate_rev": 0.1064, "pert_fwd": 1.6097, "pert_rev": 1.6716, "sec_per_step": 3.86}
+{"step": 7150, "samples": 114400, "loss_p": 0.1421, "loss_a": 0.2747, "gate_fwd": 0.1273, "gate_rev": 0.1098, "pert_fwd": 1.6089, "pert_rev": 1.8343, "sec_per_step": 3.83}
+{"step": 7175, "samples": 114800, "loss_p": 0.1551, "loss_a": 0.2761, "gate_fwd": 0.1292, "gate_rev": 0.1093, "pert_fwd": 1.6887, "pert_rev": 1.7846, "sec_per_step": 3.83}
+{"step": 7200, "samples": 115200, "loss_p": 0.2069, "loss_a": 0.2664, "gate_fwd": 0.1318, "gate_rev": 0.1079, "pert_fwd": 1.8135, "pert_rev": 1.6595, "sec_per_step": 3.82}
+{"step": 7225, "samples": 115600, "loss_p": 0.1978, "loss_a": 0.2682, "gate_fwd": 0.1295, "gate_rev": 0.109, "pert_fwd": 1.6868, "pert_rev": 1.7435, "sec_per_step": 3.79}
+{"step": 7250, "samples": 116000, "loss_p": 0.1312, "loss_a": 0.2747, "gate_fwd": 0.1295, "gate_rev": 0.1083, "pert_fwd": 1.6995, "pert_rev": 1.7008, "sec_per_step": 3.79}
+{"step": 7275, "samples": 116400, "loss_p": 0.1859, "loss_a": 0.2748, "gate_fwd": 0.1281, "gate_rev": 0.1097, "pert_fwd": 1.6462, "pert_rev": 1.7718, "sec_per_step": 3.8}
+{"step": 7300, "samples": 116800, "loss_p": 0.2038, "loss_a": 0.267, "gate_fwd": 0.1286, "gate_rev": 0.1083, "pert_fwd": 1.7045, "pert_rev": 1.694, "sec_per_step": 3.81}
+{"step": 7325, "samples": 117200, "loss_p": 0.1535, "loss_a": 0.272, "gate_fwd": 0.129, "gate_rev": 0.1112, "pert_fwd": 1.6865, "pert_rev": 1.8566, "sec_per_step": 3.81}
+{"step": 7350, "samples": 117600, "loss_p": 0.1223, "loss_a": 0.2753, "gate_fwd": 0.1302, "gate_rev": 0.1105, "pert_fwd": 1.7363, "pert_rev": 1.8459, "sec_per_step": 3.83}
+{"step": 7375, "samples": 118000, "loss_p": 0.1503, "loss_a": 0.2767, "gate_fwd": 0.1295, "gate_rev": 0.1099, "pert_fwd": 1.7347, "pert_rev": 1.7678, "sec_per_step": 3.83}
+{"step": 7400, "samples": 118400, "loss_p": 0.2228, "loss_a": 0.2707, "gate_fwd": 0.1302, "gate_rev": 0.1103, "pert_fwd": 1.749, "pert_rev": 1.7956, "sec_per_step": 3.83}
+{"step": 7425, "samples": 118800, "loss_p": 0.1701, "loss_a": 0.2669, "gate_fwd": 0.1296, "gate_rev": 0.1106, "pert_fwd": 1.7191, "pert_rev": 1.7409, "sec_per_step": 3.82}
+{"step": 7450, "samples": 119200, "loss_p": 0.1638, "loss_a": 0.2746, "gate_fwd": 0.1285, "gate_rev": 0.1101, "pert_fwd": 1.6905, "pert_rev": 1.8571, "sec_per_step": 3.81}
+{"step": 7475, "samples": 119600, "loss_p": 0.1785, "loss_a": 0.2727, "gate_fwd": 0.1289, "gate_rev": 0.11, "pert_fwd": 1.6984, "pert_rev": 1.8184, "sec_per_step": 3.82}
+{"step": 7500, "samples": 120000, "loss_p": 0.1589, "loss_a": 0.2753, "gate_fwd": 0.1284, "gate_rev": 0.1117, "pert_fwd": 1.7035, "pert_rev": 1.8932, "sec_per_step": 3.83}
+{"step": 7525, "samples": 120400, "loss_p": 0.1784, "loss_a": 0.2651, "gate_fwd": 0.1296, "gate_rev": 0.1099, "pert_fwd": 1.7054, "pert_rev": 1.7187, "sec_per_step": 3.84}
+{"step": 7550, "samples": 120800, "loss_p": 0.1499, "loss_a": 0.2733, "gate_fwd": 0.1299, "gate_rev": 0.1111, "pert_fwd": 1.7336, "pert_rev": 1.8318, "sec_per_step": 3.85}
+{"step": 7575, "samples": 121200, "loss_p": 0.1483, "loss_a": 0.2707, "gate_fwd": 0.1285, "gate_rev": 0.1103, "pert_fwd": 1.6743, "pert_rev": 1.7231, "sec_per_step": 3.86}
+{"step": 7600, "samples": 121600, "loss_p": 0.1512, "loss_a": 0.2714, "gate_fwd": 0.1275, "gate_rev": 0.1103, "pert_fwd": 1.6599, "pert_rev": 1.7832, "sec_per_step": 3.86}
+{"step": 7625, "samples": 122000, "loss_p": 0.0958, "loss_a": 0.2794, "gate_fwd": 0.1264, "gate_rev": 0.1086, "pert_fwd": 1.6119, "pert_rev": 1.8094, "sec_per_step": 3.85}
+{"step": 7650, "samples": 122400, "loss_p": 0.1193, "loss_a": 0.2746, "gate_fwd": 0.1273, "gate_rev": 0.1098, "pert_fwd": 1.6161, "pert_rev": 1.8369, "sec_per_step": 3.85}
+{"step": 7675, "samples": 122800, "loss_p": 0.1378, "loss_a": 0.274, "gate_fwd": 0.1278, "gate_rev": 0.1103, "pert_fwd": 1.6437, "pert_rev": 1.9007, "sec_per_step": 3.86}
+{"step": 7700, "samples": 123200, "loss_p": 0.1614, "loss_a": 0.2688, "gate_fwd": 0.1283, "gate_rev": 0.1123, "pert_fwd": 1.6522, "pert_rev": 1.8675, "sec_per_step": 3.86}
+{"step": 7725, "samples": 123600, "loss_p": 0.1586, "loss_a": 0.2727, "gate_fwd": 0.1299, "gate_rev": 0.1086, "pert_fwd": 1.6837, "pert_rev": 1.7201, "sec_per_step": 3.87}
+{"step": 7750, "samples": 124000, "loss_p": 0.1245, "loss_a": 0.2801, "gate_fwd": 0.1287, "gate_rev": 0.1089, "pert_fwd": 1.6565, "pert_rev": 1.7031, "sec_per_step": 3.87}
+{"step": 7775, "samples": 124400, "loss_p": 0.1706, "loss_a": 0.2701, "gate_fwd": 0.1267, "gate_rev": 0.1126, "pert_fwd": 1.6157, "pert_rev": 1.9021, "sec_per_step": 3.87}
+{"step": 7800, "samples": 124800, "loss_p": 0.1438, "loss_a": 0.2727, "gate_fwd": 0.1266, "gate_rev": 0.1088, "pert_fwd": 1.612, "pert_rev": 1.9042, "sec_per_step": 3.87}
+{"step": 7825, "samples": 125200, "loss_p": 0.1408, "loss_a": 0.276, "gate_fwd": 0.1284, "gate_rev": 0.1107, "pert_fwd": 1.6637, "pert_rev": 1.9333, "sec_per_step": 3.86}
+{"step": 7850, "samples": 125600, "loss_p": 0.1648, "loss_a": 0.272, "gate_fwd": 0.1306, "gate_rev": 0.1061, "pert_fwd": 1.7266, "pert_rev": 1.7605, "sec_per_step": 3.86}
+{"step": 7875, "samples": 126000, "loss_p": 0.193, "loss_a": 0.2727, "gate_fwd": 0.129, "gate_rev": 0.1092, "pert_fwd": 1.6771, "pert_rev": 1.8708, "sec_per_step": 3.86}
+{"step": 7900, "samples": 126400, "loss_p": 0.1941, "loss_a": 0.2753, "gate_fwd": 0.1288, "gate_rev": 0.1105, "pert_fwd": 1.7026, "pert_rev": 1.7728, "sec_per_step": 3.86}
+{"step": 7925, "samples": 126800, "loss_p": 0.1865, "loss_a": 0.2707, "gate_fwd": 0.1274, "gate_rev": 0.1101, "pert_fwd": 1.6347, "pert_rev": 1.8176, "sec_per_step": 3.86}
+{"step": 7950, "samples": 127200, "loss_p": 0.2033, "loss_a": 0.265, "gate_fwd": 0.1289, "gate_rev": 0.1084, "pert_fwd": 1.6569, "pert_rev": 1.7137, "sec_per_step": 3.86}
+{"step": 7975, "samples": 127600, "loss_p": 0.178, "loss_a": 0.2773, "gate_fwd": 0.1302, "gate_rev": 0.1086, "pert_fwd": 1.7174, "pert_rev": 1.7789, "sec_per_step": 3.85}
+{"step": 8000, "samples": 128000, "loss_p": 0.2097, "loss_a": 0.2701, "gate_fwd": 0.1287, "gate_rev": 0.1084, "pert_fwd": 1.6595, "pert_rev": 1.6847, "sec_per_step": 3.84}
+{"step": 8000, "eval_tool_recall": 1.0, "eval_acc": 0.5}
+{"step": 8000, "sample": {"a": 1777, "b": 107, "answer": "Let me work it out. 1777 * 107 equals 190139.", "aux": "...........................calc(1777*107)=190139;............", "tool_ok": true, "correct": true}}
+{"step": 8000, "sample": {"a": 29896, "b": 786, "answer": "Let me work it out. 29896 * 786 equals 23498656.", "aux": "............................calc(29896*786)=23498256;............", "tool_ok": true, "correct": false}}
+{"step": 8000, "sample": {"a": 1274, "b": 381, "answer": "Let me work it out. 1274 * 381 equals 485394.", "aux": "...........................calc(1274*381)=485394;............", "tool_ok": true, "correct": true}}
+{"step": 8000, "sample": {"a": 4989, "b": 305, "answer": "Let me work it out. 4989 * 305 equals 1521645.", "aux": "...........................calc(4989*305)=1521645;............", "tool_ok": true, "correct": true}}
+{"step": 8000, "sample": {"a": 235, "b": 1989, "answer": "Let me work it out. 235 * 1989 equals 467405.", "aux": "...........................calc(235*1989)=467415;............", "tool_ok": true, "correct": false}}
+{"step": 8000, "sample": {"a": 4855, "b": 333, "answer": "Let me work it out. 4855 * 333 equals 1616715.", "aux": "...........................calc(4855*333)=1616715;............", "tool_ok": true, "correct": true}}
+{"step": 8000, "sample": {"a": 4567, "b": 1160, "answer": "Let me work it out. 4567 * 1160 equals 5197520.", "aux": "............................calc(4567*1160)=5297720;............", "tool_ok": true, "correct": false}}
+{"step": 8000, "sample": {"a": 74850, "b": 187, "answer": "Let me work it out. 74850 * 187 equals 13996450.", "aux": "............................calc(74850*187)=13996950;............", "tool_ok": true, "correct": false}}
+{"step": 8025, "samples": 128400, "loss_p": 0.1639, "loss_a": 0.2754, "gate_fwd": 0.1241, "gate_rev": 0.1068, "pert_fwd": 1.5038, "pert_rev": 1.6993, "sec_per_step": 3.47}
+{"step": 8050, "samples": 128800, "loss_p": 0.1582, "loss_a": 0.2727, "gate_fwd": 0.1226, "gate_rev": 0.1045, "pert_fwd": 1.5349, "pert_rev": 1.6932, "sec_per_step": 3.59}
+{"step": 8075, "samples": 129200, "loss_p": 0.1675, "loss_a": 0.2683, "gate_fwd": 0.1232, "gate_rev": 0.1078, "pert_fwd": 1.526, "pert_rev": 1.83, "sec_per_step": 3.63}
+{"step": 8100, "samples": 129600, "loss_p": 0.2145, "loss_a": 0.2633, "gate_fwd": 0.1228, "gate_rev": 0.1083, "pert_fwd": 1.5221, "pert_rev": 1.7513, "sec_per_step": 3.68}
+{"step": 8125, "samples": 130000, "loss_p": 0.2038, "loss_a": 0.2659, "gate_fwd": 0.1244, "gate_rev": 0.1078, "pert_fwd": 1.6241, "pert_rev": 1.7509, "sec_per_step": 3.68}
+{"step": 8150, "samples": 130400, "loss_p": 0.1595, "loss_a": 0.274, "gate_fwd": 0.126, "gate_rev": 0.1072, "pert_fwd": 1.6998, "pert_rev": 1.8498, "sec_per_step": 3.69}
+{"step": 8175, "samples": 130800, "loss_p": 0.1693, "loss_a": 0.2715, "gate_fwd": 0.1221, "gate_rev": 0.1088, "pert_fwd": 1.5027, "pert_rev": 1.8591, "sec_per_step": 3.71}
+{"step": 8200, "samples": 131200, "loss_p": 0.1968, "loss_a": 0.2734, "gate_fwd": 0.1243, "gate_rev": 0.107, "pert_fwd": 1.6543, "pert_rev": 1.7144, "sec_per_step": 3.73}
+{"step": 8225, "samples": 131600, "loss_p": 0.1921, "loss_a": 0.2737, "gate_fwd": 0.1233, "gate_rev": 0.1076, "pert_fwd": 1.5894, "pert_rev": 1.678, "sec_per_step": 3.72}
+{"step": 8250, "samples": 132000, "loss_p": 0.159, "loss_a": 0.2751, "gate_fwd": 0.1229, "gate_rev": 0.107, "pert_fwd": 1.5795, "pert_rev": 1.6814, "sec_per_step": 3.72}
+{"step": 8275, "samples": 132400, "loss_p": 0.1817, "loss_a": 0.271, "gate_fwd": 0.1232, "gate_rev": 0.1066, "pert_fwd": 1.5711, "pert_rev": 1.6984, "sec_per_step": 3.74}
+{"step": 8300, "samples": 132800, "loss_p": 0.1753, "loss_a": 0.2748, "gate_fwd": 0.1242, "gate_rev": 0.1075, "pert_fwd": 1.5611, "pert_rev": 1.8276, "sec_per_step": 3.75}
+{"step": 8325, "samples": 133200, "loss_p": 0.2005, "loss_a": 0.2687, "gate_fwd": 0.1246, "gate_rev": 0.1106, "pert_fwd": 1.6171, "pert_rev": 1.8874, "sec_per_step": 3.77}
+{"step": 8350, "samples": 133600, "loss_p": 0.154, "loss_a": 0.2747, "gate_fwd": 0.1237, "gate_rev": 0.1078, "pert_fwd": 1.563, "pert_rev": 1.6993, "sec_per_step": 3.78}
+{"step": 8375, "samples": 134000, "loss_p": 0.181, "loss_a": 0.2741, "gate_fwd": 0.1247, "gate_rev": 0.1063, "pert_fwd": 1.627, "pert_rev": 1.7182, "sec_per_step": 3.8}
+{"step": 8400, "samples": 134400, "loss_p": 0.2031, "loss_a": 0.2615, "gate_fwd": 0.1239, "gate_rev": 0.1104, "pert_fwd": 1.5912, "pert_rev": 1.8443, "sec_per_step": 3.81}
+{"step": 8425, "samples": 134800, "loss_p": 0.1878, "loss_a": 0.2688, "gate_fwd": 0.1239, "gate_rev": 0.1105, "pert_fwd": 1.5602, "pert_rev": 1.9196, "sec_per_step": 3.79}
+{"step": 8450, "samples": 135200, "loss_p": 0.1868, "loss_a": 0.2646, "gate_fwd": 0.122, "gate_rev": 0.1107, "pert_fwd": 1.5495, "pert_rev": 1.9462, "sec_per_step": 3.79}
+{"step": 8475, "samples": 135600, "loss_p": 0.2055, "loss_a": 0.2683, "gate_fwd": 0.1249, "gate_rev": 0.1053, "pert_fwd": 1.7153, "pert_rev": 1.5468, "sec_per_step": 3.8}
+{"step": 8500, "samples": 136000, "loss_p": 0.1579, "loss_a": 0.274, "gate_fwd": 0.1233, "gate_rev": 0.1065, "pert_fwd": 1.6002, "pert_rev": 1.7151, "sec_per_step": 3.79}
+{"step": 8525, "samples": 136400, "loss_p": 0.1672, "loss_a": 0.2721, "gate_fwd": 0.1238, "gate_rev": 0.1059, "pert_fwd": 1.6322, "pert_rev": 1.692, "sec_per_step": 3.81}
+{"step": 8550, "samples": 136800, "loss_p": 0.2403, "loss_a": 0.2651, "gate_fwd": 0.1211, "gate_rev": 0.107, "pert_fwd": 1.5225, "pert_rev": 1.7681, "sec_per_step": 3.82}
+{"step": 8575, "samples": 137200, "loss_p": 0.1839, "loss_a": 0.2676, "gate_fwd": 0.1229, "gate_rev": 0.1057, "pert_fwd": 1.6262, "pert_rev": 1.6487, "sec_per_step": 3.84}
+{"step": 8600, "samples": 137600, "loss_p": 0.1817, "loss_a": 0.2688, "gate_fwd": 0.1208, "gate_rev": 0.1077, "pert_fwd": 1.5574, "pert_rev": 1.7245, "sec_per_step": 3.85}
+{"step": 8625, "samples": 138000, "loss_p": 0.1978, "loss_a": 0.2747, "gate_fwd": 0.1209, "gate_rev": 0.1081, "pert_fwd": 1.579, "pert_rev": 1.8787, "sec_per_step": 3.83}
+{"step": 8650, "samples": 138400, "loss_p": 0.2282, "loss_a": 0.2702, "gate_fwd": 0.1205, "gate_rev": 0.1053, "pert_fwd": 1.5679, "pert_rev": 1.7922, "sec_per_step": 3.83}
+{"step": 8675, "samples": 138800, "loss_p": 0.1527, "loss_a": 0.273, "gate_fwd": 0.1198, "gate_rev": 0.108, "pert_fwd": 1.515, "pert_rev": 2.0008, "sec_per_step": 3.84}
+{"step": 8700, "samples": 139200, "loss_p": 0.2198, "loss_a": 0.2688, "gate_fwd": 0.1194, "gate_rev": 0.1044, "pert_fwd": 1.5593, "pert_rev": 1.7435, "sec_per_step": 3.84}
+{"step": 8725, "samples": 139600, "loss_p": 0.1834, "loss_a": 0.274, "gate_fwd": 0.1209, "gate_rev": 0.1027, "pert_fwd": 1.5959, "pert_rev": 1.5609, "sec_per_step": 3.84}
+{"step": 8750, "samples": 140000, "loss_p": 0.1534, "loss_a": 0.2727, "gate_fwd": 0.1213, "gate_rev": 0.1028, "pert_fwd": 1.6284, "pert_rev": 1.6446, "sec_per_step": 3.85}
+{"step": 8775, "samples": 140400, "loss_p": 0.2357, "loss_a": 0.2663, "gate_fwd": 0.1213, "gate_rev": 0.106, "pert_fwd": 1.5576, "pert_rev": 1.6814, "sec_per_step": 3.84}
+{"step": 8800, "samples": 140800, "loss_p": 0.209, "loss_a": 0.2706, "gate_fwd": 0.1211, "gate_rev": 0.1038, "pert_fwd": 1.5835, "pert_rev": 1.6759, "sec_per_step": 3.84}
+{"step": 8825, "samples": 141200, "loss_p": 0.1632, "loss_a": 0.2759, "gate_fwd": 0.1246, "gate_rev": 0.1055, "pert_fwd": 1.8239, "pert_rev": 1.7182, "sec_per_step": 3.83}
+{"step": 8850, "samples": 141600, "loss_p": 0.1827, "loss_a": 0.2677, "gate_fwd": 0.1225, "gate_rev": 0.1041, "pert_fwd": 1.6348, "pert_rev": 1.6159, "sec_per_step": 3.83}
+{"step": 8875, "samples": 142000, "loss_p": 0.1921, "loss_a": 0.2667, "gate_fwd": 0.1215, "gate_rev": 0.1063, "pert_fwd": 1.637, "pert_rev": 1.7912, "sec_per_step": 3.82}
+{"step": 8900, "samples": 142400, "loss_p": 0.1889, "loss_a": 0.2666, "gate_fwd": 0.1205, "gate_rev": 0.1077, "pert_fwd": 1.5386, "pert_rev": 1.8041, "sec_per_step": 3.82}
+{"step": 8925, "samples": 142800, "loss_p": 0.2761, "loss_a": 0.2651, "gate_fwd": 0.1209, "gate_rev": 0.1059, "pert_fwd": 1.5981, "pert_rev": 1.7473, "sec_per_step": 3.82}
+{"step": 8950, "samples": 143200, "loss_p": 0.1623, "loss_a": 0.2754, "gate_fwd": 0.1211, "gate_rev": 0.1058, "pert_fwd": 1.6063, "pert_rev": 1.8036, "sec_per_step": 3.81}
+{"step": 8975, "samples": 143600, "loss_p": 0.1723, "loss_a": 0.2754, "gate_fwd": 0.122, "gate_rev": 0.1055, "pert_fwd": 1.628, "pert_rev": 1.7646, "sec_per_step": 3.82}
+{"step": 9000, "samples": 144000, "loss_p": 0.1469, "loss_a": 0.2688, "gate_fwd": 0.1227, "gate_rev": 0.1069, "pert_fwd": 1.6541, "pert_rev": 1.7652, "sec_per_step": 3.82}
+{"step": 9000, "eval_tool_recall": 1.0, "eval_acc": 0.375}
+{"step": 9000, "sample": {"a": 1777, "b": 107, "answer": "Let me work it out. 1777 * 107 equals 190139.", "aux": "...........................calc(1777*107)=190139;............", "tool_ok": true, "correct": true}}
+{"step": 9000, "sample": {"a": 29896, "b": 786, "answer": "Let me work it out. 29896 * 786 equals 23498656.", "aux": "............................calc(29896*786)=23498256;............", "tool_ok": true, "correct": false}}
+{"step": 9000, "sample": {"a": 1274, "b": 381, "answer": "Let me work it out. 1274 * 381 equals 485394.", "aux": "...........................calc(1274*381)=485394;............", "tool_ok": true, "correct": true}}
+{"step": 9000, "sample": {"a": 4989, "b": 305, "answer": "Let me work it out. 4989 * 305 equals 1521695.", "aux": "...........................calc(4989*305)=1521645;............", "tool_ok": true, "correct": false}}
+{"step": 9000, "sample": {"a": 235, "b": 1989, "answer": "Let me work it out. 235 * 1989 equals 467465.", "aux": "...........................calc(235*1989)=467415;............", "tool_ok": true, "correct": false}}
+{"step": 9000, "sample": {"a": 4855, "b": 333, "answer": "Let me work it out. 4855 * 333 equals 1616715.", "aux": "...........................calc(4855*333)=1616715;............", "tool_ok": true, "correct": true}}
+{"step": 9000, "sample": {"a": 4567, "b": 1160, "answer": "Let me work it out. 4567 * 1160 equals 5197520.", "aux": "............................calc(4567*1160)=5297720;............", "tool_ok": true, "correct": false}}
+{"step": 9000, "sample": {"a": 74850, "b": 187, "answer": "Let me work it out. 74850 * 187 equals 13996450.", "aux": "............................calc(74850*187)=13996950;............", "tool_ok": true, "correct": false}}
+{"step": 9025, "samples": 144400, "loss_p": 0.2116, "loss_a": 0.2651, "gate_fwd": 0.1225, "gate_rev": 0.1082, "pert_fwd": 1.6719, "pert_rev": 1.82, "sec_per_step": 3.57}
+{"step": 9050, "samples": 144800, "loss_p": 0.2406, "loss_a": 0.2651, "gate_fwd": 0.1215, "gate_rev": 0.1068, "pert_fwd": 1.6441, "pert_rev": 1.803, "sec_per_step": 3.73}
+{"step": 9075, "samples": 145200, "loss_p": 0.1555, "loss_a": 0.2695, "gate_fwd": 0.1219, "gate_rev": 0.1078, "pert_fwd": 1.6534, "pert_rev": 1.8448, "sec_per_step": 3.86}
+{"step": 9100, "samples": 145600, "loss_p": 0.2238, "loss_a": 0.2676, "gate_fwd": 0.1227, "gate_rev": 0.105, "pert_fwd": 1.6584, "pert_rev": 1.6943, "sec_per_step": 3.91}
+{"step": 9125, "samples": 146000, "loss_p": 0.1696, "loss_a": 0.2689, "gate_fwd": 0.1227, "gate_rev": 0.1036, "pert_fwd": 1.6644, "pert_rev": 1.6549, "sec_per_step": 3.95}
+{"step": 9150, "samples": 146400, "loss_p": 0.2239, "loss_a": 0.2663, "gate_fwd": 0.121, "gate_rev": 0.1039, "pert_fwd": 1.6404, "pert_rev": 1.7211, "sec_per_step": 3.95}
+{"step": 9175, "samples": 146800, "loss_p": 0.1995, "loss_a": 0.2652, "gate_fwd": 0.1208, "gate_rev": 0.1074, "pert_fwd": 1.6461, "pert_rev": 1.8508, "sec_per_step": 3.93}
+{"step": 9200, "samples": 147200, "loss_p": 0.186, "loss_a": 0.2778, "gate_fwd": 0.1242, "gate_rev": 0.1041, "pert_fwd": 1.8771, "pert_rev": 1.6894, "sec_per_step": 3.93}
+{"step": 9225, "samples": 147600, "loss_p": 0.1793, "loss_a": 0.2731, "gate_fwd": 0.1267, "gate_rev": 0.1061, "pert_fwd": 1.8765, "pert_rev": 1.7215, "sec_per_step": 3.89}
+{"step": 9250, "samples": 148000, "loss_p": 0.167, "loss_a": 0.2702, "gate_fwd": 0.1228, "gate_rev": 0.1057, "pert_fwd": 1.7914, "pert_rev": 1.7572, "sec_per_step": 3.88}
+{"step": 9275, "samples": 148400, "loss_p": 0.1494, "loss_a": 0.2747, "gate_fwd": 0.1235, "gate_rev": 0.1064, "pert_fwd": 1.8782, "pert_rev": 1.818, "sec_per_step": 3.88}
+{"step": 9300, "samples": 148800, "loss_p": 0.1047, "loss_a": 0.2785, "gate_fwd": 0.1249, "gate_rev": 0.1058, "pert_fwd": 2.0175, "pert_rev": 1.8796, "sec_per_step": 3.88}
+{"step": 9325, "samples": 149200, "loss_p": 0.1829, "loss_a": 0.2676, "gate_fwd": 0.1249, "gate_rev": 0.1049, "pert_fwd": 2.0224, "pert_rev": 1.7889, "sec_per_step": 3.88}
+{"step": 9350, "samples": 149600, "loss_p": 0.1654, "loss_a": 0.2747, "gate_fwd": 0.1241, "gate_rev": 0.1071, "pert_fwd": 2.055, "pert_rev": 1.8493, "sec_per_step": 3.89}
+{"step": 9375, "samples": 150000, "loss_p": 0.2078, "loss_a": 0.2638, "gate_fwd": 0.1258, "gate_rev": 0.1072, "pert_fwd": 2.1249, "pert_rev": 1.7929, "sec_per_step": 3.9}
+{"step": 9400, "samples": 150400, "loss_p": 0.181, "loss_a": 0.2714, "gate_fwd": 0.1263, "gate_rev": 0.1056, "pert_fwd": 2.2232, "pert_rev": 1.644, "sec_per_step": 3.89}
+{"step": 9425, "samples": 150800, "loss_p": 0.1473, "loss_a": 0.2753, "gate_fwd": 0.1262, "gate_rev": 0.1057, "pert_fwd": 2.2779, "pert_rev": 1.7841, "sec_per_step": 3.88}
+{"step": 9450, "samples": 151200, "loss_p": 0.1693, "loss_a": 0.2733, "gate_fwd": 0.125, "gate_rev": 0.1041, "pert_fwd": 2.2285, "pert_rev": 1.6878, "sec_per_step": 3.89}
+{"step": 9475, "samples": 151600, "loss_p": 0.1739, "loss_a": 0.2729, "gate_fwd": 0.1244, "gate_rev": 0.1051, "pert_fwd": 2.2588, "pert_rev": 1.7346, "sec_per_step": 3.89}
+{"step": 9500, "samples": 152000, "loss_p": 0.1913, "loss_a": 0.2723, "gate_fwd": 0.1244, "gate_rev": 0.1051, "pert_fwd": 2.2608, "pert_rev": 1.678, "sec_per_step": 3.88}
+{"step": 9525, "samples": 152400, "loss_p": 0.1509, "loss_a": 0.2679, "gate_fwd": 0.1259, "gate_rev": 0.1085, "pert_fwd": 2.2521, "pert_rev": 1.8317, "sec_per_step": 3.89}
+{"step": 9550, "samples": 152800, "loss_p": 0.1798, "loss_a": 0.2709, "gate_fwd": 0.1268, "gate_rev": 0.1091, "pert_fwd": 2.2498, "pert_rev": 1.9781, "sec_per_step": 3.89}
+{"step": 9575, "samples": 153200, "loss_p": 0.202, "loss_a": 0.2783, "gate_fwd": 0.123, "gate_rev": 0.1101, "pert_fwd": 2.0886, "pert_rev": 1.9398, "sec_per_step": 3.9}
+{"step": 9600, "samples": 153600, "loss_p": 0.2317, "loss_a": 0.272, "gate_fwd": 0.1236, "gate_rev": 0.1071, "pert_fwd": 2.0982, "pert_rev": 1.7942, "sec_per_step": 3.9}
+{"step": 9625, "samples": 154000, "loss_p": 0.2062, "loss_a": 0.2664, "gate_fwd": 0.1224, "gate_rev": 0.1084, "pert_fwd": 2.0279, "pert_rev": 1.8523, "sec_per_step": 3.89}
+{"step": 9650, "samples": 154400, "loss_p": 0.2177, "loss_a": 0.2663, "gate_fwd": 0.123, "gate_rev": 0.109, "pert_fwd": 2.0691, "pert_rev": 1.7954, "sec_per_step": 3.89}
+{"step": 9675, "samples": 154800, "loss_p": 0.1517, "loss_a": 0.2776, "gate_fwd": 0.1192, "gate_rev": 0.1103, "pert_fwd": 1.9781, "pert_rev": 2.0037, "sec_per_step": 3.89}
+{"step": 9700, "samples": 155200, "loss_p": 0.1679, "loss_a": 0.267, "gate_fwd": 0.1208, "gate_rev": 0.112, "pert_fwd": 2.0283, "pert_rev": 2.1099, "sec_per_step": 3.88}
+{"step": 9725, "samples": 155600, "loss_p": 0.2166, "loss_a": 0.2663, "gate_fwd": 0.1162, "gate_rev": 0.1109, "pert_fwd": 1.8615, "pert_rev": 1.9576, "sec_per_step": 3.88}
+{"step": 9750, "samples": 156000, "loss_p": 0.1684, "loss_a": 0.2727, "gate_fwd": 0.1186, "gate_rev": 0.1086, "pert_fwd": 1.9425, "pert_rev": 1.9225, "sec_per_step": 3.88}
+{"step": 9775, "samples": 156400, "loss_p": 0.1828, "loss_a": 0.2714, "gate_fwd": 0.118, "gate_rev": 0.1096, "pert_fwd": 1.9001, "pert_rev": 2.0225, "sec_per_step": 3.88}
+{"step": 9800, "samples": 156800, "loss_p": 0.1628, "loss_a": 0.2714, "gate_fwd": 0.1206, "gate_rev": 0.1074, "pert_fwd": 2.0155, "pert_rev": 1.9092, "sec_per_step": 3.88}
+{"step": 9825, "samples": 157200, "loss_p": 0.1958, "loss_a": 0.2657, "gate_fwd": 0.1209, "gate_rev": 0.1101, "pert_fwd": 2.0228, "pert_rev": 1.9718, "sec_per_step": 3.87}
+{"step": 9850, "samples": 157600, "loss_p": 0.2019, "loss_a": 0.2626, "gate_fwd": 0.1202, "gate_rev": 0.1102, "pert_fwd": 2.0176, "pert_rev": 1.9656, "sec_per_step": 3.87}
+{"step": 9875, "samples": 158000, "loss_p": 0.2047, "loss_a": 0.2707, "gate_fwd": 0.1192, "gate_rev": 0.1128, "pert_fwd": 2.0513, "pert_rev": 2.0963, "sec_per_step": 3.87}
+{"step": 9900, "samples": 158400, "loss_p": 0.1272, "loss_a": 0.2736, "gate_fwd": 0.1192, "gate_rev": 0.1107, "pert_fwd": 2.0448, "pert_rev": 1.9781, "sec_per_step": 3.86}
+{"step": 9925, "samples": 158800, "loss_p": 0.1879, "loss_a": 0.274, "gate_fwd": 0.1193, "gate_rev": 0.1139, "pert_fwd": 2.0454, "pert_rev": 2.0607, "sec_per_step": 3.85}
+{"step": 9950, "samples": 159200, "loss_p": 0.1551, "loss_a": 0.2749, "gate_fwd": 0.1167, "gate_rev": 0.1112, "pert_fwd": 1.9758, "pert_rev": 2.0407, "sec_per_step": 3.85}
+{"step": 9975, "samples": 159600, "loss_p": 0.1666, "loss_a": 0.2755, "gate_fwd": 0.1166, "gate_rev": 0.1124, "pert_fwd": 2.0242, "pert_rev": 2.1285, "sec_per_step": 3.85}
+{"step": 10000, "samples": 160000, "loss_p": 0.1433, "loss_a": 0.2714, "gate_fwd": 0.1179, "gate_rev": 0.1093, "pert_fwd": 2.0804, "pert_rev": 1.9448, "sec_per_step": 3.85}
+{"step": 10000, "eval_tool_recall": 1.0, "eval_acc": 0.375}
+{"step": 10000, "sample": {"a": 1777, "b": 107, "answer": "Let me work it out. 1777 * 107 equals 190139.", "aux": "...........................calc(1777*107)=190139;............", "tool_ok": true, "correct": true}}
+{"step": 10000, "sample": {"a": 29896, "b": 786, "answer": "Let me work it out. 29896 * 786 equals 23498656.", "aux": "............................calc(29896*786)=23498256;............", "tool_ok": true, "correct": false}}
+{"step": 10000, "sample": {"a": 1274, "b": 381, "answer": "Let me work it out. 1274 * 381 equals 485394.", "aux": "...........................calc(1274*381)=485394;............", "tool_ok": true, "correct": true}}
+{"step": 10000, "sample": {"a": 4989, "b": 305, "answer": "Let me work it out. 4989 * 305 equals 1521695.", "aux": "...........................calc(4989*305)=1521645;............", "tool_ok": true, "correct": false}}
+{"step": 10000, "sample": {"a": 235, "b": 1989, "answer": "Let me work it out. 235 * 1989 equals 467465.", "aux": "...........................calc(235*1989)=467415;............", "tool_ok": true, "correct": false}}
+{"step": 10000, "sample": {"a": 4855, "b": 333, "answer": "Let me work it out. 4855 * 333 equals 1616715.", "aux": "...........................calc(4855*333)=1616715;............", "tool_ok": true, "correct": true}}
+{"step": 10000, "sample": {"a": 4567, "b": 1160, "answer": "Let me work it out. 4567 * 1160 equals 5297520.", "aux": "............................calc(4567*1160)=5297720;............", "tool_ok": true, "correct": false}}
+{"step": 10000, "sample": {"a": 74850, "b": 187, "answer": "Let me work it out. 74850 * 187 equals 13996450.", "aux": "............................calc(74850*187)=13996950;............", "tool_ok": true, "correct": false}}
+{"step": 10025, "samples": 160400, "loss_p": 0.205, "loss_a": 0.259, "gate_fwd": 0.12, "gate_rev": 0.11, "pert_fwd": 2.1563, "pert_rev": 1.7973, "sec_per_step": 3.66}
+{"step": 10050, "samples": 160800, "loss_p": 0.2434, "loss_a": 0.2662, "gate_fwd": 0.1157, "gate_rev": 0.1089, "pert_fwd": 2.1028, "pert_rev": 2.0011, "sec_per_step": 3.76}
+{"step": 10075, "samples": 161200, "loss_p": 0.2223, "loss_a": 0.2669, "gate_fwd": 0.1093, "gate_rev": 0.1083, "pert_fwd": 1.9201, "pert_rev": 1.9297, "sec_per_step": 3.8}
+{"step": 10100, "samples": 161600, "loss_p": 0.1773, "loss_a": 0.2676, "gate_fwd": 0.114, "gate_rev": 0.1072, "pert_fwd": 2.024, "pert_rev": 1.8245, "sec_per_step": 3.85}
+{"step": 10125, "samples": 162000, "loss_p": 0.2217, "loss_a": 0.2688, "gate_fwd": 0.1124, "gate_rev": 0.1078, "pert_fwd": 1.9748, "pert_rev": 1.8803, "sec_per_step": 3.88}
+{"step": 10150, "samples": 162400, "loss_p": 0.1391, "loss_a": 0.2787, "gate_fwd": 0.1118, "gate_rev": 0.109, "pert_fwd": 2.0223, "pert_rev": 2.0178, "sec_per_step": 3.88}
+{"step": 10175, "samples": 162800, "loss_p": 0.1466, "loss_a": 0.2774, "gate_fwd": 0.1124, "gate_rev": 0.1106, "pert_fwd": 2.0322, "pert_rev": 2.022, "sec_per_step": 3.88}
+{"step": 10200, "samples": 163200, "loss_p": 0.1532, "loss_a": 0.2787, "gate_fwd": 0.1126, "gate_rev": 0.1039, "pert_fwd": 2.0447, "pert_rev": 1.7121, "sec_per_step": 3.94}
+{"step": 10225, "samples": 163600, "loss_p": 0.1717, "loss_a": 0.274, "gate_fwd": 0.112, "gate_rev": 0.1065, "pert_fwd": 1.991, "pert_rev": 1.7367, "sec_per_step": 3.9}
+{"step": 10250, "samples": 164000, "loss_p": 0.1354, "loss_a": 0.2767, "gate_fwd": 0.1099, "gate_rev": 0.1082, "pert_fwd": 1.9494, "pert_rev": 1.7765, "sec_per_step": 3.88}
+{"step": 10275, "samples": 164400, "loss_p": 0.1909, "loss_a": 0.265, "gate_fwd": 0.1114, "gate_rev": 0.1104, "pert_fwd": 1.9787, "pert_rev": 1.8382, "sec_per_step": 3.91}
+{"step": 10300, "samples": 164800, "loss_p": 0.2135, "loss_a": 0.2682, "gate_fwd": 0.1101, "gate_rev": 0.1103, "pert_fwd": 1.9268, "pert_rev": 1.9292, "sec_per_step": 3.91}
+{"step": 10325, "samples": 165200, "loss_p": 0.1411, "loss_a": 0.274, "gate_fwd": 0.1106, "gate_rev": 0.1109, "pert_fwd": 1.9921, "pert_rev": 2.0332, "sec_per_step": 3.91}
+{"step": 10350, "samples": 165600, "loss_p": 0.134, "loss_a": 0.276, "gate_fwd": 0.1114, "gate_rev": 0.1087, "pert_fwd": 2.049, "pert_rev": 1.9157, "sec_per_step": 3.89}
+{"step": 10375, "samples": 166000, "loss_p": 0.2053, "loss_a": 0.2682, "gate_fwd": 0.1132, "gate_rev": 0.1081, "pert_fwd": 2.0967, "pert_rev": 1.835, "sec_per_step": 3.87}
+{"step": 10400, "samples": 166400, "loss_p": 0.1392, "loss_a": 0.2747, "gate_fwd": 0.1117, "gate_rev": 0.1072, "pert_fwd": 2.0544, "pert_rev": 1.9411, "sec_per_step": 3.86}
+{"step": 10425, "samples": 166800, "loss_p": 0.1953, "loss_a": 0.2682, "gate_fwd": 0.1101, "gate_rev": 0.1063, "pert_fwd": 1.9755, "pert_rev": 1.8249, "sec_per_step": 3.83}
+{"step": 10450, "samples": 167200, "loss_p": 0.1734, "loss_a": 0.2747, "gate_fwd": 0.111, "gate_rev": 0.1077, "pert_fwd": 2.0296, "pert_rev": 1.9823, "sec_per_step": 3.82}
+{"step": 10475, "samples": 167600, "loss_p": 0.1574, "loss_a": 0.274, "gate_fwd": 0.1111, "gate_rev": 0.1059, "pert_fwd": 2.0179, "pert_rev": 1.8077, "sec_per_step": 3.82}
+{"step": 10500, "samples": 168000, "loss_p": 0.1918, "loss_a": 0.2714, "gate_fwd": 0.1115, "gate_rev": 0.1068, "pert_fwd": 2.0132, "pert_rev": 1.7791, "sec_per_step": 3.82}
+{"step": 10525, "samples": 168400, "loss_p": 0.1985, "loss_a": 0.2714, "gate_fwd": 0.1126, "gate_rev": 0.1073, "pert_fwd": 2.1013, "pert_rev": 1.8655, "sec_per_step": 3.82}
+{"step": 10550, "samples": 168800, "loss_p": 0.1773, "loss_a": 0.2707, "gate_fwd": 0.1124, "gate_rev": 0.1093, "pert_fwd": 2.1239, "pert_rev": 2.0222, "sec_per_step": 3.83}
+{"step": 10575, "samples": 169200, "loss_p": 0.2184, "loss_a": 0.2627, "gate_fwd": 0.1137, "gate_rev": 0.1109, "pert_fwd": 2.1343, "pert_rev": 2.0303, "sec_per_step": 3.85}
+{"step": 10600, "samples": 169600, "loss_p": 0.2331, "loss_a": 0.2824, "gate_fwd": 0.1119, "gate_rev": 0.1098, "pert_fwd": 2.0407, "pert_rev": 1.9775, "sec_per_step": 3.85}
+{"step": 10625, "samples": 170000, "loss_p": 0.1573, "loss_a": 0.2726, "gate_fwd": 0.1106, "gate_rev": 0.1102, "pert_fwd": 1.9954, "pert_rev": 2.1136, "sec_per_step": 3.84}
+{"step": 10650, "samples": 170400, "loss_p": 0.1567, "loss_a": 0.2767, "gate_fwd": 0.1117, "gate_rev": 0.1085, "pert_fwd": 2.1091, "pert_rev": 1.9688, "sec_per_step": 3.83}
+{"step": 10675, "samples": 170800, "loss_p": 0.1515, "loss_a": 0.2697, "gate_fwd": 0.1121, "gate_rev": 0.1112, "pert_fwd": 2.0935, "pert_rev": 2.1294, "sec_per_step": 3.83}
+{"step": 10700, "samples": 171200, "loss_p": 0.1694, "loss_a": 0.2752, "gate_fwd": 0.111, "gate_rev": 0.1096, "pert_fwd": 2.0397, "pert_rev": 2.023, "sec_per_step": 3.84}
+{"step": 10725, "samples": 171600, "loss_p": 0.1444, "loss_a": 0.2781, "gate_fwd": 0.1105, "gate_rev": 0.1107, "pert_fwd": 2.014, "pert_rev": 2.0757, "sec_per_step": 3.84}
+{"step": 10750, "samples": 172000, "loss_p": 0.2107, "loss_a": 0.2676, "gate_fwd": 0.1112, "gate_rev": 0.1067, "pert_fwd": 1.9851, "pert_rev": 1.8512, "sec_per_step": 3.84}
+{"step": 10775, "samples": 172400, "loss_p": 0.1217, "loss_a": 0.2773, "gate_fwd": 0.1107, "gate_rev": 0.1081, "pert_fwd": 2.0375, "pert_rev": 1.9824, "sec_per_step": 3.83}
+{"step": 10800, "samples": 172800, "loss_p": 0.1578, "loss_a": 0.272, "gate_fwd": 0.1123, "gate_rev": 0.1074, "pert_fwd": 2.0821, "pert_rev": 1.9035, "sec_per_step": 3.84}
+{"step": 10825, "samples": 173200, "loss_p": 0.1628, "loss_a": 0.2688, "gate_fwd": 0.1121, "gate_rev": 0.1056, "pert_fwd": 2.1051, "pert_rev": 1.798, "sec_per_step": 3.83}
+{"step": 10850, "samples": 173600, "loss_p": 0.1544, "loss_a": 0.276, "gate_fwd": 0.1117, "gate_rev": 0.1075, "pert_fwd": 2.1271, "pert_rev": 1.8566, "sec_per_step": 3.83}
+{"step": 10875, "samples": 174000, "loss_p": 0.1578, "loss_a": 0.2753, "gate_fwd": 0.1107, "gate_rev": 0.108, "pert_fwd": 2.1173, "pert_rev": 1.8256, "sec_per_step": 3.83}
+{"step": 10900, "samples": 174400, "loss_p": 0.1914, "loss_a": 0.2701, "gate_fwd": 0.11, "gate_rev": 0.1072, "pert_fwd": 2.1018, "pert_rev": 1.8145, "sec_per_step": 3.84}
+{"step": 10925, "samples": 174800, "loss_p": 0.1659, "loss_a": 0.2709, "gate_fwd": 0.1102, "gate_rev": 0.1086, "pert_fwd": 2.1261, "pert_rev": 1.9193, "sec_per_step": 3.84}
+{"step": 10950, "samples": 175200, "loss_p": 0.1499, "loss_a": 0.2714, "gate_fwd": 0.1096, "gate_rev": 0.1055, "pert_fwd": 2.1612, "pert_rev": 1.804, "sec_per_step": 3.84}
+{"step": 10975, "samples": 175600, "loss_p": 0.1716, "loss_a": 0.2688, "gate_fwd": 0.1099, "gate_rev": 0.1078, "pert_fwd": 2.1591, "pert_rev": 2.0095, "sec_per_step": 3.84}
+{"step": 11000, "samples": 176000, "loss_p": 0.1695, "loss_a": 0.2761, "gate_fwd": 0.1108, "gate_rev": 0.1062, "pert_fwd": 2.2625, "pert_rev": 1.8262, "sec_per_step": 3.84}
+{"step": 11000, "eval_tool_recall": 1.0, "eval_acc": 0.375}
+{"step": 11000, "sample": {"a": 1777, "b": 107, "answer": "Let me work it out. 1777 * 107 equals 190139.", "aux": "...........................calc(1777*107)=190139;............", "tool_ok": true, "correct": true}}
+{"step": 11000, "sample": {"a": 29896, "b": 786, "answer": "Let me work it out. 29896 * 786 equals 23498656.", "aux": "............................calc(29896*786)=23498256;............", "tool_ok": true, "correct": false}}
+{"step": 11000, "sample": {"a": 1274, "b": 381, "answer": "Let me work it out. 1274 * 381 equals 485394.", "aux": "...........................calc(1274*381)=485394;............", "tool_ok": true, "correct": true}}
+{"step": 11000, "sample": {"a": 4989, "b": 305, "answer": "Let me work it out. 4989 * 305 equals 1521695.", "aux": "...........................calc(4989*305)=1521645;............", "tool_ok": true, "correct": false}}
+{"step": 11000, "sample": {"a": 235, "b": 1989, "answer": "Let me work it out. 235 * 1989 equals 467465.", "aux": "...........................calc(235*1989)=467415;............", "tool_ok": true, "correct": false}}
+{"step": 11000, "sample": {"a": 4855, "b": 333, "answer": "Let me work it out. 4855 * 333 equals 1616715.", "aux": "...........................calc(4855*333)=1616715;............", "tool_ok": true, "correct": true}}
+{"step": 11000, "sample": {"a": 4567, "b": 1160, "answer": "Let me work it out. 4567 * 1160 equals 5297920.", "aux": "............................calc(4567*1160)=5297720;............", "tool_ok": true, "correct": false}}
+{"step": 11000, "sample": {"a": 74850, "b": 187, "answer": "Let me work it out. 74850 * 187 equals 13996450.", "aux": "............................calc(74850*187)=13996950;............", "tool_ok": true, "correct": false}}
+{"step": 11025, "samples": 176400, "loss_p": 0.1558, "loss_a": 0.2715, "gate_fwd": 0.1106, "gate_rev": 0.1056, "pert_fwd": 2.2624, "pert_rev": 1.6925, "sec_per_step": 3.68}
+{"step": 11050, "samples": 176800, "loss_p": 0.133, "loss_a": 0.2787, "gate_fwd": 0.1074, "gate_rev": 0.1091, "pert_fwd": 2.1959, "pert_rev": 1.87, "sec_per_step": 3.84}
+{"step": 11075, "samples": 177200, "loss_p": 0.1509, "loss_a": 0.272, "gate_fwd": 0.1092, "gate_rev": 0.1091, "pert_fwd": 2.2262, "pert_rev": 1.9439, "sec_per_step": 3.8}
+{"step": 11100, "samples": 177600, "loss_p": 0.1508, "loss_a": 0.2657, "gate_fwd": 0.1094, "gate_rev": 0.1075, "pert_fwd": 2.2533, "pert_rev": 1.8124, "sec_per_step": 3.84}
+{"step": 11125, "samples": 178000, "loss_p": 0.1812, "loss_a": 0.2608, "gate_fwd": 0.1112, "gate_rev": 0.1069, "pert_fwd": 2.3085, "pert_rev": 1.8306, "sec_per_step": 3.87}
+{"step": 11150, "samples": 178400, "loss_p": 0.2111, "loss_a": 0.2714, "gate_fwd": 0.1122, "gate_rev": 0.1057, "pert_fwd": 2.4463, "pert_rev": 1.818, "sec_per_step": 3.87}
+{"step": 11175, "samples": 178800, "loss_p": 0.1325, "loss_a": 0.2753, "gate_fwd": 0.1128, "gate_rev": 0.1057, "pert_fwd": 2.5373, "pert_rev": 1.9639, "sec_per_step": 3.83}
+{"step": 11200, "samples": 179200, "loss_p": 0.1574, "loss_a": 0.278, "gate_fwd": 0.1127, "gate_rev": 0.1071, "pert_fwd": 2.5572, "pert_rev": 1.9621, "sec_per_step": 3.86}
+{"step": 11225, "samples": 179600, "loss_p": 0.1821, "loss_a": 0.2701, "gate_fwd": 0.1135, "gate_rev": 0.1029, "pert_fwd": 2.6154, "pert_rev": 1.6082, "sec_per_step": 3.82}
+{"step": 11250, "samples": 180000, "loss_p": 0.1937, "loss_a": 0.2665, "gate_fwd": 0.1133, "gate_rev": 0.1038, "pert_fwd": 2.6037, "pert_rev": 1.7738, "sec_per_step": 3.8}
+{"step": 11275, "samples": 180400, "loss_p": 0.1853, "loss_a": 0.2695, "gate_fwd": 0.1134, "gate_rev": 0.1018, "pert_fwd": 2.6436, "pert_rev": 1.664, "sec_per_step": 3.78}
+{"step": 11300, "samples": 180800, "loss_p": 0.2054, "loss_a": 0.2654, "gate_fwd": 0.1114, "gate_rev": 0.104, "pert_fwd": 2.5425, "pert_rev": 1.7742, "sec_per_step": 3.79}
+{"step": 11325, "samples": 181200, "loss_p": 0.1682, "loss_a": 0.2695, "gate_fwd": 0.1105, "gate_rev": 0.1046, "pert_fwd": 2.5055, "pert_rev": 1.7207, "sec_per_step": 3.79}
+{"step": 11350, "samples": 181600, "loss_p": 0.1763, "loss_a": 0.2692, "gate_fwd": 0.1119, "gate_rev": 0.1043, "pert_fwd": 2.5194, "pert_rev": 1.7583, "sec_per_step": 3.81}
+{"step": 11375, "samples": 182000, "loss_p": 0.1709, "loss_a": 0.2761, "gate_fwd": 0.112, "gate_rev": 0.105, "pert_fwd": 2.6272, "pert_rev": 1.8237, "sec_per_step": 3.82}
+{"step": 11400, "samples": 182400, "loss_p": 0.2072, "loss_a": 0.2591, "gate_fwd": 0.1132, "gate_rev": 0.1048, "pert_fwd": 2.6139, "pert_rev": 1.8084, "sec_per_step": 3.84}
+{"step": 11425, "samples": 182800, "loss_p": 0.1376, "loss_a": 0.2749, "gate_fwd": 0.11, "gate_rev": 0.1028, "pert_fwd": 2.6596, "pert_rev": 1.8826, "sec_per_step": 3.82}
+{"step": 11450, "samples": 183200, "loss_p": 0.1168, "loss_a": 0.279, "gate_fwd": 0.1103, "gate_rev": 0.1027, "pert_fwd": 2.6444, "pert_rev": 1.8607, "sec_per_step": 3.83}
+{"step": 11475, "samples": 183600, "loss_p": 0.1582, "loss_a": 0.2708, "gate_fwd": 0.1113, "gate_rev": 0.105, "pert_fwd": 2.7526, "pert_rev": 1.9461, "sec_per_step": 3.85}
+{"step": 11500, "samples": 184000, "loss_p": 0.1609, "loss_a": 0.2653, "gate_fwd": 0.1115, "gate_rev": 0.1051, "pert_fwd": 2.7397, "pert_rev": 1.9361, "sec_per_step": 3.85}
+{"step": 11525, "samples": 184400, "loss_p": 0.2229, "loss_a": 0.2678, "gate_fwd": 0.1105, "gate_rev": 0.1064, "pert_fwd": 2.7792, "pert_rev": 1.9585, "sec_per_step": 3.87}
+{"step": 11550, "samples": 184800, "loss_p": 0.2254, "loss_a": 0.2676, "gate_fwd": 0.1104, "gate_rev": 0.1028, "pert_fwd": 2.7737, "pert_rev": 1.7109, "sec_per_step": 3.88}
+{"step": 11575, "samples": 185200, "loss_p": 0.1573, "loss_a": 0.2714, "gate_fwd": 0.1117, "gate_rev": 0.106, "pert_fwd": 2.8524, "pert_rev": 1.9706, "sec_per_step": 3.88}
+{"step": 11600, "samples": 185600, "loss_p": 0.1544, "loss_a": 0.2727, "gate_fwd": 0.1117, "gate_rev": 0.106, "pert_fwd": 2.8865, "pert_rev": 1.9591, "sec_per_step": 3.89}
+{"step": 11625, "samples": 186000, "loss_p": 0.1543, "loss_a": 0.2712, "gate_fwd": 0.1115, "gate_rev": 0.107, "pert_fwd": 2.8656, "pert_rev": 2.0071, "sec_per_step": 3.87}
+{"step": 11650, "samples": 186400, "loss_p": 0.1964, "loss_a": 0.2747, "gate_fwd": 0.1111, "gate_rev": 0.1047, "pert_fwd": 2.9128, "pert_rev": 1.7684, "sec_per_step": 3.87}
+{"step": 11675, "samples": 186800, "loss_p": 0.2184, "loss_a": 0.2714, "gate_fwd": 0.1106, "gate_rev": 0.1076, "pert_fwd": 2.8528, "pert_rev": 1.9649, "sec_per_step": 3.88}
+{"step": 11700, "samples": 187200, "loss_p": 0.1639, "loss_a": 0.272, "gate_fwd": 0.1109, "gate_rev": 0.1047, "pert_fwd": 2.9157, "pert_rev": 1.8609, "sec_per_step": 3.88}
+{"step": 11725, "samples": 187600, "loss_p": 0.1621, "loss_a": 0.2663, "gate_fwd": 0.1118, "gate_rev": 0.104, "pert_fwd": 2.9352, "pert_rev": 1.7594, "sec_per_step": 3.89}
+{"step": 11750, "samples": 188000, "loss_p": 0.1957, "loss_a": 0.2695, "gate_fwd": 0.1099, "gate_rev": 0.1034, "pert_fwd": 2.7797, "pert_rev": 1.8554, "sec_per_step": 3.91}
+{"step": 11775, "samples": 188400, "loss_p": 0.1375, "loss_a": 0.2734, "gate_fwd": 0.1112, "gate_rev": 0.107, "pert_fwd": 2.9291, "pert_rev": 2.1415, "sec_per_step": 3.93}
+{"step": 11800, "samples": 188800, "loss_p": 0.2013, "loss_a": 0.2645, "gate_fwd": 0.1121, "gate_rev": 0.1051, "pert_fwd": 2.9694, "pert_rev": 1.9613, "sec_per_step": 3.93}
+{"step": 11825, "samples": 189200, "loss_p": 0.1159, "loss_a": 0.2863, "gate_fwd": 0.1134, "gate_rev": 0.1051, "pert_fwd": 3.1444, "pert_rev": 2.0012, "sec_per_step": 3.91}
+{"step": 11850, "samples": 189600, "loss_p": 0.1719, "loss_a": 0.2649, "gate_fwd": 0.1164, "gate_rev": 0.1045, "pert_fwd": 3.2722, "pert_rev": 1.9802, "sec_per_step": 3.91}
+{"step": 11875, "samples": 190000, "loss_p": 0.2321, "loss_a": 0.2689, "gate_fwd": 0.1131, "gate_rev": 0.1057, "pert_fwd": 3.2673, "pert_rev": 1.9422, "sec_per_step": 3.91}
+{"step": 11900, "samples": 190400, "loss_p": 0.1649, "loss_a": 0.2682, "gate_fwd": 0.1136, "gate_rev": 0.1042, "pert_fwd": 3.4215, "pert_rev": 1.9193, "sec_per_step": 3.91}
+{"step": 11925, "samples": 190800, "loss_p": 0.1502, "loss_a": 0.2754, "gate_fwd": 0.1125, "gate_rev": 0.1064, "pert_fwd": 3.4461, "pert_rev": 2.0227, "sec_per_step": 3.91}
+{"step": 11950, "samples": 191200, "loss_p": 0.1997, "loss_a": 0.2695, "gate_fwd": 0.1119, "gate_rev": 0.1037, "pert_fwd": 3.3554, "pert_rev": 1.8546, "sec_per_step": 3.91}
+{"step": 11975, "samples": 191600, "loss_p": 0.218, "loss_a": 0.2682, "gate_fwd": 0.1124, "gate_rev": 0.1061, "pert_fwd": 3.4051, "pert_rev": 1.9784, "sec_per_step": 3.92}
+{"step": 12000, "samples": 192000, "loss_p": 0.1657, "loss_a": 0.2747, "gate_fwd": 0.1141, "gate_rev": 0.1065, "pert_fwd": 3.6791, "pert_rev": 2.0377, "sec_per_step": 3.92}
+{"step": 12000, "eval_tool_recall": 1.0, "eval_acc": 0.25}
+{"step": 12000, "sample": {"a": 1777, "b": 107, "answer": "Let me work it out. 1777 * 107 equals 190139.", "aux": "...........................calc(1777*107)=190139;............", "tool_ok": true, "correct": true}}
+{"step": 12000, "sample": {"a": 29896, "b": 786, "answer": "Let me work it out. 29896 * 786 equals 23498656.", "aux": "............................calc(29896*786)=23498256;............", "tool_ok": true, "correct": false}}
+{"step": 12000, "sample": {"a": 1274, "b": 381, "answer": "Let me work it out. 1274 * 381 equals 475394.", "aux": "...........................calc(1274*381)=485394;............", "tool_ok": true, "correct": false}}
+{"step": 12000, "sample": {"a": 4989, "b": 305, "answer": "Let me work it out. 4989 * 305 equals 1521695.", "aux": "...........................calc(4989*305)=1521645;............", "tool_ok": true, "correct": false}}
+{"step": 12000, "sample": {"a": 235, "b": 1989, "answer": "Let me work it out. 235 * 1989 equals 467465.", "aux": "...........................calc(235*1989)=467415;............", "tool_ok": true, "correct": false}}
+{"step": 12000, "sample": {"a": 4855, "b": 333, "answer": "Let me work it out. 4855 * 333 equals 1616715.", "aux": "...........................calc(4855*333)=1616715;............", "tool_ok": true, "correct": true}}
+{"step": 12000, "sample": {"a": 4567, "b": 1160, "answer": "Let me work it out. 4567 * 1160 equals 5297520.", "aux": "............................calc(4567*1160)=5297720;............", "tool_ok": true, "correct": false}}
+{"step": 12000, "sample": {"a": 74850, "b": 187, "answer": "Let me work it out. 74850 * 187 equals 13996650.", "aux": "............................calc(74850*187)=13996950;............", "tool_ok": true, "correct": false}}
