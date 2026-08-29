@@ -11,3 +11,10 @@ results/stage2/supervisor.log
 results/stage2d/*.pth
 results/stage2b/*.pt
 results/stage2b/supervisor.log
+results/stage2d/fisher2d_data.npz
+results/stage2d/dpot_ft.pt
+results/stage2d/bridges.pt
+results/stage2d/supervisor.log
+results/stage2d/prepare.log
+results/stage2b_v2/*.pt
+results/stage2b_v2/supervisor.log

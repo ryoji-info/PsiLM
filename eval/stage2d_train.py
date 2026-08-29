@@ -1,0 +1,106 @@
+"""Train the Stage-2d bridges (2D DPOT configuration). Chunked, resumable."""
+
+import argparse
+import json
+import random
+import re
+import sys
+import time
+from pathlib import Path
+
+import torch
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from psilm.physics.dpot_wrapper import DPOTPhysics  # noqa: E402
+from psilm.stage2d.bridges2d import PsiBridges2D  # noqa: E402
+from psilm.stage2d.model2d import PsiLM2D  # noqa: E402
+from psilm.stage2d.qa2d import QA2DBuilder, make_batch  # noqa: E402
+
+MODEL = "Qwen/Qwen2.5-0.5B-Instruct"
+CKPT = Path("results/stage2d/bridges.pt")
+LOG = Path("results/stage2d/train_log.jsonl")
+
+
+def parse_value(text):
+    m = re.findall(r"-?\d+\.\d+", text)
+    return float(m[-1]) if m else None
+
+
+def rollout_eval(psi, builder, items, n=12):
+    correct, errs = 0, []
+    for item in items[:n]:
+        pred = parse_value(psi.generate(builder, item))
+        ok = pred is not None and abs(pred - item["u"]) <= 0.05
+        correct += ok
+        if pred is not None:
+            errs.append(abs(pred - item["u"]))
+    return correct / n, (sum(errs) / len(errs) if errs else None)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--steps", type=int, default=1000)
+    ap.add_argument("--batch", type=int, default=12)
+    ap.add_argument("--lr", type=float, default=3e-4)
+    ap.add_argument("--fresh", action="store_true")
+    ap.add_argument("--device", default="mps")
+    args = ap.parse_args()
+
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    tok = AutoTokenizer.from_pretrained(MODEL)
+    model = AutoModelForCausalLM.from_pretrained(MODEL, dtype=torch.float16).to(args.device).eval()
+    phys = DPOTPhysics(device=args.device)
+    phys.net.load_state_dict(torch.load("results/stage2d/dpot_ft.pt", map_location=args.device))
+    phys.eval()
+    bridges = PsiBridges2D().to(args.device)
+    opt = torch.optim.AdamW(bridges.parameters(), lr=args.lr)
+
+    global_step = 0
+    if CKPT.exists() and not args.fresh:
+        state = torch.load(CKPT, map_location=args.device, weights_only=False)
+        bridges.load_state_dict(state["bridges"])
+        opt.load_state_dict(state["opt"])
+        global_step = state["step"]
+        print(f"resumed at step {global_step}")
+
+    psi = PsiLM2D(model, tok, phys, bridges)
+    builder = QA2DBuilder(tok)
+    train_items = json.loads(Path("data/stage2d_qa_train.json").read_text())
+    val_items = json.loads(Path("data/stage2d_qa_val.json").read_text())
+    print(f"bridges: {bridges.n_params()/1e6:.2f}M | train items: {len(train_items)}")
+
+    t0 = time.time()
+    for i in range(args.steps):
+        rng = random.Random(13_000_000 + global_step)
+        batch = make_batch(builder, rng.sample(train_items, args.batch), args.device)
+        out = psi.train_forward(batch)
+        out["loss"].backward()
+        torch.nn.utils.clip_grad_norm_(bridges.parameters(), 1.0)
+        opt.step()
+        opt.zero_grad()
+        global_step += 1
+        if global_step % 25 == 0:
+            rec = {"step": global_step,
+                   "loss_ans": round(out["loss_ans"].item(), 4),
+                   "loss_reg": round(out["loss_reg"].item(), 5),
+                   "loss_cls": round(out["loss_cls"].item(), 4),
+                   "loss_u": round(out["loss_u"].item(), 5),
+                   "pos_err": round(out["pos_err"].item(), 4),
+                   "gate": round(out["gate"].item(), 4),
+                   "sec_per_step": round((time.time() - t0) / (i + 1), 2)}
+            with LOG.open("a") as f:
+                f.write(json.dumps(rec) + "\n")
+            print(rec, flush=True)
+        if global_step % 200 == 0 and args.device == "mps":
+            torch.mps.empty_cache()
+
+    acc, mae = rollout_eval(psi, builder, val_items)
+    torch.save({"bridges": bridges.state_dict(), "opt": opt.state_dict(),
+                "step": global_step}, CKPT)
+    with LOG.open("a") as f:
+        f.write(json.dumps({"step": global_step, "eval_acc": acc, "eval_mae": mae}) + "\n")
+    print(f"CHUNK DONE step={global_step} acc@0.05={acc:.2f} mae={mae}")
+
+
+if __name__ == "__main__":
+    main()
