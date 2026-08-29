@@ -1,0 +1,265 @@
+{"step": 25, "loss_ans": 0.4184, "loss_param": 0.35206, "loss_x0": 4.6662, "loss_u": 0.14245, "x0_err": 0.3191, "gate": 0.2213, "sec_per_step": 2.26}
+{"step": 50, "loss_ans": 0.3241, "loss_param": 0.35028, "loss_x0": 4.6124, "loss_u": 0.14233, "x0_err": 0.2575, "gate": 0.1988, "sec_per_step": 2.25}
+{"step": 75, "loss_ans": 0.2854, "loss_param": 0.34151, "loss_x0": 4.5719, "loss_u": 0.11714, "x0_err": 0.2594, "gate": 0.188, "sec_per_step": 2.25}
+{"step": 100, "loss_ans": 0.291, "loss_param": 0.33283, "loss_x0": 4.5684, "loss_u": 0.14082, "x0_err": 0.2406, "gate": 0.1942, "sec_per_step": 2.25}
+{"step": 125, "loss_ans": 0.2831, "loss_param": 0.31678, "loss_x0": 4.5458, "loss_u": 0.10072, "x0_err": 0.2436, "gate": 0.1987, "sec_per_step": 2.25}
+{"step": 150, "loss_ans": 0.2821, "loss_param": 0.34069, "loss_x0": 4.647, "loss_u": 0.08197, "x0_err": 0.2493, "gate": 0.1976, "sec_per_step": 2.25}
+{"step": 175, "loss_ans": 0.2874, "loss_param": 0.12601, "loss_x0": 4.6169, "loss_u": 0.13332, "x0_err": 0.2438, "gate": 0.2098, "sec_per_step": 2.24}
+{"step": 200, "loss_ans": 0.2819, "loss_param": 0.05679, "loss_x0": 4.5818, "loss_u": 0.09128, "x0_err": 0.2218, "gate": 0.2019, "sec_per_step": 2.24}
+{"step": 225, "loss_ans": 0.281, "loss_param": 0.03982, "loss_x0": 4.5745, "loss_u": 0.12391, "x0_err": 0.3038, "gate": 0.2044, "sec_per_step": 2.24}
+{"step": 250, "loss_ans": 0.2835, "loss_param": 0.05534, "loss_x0": 4.5737, "loss_u": 0.11895, "x0_err": 0.2407, "gate": 0.2005, "sec_per_step": 2.25}
+{"step": 275, "loss_ans": 0.2868, "loss_param": 0.0251, "loss_x0": 4.6074, "loss_u": 0.09932, "x0_err": 0.236, "gate": 0.2062, "sec_per_step": 2.25}
+{"step": 300, "loss_ans": 0.2863, "loss_param": 0.0463, "loss_x0": 4.5759, "loss_u": 0.0886, "x0_err": 0.3029, "gate": 0.2085, "sec_per_step": 2.25}
+{"step": 325, "loss_ans": 0.2934, "loss_param": 0.03106, "loss_x0": 4.4439, "loss_u": 0.12607, "x0_err": 0.2822, "gate": 0.2178, "sec_per_step": 2.25}
+{"step": 350, "loss_ans": 0.2751, "loss_param": 0.03245, "loss_x0": 4.1623, "loss_u": 0.07798, "x0_err": 0.2054, "gate": 0.2043, "sec_per_step": 2.25}
+{"step": 375, "loss_ans": 0.2755, "loss_param": 0.03667, "loss_x0": 2.6611, "loss_u": 0.13661, "x0_err": 0.209, "gate": 0.2162, "sec_per_step": 2.25}
+{"step": 400, "loss_ans": 0.2755, "loss_param": 0.02502, "loss_x0": 2.3776, "loss_u": 0.10128, "x0_err": 0.1609, "gate": 0.2123, "sec_per_step": 2.25}
+{"step": 425, "loss_ans": 0.2785, "loss_param": 0.02347, "loss_x0": 1.8326, "loss_u": 0.09476, "x0_err": 0.1653, "gate": 0.206, "sec_per_step": 2.25}
+{"step": 450, "loss_ans": 0.2696, "loss_param": 0.02301, "loss_x0": 1.8273, "loss_u": 0.08712, "x0_err": 0.128, "gate": 0.2104, "sec_per_step": 2.25}
+{"step": 475, "loss_ans": 0.2804, "loss_param": 0.03658, "loss_x0": 0.9959, "loss_u": 0.08361, "x0_err": 0.1106, "gate": 0.1987, "sec_per_step": 2.25}
+{"step": 500, "loss_ans": 0.2805, "loss_param": 0.02736, "loss_x0": 0.916, "loss_u": 0.04439, "x0_err": 0.0702, "gate": 0.2169, "sec_per_step": 2.25}
+{"step": 525, "loss_ans": 0.2386, "loss_param": 0.03148, "loss_x0": 0.6842, "loss_u": 0.0222, "x0_err": 0.0583, "gate": 0.2011, "sec_per_step": 2.25}
+{"step": 550, "loss_ans": 0.2489, "loss_param": 0.03797, "loss_x0": 0.5493, "loss_u": 0.01091, "x0_err": 0.0411, "gate": 0.213, "sec_per_step": 2.25}
+{"step": 575, "loss_ans": 0.263, "loss_param": 0.03611, "loss_x0": 0.4594, "loss_u": 0.01731, "x0_err": 0.0315, "gate": 0.1927, "sec_per_step": 2.25}
+{"step": 600, "loss_ans": 0.2255, "loss_param": 0.02516, "loss_x0": 0.4132, "loss_u": 0.00511, "x0_err": 0.0315, "gate": 0.1723, "sec_per_step": 2.25}
+{"step": 625, "loss_ans": 0.2364, "loss_param": 0.0218, "loss_x0": 0.2285, "loss_u": 0.00589, "x0_err": 0.0125, "gate": 0.1874, "sec_per_step": 2.25}
+{"step": 650, "loss_ans": 0.2289, "loss_param": 0.0319, "loss_x0": 0.3383, "loss_u": 0.01116, "x0_err": 0.0165, "gate": 0.1771, "sec_per_step": 2.25}
+{"step": 675, "loss_ans": 0.2303, "loss_param": 0.02816, "loss_x0": 0.1847, "loss_u": 0.00676, "x0_err": 0.0139, "gate": 0.1648, "sec_per_step": 2.25}
+{"step": 700, "loss_ans": 0.2273, "loss_param": 0.03858, "loss_x0": 0.1929, "loss_u": 0.04482, "x0_err": 0.0158, "gate": 0.1735, "sec_per_step": 2.25}
+{"step": 725, "loss_ans": 0.2478, "loss_param": 0.02597, "loss_x0": 0.1908, "loss_u": 0.02468, "x0_err": 0.0071, "gate": 0.1626, "sec_per_step": 2.25}
+{"step": 750, "loss_ans": 0.2672, "loss_param": 0.03646, "loss_x0": 0.1573, "loss_u": 0.08749, "x0_err": 0.0096, "gate": 0.1728, "sec_per_step": 2.25}
+{"step": 775, "loss_ans": 0.2242, "loss_param": 0.02679, "loss_x0": 0.1309, "loss_u": 0.00456, "x0_err": 0.0088, "gate": 0.1609, "sec_per_step": 2.25}
+{"step": 800, "loss_ans": 0.2026, "loss_param": 0.03076, "loss_x0": 0.1353, "loss_u": 0.00338, "x0_err": 0.0073, "gate": 0.1588, "sec_per_step": 2.25}
+{"step": 825, "loss_ans": 0.2745, "loss_param": 0.02643, "loss_x0": 0.108, "loss_u": 0.00962, "x0_err": 0.0089, "gate": 0.161, "sec_per_step": 2.25}
+{"step": 850, "loss_ans": 0.2456, "loss_param": 0.01845, "loss_x0": 0.0802, "loss_u": 0.0119, "x0_err": 0.006, "gate": 0.154, "sec_per_step": 2.25}
+{"step": 875, "loss_ans": 0.2099, "loss_param": 0.02599, "loss_x0": 0.092, "loss_u": 0.00906, "x0_err": 0.0044, "gate": 0.1552, "sec_per_step": 2.25}
+{"step": 900, "loss_ans": 0.207, "loss_param": 0.03042, "loss_x0": 0.0682, "loss_u": 0.00499, "x0_err": 0.0049, "gate": 0.1588, "sec_per_step": 2.25}
+{"step": 925, "loss_ans": 0.2037, "loss_param": 0.01454, "loss_x0": 0.0929, "loss_u": 0.00539, "x0_err": 0.0075, "gate": 0.1564, "sec_per_step": 2.25}
+{"step": 950, "loss_ans": 0.2157, "loss_param": 0.02244, "loss_x0": 0.0764, "loss_u": 0.01221, "x0_err": 0.0032, "gate": 0.1498, "sec_per_step": 2.25}
+{"step": 975, "loss_ans": 0.2018, "loss_param": 0.01464, "loss_x0": 0.0617, "loss_u": 0.00894, "x0_err": 0.0038, "gate": 0.1474, "sec_per_step": 2.25}
+{"step": 1000, "loss_ans": 0.2036, "loss_param": 0.02293, "loss_x0": 0.0583, "loss_u": 0.01143, "x0_err": 0.0036, "gate": 0.1488, "sec_per_step": 2.25}
+{"step": 1000, "eval_acc": 0.5, "eval_mae": 0.05811666666666665}
+{"step": 1000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.86, "u": -0.095}, "out": "u at x = 0.86 equals 0.08.", "ok": false}}
+{"step": 1000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.57, "u": -0.5394}, "out": "u at x = 0.57 equals -0.53.", "ok": true}}
+{"step": 1000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.49, "u": -0.5634}, "out": "u at x = 0.49 equals -0.54.", "ok": true}}
+{"step": 1000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.13, "u": 0.3283}, "out": "u at x = 0.13 equals 0.38.", "ok": false}}
+{"step": 1000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.79, "u": -0.2048}, "out": "u at x = 0.79 equals -0.15.", "ok": false}}
+{"step": 1000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.31, "u": 0.581}, "out": "u at x = 0.31 equals 0.53.", "ok": false}}
+{"step": 1000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.79, "u": -0.2048}, "out": "u at x = 0.79 equals -0.15.", "ok": false}}
+{"step": 1000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.84, "u": -0.1264}, "out": "u at x = 0.84 equals 0.08.", "ok": false}}
+{"step": 1000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.19, "u": 0.2206}, "out": "u at x = 0.19 equals 0.18.", "ok": true}}
+{"step": 1000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.26, "u": 0.297}, "out": "u at x = 0.26 equals 0.29.", "ok": true}}
+{"step": 1000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.57, "u": -0.2894}, "out": "u at x = 0.57 equals -0.28.", "ok": true}}
+{"step": 1000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.7, "u": -0.3461}, "out": "u at x = 0.7 equals -0.36.", "ok": true}}
+{"step": 1025, "loss_ans": 0.1915, "loss_param": 0.02508, "loss_x0": 0.0416, "loss_u": 0.0032, "x0_err": 0.0022, "gate": 0.1468, "sec_per_step": 2.29}
+{"step": 1050, "loss_ans": 0.2002, "loss_param": 0.01785, "loss_x0": 0.03, "loss_u": 0.00623, "x0_err": 0.0025, "gate": 0.1464, "sec_per_step": 2.29}
+{"step": 1075, "loss_ans": 0.199, "loss_param": 0.01033, "loss_x0": 0.0412, "loss_u": 0.00301, "x0_err": 0.0031, "gate": 0.1474, "sec_per_step": 2.28}
+{"step": 1100, "loss_ans": 0.1814, "loss_param": 0.01535, "loss_x0": 0.0348, "loss_u": 0.00194, "x0_err": 0.0029, "gate": 0.1434, "sec_per_step": 2.28}
+{"step": 1125, "loss_ans": 0.182, "loss_param": 0.01701, "loss_x0": 0.059, "loss_u": 0.00182, "x0_err": 0.0018, "gate": 0.151, "sec_per_step": 2.28}
+{"step": 1150, "loss_ans": 0.1934, "loss_param": 0.01377, "loss_x0": 0.0343, "loss_u": 0.00534, "x0_err": 0.0027, "gate": 0.1457, "sec_per_step": 2.28}
+{"step": 1175, "loss_ans": 0.1628, "loss_param": 0.01407, "loss_x0": 0.0287, "loss_u": 0.00111, "x0_err": 0.0025, "gate": 0.147, "sec_per_step": 2.28}
+{"step": 1200, "loss_ans": 0.1677, "loss_param": 0.0116, "loss_x0": 0.0465, "loss_u": 0.00098, "x0_err": 0.0027, "gate": 0.1437, "sec_per_step": 2.28}
+{"step": 1225, "loss_ans": 0.1779, "loss_param": 0.01631, "loss_x0": 0.0468, "loss_u": 0.00323, "x0_err": 0.0027, "gate": 0.145, "sec_per_step": 2.28}
+{"step": 1250, "loss_ans": 0.172, "loss_param": 0.01176, "loss_x0": 0.0304, "loss_u": 0.00206, "x0_err": 0.002, "gate": 0.1493, "sec_per_step": 2.28}
+{"step": 1275, "loss_ans": 0.1587, "loss_param": 0.01141, "loss_x0": 0.0247, "loss_u": 0.001, "x0_err": 0.0018, "gate": 0.1439, "sec_per_step": 2.28}
+{"step": 1300, "loss_ans": 0.1726, "loss_param": 0.00837, "loss_x0": 0.0243, "loss_u": 0.00272, "x0_err": 0.0014, "gate": 0.1427, "sec_per_step": 2.28}
+{"step": 1325, "loss_ans": 0.1687, "loss_param": 0.00857, "loss_x0": 0.0201, "loss_u": 0.00266, "x0_err": 0.0013, "gate": 0.1426, "sec_per_step": 2.28}
+{"step": 1350, "loss_ans": 0.161, "loss_param": 0.00508, "loss_x0": 0.0199, "loss_u": 0.00055, "x0_err": 0.0018, "gate": 0.1398, "sec_per_step": 2.28}
+{"step": 1375, "loss_ans": 0.1456, "loss_param": 0.00526, "loss_x0": 0.0174, "loss_u": 0.00067, "x0_err": 0.0013, "gate": 0.14, "sec_per_step": 2.28}
+{"step": 1400, "loss_ans": 0.1961, "loss_param": 0.01384, "loss_x0": 0.0165, "loss_u": 0.01466, "x0_err": 0.0014, "gate": 0.1392, "sec_per_step": 2.29}
+{"step": 1425, "loss_ans": 0.1373, "loss_param": 0.00459, "loss_x0": 0.0189, "loss_u": 0.0004, "x0_err": 0.0016, "gate": 0.1388, "sec_per_step": 2.35}
+{"step": 1450, "loss_ans": 0.1661, "loss_param": 0.00716, "loss_x0": 0.0177, "loss_u": 0.00056, "x0_err": 0.0011, "gate": 0.1407, "sec_per_step": 2.38}
+{"step": 1475, "loss_ans": 0.1565, "loss_param": 0.00564, "loss_x0": 0.0208, "loss_u": 0.00227, "x0_err": 0.0019, "gate": 0.1407, "sec_per_step": 2.38}
+{"step": 1500, "loss_ans": 0.1449, "loss_param": 0.0068, "loss_x0": 0.0216, "loss_u": 0.00107, "x0_err": 0.0016, "gate": 0.1427, "sec_per_step": 2.38}
+{"step": 1525, "loss_ans": 0.1435, "loss_param": 0.00512, "loss_x0": 0.0206, "loss_u": 0.00297, "x0_err": 0.0012, "gate": 0.14, "sec_per_step": 2.37}
+{"step": 1550, "loss_ans": 0.1551, "loss_param": 0.00499, "loss_x0": 0.0154, "loss_u": 0.00049, "x0_err": 0.0009, "gate": 0.1352, "sec_per_step": 2.37}
+{"step": 1575, "loss_ans": 0.1556, "loss_param": 0.01207, "loss_x0": 0.0242, "loss_u": 0.00868, "x0_err": 0.0014, "gate": 0.1381, "sec_per_step": 2.36}
+{"step": 1600, "loss_ans": 0.1762, "loss_param": 0.00614, "loss_x0": 0.0134, "loss_u": 0.00077, "x0_err": 0.0012, "gate": 0.1374, "sec_per_step": 2.36}
+{"step": 1625, "loss_ans": 0.1709, "loss_param": 0.00747, "loss_x0": 0.0132, "loss_u": 0.00331, "x0_err": 0.0012, "gate": 0.1362, "sec_per_step": 2.36}
+{"step": 1650, "loss_ans": 0.1983, "loss_param": 0.01124, "loss_x0": 0.021, "loss_u": 0.00458, "x0_err": 0.0009, "gate": 0.1368, "sec_per_step": 2.35}
+{"step": 1675, "loss_ans": 0.1663, "loss_param": 0.00617, "loss_x0": 0.0238, "loss_u": 0.00274, "x0_err": 0.0011, "gate": 0.1372, "sec_per_step": 2.35}
+{"step": 1700, "loss_ans": 0.1778, "loss_param": 0.00605, "loss_x0": 0.0169, "loss_u": 0.00405, "x0_err": 0.0011, "gate": 0.137, "sec_per_step": 2.35}
+{"step": 1725, "loss_ans": 0.1546, "loss_param": 0.00429, "loss_x0": 0.0136, "loss_u": 0.00049, "x0_err": 0.0012, "gate": 0.137, "sec_per_step": 2.35}
+{"step": 1750, "loss_ans": 0.1671, "loss_param": 0.00834, "loss_x0": 0.0114, "loss_u": 0.00206, "x0_err": 0.001, "gate": 0.1356, "sec_per_step": 2.34}
+{"step": 1775, "loss_ans": 0.1325, "loss_param": 0.00484, "loss_x0": 0.0099, "loss_u": 0.00037, "x0_err": 0.0008, "gate": 0.138, "sec_per_step": 2.34}
+{"step": 1800, "loss_ans": 0.1495, "loss_param": 0.0036, "loss_x0": 0.0107, "loss_u": 0.00128, "x0_err": 0.0006, "gate": 0.1367, "sec_per_step": 2.34}
+{"step": 1825, "loss_ans": 0.1781, "loss_param": 0.00419, "loss_x0": 0.0118, "loss_u": 0.00016, "x0_err": 0.0009, "gate": 0.138, "sec_per_step": 2.34}
+{"step": 1850, "loss_ans": 0.1354, "loss_param": 0.00453, "loss_x0": 0.0083, "loss_u": 0.00116, "x0_err": 0.0006, "gate": 0.1375, "sec_per_step": 2.34}
+{"step": 1875, "loss_ans": 0.1223, "loss_param": 0.00421, "loss_x0": 0.0093, "loss_u": 0.00023, "x0_err": 0.0006, "gate": 0.1359, "sec_per_step": 2.34}
+{"step": 1900, "loss_ans": 0.1207, "loss_param": 0.00579, "loss_x0": 0.0155, "loss_u": 0.00021, "x0_err": 0.0008, "gate": 0.1365, "sec_per_step": 2.33}
+{"step": 1925, "loss_ans": 0.1313, "loss_param": 0.00532, "loss_x0": 0.0084, "loss_u": 0.00051, "x0_err": 0.0005, "gate": 0.1363, "sec_per_step": 2.33}
+{"step": 1950, "loss_ans": 0.1584, "loss_param": 0.00638, "loss_x0": 0.0121, "loss_u": 0.00088, "x0_err": 0.0014, "gate": 0.1371, "sec_per_step": 2.33}
+{"step": 1975, "loss_ans": 0.1219, "loss_param": 0.00429, "loss_x0": 0.0091, "loss_u": 0.00041, "x0_err": 0.0006, "gate": 0.1374, "sec_per_step": 2.33}
+{"step": 2000, "loss_ans": 0.1288, "loss_param": 0.00372, "loss_x0": 0.0117, "loss_u": 0.00075, "x0_err": 0.001, "gate": 0.1362, "sec_per_step": 2.33}
+{"step": 2000, "eval_acc": 1.0, "eval_mae": 0.015566666666666668}
+{"step": 2000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.86, "u": -0.095}, "out": "u at x = 0.86 equals -0.09.", "ok": true}}
+{"step": 2000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.57, "u": -0.5394}, "out": "u at x = 0.57 equals -0.50.", "ok": true}}
+{"step": 2000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.49, "u": -0.5634}, "out": "u at x = 0.49 equals -0.56.", "ok": true}}
+{"step": 2000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.13, "u": 0.3283}, "out": "u at x = 0.13 equals 0.37.", "ok": true}}
+{"step": 2000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.79, "u": -0.2048}, "out": "u at x = 0.79 equals -0.19.", "ok": true}}
+{"step": 2000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.31, "u": 0.581}, "out": "u at x = 0.31 equals 0.58.", "ok": true}}
+{"step": 2000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.79, "u": -0.2048}, "out": "u at x = 0.79 equals -0.19.", "ok": true}}
+{"step": 2000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.84, "u": -0.1264}, "out": "u at x = 0.84 equals -0.11.", "ok": true}}
+{"step": 2000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.19, "u": 0.2206}, "out": "u at x = 0.19 equals 0.21.", "ok": true}}
+{"step": 2000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.26, "u": 0.297}, "out": "u at x = 0.26 equals 0.33.", "ok": true}}
+{"step": 2000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.57, "u": -0.2894}, "out": "u at x = 0.57 equals -0.29.", "ok": true}}
+{"step": 2000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.7, "u": -0.3461}, "out": "u at x = 0.7 equals -0.34.", "ok": true}}
+{"step": 2025, "loss_ans": 0.1222, "loss_param": 0.00847, "loss_x0": 0.0077, "loss_u": 0.0012, "x0_err": 0.0006, "gate": 0.1359, "sec_per_step": 2.3}
+{"step": 2050, "loss_ans": 0.1391, "loss_param": 0.00547, "loss_x0": 0.0085, "loss_u": 0.00152, "x0_err": 0.0006, "gate": 0.1352, "sec_per_step": 2.29}
+{"step": 2075, "loss_ans": 0.1377, "loss_param": 0.0035, "loss_x0": 0.0119, "loss_u": 0.00054, "x0_err": 0.001, "gate": 0.1347, "sec_per_step": 2.28}
+{"step": 2100, "loss_ans": 0.1453, "loss_param": 0.00563, "loss_x0": 0.0068, "loss_u": 0.00153, "x0_err": 0.0006, "gate": 0.1337, "sec_per_step": 2.28}
+{"step": 2125, "loss_ans": 0.1351, "loss_param": 0.00583, "loss_x0": 0.0065, "loss_u": 0.00101, "x0_err": 0.0004, "gate": 0.1337, "sec_per_step": 2.28}
+{"step": 2150, "loss_ans": 0.1508, "loss_param": 0.00565, "loss_x0": 0.0113, "loss_u": 0.00162, "x0_err": 0.0005, "gate": 0.136, "sec_per_step": 2.28}
+{"step": 2175, "loss_ans": 0.1223, "loss_param": 0.0033, "loss_x0": 0.0129, "loss_u": 0.00018, "x0_err": 0.0009, "gate": 0.1354, "sec_per_step": 2.28}
+{"step": 2200, "loss_ans": 0.1254, "loss_param": 0.00213, "loss_x0": 0.0094, "loss_u": 0.00081, "x0_err": 0.0007, "gate": 0.1339, "sec_per_step": 2.28}
+{"step": 2225, "loss_ans": 0.13, "loss_param": 0.004, "loss_x0": 0.0087, "loss_u": 0.00131, "x0_err": 0.0007, "gate": 0.1352, "sec_per_step": 2.28}
+{"step": 2250, "loss_ans": 0.1331, "loss_param": 0.00565, "loss_x0": 0.0057, "loss_u": 0.00059, "x0_err": 0.0005, "gate": 0.1337, "sec_per_step": 2.28}
+{"step": 2275, "loss_ans": 0.1475, "loss_param": 0.00526, "loss_x0": 0.0074, "loss_u": 0.00082, "x0_err": 0.0007, "gate": 0.1334, "sec_per_step": 2.28}
+{"step": 2300, "loss_ans": 0.1734, "loss_param": 0.00411, "loss_x0": 0.0075, "loss_u": 0.00161, "x0_err": 0.0006, "gate": 0.1343, "sec_per_step": 2.28}
+{"step": 2325, "loss_ans": 0.1459, "loss_param": 0.00658, "loss_x0": 0.0062, "loss_u": 0.00228, "x0_err": 0.0005, "gate": 0.1335, "sec_per_step": 2.28}
+{"step": 2350, "loss_ans": 0.1252, "loss_param": 0.0029, "loss_x0": 0.0064, "loss_u": 0.00039, "x0_err": 0.0005, "gate": 0.1342, "sec_per_step": 2.28}
+{"step": 2375, "loss_ans": 0.1608, "loss_param": 0.00543, "loss_x0": 0.006, "loss_u": 0.00091, "x0_err": 0.0006, "gate": 0.1337, "sec_per_step": 2.28}
+{"step": 2400, "loss_ans": 0.1193, "loss_param": 0.00367, "loss_x0": 0.006, "loss_u": 0.00023, "x0_err": 0.0005, "gate": 0.1335, "sec_per_step": 2.28}
+{"step": 2425, "loss_ans": 0.1146, "loss_param": 0.00339, "loss_x0": 0.0053, "loss_u": 0.00024, "x0_err": 0.0004, "gate": 0.1334, "sec_per_step": 2.28}
+{"step": 2450, "loss_ans": 0.1553, "loss_param": 0.00394, "loss_x0": 0.0056, "loss_u": 0.00243, "x0_err": 0.0005, "gate": 0.1331, "sec_per_step": 2.28}
+{"step": 2475, "loss_ans": 0.1261, "loss_param": 0.00379, "loss_x0": 0.0067, "loss_u": 0.00032, "x0_err": 0.0005, "gate": 0.1347, "sec_per_step": 2.28}
+{"step": 2500, "loss_ans": 0.132, "loss_param": 0.00531, "loss_x0": 0.0048, "loss_u": 0.00245, "x0_err": 0.0004, "gate": 0.1325, "sec_per_step": 2.28}
+{"step": 2525, "loss_ans": 0.1415, "loss_param": 0.00533, "loss_x0": 0.0047, "loss_u": 0.00372, "x0_err": 0.0004, "gate": 0.1314, "sec_per_step": 2.28}
+{"step": 2550, "loss_ans": 0.1657, "loss_param": 0.00387, "loss_x0": 0.0053, "loss_u": 0.00172, "x0_err": 0.0005, "gate": 0.1331, "sec_per_step": 2.28}
+{"step": 2575, "loss_ans": 0.1111, "loss_param": 0.0036, "loss_x0": 0.0045, "loss_u": 0.00053, "x0_err": 0.0004, "gate": 0.1326, "sec_per_step": 2.29}
+{"step": 2600, "loss_ans": 0.1429, "loss_param": 0.00281, "loss_x0": 0.0045, "loss_u": 0.00027, "x0_err": 0.0004, "gate": 0.1325, "sec_per_step": 2.29}
+{"step": 2625, "loss_ans": 0.1542, "loss_param": 0.00558, "loss_x0": 0.0054, "loss_u": 0.00227, "x0_err": 0.0004, "gate": 0.1321, "sec_per_step": 2.29}
+{"step": 2650, "loss_ans": 0.1257, "loss_param": 0.00282, "loss_x0": 0.0059, "loss_u": 0.00046, "x0_err": 0.0005, "gate": 0.132, "sec_per_step": 2.29}
+{"step": 2675, "loss_ans": 0.1173, "loss_param": 0.00279, "loss_x0": 0.0056, "loss_u": 0.00023, "x0_err": 0.0004, "gate": 0.1329, "sec_per_step": 2.29}
+{"step": 2700, "loss_ans": 0.1466, "loss_param": 0.00132, "loss_x0": 0.0044, "loss_u": 0.00025, "x0_err": 0.0003, "gate": 0.1335, "sec_per_step": 2.29}
+{"step": 2725, "loss_ans": 0.1408, "loss_param": 0.00355, "loss_x0": 0.0047, "loss_u": 0.00174, "x0_err": 0.0003, "gate": 0.1341, "sec_per_step": 2.29}
+{"step": 2750, "loss_ans": 0.1233, "loss_param": 0.00371, "loss_x0": 0.0057, "loss_u": 0.00067, "x0_err": 0.0004, "gate": 0.1331, "sec_per_step": 2.29}
+{"step": 2775, "loss_ans": 0.1128, "loss_param": 0.00417, "loss_x0": 0.0052, "loss_u": 0.00028, "x0_err": 0.0005, "gate": 0.1324, "sec_per_step": 2.29}
+{"step": 2800, "loss_ans": 0.1239, "loss_param": 0.00436, "loss_x0": 0.0064, "loss_u": 0.00088, "x0_err": 0.0004, "gate": 0.1313, "sec_per_step": 2.29}
+{"step": 2825, "loss_ans": 0.1094, "loss_param": 0.00231, "loss_x0": 0.0036, "loss_u": 0.00022, "x0_err": 0.0003, "gate": 0.1324, "sec_per_step": 2.29}
+{"step": 2850, "loss_ans": 0.1301, "loss_param": 0.00414, "loss_x0": 0.0051, "loss_u": 0.00075, "x0_err": 0.0003, "gate": 0.1319, "sec_per_step": 2.29}
+{"step": 2875, "loss_ans": 0.1208, "loss_param": 0.00322, "loss_x0": 0.0071, "loss_u": 0.00075, "x0_err": 0.0004, "gate": 0.1326, "sec_per_step": 2.29}
+{"step": 2900, "loss_ans": 0.1148, "loss_param": 0.00287, "loss_x0": 0.0046, "loss_u": 0.00035, "x0_err": 0.0003, "gate": 0.1322, "sec_per_step": 2.29}
+{"step": 2925, "loss_ans": 0.1322, "loss_param": 0.00444, "loss_x0": 0.0037, "loss_u": 0.00101, "x0_err": 0.0003, "gate": 0.1323, "sec_per_step": 2.29}
+{"step": 2950, "loss_ans": 0.1299, "loss_param": 0.0056, "loss_x0": 0.0033, "loss_u": 0.00074, "x0_err": 0.0003, "gate": 0.1322, "sec_per_step": 2.29}
+{"step": 2975, "loss_ans": 0.1512, "loss_param": 0.00325, "loss_x0": 0.0036, "loss_u": 0.00042, "x0_err": 0.0002, "gate": 0.1313, "sec_per_step": 2.29}
+{"step": 3000, "loss_ans": 0.1421, "loss_param": 0.00254, "loss_x0": 0.0034, "loss_u": 0.00231, "x0_err": 0.0002, "gate": 0.1316, "sec_per_step": 2.29}
+{"step": 3000, "eval_acc": 1.0, "eval_mae": 0.012966666666666668}
+{"step": 3000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.86, "u": -0.095}, "out": "u at x = 0.86 equals -0.10.", "ok": true}}
+{"step": 3000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.57, "u": -0.5394}, "out": "u at x = 0.57 equals -0.53.", "ok": true}}
+{"step": 3000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.49, "u": -0.5634}, "out": "u at x = 0.49 equals -0.56.", "ok": true}}
+{"step": 3000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.13, "u": 0.3283}, "out": "u at x = 0.13 equals 0.34.", "ok": true}}
+{"step": 3000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.79, "u": -0.2048}, "out": "u at x = 0.79 equals -0.22.", "ok": true}}
+{"step": 3000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.31, "u": 0.581}, "out": "u at x = 0.31 equals 0.59.", "ok": true}}
+{"step": 3000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.79, "u": -0.2048}, "out": "u at x = 0.79 equals -0.22.", "ok": true}}
+{"step": 3000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.84, "u": -0.1264}, "out": "u at x = 0.84 equals -0.14.", "ok": true}}
+{"step": 3000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.19, "u": 0.2206}, "out": "u at x = 0.19 equals 0.23.", "ok": true}}
+{"step": 3000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.26, "u": 0.297}, "out": "u at x = 0.26 equals 0.29.", "ok": true}}
+{"step": 3000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.57, "u": -0.2894}, "out": "u at x = 0.57 equals -0.33.", "ok": true}}
+{"step": 3000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.7, "u": -0.3461}, "out": "u at x = 0.7 equals -0.33.", "ok": true}}
+{"step": 3025, "loss_ans": 0.1248, "loss_param": 0.00398, "loss_x0": 0.0041, "loss_u": 0.00142, "x0_err": 0.0005, "gate": 0.131, "sec_per_step": 2.29}
+{"step": 3050, "loss_ans": 0.1118, "loss_param": 0.00203, "loss_x0": 0.0048, "loss_u": 0.00053, "x0_err": 0.0003, "gate": 0.1314, "sec_per_step": 2.28}
+{"step": 3075, "loss_ans": 0.1512, "loss_param": 0.00306, "loss_x0": 0.0031, "loss_u": 0.00045, "x0_err": 0.0003, "gate": 0.13, "sec_per_step": 2.28}
+{"step": 3100, "loss_ans": 0.1129, "loss_param": 0.00249, "loss_x0": 0.0033, "loss_u": 0.00032, "x0_err": 0.0003, "gate": 0.1316, "sec_per_step": 2.28}
+{"step": 3125, "loss_ans": 0.1514, "loss_param": 0.00689, "loss_x0": 0.0039, "loss_u": 0.00069, "x0_err": 0.0002, "gate": 0.1299, "sec_per_step": 2.28}
+{"step": 3150, "loss_ans": 0.1266, "loss_param": 0.00256, "loss_x0": 0.0036, "loss_u": 0.00081, "x0_err": 0.0003, "gate": 0.1299, "sec_per_step": 2.28}
+{"step": 3175, "loss_ans": 0.1176, "loss_param": 0.00322, "loss_x0": 0.0034, "loss_u": 0.00026, "x0_err": 0.0004, "gate": 0.1302, "sec_per_step": 2.28}
+{"step": 3200, "loss_ans": 0.1152, "loss_param": 0.00224, "loss_x0": 0.0032, "loss_u": 0.00027, "x0_err": 0.0002, "gate": 0.1312, "sec_per_step": 2.28}
+{"step": 3225, "loss_ans": 0.1249, "loss_param": 0.00331, "loss_x0": 0.0028, "loss_u": 0.00096, "x0_err": 0.0002, "gate": 0.1291, "sec_per_step": 2.28}
+{"step": 3250, "loss_ans": 0.1278, "loss_param": 0.00283, "loss_x0": 0.0041, "loss_u": 0.00036, "x0_err": 0.0003, "gate": 0.1311, "sec_per_step": 2.28}
+{"step": 3275, "loss_ans": 0.1022, "loss_param": 0.00267, "loss_x0": 0.003, "loss_u": 0.00019, "x0_err": 0.0002, "gate": 0.1315, "sec_per_step": 2.28}
+{"step": 3300, "loss_ans": 0.1312, "loss_param": 0.00257, "loss_x0": 0.0027, "loss_u": 0.00077, "x0_err": 0.0002, "gate": 0.1302, "sec_per_step": 2.28}
+{"step": 3325, "loss_ans": 0.114, "loss_param": 0.00336, "loss_x0": 0.0024, "loss_u": 0.00014, "x0_err": 0.0002, "gate": 0.1299, "sec_per_step": 2.29}
+{"step": 3350, "loss_ans": 0.1473, "loss_param": 0.00338, "loss_x0": 0.0045, "loss_u": 0.00039, "x0_err": 0.0003, "gate": 0.1306, "sec_per_step": 2.29}
+{"step": 3375, "loss_ans": 0.1429, "loss_param": 0.00266, "loss_x0": 0.0028, "loss_u": 0.00044, "x0_err": 0.0003, "gate": 0.1301, "sec_per_step": 2.29}
+{"step": 3400, "loss_ans": 0.125, "loss_param": 0.00397, "loss_x0": 0.0026, "loss_u": 0.00041, "x0_err": 0.0002, "gate": 0.13, "sec_per_step": 2.29}
+{"step": 3425, "loss_ans": 0.1127, "loss_param": 0.00206, "loss_x0": 0.0024, "loss_u": 0.00042, "x0_err": 0.0002, "gate": 0.1302, "sec_per_step": 2.29}
+{"step": 3450, "loss_ans": 0.1152, "loss_param": 0.00362, "loss_x0": 0.0038, "loss_u": 0.00041, "x0_err": 0.0002, "gate": 0.13, "sec_per_step": 2.29}
+{"step": 3475, "loss_ans": 0.146, "loss_param": 0.00464, "loss_x0": 0.0042, "loss_u": 0.0012, "x0_err": 0.0005, "gate": 0.1311, "sec_per_step": 2.29}
+{"step": 3500, "loss_ans": 0.1012, "loss_param": 0.00287, "loss_x0": 0.0026, "loss_u": 0.00029, "x0_err": 0.0002, "gate": 0.1303, "sec_per_step": 2.29}
+{"step": 3525, "loss_ans": 0.1301, "loss_param": 0.00191, "loss_x0": 0.0025, "loss_u": 0.00021, "x0_err": 0.0002, "gate": 0.1298, "sec_per_step": 2.29}
+{"step": 3550, "loss_ans": 0.1331, "loss_param": 0.00715, "loss_x0": 0.0026, "loss_u": 0.00084, "x0_err": 0.0002, "gate": 0.1293, "sec_per_step": 2.29}
+{"step": 3575, "loss_ans": 0.1012, "loss_param": 0.00211, "loss_x0": 0.0027, "loss_u": 9e-05, "x0_err": 0.0002, "gate": 0.1293, "sec_per_step": 2.29}
+{"step": 3600, "loss_ans": 0.103, "loss_param": 0.00539, "loss_x0": 0.0036, "loss_u": 0.00039, "x0_err": 0.0003, "gate": 0.1286, "sec_per_step": 2.29}
+{"step": 3625, "loss_ans": 0.1108, "loss_param": 0.00306, "loss_x0": 0.0019, "loss_u": 0.00039, "x0_err": 0.0002, "gate": 0.128, "sec_per_step": 2.29}
+{"step": 3650, "loss_ans": 0.0973, "loss_param": 0.00183, "loss_x0": 0.0023, "loss_u": 0.0001, "x0_err": 0.0002, "gate": 0.1299, "sec_per_step": 2.29}
+{"step": 3675, "loss_ans": 0.1149, "loss_param": 0.00377, "loss_x0": 0.0025, "loss_u": 0.00052, "x0_err": 0.0002, "gate": 0.1294, "sec_per_step": 2.29}
+{"step": 3700, "loss_ans": 0.1106, "loss_param": 0.00439, "loss_x0": 0.0026, "loss_u": 0.00024, "x0_err": 0.0002, "gate": 0.1298, "sec_per_step": 2.29}
+{"step": 3725, "loss_ans": 0.1546, "loss_param": 0.00265, "loss_x0": 0.0025, "loss_u": 0.00055, "x0_err": 0.0002, "gate": 0.1298, "sec_per_step": 2.29}
+{"step": 3750, "loss_ans": 0.1065, "loss_param": 0.00214, "loss_x0": 0.0023, "loss_u": 0.00044, "x0_err": 0.0002, "gate": 0.1298, "sec_per_step": 2.29}
+{"step": 3775, "loss_ans": 0.1124, "loss_param": 0.0026, "loss_x0": 0.0025, "loss_u": 0.00032, "x0_err": 0.0003, "gate": 0.1295, "sec_per_step": 2.29}
+{"step": 3800, "loss_ans": 0.1175, "loss_param": 0.00286, "loss_x0": 0.0025, "loss_u": 0.00087, "x0_err": 0.0002, "gate": 0.1298, "sec_per_step": 2.29}
+{"step": 3825, "loss_ans": 0.1118, "loss_param": 0.00179, "loss_x0": 0.0023, "loss_u": 0.00068, "x0_err": 0.0002, "gate": 0.1294, "sec_per_step": 2.29}
+{"step": 3850, "loss_ans": 0.1066, "loss_param": 0.00347, "loss_x0": 0.0022, "loss_u": 0.0003, "x0_err": 0.0002, "gate": 0.1288, "sec_per_step": 2.29}
+{"step": 3875, "loss_ans": 0.1147, "loss_param": 0.00263, "loss_x0": 0.0023, "loss_u": 0.00028, "x0_err": 0.0001, "gate": 0.1298, "sec_per_step": 2.29}
+{"step": 3900, "loss_ans": 0.1178, "loss_param": 0.00353, "loss_x0": 0.0024, "loss_u": 0.00025, "x0_err": 0.0001, "gate": 0.1293, "sec_per_step": 2.29}
+{"step": 3925, "loss_ans": 0.1006, "loss_param": 0.0039, "loss_x0": 0.0019, "loss_u": 0.00021, "x0_err": 0.0002, "gate": 0.1298, "sec_per_step": 2.29}
+{"step": 3950, "loss_ans": 0.084, "loss_param": 0.00242, "loss_x0": 0.0019, "loss_u": 0.00023, "x0_err": 0.0002, "gate": 0.1286, "sec_per_step": 2.29}
+{"step": 3975, "loss_ans": 0.1076, "loss_param": 0.00223, "loss_x0": 0.002, "loss_u": 0.00032, "x0_err": 0.0002, "gate": 0.1283, "sec_per_step": 2.29}
+{"step": 4000, "loss_ans": 0.1132, "loss_param": 0.00214, "loss_x0": 0.003, "loss_u": 0.0004, "x0_err": 0.0002, "gate": 0.1292, "sec_per_step": 2.29}
+{"step": 4000, "eval_acc": 1.0, "eval_mae": 0.009383333333333327}
+{"step": 4000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.86, "u": -0.095}, "out": "u at x = 0.86 equals -0.10.", "ok": true}}
+{"step": 4000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.57, "u": -0.5394}, "out": "u at x = 0.57 equals -0.53.", "ok": true}}
+{"step": 4000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.49, "u": -0.5634}, "out": "u at x = 0.49 equals -0.56.", "ok": true}}
+{"step": 4000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.13, "u": 0.3283}, "out": "u at x = 0.13 equals 0.34.", "ok": true}}
+{"step": 4000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.79, "u": -0.2048}, "out": "u at x = 0.79 equals -0.21.", "ok": true}}
+{"step": 4000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.31, "u": 0.581}, "out": "u at x = 0.31 equals 0.58.", "ok": true}}
+{"step": 4000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.79, "u": -0.2048}, "out": "u at x = 0.79 equals -0.21.", "ok": true}}
+{"step": 4000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.84, "u": -0.1264}, "out": "u at x = 0.84 equals -0.14.", "ok": true}}
+{"step": 4000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.19, "u": 0.2206}, "out": "u at x = 0.19 equals 0.21.", "ok": true}}
+{"step": 4000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.26, "u": 0.297}, "out": "u at x = 0.26 equals 0.30.", "ok": true}}
+{"step": 4000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.57, "u": -0.2894}, "out": "u at x = 0.57 equals -0.33.", "ok": true}}
+{"step": 4000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.7, "u": -0.3461}, "out": "u at x = 0.7 equals -0.35.", "ok": true}}
+{"step": 4025, "loss_ans": 0.1754, "loss_param": 0.00446, "loss_x0": 0.003, "loss_u": 0.00257, "x0_err": 0.0003, "gate": 0.129, "sec_per_step": 2.28}
+{"step": 4050, "loss_ans": 0.1775, "loss_param": 0.00453, "loss_x0": 0.0024, "loss_u": 0.00428, "x0_err": 0.0002, "gate": 0.1293, "sec_per_step": 2.28}
+{"step": 4075, "loss_ans": 0.1209, "loss_param": 0.00229, "loss_x0": 0.0024, "loss_u": 0.00035, "x0_err": 0.0003, "gate": 0.1278, "sec_per_step": 2.28}
+{"step": 4100, "loss_ans": 0.1304, "loss_param": 0.00288, "loss_x0": 0.0026, "loss_u": 0.0017, "x0_err": 0.0002, "gate": 0.1283, "sec_per_step": 2.28}
+{"step": 4125, "loss_ans": 0.1322, "loss_param": 0.0035, "loss_x0": 0.0017, "loss_u": 0.00089, "x0_err": 0.0001, "gate": 0.1269, "sec_per_step": 2.28}
+{"step": 4150, "loss_ans": 0.1398, "loss_param": 0.00394, "loss_x0": 0.0019, "loss_u": 0.00146, "x0_err": 0.0002, "gate": 0.1284, "sec_per_step": 2.28}
+{"step": 4175, "loss_ans": 0.0953, "loss_param": 0.00247, "loss_x0": 0.0015, "loss_u": 0.00022, "x0_err": 0.0001, "gate": 0.1275, "sec_per_step": 2.28}
+{"step": 4200, "loss_ans": 0.1218, "loss_param": 0.00257, "loss_x0": 0.0024, "loss_u": 0.00173, "x0_err": 0.0002, "gate": 0.1273, "sec_per_step": 2.28}
+{"step": 4225, "loss_ans": 0.1262, "loss_param": 0.00276, "loss_x0": 0.0019, "loss_u": 0.00075, "x0_err": 0.0002, "gate": 0.1268, "sec_per_step": 2.28}
+{"step": 4250, "loss_ans": 0.1173, "loss_param": 0.00358, "loss_x0": 0.0021, "loss_u": 0.00042, "x0_err": 0.0002, "gate": 0.127, "sec_per_step": 2.28}
+{"step": 4275, "loss_ans": 0.1417, "loss_param": 0.00428, "loss_x0": 0.0015, "loss_u": 0.00058, "x0_err": 0.0001, "gate": 0.1269, "sec_per_step": 2.28}
+{"step": 4300, "loss_ans": 0.0889, "loss_param": 0.00228, "loss_x0": 0.0017, "loss_u": 0.00012, "x0_err": 0.0001, "gate": 0.1277, "sec_per_step": 2.28}
+{"step": 4325, "loss_ans": 0.1402, "loss_param": 0.00148, "loss_x0": 0.0023, "loss_u": 0.00067, "x0_err": 0.0003, "gate": 0.1284, "sec_per_step": 2.28}
+{"step": 4350, "loss_ans": 0.109, "loss_param": 0.00159, "loss_x0": 0.0015, "loss_u": 0.00026, "x0_err": 0.0002, "gate": 0.1273, "sec_per_step": 2.28}
+{"step": 4375, "loss_ans": 0.117, "loss_param": 0.00211, "loss_x0": 0.0017, "loss_u": 0.00054, "x0_err": 0.0002, "gate": 0.1276, "sec_per_step": 2.28}
+{"step": 4400, "loss_ans": 0.1297, "loss_param": 0.00291, "loss_x0": 0.0014, "loss_u": 0.00025, "x0_err": 0.0001, "gate": 0.128, "sec_per_step": 2.28}
+{"step": 4425, "loss_ans": 0.1451, "loss_param": 0.00271, "loss_x0": 0.0011, "loss_u": 0.00202, "x0_err": 0.0001, "gate": 0.1279, "sec_per_step": 2.28}
+{"step": 4450, "loss_ans": 0.12, "loss_param": 0.00261, "loss_x0": 0.0016, "loss_u": 0.00076, "x0_err": 0.0001, "gate": 0.1279, "sec_per_step": 2.28}
+{"step": 4475, "loss_ans": 0.1304, "loss_param": 0.00263, "loss_x0": 0.0011, "loss_u": 0.00018, "x0_err": 0.0001, "gate": 0.1285, "sec_per_step": 2.28}
+{"step": 4500, "loss_ans": 0.1149, "loss_param": 0.00242, "loss_x0": 0.0012, "loss_u": 0.00031, "x0_err": 0.0001, "gate": 0.1275, "sec_per_step": 2.28}
+{"step": 4525, "loss_ans": 0.0937, "loss_param": 0.00191, "loss_x0": 0.002, "loss_u": 0.00015, "x0_err": 0.0001, "gate": 0.128, "sec_per_step": 2.28}
+{"step": 4550, "loss_ans": 0.1439, "loss_param": 0.00356, "loss_x0": 0.0016, "loss_u": 0.00085, "x0_err": 0.0001, "gate": 0.1283, "sec_per_step": 2.28}
+{"step": 4575, "loss_ans": 0.1173, "loss_param": 0.00262, "loss_x0": 0.0017, "loss_u": 0.00049, "x0_err": 0.0001, "gate": 0.1281, "sec_per_step": 2.28}
+{"step": 4600, "loss_ans": 0.1121, "loss_param": 0.00234, "loss_x0": 0.0016, "loss_u": 0.00122, "x0_err": 0.0001, "gate": 0.1279, "sec_per_step": 2.28}
+{"step": 4625, "loss_ans": 0.1473, "loss_param": 0.00526, "loss_x0": 0.0026, "loss_u": 0.00213, "x0_err": 0.0001, "gate": 0.1277, "sec_per_step": 2.28}
+{"step": 4650, "loss_ans": 0.13, "loss_param": 0.00301, "loss_x0": 0.0015, "loss_u": 0.00129, "x0_err": 0.0001, "gate": 0.1279, "sec_per_step": 2.28}
+{"step": 4675, "loss_ans": 0.1483, "loss_param": 0.00352, "loss_x0": 0.0014, "loss_u": 0.00035, "x0_err": 0.0001, "gate": 0.1277, "sec_per_step": 2.28}
+{"step": 4700, "loss_ans": 0.1589, "loss_param": 0.00366, "loss_x0": 0.0014, "loss_u": 0.00122, "x0_err": 0.0001, "gate": 0.1277, "sec_per_step": 2.28}
+{"step": 4725, "loss_ans": 0.1152, "loss_param": 0.00265, "loss_x0": 0.001, "loss_u": 0.00053, "x0_err": 0.0001, "gate": 0.1274, "sec_per_step": 2.28}
+{"step": 4750, "loss_ans": 0.1178, "loss_param": 0.00304, "loss_x0": 0.0011, "loss_u": 0.00049, "x0_err": 0.0001, "gate": 0.1271, "sec_per_step": 2.28}
+{"step": 4775, "loss_ans": 0.1033, "loss_param": 0.00238, "loss_x0": 0.0012, "loss_u": 7e-05, "x0_err": 0.0001, "gate": 0.1274, "sec_per_step": 2.28}
+{"step": 4800, "loss_ans": 0.1308, "loss_param": 0.00264, "loss_x0": 0.0009, "loss_u": 0.00063, "x0_err": 0.0001, "gate": 0.1265, "sec_per_step": 2.28}
+{"step": 4825, "loss_ans": 0.1182, "loss_param": 0.00431, "loss_x0": 0.0013, "loss_u": 0.00019, "x0_err": 0.0001, "gate": 0.1274, "sec_per_step": 2.28}
+{"step": 4850, "loss_ans": 0.1123, "loss_param": 0.00303, "loss_x0": 0.001, "loss_u": 0.00021, "x0_err": 0.0001, "gate": 0.1263, "sec_per_step": 2.28}
+{"step": 4875, "loss_ans": 0.1537, "loss_param": 0.00271, "loss_x0": 0.0018, "loss_u": 0.00028, "x0_err": 0.0002, "gate": 0.1273, "sec_per_step": 2.28}
+{"step": 4900, "loss_ans": 0.1043, "loss_param": 0.00216, "loss_x0": 0.0014, "loss_u": 0.00022, "x0_err": 0.0002, "gate": 0.1269, "sec_per_step": 2.28}
+{"step": 4925, "loss_ans": 0.1116, "loss_param": 0.00254, "loss_x0": 0.0017, "loss_u": 0.00066, "x0_err": 0.0002, "gate": 0.1267, "sec_per_step": 2.28}
+{"step": 4950, "loss_ans": 0.1288, "loss_param": 0.00277, "loss_x0": 0.0022, "loss_u": 0.00044, "x0_err": 0.0002, "gate": 0.1272, "sec_per_step": 2.28}
+{"step": 4975, "loss_ans": 0.1131, "loss_param": 0.00143, "loss_x0": 0.0014, "loss_u": 0.00049, "x0_err": 0.0001, "gate": 0.1269, "sec_per_step": 2.28}
+{"step": 5000, "loss_ans": 0.092, "loss_param": 0.00122, "loss_x0": 0.0014, "loss_u": 8e-05, "x0_err": 0.0001, "gate": 0.1277, "sec_per_step": 2.28}
+{"step": 5000, "eval_acc": 1.0, "eval_mae": 0.016283333333333327}
+{"step": 5000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.86, "u": -0.095}, "out": "u at x = 0.86 equals -0.08.", "ok": true}}
+{"step": 5000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.57, "u": -0.5394}, "out": "u at x = 0.57 equals -0.51.", "ok": true}}
+{"step": 5000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.49, "u": -0.5634}, "out": "u at x = 0.49 equals -0.57.", "ok": true}}
+{"step": 5000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.13, "u": 0.3283}, "out": "u at x = 0.13 equals 0.35.", "ok": true}}
+{"step": 5000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.79, "u": -0.2048}, "out": "u at x = 0.79 equals -0.21.", "ok": true}}
+{"step": 5000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.31, "u": 0.581}, "out": "u at x = 0.31 equals 0.59.", "ok": true}}
+{"step": 5000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.79, "u": -0.2048}, "out": "u at x = 0.79 equals -0.21.", "ok": true}}
+{"step": 5000, "sample": {"item": {"a": 1.28, "phi": 0.5, "x0": 0.84, "u": -0.1264}, "out": "u at x = 0.84 equals -0.11.", "ok": true}}
+{"step": 5000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.19, "u": 0.2206}, "out": "u at x = 0.19 equals 0.23.", "ok": true}}
+{"step": 5000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.26, "u": 0.297}, "out": "u at x = 0.26 equals 0.32.", "ok": true}}
+{"step": 5000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.57, "u": -0.2894}, "out": "u at x = 0.57 equals -0.33.", "ok": true}}
+{"step": 5000, "sample": {"item": {"a": 0.6, "phi": 6.24, "x0": 0.7, "u": -0.3461}, "out": "u at x = 0.7 equals -0.36.", "ok": true}}

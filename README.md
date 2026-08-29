@@ -24,7 +24,7 @@ that gap, on consumer hardware first (Apple Silicon, 24 GB unified memory).
 |---|---|---|
 | **0** | Loop-level coupling: LLM extracts parameters → simulator computes → result returns to context (the Mind's Eye pattern, local). Establishes the eval harness and the baseline arms. | **done — first results below** |
 | **1** | Reproduce the Bicameral Model at 0.5B: two frozen Qwen2.5-0.5B twins, trainable gated hidden-state interface, PyTorch-MPS. | **mechanism reproduced — results below** |
-| **2** | Swap the twin for a physics hemisphere (DPOT / FNO / Poseidon): physics→language P-Former first, then bidirectional gated coupling. | planned |
+| **2** | Swap the twin for a physics hemisphere: frozen LLM ⇄ frozen FNO through bidirectional latent bridges. | **works — results below** |
 | **3** | Port the loop to MLX; ship as a Mac app. | planned |
 
 ## Stage 0
@@ -117,6 +117,55 @@ independently in Stage 0.
 
 Reproduce: `python eval/stage1_train.py --steps 1000 --batch 16` (chunked,
 resumable), then `python eval/stage1_eval.py`.
+
+## Stage 2 — PsiLM proper
+
+The configuration the literature survey found unclaimed: a **frozen** LLM
+(Qwen2.5-0.5B-Instruct) and a **frozen** physics model (a 70K-param FNO that
+solves 1D viscous Burgers to 0.28% relative error in one shot) running as one
+system, coupled through 3.5M parameters of trainable latent bridges
+(`psilm/stage2/`) — **no text anywhere at the interface**:
+
+- **forward (language→physics):** attention pooling over the LLM's layer-10
+  prompt states regresses the initial-condition parameters and reads the
+  query position x0 as a 100-way classification (softmax-expectation); a
+  differentiable sinusoid feeds the FNO, so answer-loss gradients flow from
+  the LLM's words back into the physics input.
+- **reverse (physics→language):** K=16 learned queries compress the
+  operator's latent field into soft tokens, plus a position-lookup token — a
+  learnable-sharpness periodic kernel sampling the field at the x0 readout —
+  injected into the primary at layer 15 behind a suppression gate.
+
+Task: field-value QA — "u(x,0) = a·sin(2πx+φ) evolves by Burgers' equation
+(ν=0.02) until t=0.5; what is u at x0?" — with spectral-solver ground truth,
+a question the LLM cannot answer and the operator cannot read. Trained 5,000
+steps × batch 16 (80k samples, ~40 min/1k steps on an M2 24 GB), answer
+cross-entropy plus deep supervision on the parameter readouts and on u(x0)
+at the lookup head.
+
+Held-out results (n=60, tolerance ±0.05 on fields spanning ±0.6):
+
+| arm | acc@0.05 | MAE |
+|---|---:|---:|
+| LLM alone | 5.0% | 0.729 |
+| LLM + answer stated in text (oracle ceiling) | 100% | 0.0028 |
+| **PsiLM (latent coupling)** | **100%** | **0.0138** |
+| degenerate always-0.00 | 1.7% | 0.308 |
+
+**The coupled system matches the oracle-text ceiling in accuracy**, with the
+answer traveling entirely through hidden states: the LLM's question is read
+out of its residual stream, the operator simulates, and the value returns
+through gated cross-attention precisely enough for the frozen LLM to
+verbalize it to ±0.014 on average. Accuracy went 0.08 → 0.50 → 1.00 across
+the first three training chunks once the interface could *point*: the two
+decisive design elements (found by failure analysis, chunk by chunk) were
+reading x0 as a classification rather than a regression, and a position-
+lookup token with direct deep supervision — plain cross-attention over field
+summaries mode-collapsed to per-trajectory constants.
+
+Reproduce: `python eval/stage2_pretrain_fno.py`, then
+`python eval/stage2_train.py --steps 1000 --batch 16 --fresh` (×5), then
+`python eval/stage2_eval.py`.
 
 ## Repository layout
 

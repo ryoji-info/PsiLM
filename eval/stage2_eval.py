@@ -30,7 +30,7 @@ def parse_value(text):
     return float(m[-1]) if m else None
 
 
-def chat_generate(model, tok, device, user, max_new=40):
+def chat_generate(model, tok, device, user, max_new=80):
     messages = [{"role": "system", "content": SYSTEM},
                 {"role": "user", "content": user}]
     out = tok.apply_chat_template(messages, tokenize=True, add_generation_prompt=True)
@@ -74,8 +74,9 @@ def main():
         q = QUESTION.format(a=item["a"], phi=item["phi"], x0=item["x0"])
         true = item["u"]
         preds = {}
-        preds["baseline"] = parse_value(chat_generate(model, tok, args.device, q))
-        oracle_q = q + f"\n\nA trusted solver reports: u({item['x0']}) = {true:.2f}."
+        nudge = "\nReply with only the number."
+        preds["baseline"] = parse_value(chat_generate(model, tok, args.device, q + nudge))
+        oracle_q = (q + f"\n\nA trusted solver reports: u({item['x0']}) = {true:.2f}." + nudge)
         preds["oracle"] = parse_value(chat_generate(model, tok, args.device, oracle_q))
         preds["psilm"] = parse_value(psi.generate(builder, item))
         preds["zero"] = 0.0
