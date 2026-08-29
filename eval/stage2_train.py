@@ -94,6 +94,9 @@ def main():
             rec = {"step": global_step,
                    "loss_ans": round(out["loss_ans"].item(), 4),
                    "loss_param": round(out["loss_param"].item(), 5),
+                   "loss_x0": round(out["loss_x0"].item(), 4),
+                   "loss_u": round(out["loss_u"].item(), 5),
+                   "x0_err": round(out["x0_err"].item(), 4),
                    "gate": round(out["gate"].item(), 4),
                    "sec_per_step": round((time.time() - t0) / (i + 1), 2)}
             with LOG.open("a") as f:

@@ -23,35 +23,42 @@ class PsiLM:
             p.requires_grad_(False)
 
     def _couple(self, stream, prompt_mask):
-        """Run the coupled pass on a StreamState up to the final layers.
+        """Run the coupled pass up to the final layers.
 
-        Returns (params_hat, gate_mean) for metrics/losses.
+        Returns (params_hat, x0_hat, x0_logits, u_hat, gate) for losses.
         """
         stream.run(0, L_FWD)
-        params_hat = self.phi.fwd(stream.hidden, prompt_mask)
+        params_hat, x0_hat, x0_logits = self.phi.fwd(stream.hidden, prompt_mask)
         ic = build_ic(params_hat)
         feats = self.fno.features(ic)                       # (B, N, W) fp32
-        phys_tokens = self.phi.rev(feats)
+        u_field = self.fno.proj(feats).squeeze(-1)          # (B, N)
+        phys_tokens, u_hat = self.phi.rev(feats, u_field, x0_hat)
         stream.run(L_FWD, L_REV)
         stream.hidden, sigma = self.phi.inject(stream.hidden, phys_tokens)
         stream.run(L_REV, N_LAYERS)
-        return params_hat, sigma
+        return params_hat, x0_hat, x0_logits, u_hat, sigma
 
-    def train_forward(self, batch, lam_param=1.0):
+    def train_forward(self, batch, lam_param=1.0, lam_x0=0.3, lam_u=2.0):
         p = StreamState(self.model, batch["p_ids"], batch["p_attn"])
-        params_hat, sigma = self._couple(p, batch["prompt_mask"])
+        params_hat, x0_hat, x0_logits, u_hat, sigma = self._couple(p, batch["prompt_mask"])
         logits = p.finish()
         loss_ans = F.cross_entropy(
             logits[:, :-1].reshape(-1, logits.shape[-1]).float(),
             batch["p_labels"][:, 1:].reshape(-1),
             ignore_index=-100,
         )
-        loss_param = F.mse_loss(params_hat, batch["params"])
+        loss_param = F.mse_loss(params_hat, batch["params"][:, :3])
+        x0_target = (batch["params"][:, 3] * 100).round().long().clamp(0, 99)
+        loss_x0 = F.cross_entropy(x0_logits, x0_target)
+        loss_u = F.mse_loss(u_hat, batch["u_true"])
         mask = batch["p_attn"].bool()
         return {
-            "loss": loss_ans + lam_param * loss_param,
+            "loss": loss_ans + lam_param * loss_param + lam_x0 * loss_x0 + lam_u * loss_u,
             "loss_ans": loss_ans.detach(),
             "loss_param": loss_param.detach(),
+            "loss_x0": loss_x0.detach(),
+            "loss_u": loss_u.detach(),
+            "x0_err": (x0_hat.detach() - batch["params"][:, 3]).abs().mean(),
             "gate": sigma.detach()[mask.unsqueeze(-1).expand_as(sigma)].mean(),
         }
 

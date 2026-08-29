@@ -19,6 +19,8 @@ class ForwardBridge(nn.Module):
     frozen FNO into this bridge.
     """
 
+    N_BINS = 100  # x0 is always two decimals: classify, don't regress
+
     def __init__(self, d_model: int = 896, d_hidden: int = 256):
         super().__init__()
         self.query = nn.Parameter(torch.randn(d_model) / math.sqrt(d_model))
@@ -26,14 +28,28 @@ class ForwardBridge(nn.Module):
         self.mlp = nn.Sequential(
             nn.Linear(d_model, d_hidden), nn.GELU(), nn.Linear(d_hidden, 3)
         )
+        self.x0_query = nn.Parameter(torch.randn(d_model) / math.sqrt(d_model))
+        self.x0_key = nn.Linear(d_model, d_model)
+        self.x0_head = nn.Sequential(
+            nn.Linear(d_model, d_hidden), nn.GELU(), nn.Linear(d_hidden, self.N_BINS)
+        )
+        bins = torch.arange(self.N_BINS, dtype=torch.float32) / self.N_BINS
+        self.register_buffer("bins", bins)
+
+    def _pool(self, h, mask, query, key):
+        scores = (key(h) * query).sum(-1) / math.sqrt(h.shape[-1])
+        scores = scores.masked_fill(~mask, float("-inf"))
+        w = torch.softmax(scores, dim=-1).unsqueeze(-1)
+        return (w * h).sum(dim=1)
 
     def forward(self, hidden, prompt_mask):
         h = hidden.float()
-        scores = (self.key(h) * self.query).sum(-1) / math.sqrt(h.shape[-1])
-        scores = scores.masked_fill(~prompt_mask, float("-inf"))
-        w = torch.softmax(scores, dim=-1).unsqueeze(-1)
-        pooled = (w * h).sum(dim=1)
-        return self.mlp(pooled)                      # (B, 3): a, sin, cos
+        params = self.mlp(self._pool(h, prompt_mask, self.query, self.key))
+        x0_logits = self.x0_head(self._pool(h, prompt_mask, self.x0_query, self.x0_key))
+        # softmax-expectation over bin centers: differentiable and sharp once
+        # the classification is confident
+        x0_hat = torch.softmax(x0_logits, dim=-1) @ self.bins
+        return params, x0_hat, x0_logits             # (B,3), (B,), (B,100)
 
 
 def build_ic(params, n: int = 128):
@@ -58,22 +74,37 @@ class ReverseBridge(nn.Module):
                  d_attn: int = 128, n_pos: int = 8):
         super().__init__()
         self.n_pos = n_pos
-        d_in = fno_width + 2 * n_pos
+        d_in = fno_width + 1 + 2 * n_pos             # +1: the predicted field itself
         self.feat = nn.Linear(d_in, d_attn)
         self.queries = nn.Parameter(torch.randn(k_tokens, d_attn) / math.sqrt(d_attn))
         self.out = nn.Linear(d_attn, d_model)
+        # position lookup: periodic (von Mises) kernel over the grid centered
+        # at the x0 readout, with learnable log-concentration. This token
+        # carries "the field where you asked" — the pointer the plain
+        # cross-attention failed to learn on its own.
+        self.log_kappa = nn.Parameter(torch.tensor(5.0))
+        self.lookup_out = nn.Linear(d_attn, d_model)
+        self.u_head = nn.Linear(d_attn, 1)           # deep supervision: u(x0)
 
-    def forward(self, fno_feats):                    # (B, N, W) fp32
+    def forward(self, fno_feats, u_field, x0_hat):
+        """fno_feats (B,N,W), u_field (B,N), x0_hat (B,) — all fp32."""
         B, N, _ = fno_feats.shape
         x = torch.linspace(0, 1, N + 1, device=fno_feats.device)[:-1]
         ks = torch.arange(1, self.n_pos + 1, device=fno_feats.device, dtype=torch.float32)
         pos = torch.cat([torch.sin(2 * math.pi * ks * x[:, None]),
                          torch.cos(2 * math.pi * ks * x[:, None])], dim=-1)
-        feats = torch.cat([fno_feats, pos.expand(B, -1, -1)], dim=-1)
+        feats = torch.cat([fno_feats, u_field.unsqueeze(-1), pos.expand(B, -1, -1)], dim=-1)
         kv = self.feat(feats)                        # (B, N, d_attn)
         attn = torch.softmax(self.queries @ kv.transpose(1, 2) / math.sqrt(kv.shape[-1]), dim=-1)
-        tokens = attn @ kv                           # (B, K, d_attn)
-        return self.out(tokens)                      # (B, K, d_model)
+        tokens = self.out(attn @ kv)                 # (B, K, d_model)
+        kappa = torch.exp(self.log_kappa)
+        w = torch.softmax(
+            kappa * torch.cos(2 * math.pi * (x[None, :] - x0_hat[:, None])), dim=-1
+        ).unsqueeze(-1)                              # (B, N, 1)
+        pooled = (w * kv).sum(dim=1)                 # (B, d_attn)
+        lookup = self.lookup_out(pooled).unsqueeze(1)
+        u_hat = self.u_head(pooled).squeeze(-1)      # (B,) supervised on u(x0)
+        return torch.cat([lookup, tokens], dim=1), u_hat
 
 
 class GatedCrossAttention(nn.Module):

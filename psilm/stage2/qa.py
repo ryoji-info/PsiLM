@@ -84,7 +84,7 @@ class QABuilder:
             "p_ids": p_prompt + resp_ids,
             "p_labels": [-100] * len(p_prompt) + resp_ids,
             "prompt_len": len(p_prompt),
-            "params": [item["a"], np.sin(item["phi"]), np.cos(item["phi"])],
+            "params": [item["a"], np.sin(item["phi"]), np.cos(item["phi"]), item["x0"]],
             "meta": item,
         }
 
@@ -106,9 +106,10 @@ def make_batch(builder, items, device, pad_multiple=8):
         attn[i, :n] = 1
         pmask[i, :e["prompt_len"]] = True
     params = torch.tensor([e["params"] for e in exs], dtype=torch.float32)
+    u_true = torch.tensor([e["meta"]["u"] for e in exs], dtype=torch.float32)
     return {
         "p_ids": ids.to(device), "p_labels": lab.to(device),
         "p_attn": attn.to(device), "prompt_mask": pmask.to(device),
-        "params": params.to(device),
+        "params": params.to(device), "u_true": u_true.to(device),
         "metas": [e["meta"] for e in exs],
     }
