@@ -1,0 +1,74 @@
+"""PsiLM Stage 2: frozen LLM + frozen FNO + trainable bridges."""
+
+import torch
+import torch.nn.functional as F
+
+from ..bicameral.staged import StreamState
+from .bridges import build_ic
+
+N_LAYERS = 24
+L_FWD = 10    # read language hidden states here
+L_REV = 15    # inject physics tokens here
+
+
+class PsiLM:
+    def __init__(self, model, tokenizer, fno, bridges):
+        self.model = model
+        self.tok = tokenizer
+        self.fno = fno
+        self.phi = bridges
+        for p in self.model.parameters():
+            p.requires_grad_(False)
+        for p in self.fno.parameters():
+            p.requires_grad_(False)
+
+    def _couple(self, stream, prompt_mask):
+        """Run the coupled pass on a StreamState up to the final layers.
+
+        Returns (params_hat, gate_mean) for metrics/losses.
+        """
+        stream.run(0, L_FWD)
+        params_hat = self.phi.fwd(stream.hidden, prompt_mask)
+        ic = build_ic(params_hat)
+        feats = self.fno.features(ic)                       # (B, N, W) fp32
+        phys_tokens = self.phi.rev(feats)
+        stream.run(L_FWD, L_REV)
+        stream.hidden, sigma = self.phi.inject(stream.hidden, phys_tokens)
+        stream.run(L_REV, N_LAYERS)
+        return params_hat, sigma
+
+    def train_forward(self, batch, lam_param=1.0):
+        p = StreamState(self.model, batch["p_ids"], batch["p_attn"])
+        params_hat, sigma = self._couple(p, batch["prompt_mask"])
+        logits = p.finish()
+        loss_ans = F.cross_entropy(
+            logits[:, :-1].reshape(-1, logits.shape[-1]).float(),
+            batch["p_labels"][:, 1:].reshape(-1),
+            ignore_index=-100,
+        )
+        loss_param = F.mse_loss(params_hat, batch["params"])
+        mask = batch["p_attn"].bool()
+        return {
+            "loss": loss_ans + lam_param * loss_param,
+            "loss_ans": loss_ans.detach(),
+            "loss_param": loss_param.detach(),
+            "gate": sigma.detach()[mask.unsqueeze(-1).expand_as(sigma)].mean(),
+        }
+
+    @torch.no_grad()
+    def generate(self, builder, item, max_new=24):
+        device = next(self.model.parameters()).device
+        prompt = builder.prompt_ids(item)
+        ids = list(prompt)
+        eos = self.tok.eos_token_id
+        for _ in range(max_new):
+            t = torch.tensor([ids], device=device)
+            pmask = torch.zeros_like(t, dtype=torch.bool)
+            pmask[:, : len(prompt)] = True
+            s = StreamState(self.model, t)
+            self._couple(s, pmask)
+            nxt = int(s.finish()[:, -1].argmax(-1))
+            ids.append(nxt)
+            if nxt == eos:
+                break
+        return self.tok.decode(ids[len(prompt):], skip_special_tokens=True)
