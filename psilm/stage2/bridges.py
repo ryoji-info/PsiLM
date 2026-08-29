@@ -49,7 +49,60 @@ class ForwardBridge(nn.Module):
         # softmax-expectation over bin centers: differentiable and sharp once
         # the classification is confident
         x0_hat = torch.softmax(x0_logits, dim=-1) @ self.bins
-        return params, x0_hat, x0_logits             # (B,3), (B,), (B,100)
+        return params, x0_hat, x0_logits, None       # (B,3), (B,), (B,100), -
+
+
+class ForwardBridgePerMode(nn.Module):
+    """v2 forward bridge, built from the generalization attribution:
+
+    the classified x0 pointer transferred perfectly to unseen families while
+    the shared-pool amplitude regression did not compose. So: (1) each mode
+    gets its OWN pooling query — two amplitudes never fight over one pooled
+    vector; (2) amplitudes are read as classifications over 0.01-wide bins
+    (they are always two decimals), softmax-expectation keeping them
+    differentiable. Phases remain (sin, cos) regressions per mode.
+    """
+
+    N_BINS_X0 = 100
+    N_BINS_AMP = 121          # 0.00 .. 1.20
+
+    def __init__(self, d_model: int = 896, d_hidden: int = 256, n_modes: int = 2):
+        super().__init__()
+        self.n_modes = n_modes
+        self.key = nn.Linear(d_model, d_model)
+        self.queries = nn.Parameter(torch.randn(n_modes, d_model) / math.sqrt(d_model))
+        self.heads = nn.ModuleList(
+            nn.Sequential(nn.Linear(d_model, d_hidden), nn.GELU(),
+                          nn.Linear(d_hidden, self.N_BINS_AMP + 2))
+            for _ in range(n_modes)
+        )
+        self.x0_query = nn.Parameter(torch.randn(d_model) / math.sqrt(d_model))
+        self.x0_key = nn.Linear(d_model, d_model)
+        self.x0_head = nn.Sequential(
+            nn.Linear(d_model, d_hidden), nn.GELU(), nn.Linear(d_hidden, self.N_BINS_X0)
+        )
+        self.register_buffer("x0_bins", torch.arange(self.N_BINS_X0, dtype=torch.float32) / self.N_BINS_X0)
+        self.register_buffer("amp_bins", torch.arange(self.N_BINS_AMP, dtype=torch.float32) / 100.0)
+
+    def _pool(self, h, mask, query, key_proj):
+        scores = (key_proj(h) * query).sum(-1) / math.sqrt(h.shape[-1])
+        scores = scores.masked_fill(~mask, float("-inf"))
+        return (torch.softmax(scores, dim=-1).unsqueeze(-1) * h).sum(dim=1)
+
+    def forward(self, hidden, prompt_mask):
+        h = hidden.float()
+        parts, amp_logits = [], []
+        for m in range(self.n_modes):
+            pooled = self._pool(h, prompt_mask, self.queries[m], self.key)
+            out = self.heads[m](pooled)
+            logits = out[:, : self.N_BINS_AMP]
+            a = torch.softmax(logits, dim=-1) @ self.amp_bins
+            parts.append(torch.cat([a.unsqueeze(-1), out[:, self.N_BINS_AMP:]], dim=-1))
+            amp_logits.append(logits)
+        params = torch.cat(parts, dim=-1)             # (B, 3*n_modes)
+        x0_logits = self.x0_head(self._pool(h, prompt_mask, self.x0_query, self.x0_key))
+        x0_hat = torch.softmax(x0_logits, dim=-1) @ self.x0_bins
+        return params, x0_hat, x0_logits, torch.stack(amp_logits, dim=1)
 
 
 def build_ic(params, n: int = 128):
@@ -155,9 +208,12 @@ class GatedCrossAttention(nn.Module):
 
 
 class PsiBridges(nn.Module):
-    def __init__(self, n_params: int = 3, **kw):
+    def __init__(self, n_params: int = 3, fwd_kind: str = "pooled", **kw):
         super().__init__()
-        self.fwd = ForwardBridge(n_params=n_params)
+        if fwd_kind == "per_mode":
+            self.fwd = ForwardBridgePerMode(n_modes=n_params // 3)
+        else:
+            self.fwd = ForwardBridge(n_params=n_params)
         self.rev = ReverseBridge(**kw)
         self.inject = GatedCrossAttention()
 

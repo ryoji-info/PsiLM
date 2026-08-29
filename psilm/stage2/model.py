@@ -29,7 +29,7 @@ class PsiLM:
         Returns (params_hat, x0_hat, x0_logits, u_hat, gate) for losses.
         """
         stream.run(0, L_FWD)
-        params_hat, x0_hat, x0_logits = self.phi.fwd(stream.hidden, prompt_mask)
+        params_hat, x0_hat, x0_logits, amp_logits = self.phi.fwd(stream.hidden, prompt_mask)
         ic = self.ic_fn(params_hat)
         feats = self.fno.features(ic)                       # (B, N, W) fp32
         u_field = self.fno.proj(feats).squeeze(-1)          # (B, N)
@@ -37,11 +37,12 @@ class PsiLM:
         stream.run(L_FWD, L_REV)
         stream.hidden, sigma = self.phi.inject(stream.hidden, phys_tokens)
         stream.run(L_REV, N_LAYERS)
-        return params_hat, x0_hat, x0_logits, u_hat, sigma
+        return params_hat, x0_hat, x0_logits, amp_logits, u_hat, sigma
 
     def train_forward(self, batch, lam_param=1.0, lam_x0=0.3, lam_u=2.0):
         p = StreamState(self.model, batch["p_ids"], batch["p_attn"])
-        params_hat, x0_hat, x0_logits, u_hat, sigma = self._couple(p, batch["prompt_mask"])
+        params_hat, x0_hat, x0_logits, amp_logits, u_hat, sigma = self._couple(
+            p, batch["prompt_mask"])
         logits = p.finish()
         loss_ans = F.cross_entropy(
             logits[:, :-1].reshape(-1, logits.shape[-1]).float(),
@@ -49,7 +50,20 @@ class PsiLM:
             ignore_index=-100,
         )
         mask_p = batch["param_mask"]
-        loss_param = (mask_p * (params_hat - batch["params"]) ** 2).sum() / mask_p.sum()
+        if amp_logits is not None:
+            # per-mode binned amplitudes: CE on bins, masked MSE on phases
+            n_modes = amp_logits.shape[1]
+            loss_amp = F.cross_entropy(
+                amp_logits.reshape(-1, amp_logits.shape[-1]),
+                batch["amp_bins"].reshape(-1),
+            )
+            sc_idx = [i for m in range(n_modes) for i in (3 * m + 1, 3 * m + 2)]
+            sc_mask = mask_p[:, sc_idx]
+            loss_sc = (sc_mask * (params_hat[:, sc_idx] - batch["params"][:, sc_idx]) ** 2
+                       ).sum() / sc_mask.sum().clamp(min=1)
+            loss_param = loss_amp + loss_sc
+        else:
+            loss_param = (mask_p * (params_hat - batch["params"]) ** 2).sum() / mask_p.sum()
         x0_target = (batch["x0"] * 100).round().long().clamp(0, 99)
         loss_x0 = F.cross_entropy(x0_logits, x0_target)
         loss_u = F.mse_loss(u_hat, batch["u_true"])

@@ -141,6 +141,9 @@ def make_batch(builder, items, device, pad_multiple=8):
         "params": torch.tensor([e["params"] for e in exs], dtype=torch.float32).to(device),
         "param_mask": torch.tensor([e["param_mask"] for e in exs], dtype=torch.float32).to(device),
         "x0": torch.tensor([e["x0"] for e in exs], dtype=torch.float32).to(device),
+        "amp_bins": torch.tensor(
+            [[round(e["params"][3 * m] * 100) for m in range(N_MODES)] for e in exs],
+            dtype=torch.long).to(device),
         "u_true": torch.tensor([e["meta"]["u"] for e in exs], dtype=torch.float32).to(device),
         "metas": [e["meta"] for e in exs],
     }

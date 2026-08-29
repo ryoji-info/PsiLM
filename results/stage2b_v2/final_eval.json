@@ -1,0 +1,61 @@
+{
+ "n_per_family": 48,
+ "step": 4000,
+ "tolerance": 0.05,
+ "families": {
+  "val_iid": {
+   "baseline": {
+    "acc": 0.0417,
+    "mae": 0.6946
+   },
+   "oracle": {
+    "acc": 1.0,
+    "mae": 0.0027
+   },
+   "psilm": {
+    "acc": 0.9375,
+    "mae": 0.0226
+   },
+   "zero": {
+    "acc": 0.2708,
+    "mae": 0.1126
+   }
+  },
+  "val_combo": {
+   "baseline": {
+    "acc": 0.0,
+    "mae": 0.6728
+   },
+   "oracle": {
+    "acc": 1.0,
+    "mae": 0.0029
+   },
+   "psilm": {
+    "acc": 0.2083,
+    "mae": 0.21
+   },
+   "zero": {
+    "acc": 0.1667,
+    "mae": 0.1863
+   }
+  },
+  "val_amp": {
+   "baseline": {
+    "acc": 0.0625,
+    "mae": 0.6749
+   },
+   "oracle": {
+    "acc": 1.0,
+    "mae": 0.0023
+   },
+   "psilm": {
+    "acc": 0.1875,
+    "mae": 0.2101
+   },
+   "zero": {
+    "acc": 0.0417,
+    "mae": 0.2992
+   }
+  }
+ }
+}

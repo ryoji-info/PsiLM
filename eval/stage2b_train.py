@@ -17,7 +17,7 @@ from psilm.stage2.model import PsiLM  # noqa: E402
 from psilm.stage2.qa2 import QA2Builder, make_batch  # noqa: E402
 
 MODEL = "Qwen/Qwen2.5-0.5B-Instruct"
-CKPT = Path("results/stage2b/bridges.pt")
+CKPT = Path("results/stage2b/bridges.pt")      # overridden by --v2
 LOG = Path("results/stage2b/train_log.jsonl")
 
 
@@ -45,7 +45,13 @@ def main():
     ap.add_argument("--lr", type=float, default=3e-4)
     ap.add_argument("--fresh", action="store_true")
     ap.add_argument("--device", default="mps")
+    ap.add_argument("--v2", action="store_true", help="per-mode binned forward bridge")
     args = ap.parse_args()
+
+    global CKPT, LOG
+    if args.v2:
+        CKPT = Path("results/stage2b_v2/bridges.pt")
+        LOG = Path("results/stage2b_v2/train_log.jsonl")
 
     from transformers import AutoModelForCausalLM, AutoTokenizer
     tok = AutoTokenizer.from_pretrained(MODEL)
@@ -53,7 +59,7 @@ def main():
     fno = FNO1d().to(args.device)
     fno.load_state_dict(torch.load("results/stage2b/fno.pt", map_location=args.device))
     fno.eval()
-    bridges = PsiBridges(n_params=6).to(args.device)
+    bridges = PsiBridges(n_params=6, fwd_kind="per_mode" if args.v2 else "pooled").to(args.device)
     opt = torch.optim.AdamW(bridges.parameters(), lr=args.lr)
 
     global_step = 0

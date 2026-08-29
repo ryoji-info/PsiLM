@@ -167,6 +167,43 @@ Reproduce: `python eval/stage2_pretrain_fno.py`, then
 `python eval/stage2_train.py --steps 1000 --batch 16 --fresh` (×5), then
 `python eval/stage2_eval.py`.
 
+## Stage 2b/2c — harder ICs and generalization
+
+Multi-mode extension (`psilm/stage2/qa2.py`): u(x,0) is a sum of sinusoids,
+and the bridges train **only on single-mode questions** — {1} with
+a∼U(0.3,0.7) or {2} with a∼U(0.5,1.0) (mode-2 amplitudes boosted to offset
+its faster viscous decay; mode 3 was dropped after a calibration pass showed
+its e^−3.55 decay degenerates 40% of its questions to "about zero"). The FNO
+is trained on a deliberately broader distribution than every QA family, so
+family-transfer failures are attributable to the interface.
+
+In-distribution the multi-mode system converges as before (rollouts 1.00,
+MAE 0.007 by 96k samples). The generalization families (n=48 each, tol
+±0.05, zero-strategy shown for calibration):
+
+| family | LLM alone | PsiLM | always-0.00 |
+|---|---:|---:|---:|
+| in-distribution | 4.2% | **97.9%** (MAE 0.009) | 27.1% |
+| unseen combination {1,2} | 0.0% | **31.3%** (MAE 0.128) | 16.7% |
+| amplitude extrapolation | 6.3% | **50.0%** (MAE 0.096) | 4.2% |
+
+**Attribution** (teacher-forced readout error per family): the x0 pointer
+generalizes perfectly — error 1e-4 on *all* families — while the amplitude
+readout is the sole bottleneck (0.043 in-distribution → 0.355 on the unseen
+combination, 0.206 under extrapolation). The language→physics readout, not
+the physics→language readback, is where generalization dies.
+
+**A tested and refuted hypothesis**, kept for the record: since the
+*classified* x0 transferred and the *regressed* amplitudes did not, we built
+a v2 interface (per-mode pooling queries, amplitudes as 121-bin
+classifications). It was worse everywhere — extrapolation 50%→19%,
+composition 31%→21%. The correct law is **support coverage**: x0
+generalized because all 100 of its bins occur in training; amplitude bins
+outside the trained range never receive gradient and cannot extrapolate,
+where regression at least drifts. The trained interface generalizes like a
+learned model, not like a program — coverage at training time, not readout
+cleverness, is what buys transfer.
+
 ## Repository layout
 
 ```
