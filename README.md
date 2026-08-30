@@ -213,6 +213,35 @@ where regression at least drifts. The trained interface generalizes like a
 learned model, not like a program — coverage at training time, not readout
 cleverness, is what buys transfer.
 
+## Loop coupling: more paths, trained end-to-end
+
+`psilm/stage2/loop_model.py` implements two read→rollout→inject passes
+ordered so the second readout sees the stream *after* the first injection
+and can revise it (shared bridges, all passes supervised). At matched
+96k-sample budget on the multi-mode task, against the single-pass baseline
+(n=48/family, PsiLM arm):
+
+| family | 1-pass | loop-trained | inference-only loop |
+|---|---:|---:|---:|
+| in-distribution | 97.9% / 0.009 | **100%** / 0.007 | 8.3% / 0.323 |
+| unseen combination | 31.2% / 0.128 | **47.9%** / 0.089 | 0.0% / 0.868 |
+| amplitude extrapolation | 50.0% / 0.096 | 47.9% / **0.055** | 6.2% / 0.416 |
+
+**The revision loop buys compositional generalization**: +16.7 points on the
+held-out combination family, with MAE improved on every family. Amplitude
+extrapolation stays flat in accuracy (support coverage still rules) though
+its error magnitude halves. The third arm — single-pass-trained bridges
+simply *run* as two passes at inference — collapses: turning the loop on at
+run time without training it is catastrophic, not neutral (with the caveat
+that this arm shifts both the coupling depths and the untrained revision
+behavior at once, so it bounds the zero-shot transplant, not the revision
+effect in isolation). Loops must be trained in; they then pay off exactly
+where single-pass interfaces were weakest.
+
+Reproduce: `python eval/stage2b_train.py --steps 1000 --batch 16 --fresh
+--loop 2` (×6), then `python eval/stage2b_eval.py --n 48 --loop 2 --ckpt
+results/stage2b_loop2/bridges.pt`.
+
 ## Stage 2d — 2D physics with a pretrained foundation model
 
 The physics hemisphere is no longer our own FNO: it is **DPOT-Tiny**
