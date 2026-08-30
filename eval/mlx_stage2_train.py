@@ -20,6 +20,7 @@ import mlx.core as mx  # noqa: E402
 import mlx.nn as nn  # noqa: E402
 from mlx.utils import tree_flatten  # noqa: E402
 import mlx.optimizers as optim  # noqa: E402
+from mlx.optimizers import clip_grad_norm  # noqa: E402
 import mlx_lm  # noqa: E402
 from transformers import AutoTokenizer  # noqa: E402
 
@@ -108,6 +109,7 @@ def main():
         rng = random.Random(21_000_000 + global_step)
         batch = to_mlx_batch(torch_make_batch(builder, rng.sample(train_items, args.batch), "cpu"))
         (loss, aux), grads = loss_and_grad(bridges, batch)
+        grads, _ = clip_grad_norm(grads, 1.0)
         opt.update(bridges, grads)
         mx.eval(bridges.parameters(), opt.state)
         global_step += 1
