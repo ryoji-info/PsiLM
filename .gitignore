@@ -18,3 +18,11 @@ results/stage2d/supervisor.log
 results/stage2d/prepare.log
 results/stage2b_v2/*.pt
 results/stage2b_v2/supervisor.log
+paper/build.log
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.log
+paper/*.out
