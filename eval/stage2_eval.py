@@ -21,7 +21,7 @@ from psilm.stage2.bridges import PsiBridges  # noqa: E402
 from psilm.stage2.model import PsiLM  # noqa: E402
 from psilm.stage2.qa import QUESTION, SYSTEM, QABuilder  # noqa: E402
 
-MODEL = "Qwen/Qwen2.5-0.5B-Instruct"
+DEFAULT_MODEL = "Qwen/Qwen2.5-0.5B-Instruct"
 TOL = 0.05
 
 
@@ -53,15 +53,17 @@ def main():
     ap.add_argument("--n", type=int, default=60)
     ap.add_argument("--ckpt", default="results/stage2/bridges.pt")
     ap.add_argument("--device", default="mps")
+    ap.add_argument("--model", default=DEFAULT_MODEL)
+    ap.add_argument("--tag", default="")
     args = ap.parse_args()
 
     from transformers import AutoModelForCausalLM, AutoTokenizer
-    tok = AutoTokenizer.from_pretrained(MODEL)
-    model = AutoModelForCausalLM.from_pretrained(MODEL, dtype=torch.float16).to(args.device).eval()
+    tok = AutoTokenizer.from_pretrained(args.model)
+    model = AutoModelForCausalLM.from_pretrained(args.model, dtype=torch.float16).to(args.device).eval()
     fno = FNO1d().to(args.device)
     fno.load_state_dict(torch.load("results/stage2/fno.pt", map_location=args.device))
     fno.eval()
-    bridges = PsiBridges().to(args.device)
+    bridges = PsiBridges(d_model=model.config.hidden_size).to(args.device)
     state = torch.load(args.ckpt, map_location=args.device, weights_only=False)
     bridges.load_state_dict(state["bridges"])
     psi = PsiLM(model, tok, fno, bridges)
@@ -96,7 +98,7 @@ def main():
     for k, (c, errs) in agg.items():
         summary[k] = {"acc": round(c / n, 4),
                       "mae": round(sum(errs) / len(errs), 4) if errs else None}
-    Path("results/stage2/final_eval.json").write_text(
+    Path(f"results/stage2{args.tag}/final_eval.json").write_text(
         json.dumps({"summary": summary, "rows": rows}, indent=1))
     print(json.dumps(summary, indent=2))
 

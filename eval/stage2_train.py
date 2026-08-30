@@ -21,7 +21,7 @@ from psilm.stage2.bridges import PsiBridges  # noqa: E402
 from psilm.stage2.model import PsiLM  # noqa: E402
 from psilm.stage2.qa import QABuilder, make_batch  # noqa: E402
 
-MODEL = "Qwen/Qwen2.5-0.5B-Instruct"
+DEFAULT_MODEL = "Qwen/Qwen2.5-0.5B-Instruct"
 CKPT = Path("results/stage2/bridges.pt")
 LOG = Path("results/stage2/train_log.jsonl")
 
@@ -54,15 +54,22 @@ def main():
     ap.add_argument("--lr", type=float, default=3e-4)
     ap.add_argument("--fresh", action="store_true")
     ap.add_argument("--device", default="mps")
+    ap.add_argument("--model", default=DEFAULT_MODEL)
+    ap.add_argument("--tag", default="", help="suffix for results dir, e.g. _qwen3-1.7b")
     args = ap.parse_args()
 
+    global CKPT, LOG
+    if args.tag:
+        CKPT = Path(f"results/stage2{args.tag}/bridges.pt")
+        LOG = Path(f"results/stage2{args.tag}/train_log.jsonl")
+
     from transformers import AutoModelForCausalLM, AutoTokenizer
-    tok = AutoTokenizer.from_pretrained(MODEL)
-    model = AutoModelForCausalLM.from_pretrained(MODEL, dtype=torch.float16).to(args.device).eval()
+    tok = AutoTokenizer.from_pretrained(args.model)
+    model = AutoModelForCausalLM.from_pretrained(args.model, dtype=torch.float16).to(args.device).eval()
     fno = FNO1d().to(args.device)
     fno.load_state_dict(torch.load("results/stage2/fno.pt", map_location=args.device))
     fno.eval()
-    bridges = PsiBridges().to(args.device)
+    bridges = PsiBridges(d_model=model.config.hidden_size).to(args.device)
     opt = torch.optim.AdamW(bridges.parameters(), lr=args.lr)
 
     global_step = 0

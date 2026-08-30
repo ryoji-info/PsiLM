@@ -208,14 +208,15 @@ class GatedCrossAttention(nn.Module):
 
 
 class PsiBridges(nn.Module):
-    def __init__(self, n_params: int = 3, fwd_kind: str = "pooled", **kw):
+    def __init__(self, n_params: int = 3, fwd_kind: str = "pooled",
+                 d_model: int = 896, **kw):
         super().__init__()
         if fwd_kind == "per_mode":
-            self.fwd = ForwardBridgePerMode(n_modes=n_params // 3)
+            self.fwd = ForwardBridgePerMode(n_modes=n_params // 3, d_model=d_model)
         else:
-            self.fwd = ForwardBridge(n_params=n_params)
-        self.rev = ReverseBridge(**kw)
-        self.inject = GatedCrossAttention()
+            self.fwd = ForwardBridge(n_params=n_params, d_model=d_model)
+        self.rev = ReverseBridge(d_model=d_model, **kw)
+        self.inject = GatedCrossAttention(d_model=d_model)
 
     def n_params(self):
         return sum(p.numel() for p in self.parameters())

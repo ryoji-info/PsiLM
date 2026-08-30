@@ -68,7 +68,8 @@ class QABuilder:
             {"role": "user", "content": QUESTION.format(
                 a=item["a"], phi=item["phi"], x0=item["x0"])},
         ]
-        out = self.tok.apply_chat_template(messages, tokenize=True, add_generation_prompt=True)
+        out = self.tok.apply_chat_template(messages, tokenize=True, add_generation_prompt=True,
+                                           enable_thinking=False)
         if not isinstance(out, list):
             out = out["input_ids"]
         if out and isinstance(out[0], list):

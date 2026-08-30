@@ -6,18 +6,20 @@ import torch.nn.functional as F
 from ..bicameral.staged import StreamState
 from .bridges import build_ic
 
-N_LAYERS = 24
-L_FWD = 10    # read language hidden states here
-L_REV = 15    # inject physics tokens here
-
-
 class PsiLM:
-    def __init__(self, model, tokenizer, fno, bridges, ic_fn=build_ic):
+    def __init__(self, model, tokenizer, fno, bridges, ic_fn=build_ic,
+                 l_fwd=None, l_rev=None):
         self.model = model
         self.tok = tokenizer
         self.fno = fno
         self.phi = bridges
         self.ic_fn = ic_fn
+        # coupling depths default to the Stage-2 fractions of a 24-layer
+        # model (10/24 read, 15/24 inject), scaled to this backbone
+        n = model.config.num_hidden_layers
+        self.n_layers = n
+        self.l_fwd = l_fwd if l_fwd is not None else round(n * 10 / 24)
+        self.l_rev = l_rev if l_rev is not None else round(n * 15 / 24)
         for p in self.model.parameters():
             p.requires_grad_(False)
         for p in self.fno.parameters():
@@ -28,15 +30,15 @@ class PsiLM:
 
         Returns (params_hat, x0_hat, x0_logits, u_hat, gate) for losses.
         """
-        stream.run(0, L_FWD)
+        stream.run(0, self.l_fwd)
         params_hat, x0_hat, x0_logits, amp_logits = self.phi.fwd(stream.hidden, prompt_mask)
         ic = self.ic_fn(params_hat)
         feats = self.fno.features(ic)                       # (B, N, W) fp32
         u_field = self.fno.proj(feats).squeeze(-1)          # (B, N)
         phys_tokens, u_hat = self.phi.rev(feats, u_field, x0_hat)
-        stream.run(L_FWD, L_REV)
+        stream.run(self.l_fwd, self.l_rev)
         stream.hidden, sigma = self.phi.inject(stream.hidden, phys_tokens)
-        stream.run(L_REV, N_LAYERS)
+        stream.run(self.l_rev, self.n_layers)
         return params_hat, x0_hat, x0_logits, amp_logits, u_hat, sigma
 
     def train_forward(self, batch, lam_param=1.0, lam_x0=0.3, lam_u=2.0):
