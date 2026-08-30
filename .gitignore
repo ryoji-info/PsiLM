@@ -29,3 +29,8 @@ paper/*.out
 results/stage2_qwen3-1.7b/*.pt
 results/stage2_qwen3-1.7b/supervisor.log
 results/stage2_qwen3-1.7b/prepare.log
+results/stage2b_loop2/*.pt
+results/stage2b_loop2/supervisor.log
+results/stage2_mlx0.5b4/*.npz
+results/stage2_mlx0.5b4/*.meta
+results/stage2_mlx0.5b4/supervisor.log
