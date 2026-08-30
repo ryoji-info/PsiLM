@@ -1,0 +1,15 @@
+{
+ "checkpoint_step": 12000,
+ "seed": 777,
+ "n_examples": 24,
+ "band": [
+  1000,
+  100000
+ ],
+ "aux_wait_token_acc": 0.9764,
+ "aux_call_token_acc": 1.0,
+ "primary_result_digit_acc": 0.6298,
+ "n_wait": 1017,
+ "n_call": 315,
+ "n_digit": 208
+}

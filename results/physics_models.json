@@ -1,0 +1,21 @@
+{
+  "note": "Validation metrics of the frozen physics hemispheres, recorded from their training runs. Reproduce with the listed commands; seeds are fixed in the scripts.",
+  "stage2_fno": {
+    "model": "FNO1d width=32 modes=16 layers=4 (70K params)",
+    "task": "1D Burgers u0 -> u(0.5), nu=0.02, single-mode ICs",
+    "val_relative_L2": 0.0028,
+    "reproduce": "python eval/stage2_pretrain_fno.py"
+  },
+  "stage2b_fno": {
+    "model": "FNO1d width=32 modes=16 layers=4 (70K params)",
+    "task": "1D Burgers, broad multi-mode ICs (modes 1-4, mixed amplitudes)",
+    "val_relative_L2": 0.0276,
+    "reproduce": "python eval/stage2b_pretrain_fno.py"
+  },
+  "stage2d_dpot": {
+    "model": "DPOT-Tiny (hzk17/DPOT model_Ti.pth, 7.5M params), fine-tuned 1200 steps",
+    "task": "2D Fisher-KPP replicated-IC history -> u(0.4)",
+    "val_relative_L2": 0.0164,
+    "reproduce": "python eval/stage2d_prepare.py"
+  }
+}

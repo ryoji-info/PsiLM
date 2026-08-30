@@ -62,10 +62,10 @@ Apple M2, 24 GB, MLX, greedy decoding, 60 items, seed 0. Chance is ~33%.
 | model | alone | + simulator (tool loop) | Δ | tool-call success |
 |---|---:|---:|---:|---:|
 | Qwen2.5-0.5B-Instruct-4bit | 35.0% | 31.7% | −3.3 | 100% |
-| Qwen2.5-3B-Instruct-4bit | 38.3% | **66.7%** | **+28.4** | 100% |
+| Qwen2.5-3B-Instruct-4bit | 38.3% | **66.7%** | **+28.3** | 100% |
 
 Two findings, both matching the literature. **(1) The capability-gap effect is
-real and local:** at 3B the simulator adds +28.4 points — the same magnitude
+real and local:** at 3B the simulator adds +28.3 points — the same magnitude
 as Mind's Eye's published +27.9 zero-shot average — while at 0.5B the same
 pipeline *hurts* (−3.3): the small model extracts parameters perfectly (100%
 tool success at both sizes) but cannot reliably compare two numbers handed to
@@ -105,8 +105,8 @@ Held-out eval (n=40, operands ∈ [10³, 10⁵], products 7–10 digits, greedy)
 The forward channel is essentially solved: every held-out rollout emits the
 exact `calc(A*B)`. The reverse channel carries the leading 4–6 result digits
 reliably and degrades toward the tail (`77298035 → 77299015`), so exact match
-understates it badly; on shorter (6–7 digit) products it reaches ~38–50%
-exact. Loss plateaued for the last 5k steps, so the remaining fidelity gap is
+understates it badly; it reaches ~25–50%
+exact on the shorter mixed-length products of the per-chunk rollout evaluations. Loss plateaued for the last 5k steps, so the remaining fidelity gap is
 an optimization/capacity question — the paper's arithmetic configuration used
 a 16M interface and its multiplication study ran to 320k samples. Two
 reproduction lessons worth recording: (1) the first auxiliary window token is
@@ -167,6 +167,14 @@ summaries mode-collapsed to per-trajectory constants.
 Reproduce: `python eval/stage2_pretrain_fno.py`, then
 `python eval/stage2_train.py --steps 1000 --batch 16 --fresh` (×5), then
 `python eval/stage2_eval.py`.
+
+Stage 2b/2c: `python eval/stage2b_pretrain_fno.py`, then
+`python eval/stage2b_train.py --steps 1000 --batch 16 --fresh` (×6; add `--v2`
+for the refuted variant), then `python eval/stage2b_eval.py --n 48`.
+
+Stage 2d: `python eval/stage2d_prepare.py`, then
+`python eval/stage2d_train.py --steps 1000 --batch 12 --fresh` (×8), then
+`python eval/stage2d_eval.py`.
 
 ## Stage 2b/2c — harder ICs and generalization
 

@@ -1,0 +1,20 @@
+{
+ "checkpoint_step": 6000,
+ "n_per_family": 48,
+ "metric": "mean abs readout error",
+ "val_iid": {
+  "amp_readout_err": 0.0434,
+  "x0_err": 5.3e-05,
+  "u_head_err": 0.0206
+ },
+ "val_combo": {
+  "amp_readout_err": 0.3555,
+  "x0_err": 5.6e-05,
+  "u_head_err": 0.1236
+ },
+ "val_amp": {
+  "amp_readout_err": 0.2064,
+  "x0_err": 8.4e-05,
+  "u_head_err": 0.0992
+ }
+}
