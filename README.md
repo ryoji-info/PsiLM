@@ -25,6 +25,7 @@ that gap, on consumer hardware first (Apple Silicon, 24 GB unified memory).
 | **0** | Loop-level coupling: LLM extracts parameters → simulator computes → result returns to context (the Mind's Eye pattern, local). Establishes the eval harness and the baseline arms. | **done — first results below** |
 | **1** | Reproduce the Bicameral Model at 0.5B: two frozen Qwen2.5-0.5B twins, trainable gated hidden-state interface, PyTorch-MPS. | **mechanism reproduced — results below** |
 | **2** | Swap the twin for a physics hemisphere: frozen LLM ⇄ frozen FNO through bidirectional latent bridges. | **works — results below** |
+| **2b–2d** | Harden: multi-mode ICs, held-out families, 2D physics via pretrained DPOT-Tiny. | **done — results below** |
 | **3** | Port the loop to MLX; ship as a Mac app. | planned |
 
 ## Stage 0
@@ -203,6 +204,40 @@ outside the trained range never receive gradient and cannot extrapolate,
 where regression at least drifts. The trained interface generalizes like a
 learned model, not like a program — coverage at training time, not readout
 cleverness, is what buys transfer.
+
+## Stage 2d — 2D physics with a pretrained foundation model
+
+The physics hemisphere is no longer our own FNO: it is **DPOT-Tiny**
+([hzk17/DPOT](https://huggingface.co/hzk17/DPOT), Apache-2.0) — a
+7.5M-parameter AFNO operator pretrained across twelve PDE datasets — loaded
+`strict=True` from the published checkpoint, fine-tuned for five minutes
+(1200 steps) to 1.64% relL2 on our task, then frozen. Task: 2D Fisher-KPP
+reaction-diffusion on the periodic unit square — a Gaussian bump (height,
+center, width all stated in the question) grows and spreads by
+u_t = D∇²u + r·u(1−u), and the question asks for u at a point (x₀, y₀)
+(spectral-solver ground truth, dt-convergence 4e-11, exact logistic limit;
+zero-strategy 4.8%). The IC is replicated across DPOT's 10-timestep input
+history; the reverse bridge attends over DPOT's 256 latent patch tokens
+plus a separable 2D periodic lookup on the predicted field; every
+positional readout (bump center and query point) uses fully-covered
+classification bins per the Stage-2b law.
+
+Training showed a clean phase structure: the four positional classifiers
+took ~3k steps to lock in (CE 4.6 → 0.03), and the answer loss converged
+only after the 2D pointer did — rollouts 0.25 → 0.58 → **1.00** across 96k
+samples. Held-out results (n=60, tolerance ±0.05, answers spanning the
+front profile with mean u ≈ 0.62):
+
+| arm | acc@0.05 | MAE |
+|---|---:|---:|
+| LLM alone | 6.7% | 0.337 |
+| LLM + answer stated in text (oracle ceiling) | 100% | 0.0024 |
+| **PsiLM (latent coupling, DPOT-Tiny)** | **95.0%** | **0.0168** |
+| degenerate always-0.00 | 1.7% | 0.673 |
+
+The 1D result survives the move to 2D and to a real pretrained physics
+foundation model: the coupled system reaches within five points of the
+oracle-text ceiling with nothing but hidden states crossing the interface.
 
 ## Repository layout
 
