@@ -34,3 +34,13 @@ results/stage2b_loop2/supervisor.log
 results/stage2_mlx0.5b4/*.npz
 results/stage2_mlx0.5b4/*.meta
 results/stage2_mlx0.5b4/supervisor.log
+
+# blanket policy: model binaries and data blobs never enter git
+results/**/*.pt
+results/**/*.pth
+results/**/*.npz
+results/**/*.meta
+results/**/supervisor.log
+results/**/*.log
+*.safetensors
+*.gguf
