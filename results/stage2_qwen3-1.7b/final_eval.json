@@ -4,16 +4,16 @@
   "step": 5000,
   "tolerance": 0.05,
   "baseline": {
-   "acc": 0.0833,
-   "mae": 0.6823
+   "acc": 0.0167,
+   "mae": 2.5669
   },
   "oracle": {
-   "acc": 1.0,
-   "mae": 0.0028
+   "acc": 0.9667,
+   "mae": 0.0208
   },
   "psilm": {
-   "acc": 1.0,
-   "mae": 0.0138
+   "acc": 0.9333,
+   "mae": 0.0221
   },
   "zero": {
    "acc": 0.0167,
@@ -29,7 +29,7 @@
     "u": -0.095
    },
    "baseline": {
-    "pred": 0.94,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -37,7 +37,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.08,
+    "pred": -0.1,
     "ok": true
    },
    "zero": {
@@ -53,7 +53,7 @@
     "u": -0.5394
    },
    "baseline": {
-    "pred": 0.96,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -61,7 +61,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.51,
+    "pred": -0.53,
     "ok": true
    },
    "zero": {
@@ -77,7 +77,7 @@
     "u": -0.5634
    },
    "baseline": {
-    "pred": 0.63,
+    "pred": 0.4,
     "ok": false
    },
    "oracle": {
@@ -85,7 +85,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.57,
+    "pred": -0.53,
     "ok": true
    },
    "zero": {
@@ -101,7 +101,7 @@
     "u": 0.3283
    },
    "baseline": {
-    "pred": 0.96,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -109,7 +109,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.35,
+    "pred": 0.36,
     "ok": true
    },
    "zero": {
@@ -125,7 +125,7 @@
     "u": -0.2048
    },
    "baseline": {
-    "pred": 0.64,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -133,7 +133,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.21,
+    "pred": -0.2,
     "ok": true
    },
    "zero": {
@@ -149,15 +149,15 @@
     "u": 0.581
    },
    "baseline": {
-    "pred": 0.96,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
-    "pred": 0.58,
-    "ok": true
+    "pred": 0.5,
+    "ok": false
    },
    "psilm": {
-    "pred": 0.59,
+    "pred": 0.57,
     "ok": true
    },
    "zero": {
@@ -173,7 +173,7 @@
     "u": -0.2048
    },
    "baseline": {
-    "pred": 0.64,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -181,7 +181,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.21,
+    "pred": -0.2,
     "ok": true
    },
    "zero": {
@@ -197,7 +197,7 @@
     "u": -0.1264
    },
    "baseline": {
-    "pred": 0.96,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -205,7 +205,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.11,
+    "pred": -0.16,
     "ok": true
    },
    "zero": {
@@ -221,7 +221,7 @@
     "u": 0.2206
    },
    "baseline": {
-    "pred": -0.03,
+    "pred": 6.24,
     "ok": false
    },
    "oracle": {
@@ -229,7 +229,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.23,
+    "pred": 0.2,
     "ok": true
    },
    "zero": {
@@ -245,7 +245,7 @@
     "u": 0.297
    },
    "baseline": {
-    "pred": -0.03,
+    "pred": 0.6,
     "ok": false
    },
    "oracle": {
@@ -253,7 +253,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.32,
+    "pred": 0.3,
     "ok": true
    },
    "zero": {
@@ -269,15 +269,15 @@
     "u": -0.2894
    },
    "baseline": {
-    "pred": -0.03,
+    "pred": 6.24,
     "ok": false
    },
    "oracle": {
-    "pred": -0.3,
+    "pred": -0.29,
     "ok": true
    },
    "psilm": {
-    "pred": -0.33,
+    "pred": -0.29,
     "ok": true
    },
    "zero": {
@@ -293,8 +293,8 @@
     "u": -0.3461
    },
    "baseline": {
-    "pred": -0.38,
-    "ok": true
+    "pred": 6.24,
+    "ok": false
    },
    "oracle": {
     "pred": -0.35,
@@ -317,7 +317,7 @@
     "u": 0.2867
    },
    "baseline": {
-    "pred": -0.38,
+    "pred": 6.24,
     "ok": false
    },
    "oracle": {
@@ -325,7 +325,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.31,
+    "pred": 0.29,
     "ok": true
    },
    "zero": {
@@ -341,7 +341,7 @@
     "u": -0.1666
    },
    "baseline": {
-    "pred": -0.39,
+    "pred": 6.24,
     "ok": false
    },
    "oracle": {
@@ -349,7 +349,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.17,
+    "pred": -0.2,
     "ok": true
    },
    "zero": {
@@ -365,16 +365,16 @@
     "u": -0.0331
    },
    "baseline": {
-    "pred": -0.03,
-    "ok": true
+    "pred": 6.24,
+    "ok": false
    },
    "oracle": {
     "pred": -0.03,
     "ok": true
    },
    "psilm": {
-    "pred": -0.01,
-    "ok": true
+    "pred": -0.1,
+    "ok": false
    },
    "zero": {
     "pred": 0.0,
@@ -389,7 +389,7 @@
     "u": 0.2544
    },
    "baseline": {
-    "pred": -0.03,
+    "pred": 6.24,
     "ok": false
    },
    "oracle": {
@@ -413,7 +413,7 @@
     "u": 0.1445
    },
    "baseline": {
-    "pred": 0.98,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -421,7 +421,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.16,
+    "pred": 0.14,
     "ok": true
    },
    "zero": {
@@ -437,7 +437,7 @@
     "u": 0.4147
    },
    "baseline": {
-    "pred": 0.98,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -445,7 +445,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.43,
+    "pred": 0.45,
     "ok": true
    },
    "zero": {
@@ -461,15 +461,15 @@
     "u": 0.0531
    },
    "baseline": {
-    "pred": 0.89,
-    "ok": false
+    "pred": 0.02,
+    "ok": true
    },
    "oracle": {
     "pred": 0.05,
     "ok": true
    },
    "psilm": {
-    "pred": 0.07,
+    "pred": 0.06,
     "ok": true
    },
    "zero": {
@@ -485,15 +485,15 @@
     "u": -0.5408
    },
    "baseline": {
-    "pred": 0.98,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
-    "pred": -0.54,
-    "ok": true
+    "pred": 0.47,
+    "ok": false
    },
    "psilm": {
-    "pred": -0.5,
+    "pred": -0.55,
     "ok": true
    },
    "zero": {
@@ -509,7 +509,7 @@
     "u": 0.3853
    },
    "baseline": {
-    "pred": 0.96,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -517,8 +517,8 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.4,
-    "ok": true
+    "pred": 0.44,
+    "ok": false
    },
    "zero": {
     "pred": 0.0,
@@ -533,7 +533,7 @@
     "u": -0.3858
    },
    "baseline": {
-    "pred": 0.98,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -557,7 +557,7 @@
     "u": 0.3556
    },
    "baseline": {
-    "pred": 0.98,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -565,7 +565,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.37,
+    "pred": 0.39,
     "ok": true
    },
    "zero": {
@@ -581,7 +581,7 @@
     "u": -0.0689
    },
    "baseline": {
-    "pred": 0.96,
+    "pred": 0.88,
     "ok": false
    },
    "oracle": {
@@ -589,7 +589,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.06,
+    "pred": -0.1,
     "ok": true
    },
    "zero": {
@@ -605,7 +605,7 @@
     "u": 0.5351
    },
    "baseline": {
-    "pred": 0.93,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -613,7 +613,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.55,
+    "pred": 0.56,
     "ok": true
    },
    "zero": {
@@ -629,11 +629,35 @@
     "u": -0.5371
    },
    "baseline": {
-    "pred": 0.74,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
     "pred": -0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.55,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.74,
+    "u": -0.4896
+   },
+   "baseline": {
+    "pred": 5.8,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.49,
     "ok": true
    },
    "psilm": {
@@ -649,35 +673,11 @@
    "item": {
     "a": 1.05,
     "phi": 5.8,
-    "x0": 0.74,
-    "u": -0.4896
-   },
-   "baseline": {
-    "pred": 0.96,
-    "ok": false
-   },
-   "oracle": {
-    "pred": -0.49,
-    "ok": true
-   },
-   "psilm": {
-    "pred": -0.49,
-    "ok": true
-   },
-   "zero": {
-    "pred": 0.0,
-    "ok": false
-   }
-  },
-  {
-   "item": {
-    "a": 1.05,
-    "phi": 5.8,
     "x0": 0.13,
     "u": 0.0794
    },
    "baseline": {
-    "pred": 0.96,
+    "pred": 5.8,
     "ok": false
    },
    "oracle": {
@@ -685,7 +685,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.09,
+    "pred": 0.08,
     "ok": true
    },
    "zero": {
@@ -701,7 +701,7 @@
     "u": -0.5165
    },
    "baseline": {
-    "pred": 0.94,
+    "pred": 5.8,
     "ok": false
    },
    "oracle": {
@@ -709,7 +709,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.51,
+    "pred": -0.5,
     "ok": true
    },
    "zero": {
@@ -725,7 +725,7 @@
     "u": 0.5351
    },
    "baseline": {
-    "pred": 0.93,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -733,7 +733,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.55,
+    "pred": 0.56,
     "ok": true
    },
    "zero": {
@@ -749,7 +749,7 @@
     "u": -0.4896
    },
    "baseline": {
-    "pred": 0.96,
+    "pred": 5.8,
     "ok": false
    },
    "oracle": {
@@ -757,7 +757,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.49,
+    "pred": -0.53,
     "ok": true
    },
    "zero": {
@@ -773,7 +773,7 @@
     "u": 0.243
    },
    "baseline": {
-    "pred": 0.96,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -781,7 +781,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.25,
+    "pred": 0.23,
     "ok": true
    },
    "zero": {
@@ -797,7 +797,7 @@
     "u": 0.0889
    },
    "baseline": {
-    "pred": -0.04,
+    "pred": 5.29,
     "ok": false
    },
    "oracle": {
@@ -805,7 +805,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.1,
+    "pred": 0.08,
     "ok": true
    },
    "zero": {
@@ -821,15 +821,15 @@
     "u": -0.3786
    },
    "baseline": {
-    "pred": -0.34,
-    "ok": true
+    "pred": 5.29,
+    "ok": false
    },
    "oracle": {
     "pred": -0.38,
     "ok": true
    },
    "psilm": {
-    "pred": -0.41,
+    "pred": -0.39,
     "ok": true
    },
    "zero": {
@@ -845,7 +845,7 @@
     "u": 0.1378
    },
    "baseline": {
-    "pred": -0.03,
+    "pred": 5.29,
     "ok": false
    },
    "oracle": {
@@ -853,7 +853,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.14,
+    "pred": 0.13,
     "ok": true
    },
    "zero": {
@@ -869,7 +869,7 @@
     "u": 0.3722
    },
    "baseline": {
-    "pred": -0.34,
+    "pred": 5.29,
     "ok": false
    },
    "oracle": {
@@ -877,7 +877,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.37,
+    "pred": 0.38,
     "ok": true
    },
    "zero": {
@@ -893,7 +893,7 @@
     "u": -0.1452
    },
    "baseline": {
-    "pred": -0.03,
+    "pred": 5.29,
     "ok": false
    },
    "oracle": {
@@ -917,15 +917,15 @@
     "u": -0.3734
    },
    "baseline": {
-    "pred": -0.34,
-    "ok": true
+    "pred": 5.29,
+    "ok": false
    },
    "oracle": {
     "pred": -0.37,
     "ok": true
    },
    "psilm": {
-    "pred": -0.41,
+    "pred": -0.39,
     "ok": true
    },
    "zero": {
@@ -941,7 +941,7 @@
     "u": 0.3371
    },
    "baseline": {
-    "pred": -0.38,
+    "pred": 5.29,
     "ok": false
    },
    "oracle": {
@@ -949,7 +949,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.36,
+    "pred": 0.38,
     "ok": true
    },
    "zero": {
@@ -965,15 +965,15 @@
     "u": -0.0595
    },
    "baseline": {
-    "pred": -0.03,
-    "ok": true
+    "pred": 5.29,
+    "ok": false
    },
    "oracle": {
     "pred": -0.06,
     "ok": true
    },
    "psilm": {
-    "pred": -0.06,
+    "pred": -0.08,
     "ok": true
    },
    "zero": {
@@ -989,7 +989,7 @@
     "u": -0.4436
    },
    "baseline": {
-    "pred": -0.06,
+    "pred": 3.47,
     "ok": false
    },
    "oracle": {
@@ -997,7 +997,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.47,
+    "pred": -0.45,
     "ok": true
    },
    "zero": {
@@ -1013,7 +1013,7 @@
     "u": -0.3487
    },
    "baseline": {
-    "pred": -0.06,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -1021,7 +1021,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.37,
+    "pred": -0.36,
     "ok": true
    },
    "zero": {
@@ -1037,7 +1037,7 @@
     "u": 0.542
    },
    "baseline": {
-    "pred": 0.86,
+    "pred": 0.79,
     "ok": false
    },
    "oracle": {
@@ -1045,7 +1045,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.56,
+    "pred": 0.57,
     "ok": true
    },
    "zero": {
@@ -1061,7 +1061,7 @@
     "u": -0.3804
    },
    "baseline": {
-    "pred": -0.06,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -1069,7 +1069,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.41,
+    "pred": -0.4,
     "ok": true
    },
    "zero": {
@@ -1085,7 +1085,7 @@
     "u": 0.1
    },
    "baseline": {
-    "pred": 0.98,
+    "pred": 3.47,
     "ok": false
    },
    "oracle": {
@@ -1093,7 +1093,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.09,
+    "pred": 0.13,
     "ok": true
    },
    "zero": {
@@ -1109,7 +1109,7 @@
     "u": -0.269
    },
    "baseline": {
-    "pred": 0.96,
+    "pred": 0.28,
     "ok": false
    },
    "oracle": {
@@ -1133,7 +1133,7 @@
     "u": -0.3328
    },
    "baseline": {
-    "pred": 0.98,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -1157,7 +1157,7 @@
     "u": 0.2122
    },
    "baseline": {
-    "pred": 0.96,
+    "pred": 3.47,
     "ok": false
    },
    "oracle": {
@@ -1165,7 +1165,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.21,
+    "pred": 0.2,
     "ok": true
    },
    "zero": {
@@ -1181,7 +1181,7 @@
     "u": -0.2024
    },
    "baseline": {
-    "pred": 0.47,
+    "pred": 1.36,
     "ok": false
    },
    "oracle": {
@@ -1189,7 +1189,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.19,
+    "pred": -0.25,
     "ok": true
    },
    "zero": {
@@ -1205,7 +1205,7 @@
     "u": -0.107
    },
    "baseline": {
-    "pred": 0.98,
+    "pred": 5.61,
     "ok": false
    },
    "oracle": {
@@ -1213,8 +1213,8 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.1,
-    "ok": true
+    "pred": -0.16,
+    "ok": false
    },
    "zero": {
     "pred": 0.0,
@@ -1229,7 +1229,7 @@
     "u": 0.5978
    },
    "baseline": {
-    "pred": 0.98,
+    "pred": 5.61,
     "ok": false
    },
    "oracle": {
@@ -1237,7 +1237,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.6,
+    "pred": 0.57,
     "ok": true
    },
    "zero": {
@@ -1253,7 +1253,7 @@
     "u": -0.544
    },
    "baseline": {
-    "pred": 0.98,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -1261,7 +1261,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.53,
+    "pred": -0.56,
     "ok": true
    },
    "zero": {
@@ -1277,7 +1277,7 @@
     "u": 0.4944
    },
    "baseline": {
-    "pred": 0.89,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -1285,8 +1285,8 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.5,
-    "ok": true
+    "pred": 0.56,
+    "ok": false
    },
    "zero": {
     "pred": 0.0,
@@ -1301,7 +1301,7 @@
     "u": -0.4077
    },
    "baseline": {
-    "pred": 0.94,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -1309,7 +1309,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.41,
+    "pred": -0.45,
     "ok": true
    },
    "zero": {
@@ -1325,7 +1325,7 @@
     "u": -0.2183
    },
    "baseline": {
-    "pred": 0.84,
+    "pred": 1.36,
     "ok": false
    },
    "oracle": {
@@ -1333,7 +1333,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.21,
+    "pred": -0.26,
     "ok": true
    },
    "zero": {
@@ -1349,7 +1349,7 @@
     "u": -0.0751
    },
    "baseline": {
-    "pred": 0.98,
+    "pred": 0.02,
     "ok": false
    },
    "oracle": {
@@ -1357,7 +1357,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.06,
+    "pred": -0.1,
     "ok": true
    },
    "zero": {
@@ -1373,7 +1373,7 @@
     "u": 0.0998
    },
    "baseline": {
-    "pred": -0.03,
+    "pred": 1.95,
     "ok": false
    },
    "oracle": {
@@ -1381,7 +1381,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.09,
+    "pred": 0.1,
     "ok": true
    },
    "zero": {
@@ -1397,7 +1397,7 @@
     "u": 0.4776
    },
    "baseline": {
-    "pred": -0.03,
+    "pred": 1.95,
     "ok": false
    },
    "oracle": {
@@ -1405,7 +1405,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.47,
+    "pred": 0.48,
     "ok": true
    },
    "zero": {
@@ -1421,7 +1421,7 @@
     "u": -0.1129
    },
    "baseline": {
-    "pred": -0.03,
+    "pred": 1.95,
     "ok": false
    },
    "oracle": {
@@ -1429,7 +1429,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": -0.11,
+    "pred": -0.16,
     "ok": true
    },
    "zero": {
@@ -1445,7 +1445,7 @@
     "u": 0.3089
    },
    "baseline": {
-    "pred": -0.03,
+    "pred": 1.95,
     "ok": false
    },
    "oracle": {
@@ -1453,7 +1453,7 @@
     "ok": true
    },
    "psilm": {
-    "pred": 0.3,
+    "pred": 0.28,
     "ok": true
    },
    "zero": {

@@ -28,3 +28,4 @@ paper/*.log
 paper/*.out
 results/stage2_qwen3-1.7b/*.pt
 results/stage2_qwen3-1.7b/supervisor.log
+results/stage2_qwen3-1.7b/prepare.log

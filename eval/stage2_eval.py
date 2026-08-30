@@ -26,14 +26,18 @@ TOL = 0.05
 
 
 def parse_value(text):
+    m = re.findall(r"Answer:\s*\$?\\?\(?\s*(-?\d+\.?\d*)", text)
+    if m:
+        return float(m[-1])
     m = re.findall(r"-?\d+\.\d+", text)
     return float(m[-1]) if m else None
 
 
-def chat_generate(model, tok, device, user, max_new=80):
+def chat_generate(model, tok, device, user, max_new=160):
     messages = [{"role": "system", "content": SYSTEM},
                 {"role": "user", "content": user}]
-    out = tok.apply_chat_template(messages, tokenize=True, add_generation_prompt=True)
+    out = tok.apply_chat_template(messages, tokenize=True, add_generation_prompt=True,
+                                  enable_thinking=False)
     if not isinstance(out, list):
         out = out["input_ids"]
     if out and isinstance(out[0], list):
@@ -76,7 +80,7 @@ def main():
         q = QUESTION.format(a=item["a"], phi=item["phi"], x0=item["x0"])
         true = item["u"]
         preds = {}
-        nudge = "\nReply with only the number."
+        nudge = "\nEnd your reply with a line of the form \"Answer: <number>\"."
         preds["baseline"] = parse_value(chat_generate(model, tok, args.device, q + nudge))
         oracle_q = (q + f"\n\nA trusted solver reports: u({item['x0']}) = {true:.2f}." + nudge)
         preds["oracle"] = parse_value(chat_generate(model, tok, args.device, oracle_q))
