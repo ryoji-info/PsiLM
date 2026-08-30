@@ -16,6 +16,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from psilm.physics.fno import FNO1d  # noqa: E402
 from psilm.stage2.bridges import PsiBridges, build_ic_multi  # noqa: E402
+from psilm.stage2.loop_model import PsiLMLoop  # noqa: E402
 from psilm.stage2.model import PsiLM  # noqa: E402
 from psilm.stage2.qa2 import QUESTION, QA2Builder, ic_text  # noqa: E402
 from psilm.stage2.qa import SYSTEM  # noqa: E402
@@ -49,6 +50,7 @@ def main():
     ap.add_argument("--ckpt", default="results/stage2b/bridges.pt")
     ap.add_argument("--device", default="mps")
     ap.add_argument("--v2", action="store_true")
+    ap.add_argument("--loop", type=int, default=0)
     args = ap.parse_args()
 
     from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -60,7 +62,11 @@ def main():
     bridges = PsiBridges(n_params=6, fwd_kind="per_mode" if args.v2 else "pooled").to(args.device)
     state = torch.load(args.ckpt, map_location=args.device, weights_only=False)
     bridges.load_state_dict(state["bridges"])
-    psi = PsiLM(model, tok, fno, bridges, ic_fn=build_ic_multi)
+    if args.loop:
+        psi = PsiLMLoop(model, tok, fno, bridges, ic_fn=build_ic_multi,
+                        n_passes=args.loop, shared=True)
+    else:
+        psi = PsiLM(model, tok, fno, bridges, ic_fn=build_ic_multi)
     builder = QA2Builder(tok)
 
     all_summaries = {}
@@ -96,7 +102,7 @@ def main():
 
     out = {"n_per_family": args.n, "step": state["step"], "tolerance": TOL,
            "families": all_summaries}
-    tag = "_v2" if args.v2 else ""
+    tag = "_v2" if args.v2 else (f"_loop{args.loop}" if args.loop else "")
     Path(f"results/stage2b{tag}/final_eval.json").write_text(json.dumps(out, indent=1))
     print(json.dumps(out, indent=2))
 

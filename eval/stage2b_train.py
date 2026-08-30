@@ -13,6 +13,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from psilm.physics.fno import FNO1d  # noqa: E402
 from psilm.stage2.bridges import PsiBridges, build_ic_multi  # noqa: E402
+from psilm.stage2.loop_model import PsiLMLoop  # noqa: E402
 from psilm.stage2.model import PsiLM  # noqa: E402
 from psilm.stage2.qa2 import QA2Builder, make_batch  # noqa: E402
 
@@ -46,12 +47,16 @@ def main():
     ap.add_argument("--fresh", action="store_true")
     ap.add_argument("--device", default="mps")
     ap.add_argument("--v2", action="store_true", help="per-mode binned forward bridge")
+    ap.add_argument("--loop", type=int, default=0, help="number of coupling passes (0=single-pass baseline)")
     args = ap.parse_args()
 
     global CKPT, LOG
     if args.v2:
         CKPT = Path("results/stage2b_v2/bridges.pt")
         LOG = Path("results/stage2b_v2/train_log.jsonl")
+    if args.loop:
+        CKPT = Path(f"results/stage2b_loop{args.loop}/bridges.pt")
+        LOG = Path(f"results/stage2b_loop{args.loop}/train_log.jsonl")
 
     from transformers import AutoModelForCausalLM, AutoTokenizer
     tok = AutoTokenizer.from_pretrained(MODEL)
@@ -70,7 +75,13 @@ def main():
         global_step = state["step"]
         print(f"resumed at step {global_step}")
 
-    psi = PsiLM(model, tok, fno, bridges, ic_fn=build_ic_multi)
+    if args.loop:
+        # shared=True: psi.parameters() is exactly bridges.parameters(), so
+        # the existing optimizer (and its resumed state) stays valid
+        psi = PsiLMLoop(model, tok, fno, bridges, ic_fn=build_ic_multi,
+                        n_passes=args.loop, shared=True)
+    else:
+        psi = PsiLM(model, tok, fno, bridges, ic_fn=build_ic_multi)
     builder = QA2Builder(tok)
     train_items = json.loads(Path("data/stage2b_qa_train.json").read_text())
     val_items = json.loads(Path("data/stage2b_qa_val_iid.json").read_text())
