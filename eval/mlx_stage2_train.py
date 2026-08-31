@@ -40,6 +40,7 @@ def to_mlx_batch(tb):
         "u_true": mx.array(tb["u_true"].numpy()),
         "x0": mx.array(tb["x0"].numpy()),
         "x0_bins": mx.array((tb["x0"].numpy() * 100).round().astype(np.int32).clip(0, 99)),
+        "x0_span": mx.array(tb["x0_span"].numpy().astype(np.int32)),
     }
 
 
@@ -121,6 +122,7 @@ def main():
                    "loss_u": round(aux[3].item(), 5),
                    "x0_err": round(aux[4].item(), 4),
                    "gate": round(aux[5].item(), 4),
+                   "loss_attn": round(aux[6].item(), 4),
                    "sec_per_step": round((time.time() - t0) / (i + 1), 2)}
             with log.open("a") as f:
                 f.write(json.dumps(rec) + "\n")

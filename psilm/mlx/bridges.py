@@ -32,15 +32,17 @@ class ForwardBridgeMLX(nn.Module):
     def _pool(self, h, mask, query, key):
         scores = (key(h) * query).sum(-1) / math.sqrt(h.shape[-1])
         scores = mx.where(mask, scores, mx.array(-1e9, dtype=scores.dtype))
-        w = mx.softmax(scores, axis=-1)[..., None]
-        return (w * h).sum(axis=1)
+        w = mx.softmax(scores, axis=-1)
+        return (w[..., None] * h).sum(axis=1), w
 
     def __call__(self, hidden, prompt_mask):
         h = _rms(hidden.astype(mx.float32))
-        params = self.mlp2(nn.gelu(self.mlp1(self._pool(h, prompt_mask, self.query, self.key))))
-        x0_logits = self.x0_h2(nn.gelu(self.x0_h1(self._pool(h, prompt_mask, self.x0_query, self.x0_key))))
+        pooled_p, _ = self._pool(h, prompt_mask, self.query, self.key)
+        params = self.mlp2(nn.gelu(self.mlp1(pooled_p)))
+        pooled_x, w_x0 = self._pool(h, prompt_mask, self.x0_query, self.x0_key)
+        x0_logits = self.x0_h2(nn.gelu(self.x0_h1(pooled_x)))
         x0_hat = mx.softmax(x0_logits, axis=-1) @ self._bins
-        return params, x0_hat, x0_logits
+        return params, x0_hat, x0_logits, w_x0
 
 
 def build_ic_mlx(params, n: int = 128):

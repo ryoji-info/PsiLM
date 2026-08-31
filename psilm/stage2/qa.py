@@ -76,6 +76,20 @@ class QABuilder:
             out = out[0]
         return list(out)
 
+    def x0_span(self, p_prompt, item):
+        """Token span of x0 in the prompt: x0 is the last number mentioned,
+        so the last sublist match is unambiguous. Widened by 1 for tokenizer
+        boundary effects."""
+        for cand in (f" {item['x0']}", f"{item['x0']}"):
+            sub = self.tok.encode(cand, add_special_tokens=False)
+            hit = -1
+            for i in range(len(p_prompt) - len(sub) + 1):
+                if p_prompt[i:i + len(sub)] == sub:
+                    hit = i
+            if hit >= 0:
+                return max(0, hit - 1), min(len(p_prompt), hit + len(sub) + 1)
+        return 0, len(p_prompt)   # fallback: whole prompt
+
     def build(self, item):
         p_prompt = self.prompt_ids(item)
         answer = f"{item['u']:+.2f}".replace("+", "")
@@ -87,6 +101,7 @@ class QABuilder:
             "prompt_len": len(p_prompt),
             "params": [item["a"], np.sin(item["phi"]), np.cos(item["phi"])],
             "x0": item["x0"],
+            "x0_span": self.x0_span(p_prompt, item),
             "meta": item,
         }
 
@@ -116,5 +131,6 @@ def make_batch(builder, items, device, pad_multiple=8):
         "params": params.to(device), "u_true": u_true.to(device),
         "x0": x0.to(device),
         "param_mask": torch.ones_like(params).to(device),
+        "x0_span": torch.tensor([e["x0_span"] for e in exs], dtype=torch.long).to(device),
         "metas": [e["meta"] for e in exs],
     }
