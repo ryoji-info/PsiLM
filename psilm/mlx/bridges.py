@@ -8,6 +8,14 @@ import mlx.nn as nn
 N_BINS = 100
 
 
+def _rms(h):
+    """Parameter-free RMS normalization: makes bridge inputs O(1) regardless
+    of backbone width/scale. Large backbones (8B, 4096-dim) otherwise
+    saturate the pooling softmax and gates, starving classifiers of
+    gradient (observed empirically at Qwen3-8B)."""
+    return h * mx.rsqrt((h * h).mean(axis=-1, keepdims=True) + 1e-6)
+
+
 class ForwardBridgeMLX(nn.Module):
     def __init__(self, d_model: int, d_hidden: int = 256, n_params: int = 3):
         super().__init__()
@@ -28,7 +36,7 @@ class ForwardBridgeMLX(nn.Module):
         return (w * h).sum(axis=1)
 
     def __call__(self, hidden, prompt_mask):
-        h = hidden.astype(mx.float32)
+        h = _rms(hidden.astype(mx.float32))
         params = self.mlp2(nn.gelu(self.mlp1(self._pool(h, prompt_mask, self.query, self.key))))
         x0_logits = self.x0_h2(nn.gelu(self.x0_h1(self._pool(h, prompt_mask, self.x0_query, self.x0_key))))
         x0_hat = mx.softmax(x0_logits, axis=-1) @ self._bins
@@ -91,12 +99,16 @@ class GatedCrossAttentionMLX(nn.Module):
 
     def __call__(self, hidden, phys_tokens):
         dtype = hidden.dtype
-        h = hidden.astype(mx.float32)
+        h_raw = hidden.astype(mx.float32)
+        h = _rms(h_raw)
         q, k, v = self.to_q(h), self.to_k(phys_tokens), self.to_v(phys_tokens)
         attn = mx.softmax(q @ k.transpose(0, 2, 1) / math.sqrt(q.shape[-1]), axis=-1)
         inj = self.to_out(attn @ v)
         sigma = mx.sigmoid(self.g2(nn.relu(self.g1(h))))
-        return (h + sigma * inj).astype(dtype), sigma
+        # scale the injection to the receiver's local stream magnitude, so
+        # the channel is scale-free across backbone widths
+        scale = mx.sqrt((h_raw * h_raw).mean(axis=-1, keepdims=True) + 1e-6)
+        return (h_raw + sigma * inj * scale).astype(dtype), sigma
 
 
 class PsiBridgesMLX(nn.Module):
