@@ -86,7 +86,8 @@ class ReverseBridgeMLX(nn.Module):
 
 
 class GatedCrossAttentionMLX(nn.Module):
-    def __init__(self, d_model: int, d_attn: int = 256, g_hidden: int = 256):
+    def __init__(self, d_model: int, d_attn: int = 256, g_hidden: int = 256,
+                 gate_bias: float = -2.0):
         super().__init__()
         self.to_q = nn.Linear(d_model, d_attn)
         self.to_k = nn.Linear(d_model, d_attn)
@@ -97,7 +98,7 @@ class GatedCrossAttentionMLX(nn.Module):
         self.g1 = nn.Linear(d_model, g_hidden)
         self.g2 = nn.Linear(g_hidden, 1)
         self.g2.weight = mx.zeros_like(self.g2.weight)
-        self.g2.bias = mx.full(self.g2.bias.shape, -2.0)
+        self.g2.bias = mx.full(self.g2.bias.shape, gate_bias)
 
     def __call__(self, hidden, phys_tokens):
         dtype = hidden.dtype
@@ -114,8 +115,8 @@ class GatedCrossAttentionMLX(nn.Module):
 
 
 class PsiBridgesMLX(nn.Module):
-    def __init__(self, d_model: int, n_params: int = 3):
+    def __init__(self, d_model: int, n_params: int = 3, gate_bias: float = -2.0):
         super().__init__()
         self.fwd = ForwardBridgeMLX(d_model, n_params=n_params)
         self.rev = ReverseBridgeMLX(d_model)
-        self.inject = GatedCrossAttentionMLX(d_model)
+        self.inject = GatedCrossAttentionMLX(d_model, gate_bias=gate_bias)

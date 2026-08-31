@@ -7,19 +7,27 @@ from .bridges import build_ic_mlx
 from .staged import MlxStream
 
 
-def cross_entropy_masked(logits, labels):
-    """logits (B, L, V), labels (B, L) with -100 = ignore. Shifted CE."""
+def cross_entropy_masked(logits, labels, digit_ids=None, digit_weight=5.0):
+    """logits (B, L, V), labels (B, L) with -100 = ignore. Shifted CE.
+    Targets in digit_ids get digit_weight: the channel's cargo is the digit
+    tokens, and strong backbones' answer CE is otherwise dominated by
+    already-solved format tokens."""
     lg = logits[:, :-1].astype(mx.float32)
     lb = labels[:, 1:]
     valid = lb != -100
     lb_safe = mx.where(valid, lb, mx.zeros_like(lb))
     ce = nn.losses.cross_entropy(lg.reshape(-1, lg.shape[-1]), lb_safe.reshape(-1),
                                  reduction="none").reshape(lb.shape)
-    return (ce * valid).sum() / valid.sum().astype(mx.float32)
+    w = valid.astype(mx.float32)
+    if digit_ids is not None:
+        is_digit = (lb[..., None] == digit_ids[None, None, :]).any(axis=-1)
+        w = w * mx.where(is_digit, mx.array(digit_weight), mx.array(1.0))
+    return (ce * w).sum() / w.sum()
 
 
 class PsiLMMLX:
-    def __init__(self, model, tokenizer, fno, bridges, l_fwd=None, l_rev=None):
+    def __init__(self, model, tokenizer, fno, bridges, l_fwd=None, l_rev=None,
+                 digit_weight=5.0):
         self.model = model
         self.tok = tokenizer
         self.fno = fno
@@ -30,6 +38,14 @@ class PsiLMMLX:
         self.l_rev = l_rev if l_rev is not None else round(n * 15 / 24)
         model.freeze()
         fno.freeze()
+        self.digit_weight = digit_weight
+        toks = [str(d) for d in range(10)] + [".", "-", " -"]
+        ids = set()
+        for t in toks:
+            enc = tokenizer.encode(t)
+            if len(enc) == 1:
+                ids.add(enc[0])
+        self.digit_ids = mx.array(sorted(ids), dtype=mx.int64)
 
     def _couple(self, stream, prompt_mask):
         stream.run(0, self.l_fwd)
@@ -47,7 +63,7 @@ class PsiLMMLX:
         s = MlxStream(self.model, batch["p_ids"], batch["p_attn"])
         params_hat, x0_hat, x0_logits, u_hat, sigma, w_x0 = self._couple(s, batch["prompt_mask"])
         logits = s.finish()
-        loss_ans = cross_entropy_masked(logits, batch["p_labels"])
+        loss_ans = cross_entropy_masked(logits, batch["p_labels"], self.digit_ids, self.digit_weight)
         loss_param = ((params_hat - batch["params"]) ** 2).mean()
         x0_tgt = batch["x0_bins"]
         loss_x0 = nn.losses.cross_entropy(x0_logits, x0_tgt, reduction="mean")

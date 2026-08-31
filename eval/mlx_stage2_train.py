@@ -70,6 +70,8 @@ def main():
     ap.add_argument("--hf-tokenizer", default="Qwen/Qwen2.5-0.5B-Instruct",
                     help="HF tokenizer for the QA builder (matches the base model)")
     ap.add_argument("--tag", required=True)
+    ap.add_argument("--gate-bias", type=float, default=-2.0)
+    ap.add_argument("--l-rev", type=int, default=None)
     args = ap.parse_args()
 
     ckpt = Path(f"results/stage2{args.tag}/bridges.npz")
@@ -81,7 +83,7 @@ def main():
     fno = convert_from_torch("results/stage2/fno.pt")
     d_model = model.model.embed_tokens.weight.shape[-1] if not hasattr(
         model.model.embed_tokens, "scales") else model.args.hidden_size
-    bridges = PsiBridgesMLX(d_model=model.args.hidden_size)
+    bridges = PsiBridgesMLX(d_model=model.args.hidden_size, gate_bias=args.gate_bias)
     opt = optim.AdamW(learning_rate=args.lr)
 
     global_step = 0
@@ -91,7 +93,7 @@ def main():
         global_step = meta["step"]
         print(f"resumed at step {global_step} (optimizer state fresh)")
 
-    psi = PsiLMMLX(model, tok, fno, bridges)
+    psi = PsiLMMLX(model, tok, fno, bridges, l_rev=args.l_rev)
     builder = QABuilder(hf_tok)
     train_items = json.loads(Path("data/stage2_qa_train.json").read_text())
     val_items = json.loads(Path("data/stage2_qa_val.json").read_text())
