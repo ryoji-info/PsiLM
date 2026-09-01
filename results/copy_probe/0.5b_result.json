@@ -1,0 +1,7 @@
+{
+ "model": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+ "acc": 1.0,
+ "mae": 0.0075,
+ "n": 24,
+ "steps": 600
+}
