@@ -35,11 +35,23 @@ class ForwardBridgeMLX(nn.Module):
         w = mx.softmax(scores, axis=-1)
         return (w[..., None] * h).sum(axis=1), w
 
-    def __call__(self, hidden, prompt_mask):
+    def __call__(self, hidden, prompt_mask, x0_span=None):
         h = _rms(hidden.astype(mx.float32))
         pooled_p, _ = self._pool(h, prompt_mask, self.query, self.key)
         params = self.mlp2(nn.gelu(self.mlp1(pooled_p)))
-        pooled_x, w_x0 = self._pool(h, prompt_mask, self.x0_query, self.x0_key)
+        if x0_span is not None:
+            # deterministic pointer: mean over the x0 token span the QA
+            # builder computes exactly. At 8B the learned attention pointer
+            # never leaves uniform (CE = ln 100 at any budget) while span
+            # pooling reaches sub-bin precision — so we stop learning where
+            # to look. w_x0 is the normalized span mask (attention loss = 0).
+            L = h.shape[1]
+            pos = mx.arange(L)[None, :]
+            m = ((pos >= x0_span[:, 0:1]) & (pos < x0_span[:, 1:2])).astype(mx.float32)
+            w_x0 = m / m.sum(axis=-1, keepdims=True)
+            pooled_x = (w_x0[..., None] * h).sum(axis=1)
+        else:
+            pooled_x, w_x0 = self._pool(h, prompt_mask, self.x0_query, self.x0_key)
         x0_logits = self.x0_h2(nn.gelu(self.x0_h1(pooled_x)))
         x0_hat = mx.softmax(x0_logits, axis=-1) @ self._bins
         return params, x0_hat, x0_logits, w_x0

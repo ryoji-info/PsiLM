@@ -47,9 +47,9 @@ class PsiLMMLX:
                 ids.add(enc[0])
         self.digit_ids = mx.array(sorted(ids), dtype=mx.int64)
 
-    def _couple(self, stream, prompt_mask):
+    def _couple(self, stream, prompt_mask, x0_span=None):
         stream.run(0, self.l_fwd)
-        params_hat, x0_hat, x0_logits, w_x0 = self.phi.fwd(stream.hidden, prompt_mask)
+        params_hat, x0_hat, x0_logits, w_x0 = self.phi.fwd(stream.hidden, prompt_mask, x0_span)
         ic = build_ic_mlx(params_hat)
         feats = self.fno.features(ic)
         u_field = self.fno.proj(feats).squeeze(-1)
@@ -61,7 +61,8 @@ class PsiLMMLX:
 
     def loss_fn(self, batch, lam_param=1.0, lam_x0=0.3, lam_u=2.0, lam_attn=0.5):
         s = MlxStream(self.model, batch["p_ids"], batch["p_attn"])
-        params_hat, x0_hat, x0_logits, u_hat, sigma, w_x0 = self._couple(s, batch["prompt_mask"])
+        params_hat, x0_hat, x0_logits, u_hat, sigma, w_x0 = self._couple(
+            s, batch["prompt_mask"], batch.get("x0_span"))
         logits = s.finish()
         loss_ans = cross_entropy_masked(logits, batch["p_labels"], self.digit_ids, self.digit_weight)
         loss_param = ((params_hat - batch["params"]) ** 2).mean()
@@ -85,12 +86,13 @@ class PsiLMMLX:
         prompt = builder.prompt_ids(item)
         ids = list(prompt)
         eos = self.tok.eos_token_id
+        span = mx.array([list(builder.x0_span(prompt, item))], dtype=mx.int32)
         for _ in range(max_new):
             t = mx.array([ids])
             pmask = mx.concatenate([mx.ones((1, len(prompt)), dtype=mx.bool_),
                                     mx.zeros((1, len(ids) - len(prompt)), dtype=mx.bool_)], axis=1)
             s = MlxStream(self.model, t)
-            self._couple(s, pmask)
+            self._couple(s, pmask, span)
             nxt = int(s.finish()[:, -1].argmax(-1).item())
             ids.append(nxt)
             if nxt == eos:
