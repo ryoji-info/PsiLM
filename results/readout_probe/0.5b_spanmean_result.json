@@ -1,0 +1,7 @@
+{
+ "model": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+ "mode": "spanmean",
+ "steps": 400,
+ "exact_bin_acc": 0.1875,
+ "mean_abs_err": 0.0644
+}

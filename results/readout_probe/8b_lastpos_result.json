@@ -1,0 +1,7 @@
+{
+ "model": "mlx-community/Qwen3-8B-4bit",
+ "mode": "lastpos",
+ "steps": 400,
+ "exact_bin_acc": 0.0,
+ "mean_abs_err": 0.3781
+}
