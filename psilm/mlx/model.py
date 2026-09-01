@@ -27,7 +27,7 @@ def cross_entropy_masked(logits, labels, digit_ids=None, digit_weight=5.0):
 
 class PsiLMMLX:
     def __init__(self, model, tokenizer, fno, bridges, l_fwd=None, l_rev=None,
-                 digit_weight=5.0):
+                 digit_weight=5.0, lam_x0=0.3):
         self.model = model
         self.tok = tokenizer
         self.fno = fno
@@ -39,6 +39,7 @@ class PsiLMMLX:
         model.freeze()
         fno.freeze()
         self.digit_weight = digit_weight
+        self.lam_x0 = lam_x0
         toks = [str(d) for d in range(10)] + [".", "-", " -"]
         ids = set()
         for t in toks:
@@ -59,7 +60,9 @@ class PsiLMMLX:
         stream.run(self.l_rev, self.n_layers)
         return params_hat, x0_hat, x0_logits, u_hat, sigma, w_x0
 
-    def loss_fn(self, batch, lam_param=1.0, lam_x0=0.3, lam_u=2.0, lam_attn=0.5):
+    def loss_fn(self, batch, lam_param=1.0, lam_x0=None, lam_u=2.0, lam_attn=0.5):
+        if lam_x0 is None:
+            lam_x0 = self.lam_x0
         s = MlxStream(self.model, batch["p_ids"], batch["p_attn"])
         params_hat, x0_hat, x0_logits, u_hat, sigma, w_x0 = self._couple(
             s, batch["prompt_mask"], batch.get("x0_span"))

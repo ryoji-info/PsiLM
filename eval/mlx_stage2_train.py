@@ -72,6 +72,11 @@ def main():
     ap.add_argument("--tag", required=True)
     ap.add_argument("--gate-bias", type=float, default=-2.0)
     ap.add_argument("--l-rev", type=int, default=None)
+    ap.add_argument("--lam-x0", type=float, default=0.3)
+    ap.add_argument("--clip", default="global", choices=["global", "module"],
+                    help="module: clip each bridge (fwd/rev/inject) at 1.0 separately, "
+                         "so a large injection gradient cannot starve the readouts "
+                         "(the regime the 8B readout probe converged in)")
     args = ap.parse_args()
 
     ckpt = Path(f"results/stage2{args.tag}/bridges.npz")
@@ -93,7 +98,7 @@ def main():
         global_step = meta["step"]
         print(f"resumed at step {global_step} (optimizer state fresh)")
 
-    psi = PsiLMMLX(model, tok, fno, bridges, l_rev=args.l_rev)
+    psi = PsiLMMLX(model, tok, fno, bridges, l_rev=args.l_rev, lam_x0=args.lam_x0)
     builder = QABuilder(hf_tok)
     train_items = json.loads(Path("data/stage2_qa_train.json").read_text())
     val_items = json.loads(Path("data/stage2_qa_val.json").read_text())
@@ -112,7 +117,10 @@ def main():
         rng = random.Random(21_000_000 + global_step)
         batch = to_mlx_batch(torch_make_batch(builder, rng.sample(train_items, args.batch), "cpu"))
         (loss, aux), grads = loss_and_grad(bridges, batch)
-        grads, _ = clip_grad_norm(grads, 1.0)
+        if args.clip == "module":
+            grads = {k: clip_grad_norm(g, 1.0)[0] for k, g in grads.items()}
+        else:
+            grads, _ = clip_grad_norm(grads, 1.0)
         opt.update(bridges, grads)
         mx.eval(bridges.parameters(), opt.state)
         global_step += 1
