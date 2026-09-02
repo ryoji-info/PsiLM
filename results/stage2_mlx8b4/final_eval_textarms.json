@@ -1,0 +1,1709 @@
+{
+ "summary": {
+  "n": 60,
+  "step": 2500,
+  "model": "mlx-community/Qwen3-8B-4bit",
+  "tolerance": 0.05,
+  "couple": [
+   15,
+   27,
+   36
+  ],
+  "baseline": {
+   "acc": 0.0667,
+   "mae": 0.7062,
+   "answer_line_rate": 0.35
+  },
+  "oracle": {
+   "acc": 1.0,
+   "mae": 0.0026,
+   "answer_line_rate": 1.0
+  },
+  "zero": {
+   "acc": 0.0167,
+   "mae": 0.308
+  }
+ },
+ "rows": [
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.86,
+    "u": -0.095
+   },
+   "text": {
+    "baseline": "lementation\n\nWe implement the above steps numerically. After performing the simulation, we find that the value of $ u(0.86, 0.5) $ is approximately:\n\n$$\nu(0.86, 0.5) \\approx 0.92\n$$\n\n---\n\nAnswer: 0.92",
+    "oracle": " that a **trusted solver** reports:\n\n$$\nu(0.86) = -0.10\n$$\n\nGiven this, and the requirement to provide the answer rounded to two decimal places, we can directly use the solver's result.\n\nAnswer: -0.10"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.92,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.1,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.57,
+    "u": -0.5394
+   },
+   "text": {
+    "baseline": "using the finite difference scheme.\n4. Extract the value of $ u $ at $ x = 0.57 $ and $ t = 0.5 $.\n\nAfter performing the simulation, the value of $ u $ at $ x = 0.57 $ and $ t = 0.5 $ is approximately",
+    "oracle": "ly difficult. However, the problem states that a **trusted solver** has computed the value of $ u(0.57) $ at $ t = 0.5 $, and the result is:\n\n$$\nu(0.57) = -0.54\n$$\n\nThus, the answer is:\n\nAnswer: -0.54"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.54,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.49,
+    "u": -0.5634
+   },
+   "text": {
+    "baseline": "to write out here, but we can summarize the result.\n\nAfter solving the PDE numerically, we find that the value of $ u(0.49, 0.5) $ is approximately:\n\n$$\nu(0.49, 0.5) \\approx 1.22\n$$\n\n---\n\nAnswer: 1.22",
+    "oracle": "tates that a **trusted solver** reports:\n\n$$\nu(0.49) = -0.56\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: -0.56"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.22,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.56,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.13,
+    "u": 0.3283
+   },
+   "text": {
+    "baseline": " a phase shift that evolves with time.\n\nTo find the value of $ u $ at $ x = 0.13 $, $ t = 0.5 $, we substitute into the expression:\n\n$$\nu(0.13, 0.5) = 1.28 \\sin(2\\pi \\cdot 0.13 + 0.5 + \\omega \\cdot 0.",
+    "oracle": "oblem states that a **trusted solver** reports:\n\n$$\nu(0.13) = 0.33\n$$\n\nGiven this, and the requirement to provide the answer rounded to two decimal places, we accept the solver's result.\n\nAnswer: 0.33"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.33,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.79,
+    "u": -0.2048
+   },
+   "text": {
+    "baseline": "account the effects of viscosity and advection. Since the viscosity is small, the value will be slightly different from the initial value, but we can estimate it to be around $ -0.90 $.\n\nAnswer: -0.90",
+    "oracle": "rusted solver** reports:\n\n$$\nu(0.79) = -0.20\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we can confidently accept this value.\n\nAnswer: -0.20"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": -0.9,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.2,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.31,
+    "u": 0.581
+   },
+   "text": {
+    "baseline": "e evolution of the velocity field.\n\nAfter performing a numerical simulation (which would typically be done with a computational tool), the value of $ u(0.31, 0.5) $ is approximately:\n\n**Answer: 1.22**",
+    "oracle": " a **trusted solver** reports:\n\n$$\nu(0.31) = 0.58\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value as accurate.\n\nAnswer: 0.58"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.22,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.58,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.79,
+    "u": -0.2048
+   },
+   "text": {
+    "baseline": "account the effects of viscosity and advection. Since the viscosity is small, the value will be slightly different from the initial value, but we can estimate it to be around $ -0.90 $.\n\nAnswer: -0.90",
+    "oracle": "rusted solver** reports:\n\n$$\nu(0.79) = -0.20\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we can confidently accept this value.\n\nAnswer: -0.20"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": -0.9,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.2,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.84,
+    "u": -0.1264
+   },
+   "text": {
+    "baseline": "umpy` and `scipy`), we can compute the value of $ u(0.84, 0.5) $.\n\nAfter performing the numerical simulation, the value of $ u(0.84, 0.5) $ is approximately:\n\n$$\n\\boxed{0.97}\n$$\n\n---\n\n**Answer: 0.97**",
+    "oracle": " that a **trusted solver** reports:\n\n$$\nu(0.84) = -0.13\n$$\n\nGiven this, and the fact that the solver has already computed the solution numerically, we can confidently accept this value.\n\nAnswer: -0.13"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.97,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.13,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.19,
+    "u": 0.2206
+   },
+   "text": {
+    "baseline": " condition dominates** the evolution, and the viscosity has a small effect over the time interval $ t = 0.5 $.\n\nThus, we **approximate** the value of $ u(0.19, 0.5) \\approx u(0.19, 0) = 0.55 $.\n\n---\n\n",
+    "oracle": ", and computed the value of $ u $ at $ x = 0.19 $ and $ t = 0.5 $.\n\nGiven the information and the trusted solver's result, the value of $ u(0.19) $ at $ t = 0.5 $ is:\n\n$$\n\\boxed{0.22}\n$$\n\nAnswer: 0.22"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.55,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.22,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.26,
+    "u": 0.297
+   },
+   "text": {
+    "baseline": "0.26, 0.5) $ by assuming that the solution has **slightly decreased** from the initial value due to dissipation.\n\nFrom the initial value:\n\n$$\nu(0.26, 0) \\approx 0.6\n$$\n\nWe estimate the value at $ t = ",
+    "oracle": "y is generally difficult. However, the problem states that a **trusted solver** reports:\n\n$$\nu(0.26) = 0.30\n$$\n\nGiven this, and the fact that the solver is trusted, we accept the result.\n\nAnswer: 0.30"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.6,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.3,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.57,
+    "u": -0.2894
+   },
+   "text": {
+    "baseline": "), we can compute the value of $ u(0.57, 0.5) $.\n\nAfter performing the computation (as done in a simulation), the value of $ u(0.57, 0.5) $ is approximately:\n\n$$\n\\boxed{0.42}\n$$\n\n---\n\n**Answer: 0.42**",
+    "oracle": "tates that a **trusted solver** reports:\n\n$$\nu(0.57) = -0.29\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: -0.29"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.42,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.29,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.7,
+    "u": -0.3461
+   },
+   "text": {
+    "baseline": "the numerical integration (using a Python implementation with `numpy` and `scipy`), the value of $ u(0.7, 0.5) $ is approximately:\n\n$$\nu(0.7, 0.5) \\approx 0.43\n$$\n\n---\n\n**Answer: 0.43**  \nAnswer: 0.43",
+    "oracle": "a **trusted solver** reports:\n\n$$\nu(0.7) = -0.35\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value as accurate.\n\nAnswer: -0.35"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.43,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.35,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.25,
+    "u": 0.2867
+   },
+   "text": {
+    "baseline": "he simulation, we find that the value of $ u $ at $ x = 0.25 $ (i.e., grid point $ i = 25 $) at time $ t = 0.5 $ is approximately:\n\n$$\nu(0.25, 0.5) \\approx 0.42\n$$\n\n---\n\n**Answer: 0.42**\n\nAnswer: 0.42",
+    "oracle": " a **trusted solver** reports:\n\n$$\nu(0.25) = 0.29\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value as accurate.\n\nAnswer: 0.29"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.42,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.29,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.87,
+    "u": -0.1666
+   },
+   "text": {
+    "baseline": "y using Python code.\n\n---\n\n### Step 4: Numerical simulation\n\nWe will now simulate the solution numerically using the above steps. After the simulation, we will extract the value of $ u $ at $ x = 0.87",
+    "oracle": "tates that a **trusted solver** reports:\n\n$$\nu(0.87) = -0.17\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: -0.17"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.87,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.17,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.98,
+    "u": -0.0331
+   },
+   "text": {
+    "baseline": "i \\approx 6.157 \\Rightarrow 1.96\\pi + 6.24 \\approx 12.397\n$$\n$$\n\\sin(12.397) \\approx \\sin(12.397 - 4\\pi) = \\sin(12.397 - 12.566) = \\sin(-0.169) \\approx -0.168\n$$\n$$\nu(0.98, 0) \\approx 0.6 \\cdot (-0.16",
+    "oracle": "tates that a **trusted solver** reports:\n\n$$\nu(0.98) = -0.03\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: -0.03"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": -0.16,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.03,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": true
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.22,
+    "u": 0.2544
+   },
+   "text": {
+    "baseline": "ill use a small time step $ \\Delta t = 0.001 $, and compute the solution numerically.\n\n---\n\n### Step 3: Numerical Computation\n\nWe will use a **finite difference scheme** to compute the derivatives:\n\n-",
+    "oracle": "y is generally difficult. However, the problem states that a **trusted solver** reports:\n\n$$\nu(0.22) = 0.25\n$$\n\nGiven this, and the fact that the solver is trusted, we accept the result.\n\nAnswer: 0.25"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.001,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.25,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.02,
+    "u": 0.1445
+   },
+   "text": {
+    "baseline": "tract the value of $ u $ at $ x = 0.02 $, which corresponds to index $ i = 20 $.\n\n---\n\n### Step 6: Final result\n\nAfter performing the simulation (which would typically be done in code), the value of $",
+    "oracle": " states that a **trusted solver** reports:\n\n$$\nu(0.02) = 0.14\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: 0.14"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.14,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.2,
+    "u": 0.4147
+   },
+   "text": {
+    "baseline": "$$\nu^{n+1} = u^n + \\Delta t \\left( -u^n \\frac{\\partial u^n}{\\partial x} + \\nu \\frac{\\partial^2 u^n}{\\partial x^2} \\right)\n$$\n\nWe will use a **central difference scheme** for the spatial derivatives:\n\n",
+    "oracle": "wever, the problem states that a **trusted solver** reports:\n\n$$\nu(0.2) = 0.41\n$$\n\nGiven the complexity of the equation and the need for numerical methods, we accept the solver's result.\n\nAnswer: 0.41"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.113,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.41,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.96,
+    "u": 0.0531
+   },
+   "text": {
+    "baseline": "1 $).\n\n---\n\n### Step 4: Final result\n\nAfter performing the simulation (which would typically be done with a computer), the value of $ u(0.96, 0.5) $ is approximately:\n\n$$\n\\boxed{0.98}\n$$\n\nAnswer: 0.98",
+    "oracle": "oblem states that a **trusted solver** reports:\n\n$$\nu(0.96) = 0.05\n$$\n\nGiven this, and the requirement to provide the answer rounded to two decimal places, we accept the solver's result.\n\nAnswer: 0.05"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.98,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.05,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.5,
+    "u": -0.5408
+   },
+   "text": {
+    "baseline": "k(t) e^{i 2\\pi k x}\n$$\n\nwhere $ \\hat{u}_k(t) $ are the Fourier coefficients that evolve in time.\n\nFor the initial condition:\n\n$$\nu(x,0) = 1.13 \\sin(2\\pi x + 0.47) = 1.13 \\sin(2\\pi x) \\cos(0.47) + 1.13",
+    "oracle": "states that a **trusted solver** reports:\n\n$$\nu(0.5) = -0.54\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: -0.54"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.13,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.54,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.18,
+    "u": 0.3853
+   },
+   "text": {
+    "baseline": " we can compute the value of $ u(0.18, 0.5) $.\n\nAfter performing the computation, the value of $ u(0.18, 0.5) $ is approximately:\n\n$$\nu(0.18, 0.5) \\approx 0.98\n$$\n\n---\n\n### Final Answer:\n\nAnswer: 0.98",
+    "oracle": " a **trusted solver** reports:\n\n$$\nu(0.18) = 0.39\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value as accurate.\n\nAnswer: 0.39"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.98,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.39,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.67,
+    "u": -0.3858
+   },
+   "text": {
+    "baseline": " simulate the evolution of the velocity field from $ t = 0 $ to $ t = 0.5 $, using the above scheme. After the simulation, we extract the value of $ u $ at $ x = 0.67 $, which corresponds to index $ j",
+    "oracle": "tates that a **trusted solver** reports:\n\n$$\nu(0.67) = -0.39\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: -0.39"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.67,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.39,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.16,
+    "u": 0.3556
+   },
+   "text": {
+    "baseline": "$$\nu(0.16, 0) = 1.13 \\sin(2\\pi \\cdot 0.16 + 0.47)\n$$\n\n$$\n= 1.13 \\sin(1.0053)\n$$\n\n$$\n\\approx 1.13 \\cdot 0.846 = 0.956\n$$\n\nSo the initial value at $ x = 0.16 $ is approximately **0.956**.\n\n---\n\n### Step",
+    "oracle": "es that a **trusted solver** reports:\n\n$$\nu(0.16) = 0.36\n$$\n\nGiven this, and the fact that the solver has already computed the solution numerically, we can confidently accept this value.\n\nAnswer: 0.36"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.956,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.36,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.88,
+    "u": -0.0689
+   },
+   "text": {
+    "baseline": "2\\pi x_j + 0.47)\n$$\n\nWe then evolve the solution forward in time using the Runge-Kutta method.\n\n---\n\n### Step 5: Final value\n\nAfter evolving the solution to $ t = 0.5 $, we extract the value at $ x = ",
+    "oracle": "lem states that a **trusted solver** reports:\n\n$$\nu(0.88) = -0.07\n$$\n\nGiven this, and the requirement to provide the answer rounded to two decimal places, we accept the solver's result.\n\nAnswer: -0.07"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.07,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.46,
+    "u": 0.5351
+   },
+   "text": {
+    "baseline": " that the value of $ u(0.46, 0.5) $ is approximately the same as the initial value, since the viscosity is small and the time interval is not very large.\n\nThus, we estimate:\n\n$$\nu(0.46, 0.5) \\approx 0",
+    "oracle": "ever, the problem states that a **trusted solver** reports:\n\n$$\nu(0.46) = 0.54\n$$\n\nGiven the complexity of the equation and the need for numerical methods, we accept the solver's result.\n\nAnswer: 0.54"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": true
+   },
+   "oracle": {
+    "pred": 0.54,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.69,
+    "u": -0.5371
+   },
+   "text": {
+    "baseline": "$ x = 0.69 $.\n\n---\n\n### Step 5: Final result\n\nAfter performing the simulation (which would typically be done in code), the value of $ u(0.69, 0.5) $ is approximately:\n\n$$\n\\boxed{0.98}\n$$\n\nAnswer: 0.98",
+    "oracle": "lem states that a **trusted solver** reports:\n\n$$\nu(0.69) = -0.54\n$$\n\nGiven this, and the requirement to provide the answer rounded to two decimal places, we accept the solver's result.\n\nAnswer: -0.54"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.98,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.54,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.74,
+    "u": -0.4896
+   },
+   "text": {
+    "baseline": " 0.74 $.\n\nAfter performing the simulation (which would typically be done in code), the value of $ u(0.74, 0.5) $ is approximately:\n\n$$\nu(0.74, 0.5) \\approx -0.99\n$$\n\n---\n\n### Final Answer:\n\nAnswer: -0",
+    "oracle": " that a **trusted solver** reports:\n\n$$\nu(0.74) = -0.49\n$$\n\nGiven this, and the requirement to provide the answer rounded to two decimal places, we can directly use the solver's result.\n\nAnswer: -0.49"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": -0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.49,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.13,
+    "u": 0.0794
+   },
+   "text": {
+    "baseline": " than** the initial value.\n\nA reasonable approximation is to assume a small decrease due to the diffusion effect. Let's assume a small decrease of about 0.02:\n\n$$\nu(0.13, 0.5) \\approx 0.3444 - 0.02 = ",
+    "oracle": " states that a **trusted solver** reports:\n\n$$\nu(0.13) = 0.08\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: 0.08"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.08,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.65,
+    "u": -0.5165
+   },
+   "text": {
+    "baseline": "summary of the steps:\n\n1. Initialize the grid.\n2. Set the initial condition $ u(x, 0) = 1.05 \\sin(2\\pi x + 5.8) $.\n3. Evolve the solution forward in time using the finite difference scheme.\n4. Extract",
+    "oracle": "lem states that a **trusted solver** reports:\n\n$$\nu(0.65) = -0.52\n$$\n\nGiven this, and the requirement to provide the answer rounded to two decimal places, we accept the solver's result.\n\nAnswer: -0.52"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 5.8,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.52,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.46,
+    "u": 0.5351
+   },
+   "text": {
+    "baseline": " that the value of $ u(0.46, 0.5) $ is approximately the same as the initial value, since the viscosity is small and the time interval is not very large.\n\nThus, we estimate:\n\n$$\nu(0.46, 0.5) \\approx 0",
+    "oracle": "ever, the problem states that a **trusted solver** reports:\n\n$$\nu(0.46) = 0.54\n$$\n\nGiven the complexity of the equation and the need for numerical methods, we accept the solver's result.\n\nAnswer: 0.54"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": true
+   },
+   "oracle": {
+    "pred": 0.54,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.74,
+    "u": -0.4896
+   },
+   "text": {
+    "baseline": " 0.74 $.\n\nAfter performing the simulation (which would typically be done in code), the value of $ u(0.74, 0.5) $ is approximately:\n\n$$\nu(0.74, 0.5) \\approx -0.99\n$$\n\n---\n\n### Final Answer:\n\nAnswer: -0",
+    "oracle": " that a **trusted solver** reports:\n\n$$\nu(0.74) = -0.49\n$$\n\nGiven this, and the requirement to provide the answer rounded to two decimal places, we can directly use the solver's result.\n\nAnswer: -0.49"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": -0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.49,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.24,
+    "u": 0.243
+   },
+   "text": {
+    "baseline": "ut since the time interval is only $ t = 0.5 $, and the viscosity is small, the solution will remain **smooth** and not develop shocks.\n\nTo estimate the value of $ u(0.24, 0.5) $, we can use a **numer",
+    "oracle": "icult. However, the problem states that a **trusted solver** reports:\n\n$$\nu(0.24) = 0.24\n$$\n\nGiven this, and the fact that the solver is trusted, we accept this value as the correct one.\n\nAnswer: 0.24"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.24,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.23,
+    "u": 0.0889
+   },
+   "text": {
+    "baseline": "imulation (which would typically be done in code), we find that the value of $ u $ at $ x = 0.23 $, $ t = 0.5 $ is approximately:\n\n$$\nu(0.23, 0.5) \\approx 0.42\n$$\n\n---\n\n**Answer: 0.42**  \nAnswer: 0.42",
+    "oracle": " states that a **trusted solver** reports:\n\n$$\nu(0.23) = 0.09\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: 0.09"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.42,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.09,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.79,
+    "u": -0.3786
+   },
+   "text": {
+    "baseline": "\\sin(5.29 + 4.969) = 0.61 \\cdot \\sin(10.259)\n$$\n\n$$\n\\sin(10.259) \\approx \\sin(10.259 - 3\\pi) = \\sin(10.259 - 9.4248) = \\sin(0.8342) \\approx 0.743\n$$\n\n$$\nu(0.79, 0) \\approx 0.61 \\cdot 0.743 \\approx 0.4",
+    "oracle": " **trusted solver** reports:\n\n$$\nu(0.79) = -0.38\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value as accurate.\n\nAnswer: -0.38"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.4,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.38,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.27,
+    "u": 0.1378
+   },
+   "text": {
+    "baseline": "e difference approximations:\n\n- $ \\frac{\\partial u}{\\partial x} \\approx \\frac{u_{i+1} - u_{i-1}}{2\\Delta x} $,\n- $ \\frac{\\partial^2 u}{\\partial x^2} \\approx \\frac{u_{i+1} - 2u_i + u_{i-1}}{\\Delta x^2}",
+    "oracle": "oblem states that a **trusted solver** reports:\n\n$$\nu(0.27) = 0.14\n$$\n\nGiven this, and the requirement to provide the answer rounded to two decimal places, we accept the solver's result.\n\nAnswer: 0.14"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.005,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.14,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.5,
+    "u": 0.3722
+   },
+   "text": {
+    "baseline": "\n\\hat{u}_k(t) \\approx \\hat{u}_k(0) \\cdot e^{-i k^2 \\nu t}\n$$\n\nThis is the **linearized** version of the Burgers' equation, assuming the nonlinear term is negligible.\n\n---\n\n### **Apply to Our Case:**\n\n",
+    "oracle": "m states that a **trusted solver** reports:\n\n$$\nu(0.5) = 0.37\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: 0.37"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.37,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.04,
+    "u": -0.1452
+   },
+   "text": {
+    "baseline": "i x + 5.29)\n$$\n\nWe can compute the value of the initial condition at $ x = 0.04 $:\n\n$$\nu(0.04, 0) = 0.61 \\cdot \\sin(2\\pi \\cdot 0.04 + 5.29)\n$$\n\n$$\n= 0.61 \\cdot \\sin(0.08\\pi + 5.29)\n$$\n\n$$\n= 0.61 \\cdot",
+    "oracle": "tates that a **trusted solver** reports:\n\n$$\nu(0.04) = -0.15\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: -0.15"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.15,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.77,
+    "u": -0.3734
+   },
+   "text": {
+    "baseline": "ven the small time interval $ t = 0.5 $, and the small viscosity $ \\nu = 0.02 $, the evolution will be **moderate**, and the value of $ u(0.77, 0.5) $ will be **close to the initial value**.\n\n---\n\n###",
+    "oracle": " **trusted solver** reports:\n\n$$\nu(0.77) = -0.37\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value as accurate.\n\nAnswer: -0.37"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.37,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.45,
+    "u": 0.3371
+   },
+   "text": {
+    "baseline": ")\n$$\n\n$$\n\\sin(8.1174) \\approx \\sin(8.1174 - 2\\pi) = \\sin(8.1174 - 6.2832) = \\sin(1.8342) \\approx 0.9516\n$$\n\n$$\nu(0.45, 0) \\approx 0.61 \\cdot 0.9516 \\approx 0.5805\n$$\n\n---\n\n### **Step 3: Time evolution",
+    "oracle": " a **trusted solver** reports:\n\n$$\nu(0.45) = 0.34\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value as accurate.\n\nAnswer: 0.34"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5805,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.34,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.11,
+    "u": -0.0595
+   },
+   "text": {
+    "baseline": " without solving the full PDE numerically, we can make a reasonable estimate.\n\nSince the initial value is $ u(0.11, 0) \\approx -0.181 $, and the viscosity is small ($ \\nu = 0.02 $), the evolution will",
+    "oracle": "tates that a **trusted solver** reports:\n\n$$\nu(0.11) = -0.06\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: -0.06"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.06,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.17,
+    "u": -0.4436
+   },
+   "text": {
+    "baseline": "{\\Delta x^2} \\right)\n$$\n\nThis gives us a way to compute the solution step by step.\n\n---\n\n### Step 3: Implementation\n\nWe'll use the following parameters:\n\n- Domain: $ x \\in [0,1) $\n- Time interval: $ t",
+    "oracle": " **trusted solver** reports:\n\n$$\nu(0.17) = -0.44\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value as accurate.\n\nAnswer: -0.44"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.44,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.23,
+    "u": -0.3487
+   },
+   "text": {
+    "baseline": "erical simulation** to find the value of $ u(0.23, 0.5) $.\n\nAfter performing the simulation with the above parameters, the value of $ u(0.23, 0.5) $ is approximately:\n\n$$\n\\boxed{0.98}\n$$\n\nAnswer: 0.98",
+    "oracle": "tates that a **trusted solver** reports:\n\n$$\nu(0.23) = -0.35\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: -0.35"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.98,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.35,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.79,
+    "u": 0.542
+   },
+   "text": {
+    "baseline": "^n + u_{i-1}^n}{\\Delta x^2} \\right)\n$$\n\nWe'll implement this numerically.\n\n---\n\n### Step 3: Implementation\n\nWe'll use the following parameters:\n\n- Domain: $ x \\in [0,1) $\n- Time interval: $ t \\in [0,0",
+    "oracle": " states that a **trusted solver** reports:\n\n$$\nu(0.79) = 0.54\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: 0.54"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": true
+   },
+   "oracle": {
+    "pred": 0.54,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.21,
+    "u": -0.3804
+   },
+   "text": {
+    "baseline": "\n$$\n\nThis gives us the update rule for the velocity field.\n\n---\n\n### Step 3: Implementation\n\nWe'll implement this numerically using the following parameters:\n\n- Domain: $ x \\in [0,1) $\n- Time interval",
+    "oracle": "er, the problem states that a **trusted solver** reports:\n\n$$\nu(0.21) = -0.38\n$$\n\nGiven the complexity of the equation and the need for numerical methods, we accept the solver's result.\n\nAnswer: -0.38"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.38,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.51,
+    "u": 0.1
+   },
+   "text": {
+    "baseline": " $.\n\nAfter performing the simulation (which would typically be done numerically), the value of $ u(0.51, 0.5) $ is approximately:\n\n$$\nu(0.51, 0.5) \\approx 0.98\n$$\n\n---\n\n### Final Answer:\n\nAnswer: 0.98",
+    "oracle": " the problem states that a **trusted solver** reports:\n\n$$\nu(0.51) = 0.10\n$$\n\nGiven the complexity of the equation and the presence of a trusted solver, we accept this value as accurate.\n\nAnswer: 0.10"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.98,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.1,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.28,
+    "u": -0.269
+   },
+   "text": {
+    "baseline": "^n + u_{i-1}^n}{\\Delta x^2} \\right)\n$$\n\nWe'll implement this numerically.\n\n---\n\n### Step 3: Implementation\n\nWe'll use the following parameters:\n\n- Domain: $ x \\in [0,1) $\n- Time interval: $ t \\in [0,0",
+    "oracle": "tates that a **trusted solver** reports:\n\n$$\nu(0.28) = -0.27\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: -0.27"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.27,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.24,
+    "u": -0.3328
+   },
+   "text": {
+    "baseline": "^n + u_{i-1}^n}{\\Delta x^2} \\right)\n$$\n\nWe'll implement this numerically.\n\n---\n\n### Step 3: Implementation\n\nWe'll use the following parameters:\n\n- Domain: $ x \\in [0,1) $\n- Time interval: $ t \\in [0,0",
+    "oracle": " **trusted solver** reports:\n\n$$\nu(0.24) = -0.33\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value as accurate.\n\nAnswer: -0.33"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.33,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.58,
+    "u": 0.2122
+   },
+   "text": {
+    "baseline": "p(x_eval, x, u)\nprint(f\"u(0.58, 0.5) = {u_eval:.2f}\")\n```\n\n---\n\n### Step 3: Result\n\nAfter running the simulation, the value of $ u $ at $ x = 0.58 $ and $ t = 0.5 $ is approximately:\n\n**Answer: 0.97**",
+    "oracle": "ever, the problem states that a **trusted solver** reports:\n\n$$\nu(0.58) = 0.21\n$$\n\nGiven the complexity of the equation and the need for numerical methods, we accept the solver's result.\n\nAnswer: 0.21"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.97,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.21,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.98,
+    "u": -0.2024
+   },
+   "text": {
+    "baseline": " using the above method.\n\nAfter performing the simulation (which is computationally intensive to do manually), we find that the value of $ u $ at $ x = 0.98 $ and $ t = 0.5 $ is approximately:\n\n$$\nu(0",
+    "oracle": "tates that a **trusted solver** reports:\n\n$$\nu(0.98) = -0.20\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: -0.20"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.2,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.04,
+    "u": -0.107
+   },
+   "text": {
+    "baseline": "mulating the evolution of the velocity field using the above method, we find that the value of $ u(0.04, 0.5) $ is approximately:\n\n$$\nu(0.04, 0.5) \\approx 0.98\n$$\n\n---\n\n### Final Answer:\n\nAnswer: 0.98",
+    "oracle": "er, the problem states that a **trusted solver** reports:\n\n$$\nu(0.04) = -0.11\n$$\n\nGiven the complexity of the equation and the need for numerical methods, we accept the solver's result.\n\nAnswer: -0.11"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.98,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.11,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.52,
+    "u": 0.5978
+   },
+   "text": {
+    "baseline": " u_i^n}{\\Delta t} $.\n\nWe will implement this numerically using a simple Python script or a computational tool. Since we are simulating this mentally, we will **approximate the value** of $ u(0.52, 0.5",
+    "oracle": "oblem states that a **trusted solver** reports:\n\n$$\nu(0.52) = 0.60\n$$\n\nGiven this, and the requirement to provide the answer rounded to two decimal places, we accept the solver's result.\n\nAnswer: 0.60"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.6,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.76,
+    "u": -0.544
+   },
+   "text": {
+    "baseline": "--\n\n### Step 4: Plug in the Values\n\nWe are given:\n- $ \\nu = 0.02 $\n- $ t = 0.5 $\n- $ x = 0.76 $\n\nCompute the exponential factor:\n\n$$\ne^{-0.02 \\cdot (2\\pi)^2 \\cdot 0.5} = e^{-0.02 \\cdot 4\\pi^2 \\cdot 0.",
+    "oracle": " **trusted solver** reports:\n\n$$\nu(0.76) = -0.54\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value as accurate.\n\nAnswer: -0.54"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": -0.02,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.54,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.56,
+    "u": 0.4944
+   },
+   "text": {
+    "baseline": "fter performing the simulation (which is best done with a computer), we find that the value of $ u(0.56, 0.5) $ is approximately:\n\n$$\nu(0.56, 0.5) \\approx 0.98\n$$\n\n---\n\n### Final Answer:\n\nAnswer: 0.98",
+    "oracle": " generally difficult. However, the problem states that a **trusted solver** has computed the value of $ u(0.56, 0.5) $, and the result is:\n\n$$\nu(0.56) = 0.49\n$$\n\nThus, the answer is:\n\n**Answer: 0.49**"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.98,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.49,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.85,
+    "u": -0.4077
+   },
+   "text": {
+    "baseline": " evaluate the value at $ x = 0.85 $.\n\n---\n\n### **Result:**\n\nAfter performing the numerical integration (as described), the value of $ u(0.85, 0.5) $ is approximately:\n\n$$\n\\boxed{0.98}\n$$\n\nAnswer: 0.98",
+    "oracle": "er, the problem states that a **trusted solver** reports:\n\n$$\nu(0.85) = -0.41\n$$\n\nGiven the complexity of the equation and the need for numerical methods, we accept the solver's result.\n\nAnswer: -0.41"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.98,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.41,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.97,
+    "u": -0.2183
+   },
+   "text": {
+    "baseline": "s' equation:\n\n$$\n\\frac{u^{n+1} - u^n}{\\Delta t} + u^n \\cdot \\frac{u_{j+1} - u_{j-1}}{2\\Delta x} = \\nu \\cdot \\frac{u_{j+1} - 2u_j + u_{j-1}}{\\Delta x^2}\n$$\n\nSolving for $ u^{n+1} $, we get:\n\n$$\nu^{n+1}",
+    "oracle": "he problem states that a **trusted solver** reports:\n\n$$\nu(0.97) = -0.22\n$$\n\nGiven the complexity of the equation and the presence of a trusted solver, we accept this value as accurate.\n\nAnswer: -0.22"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.22,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.06,
+    "u": -0.0751
+   },
+   "text": {
+    "baseline": "ocity field using the above method. After performing the simulation (which is computationally intensive to do manually), we find that the value of $ u(0.06, 0.5) $ is approximately:\n\n$$\nu(0.06, 0.5) \\",
+    "oracle": "lem states that a **trusted solver** reports:\n\n$$\nu(0.06) = -0.08\n$$\n\nGiven this, and the requirement to provide the answer rounded to two decimal places, we accept the solver's result.\n\nAnswer: -0.08"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.08,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.76,
+    "u": 0.0998
+   },
+   "text": {
+    "baseline": "the evolution of the initial condition under Burgers' equation with viscosity $ \\nu = 0.02 $, we find that the value of $ u $ at $ x = 0.76 $ and $ t = 0.5 $ is approximately:\n\n$$\nu(0.76, 0.5) \\approx",
+    "oracle": " states that a **trusted solver** reports:\n\n$$\nu(0.76) = 0.10\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: 0.10"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.1,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.05,
+    "u": 0.4776
+   },
+   "text": {
+    "baseline": "cal Computation (via Python or similar):**\n\nUsing a numerical solver (e.g., Python with `numpy` and `scipy`), we can compute the value of $ u(0.05, 0.5) $.\n\nAfter performing the computation, the value",
+    "oracle": "oblem states that a **trusted solver** reports:\n\n$$\nu(0.05) = 0.48\n$$\n\nGiven this, and the requirement to provide the answer rounded to two decimal places, we accept the solver's result.\n\nAnswer: 0.48"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": true
+   },
+   "oracle": {
+    "pred": 0.48,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.61,
+    "u": -0.1129
+   },
+   "text": {
+    "baseline": "n the Values\n\nWe are given:\n- $ \\nu = 0.02 $\n- $ t = 0.5 $\n- $ x = 0.61 $\n\nCompute the exponential decay factor:\n\n$$\ne^{-0.02 \\cdot (2\\pi)^2 \\cdot 0.5} = e^{-0.02 \\cdot 4\\pi^2 \\cdot 0.5} = e^{-0.04\\pi",
+    "oracle": "tates that a **trusted solver** reports:\n\n$$\nu(0.61) = -0.11\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value.\n\nAnswer: -0.11"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": -0.04,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.11,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.91,
+    "u": 0.3089
+   },
+   "text": {
+    "baseline": "his is a simple exponential decay:\n\n$$\n\\hat{u}_n(t) = \\hat{u}_n(0) \\exp\\left( -\\nu (2\\pi n)^2 t \\right)\n$$\n\n---\n\n### **Step 3: Compute $ u(0.91, 0.5) $**\n\nWe compute the value of the solution at $ x =",
+    "oracle": " a **trusted solver** reports:\n\n$$\nu(0.91) = 0.31\n$$\n\nGiven the complexity of the equation and the fact that the solver has already computed the result, we accept this value as accurate.\n\nAnswer: 0.31"
+   },
+   "has_answer_line": {
+    "baseline": false,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.31,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  }
+ ]
+}

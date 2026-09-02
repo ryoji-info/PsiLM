@@ -12,6 +12,7 @@
 
 \newcommand{\psilm}{$\Psi$LM}
 \newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\pending}[1]{\textcolor{red!75!black}{\textbf{[pending: #1]}}}  % placeholder for numbers not yet in the committed logs
 
 \title{\psilm: Coupling Frozen Language and Physics Models\\through Trainable Latent Bridges}
 
@@ -40,6 +41,7 @@ Our literature survey (Section~\ref{sec:related}) found the ingredients of such 
 \item \textbf{\psilm{}} (Sec.~\ref{sec:psilm}): a frozen LLM and a frozen neural operator coupled through $\sim$3.5M trainable bridge parameters, reaching the oracle-text ceiling on 1D Burgers field-value QA (100\% vs.\ 5\% for the LLM alone).
 \item \textbf{A generalization law} (Sec.~\ref{sec:gen}): on held-out question families the interface transfers partially, failure is attributable to a single readout, and a controlled experiment refutes the natural ``classify, don't regress'' fix --- establishing \emph{support coverage} as the operative principle.
 \item \textbf{Foundation-model transfer} (Sec.~\ref{sec:2d}): the architecture carries to 2D reaction--diffusion with pretrained DPOT-Tiny \citep{hao2024dpot} as the physics hemisphere (95\% vs.\ 6.7\% alone).
+\item \textbf{Scaling the language hemisphere} (Sec.~\ref{sec:scaling}): a backbone-agnostic parameterization and an MLX port carry the architecture to Qwen3-1.7B (93.3\% vs.\ a 96.7\% oracle) and to 4-bit backbones; a trained revision loop adds $+16.7$ points on the held-out combination family; and at Qwen3-8B a probe-by-probe failure analysis locates the scale-dependent failure in the learned attention pointer, not in the latent channel.
 \end{enumerate}
 
 \section{Related Work}
@@ -54,7 +56,7 @@ Our literature survey (Section~\ref{sec:related}) found the ingredients of such 
 \textbf{Language and PDE operators.} UPS \citep{shen2024ups} projects FNO features into a pretrained LLM's token space; Unisolver \citep{zhou2025unisolver} conditions a neural solver on frozen-LLM equation embeddings; ICON-LM \citep{yang2025iconlm} fine-tunes a GPT-2 into an operator learner; Text2PDE \citep{zhou2025text2pde} generates rollouts from text; \citet{negrini2025multimodalpde} decode operator states into text within one purpose-trained network. Each realizes one direction, or fuses everything into a single network; none couples two \emph{pretrained} models bidirectionally at inference.
 
 \section{Experimental Platform}
-All experiments run on one Apple M2 laptop with 24\,GB unified memory. The language hemisphere is frozen Qwen2.5-0.5B-Instruct \citep{qwen2025qwen25} (hereafter Qwen2.5-0.5B; fp16 on PyTorch MPS; 4-bit MLX quantizations for Stage~0), staged so a forward pass can pause at any decoder layer, exchange state, and resume; the staged pass is bit-exact against the stock model. Ground truth for the PDE tasks (Sections~\ref{sec:psilm}--\ref{sec:2d}) comes from spectral solvers with integrating-factor RK4 (dt-convergence $\le 4\times10^{-11}$; analytic limits verified), never from the neural physics models; Stages 0--1 are scored against closed-form mechanics and exact arithmetic. Trained components are only the interfaces (2--7M parameters); training runs in resumable 1000-step chunks at 2.2--4.0\,s/step.
+All experiments run on one Apple M2 laptop with 24\,GB unified memory. The language hemisphere is frozen Qwen2.5-0.5B-Instruct \citep{qwen2025qwen25} (hereafter Qwen2.5-0.5B; fp16 on PyTorch MPS; 4-bit MLX quantizations for Stage~0; Section~\ref{sec:scaling} substitutes larger Qwen3 backbones), staged so a forward pass can pause at any decoder layer, exchange state, and resume; the staged pass is bit-exact against the stock model. Ground truth for the PDE tasks (Sections~\ref{sec:psilm}--\ref{sec:2d}) comes from spectral solvers with integrating-factor RK4 (dt-convergence $\le 4\times10^{-11}$; analytic limits verified), never from the neural physics models; Stages 0--1 are scored against closed-form mechanics and exact arithmetic. Trained components are only the interfaces (2--7M parameters on the 0.5B backbone; 12.6M and 42M for the larger backbones of Section~\ref{sec:scaling}); training runs in resumable 500--1000-step chunks at 1.8--12\,s/step depending on the backbone.
 
 \section{Stage 0: Text-Level Tool Coupling}
 \label{sec:stage0}
@@ -153,12 +155,109 @@ Finally we replace our own operator with DPOT-Tiny \citep{hao2024dpot}: a 7.5M-p
 
 Training exhibits a clean phase structure (Fig.~\ref{fig:chunks}, right): the four positional classifiers lock in over $\sim$5k steps (CE $4.6\!\to\!0.04$), and the answer loss converges only after the 2D pointer does; rollout accuracy climbs $0.25 \to 1.00$ over 96k samples. Held-out (Table~\ref{tab:main}, right): \textbf{95.0\%} at MAE 0.0168, within five points of the oracle-text ceiling, against 6.7\% for the LLM alone. The 1D result survives both moves --- to 2D, and to a physics hemisphere that is a genuine pretrained foundation model.
 
+\section{Scaling the Language Hemisphere}
+\label{sec:scaling}
+
+Stage~0 predicts that the payoff of coupling grows with the language model's ability to \emph{use} evidence. This section reports what happened when the language hemisphere was scaled from 0.5B to 1.7B and 8B parameters with the physics hemisphere (the Stage-2 FNO, byte-identical) and the task held fixed. The 1.7B result is a clean transfer. The 8B campaign is not yet one, and we report it as a scale-dependent failure analysis in the spirit of Sections~\ref{sec:psilm} and~\ref{sec:gen}: each step isolates one component, and the sequence ends in a decision, a concession, and an open result.
+
+\subsection{Backbone parameterization and Qwen3-1.7B}
+\label{sec:scaling17}
+
+The interface is parameterized by the backbone's configuration alone: coupling depths are the Stage-2 fractions of depth (read at $10/24$, inject at $15/24$, rounded), bridge widths follow the hidden size, and the staged forward pass is verified bit-exact against the stock model for every new backbone before training. On Qwen3-1.7B \citep{qwen2025qwen3} (28 layers, hidden 2048; fp16 on PyTorch MPS; thinking mode disabled) the bridges resize to 12.6M parameters, couple at layers 12/18, and train at 5.2\,s/step. Under the Stage-2 budget (5000 steps $\times$ 16 = 80k samples) the per-chunk rollout probe reaches 1.00 in the fifth chunk, and the held-out evaluation ($n{=}60$, the set of Table~\ref{tab:main}) gives \textbf{93.3\%} at MAE 0.022 against an oracle-text ceiling of 96.7\% (MAE 0.021), with the LLM alone at 1.7\% (MAE 2.57) and the always-zero strategy at 1.7\%. Two observations. First, the receiver-computed gate, which settles at $\sigma\approx0.13$ on the 0.5B, opens fully ($\sigma\to1.0$) within the first 25 steps on the 1.7B and stays there: the stronger backbone takes the channel at full strength. Second, an evaluation-protocol lesson: the terse ``reply with only the number'' instruction that worked at 0.5B made Qwen3-1.7B's non-thinking mode drop minus signs systematically (oracle 47\%, half the negatives wrong, while free-form answers were correct). All text arms now use an ``\code{Answer:\ <number>}'' marker with marker-aware parsing, under which the coupled and oracle arms of Table~\ref{tab:main} reproduce (100\%/0.0138 and 100\%).
+
+\subsection{Loop coupling: revision buys composition}
+\label{sec:loop}
+
+Before scaling the backbone we asked whether the interface itself had headroom on the Section~\ref{sec:gen} families. \code{loop\_model.py} runs two read$\to$rollout$\to$inject passes ordered $r_1<w_1<r_2<w_2$ (layers 8/11, then 15/18 of 24), so the second readout sees the stream \emph{after} the first injection and can revise it; the bridges are shared across passes (a recurrence), every pass's readouts are supervised, and the answer loss is applied once. Table~\ref{tab:loop} compares it with the single-pass interface at a matched 96k-sample budget, plus a third arm that simply runs the single-pass-trained bridges as two passes at inference. \textbf{The trained loop buys compositional generalization}: $+16.7$ points on the unseen combination family, with MAE improved on every family (the extrapolation error nearly halves at flat accuracy --- support coverage still rules there). The third arm collapses: switching the loop on at run time without training it is catastrophic, not neutral, with the caveat that this arm changes the coupling depths and the untrained revision at once, so it bounds the zero-shot transplant rather than isolating the revision effect. Loops must be trained in; they then pay off exactly where the single-pass interface was weakest.
+
+\begin{table}[t]
+\centering
+\caption{Loop-coupling ablation on the multi-mode task of Section~\ref{sec:gen} (\psilm{} arm; $n{=}48$ per family; acc@0.05 / MAE; both trained arms at 96k samples).}
+\label{tab:loop}
+\small
+\begin{tabular}{lrrr}
+\toprule
+family & single pass & loop-trained & inference-only loop \\
+\midrule
+in-distribution & 97.9\% / 0.009 & \textbf{100\%} / 0.007 & 8.3\% / 0.323 \\
+unseen combination & 31.3\% / 0.128 & \textbf{47.9\%} / 0.089 & 0.0\% / 0.868 \\
+amplitude extrapolation & \textbf{50.0\%} / 0.096 & 47.9\% / \textbf{0.055} & 6.3\% / 0.416 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The MLX port}
+\label{sec:mlx}
+
+Backbones beyond $\sim$2B do not fit 24\,GB in fp16; their 4-bit quantizations do, so we ported the machinery to MLX \citep{hannun2023mlx}. The port (\code{psilm/mlx/}) is a segmented forward over \code{mlx-lm} models with explicit causal and padding masks, bit-exact against the stock model on the 4-bit Qwen2.5-0.5B (maximum logit difference $0.0$, greedy tokens identical); an FNO port carrying the complex spectral weights as (real, imaginary) pairs, converted exactly from the trained PyTorch checkpoint (field difference $10^{-7}$); and fp32 bridges trained by \code{nn.value\_and\_grad} through the frozen quantized backbone. Validation on the 4-bit 0.5B under the identical task and budget: per-chunk rollouts reach 1.00 at MAE 0.0136 by step 5000 ($n{=}12$ probe), against the fp16 run's 1.00/0.0138 --- the bridges absorb the backbone's quantization noise --- at 1.9\,s/step against 2.3 for fp16 PyTorch.
+
+\subsection{Qwen3-8B: a scale-dependent failure analysis}
+\label{sec:scaling8b}
+
+Qwen3-8B-4bit (36 layers, hidden 4096) is the largest dense backbone that trains on this machine (12\,s/step at batch 8; bridges 42.0M, most of it the $4096\times4096$ pooling keys). Its staged forward passes the parity test. What did not carry over was training, and the failure moved as we fixed it. We summarize five runs; runs 1--4 are recorded in the commit history, run 5 in \code{results/stage2\_mlx8b4/}.
+
+\textbf{Saturation.} At 4096 dimensions the raw residual-stream magnitudes saturated the bridges' pooling softmax and gates: the $x_0$ classifier sat exactly at uniform cross-entropy ($\ln 100 = 4.61$) for 8k samples while the gate drifted to $\sigma=0.86$ --- no gradient reached the pointer (the very first unclipped setup steps had produced losses of 56 and 362). The fix is to make the interface scale-free: parameter-free RMS normalization of every bridge \emph{input} (pooling, gate, and injection queries; the residual stream itself is untouched), and an injection scaled by the receiver's local stream magnitude, $h \leftarrow h + \sigma\,\mathrm{RMS}(h)\,f(\cdot)$.
+
+\textbf{Flatness, then a closed gate.} RMS normalization traded saturation for flatness: the learned $x_0$ pool now averaged the whole prompt, and the classifier sat at uniform CE for a full 2500-step run while the parameter readout and the gate were healthy --- the pointer was starved, not the channel. Supervising the pool's attention mass on the $x_0$ token span (which the QA builder can compute exactly, since it wrote the prompt) moved that mass from 6\% to 98.5\% in six steps, and in the following run the pointer, parameters, and lookup all trained (pointer error 0.014; lookup MSE 0.001) --- yet rollouts stayed at 0--25\% and the gate closed ($0.12\to0.065$). The mechanism is specific to strong backbones: their answer cross-entropy starts at its digit-entropy floor because the format tokens are already solved, so early injection is pure noise, the receiver-computed gate suppresses it, and the channel never receives gradient. Digit-weighted CE ($\times5$ on digit tokens), an open gate initialization ($\sigma_0=0.5$), and injection at 75\% depth (layer 27) did not rescue the fourth run. Two hypotheses were then live: (H1) large frozen backbones resist latent steering --- the \emph{channel} is the problem; (H2) the forward \emph{readout} is the problem. We separated them with two probes.
+
+\begin{table}[t]
+\centering
+\caption{Copy probe: a random value $v\sim U(-1,1)$ injected through the gated cross-attention alone (see text). 600 steps $\times$ batch 8; greedy rollouts, $n{=}24$, tolerance $\pm0.05$; $\sigma$ is the mean gate at the end of training.}
+\label{tab:copy}
+\small
+\begin{tabular}{lrrrrrrr}
+\toprule
+backbone (4-bit) & layers / width & inject at & bridge & s/step & final $\sigma$ & acc@0.05 & MAE \\
+\midrule
+Qwen2.5-0.5B & 24 / 896 & 15 & 1.49M & 0.36 & 0.096 & 100\% & 0.0075 \\
+Qwen3-8B & 36 / 4096 & 22 & 8.41M & 5.55 & 0.042 & 91.7\% & 0.025 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Copy probe (H1).} The minimal coupling task: $v$ is encoded by a small MLP into eight soft tokens and injected through the same gated cross-attention into a prompt (``What is the secret number?'') that carries no information, so the only route from $v$ to the answer is the channel. Table~\ref{tab:copy}: the 8B verbalizes the injected number at 92\% (MAE 0.025) after 600 steps, about 55 minutes, against 100\% for the 0.5B --- and does so with a gate of $\sigma=0.04$. \textbf{H1 is false}, and the low gate values seen throughout were never suppression: 0.04 is the scale at which a 4096-dimensional stream wants the signal.
+
+\begin{table}[t]
+\centering
+\caption{Readout probe: the forward readout in isolation, trained only to classify $x_0$ into 100 bins from the RMS-normalized prompt states at the coupling layer (10/24 for the 0.5B, 15/36 for the 8B). Held-out exact-bin accuracy and mean absolute error ($n{=}48$); a uniform-random guess scores $\approx0.33$ on the error. \emph{span} = parameter-free mean over the builder's $x_0$ token span (oracle pooling).}
+\label{tab:readout}
+\small
+\begin{tabular}{llrrr}
+\toprule
+backbone (4-bit) & pooling & steps $\times$ batch & exact bin & $|\hat x_0 - x_0|$ \\
+\midrule
+Qwen2.5-0.5B & learned query & $400\times8$ & 2.1\% & 0.328 \\
+Qwen2.5-0.5B & span & $400\times8$ & 18.8\% & 0.064 \\
+\midrule
+Qwen3-8B & learned query & $400\times8$ & 2.1\% & 0.247 \\
+Qwen3-8B & learned query + attention supervision & $400\times8$ & 2.1\% & 0.274 \\
+Qwen3-8B & final prompt position & $400\times8$ & 0.0\% & 0.378 \\
+Qwen3-8B & span & $400\times8$ & 2.1\% & 0.099 \\
+\midrule
+Qwen3-8B & learned query & $2000\times16$ & 0.0\% & 0.284 \\
+Qwen3-8B & span & $2000\times16$ & \textbf{83.3\%} & \textbf{0.0046} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Readout probe (H2).} We then isolated the forward readout --- no physics, no injection, no answer loss --- training only a pooled readout over the coupling-layer prompt states to classify $x_0$ (Table~\ref{tab:readout}), with four ways of pooling: the learned query of the current design; the same plus attention-mass supervision; the final prompt position alone; and \emph{span pooling}, a parameter-free mean over the builder's $x_0$ token span, i.e.\ the pooling an oracle pointer would produce. At the short budget the ordering is already clear --- span $\gg$ learned $>$ final position, the last at chance, so neither model aggregates $x_0$ into its final prompt position and pooling over the span is necessary --- but the 100-way classifier is under-powered there: the 0.5B's learned-query row, 2\% exact here, is the same pointer that reaches 100\% end-to-end in Section~\ref{sec:psilm}. At five times the budget the picture is unambiguous. \textbf{The learned pointer never leaves uniform at 8B}: its cross-entropy stays between 4.58 and 4.63, i.e.\ $\ln 100$, for all 2000 steps (0\% exact), while span pooling over the identical hidden states reaches 83\% exact-bin accuracy at error 0.0046. The information is present at the $x_0$ positions and readable by a two-layer head; learning \emph{where to look} is what fails at this width, and it does not fail slowly --- it fails at every budget we could afford.
+
+\textbf{Decision, and its cost.} The readout therefore pools deterministically over the builder's span (the learned path remains as the fallback when no span is supplied). This is a real concession and we state it plainly: the builder knows where $x_0$ is because it wrote the prompt, so at 8B the language$\to$physics \emph{pointer} is supplied by the task rather than learned from the words, and a free-text question would have no such span.\footnote{The span is found by a token-sublist match on the last number in the prompt, widened by one token on each side; on a failed match the builder falls back, silently, to pooling the whole prompt. The fallback never triggered on the present data, but it should raise rather than degrade.} What remains learned on the forward side is the readout of the value at those positions; on the reverse side, everything. Deterministic where the task permits, learned where it must be --- the same principle as the position-lookup token of Section~\ref{sec:psilm}, applied one level further down.
+
+\textbf{Run 5.} With span pooling, per-module gradient clipping (each bridge clipped at 1.0 separately, so the 4096-dimensional injection gradient cannot consume the global budget --- the regime in which the probe converged), and the $x_0$ loss weight raised from 0.3 to 1.0 after the first chunk, the system trained for 2500 steps at batch 8: 20k samples, a quarter of the 0.5B budget. The parameter readout converged in the first chunk (MSE $0.46\to0.02$) and the digit-weighted answer loss fell from 0.40 to 0.33, but the $x_0$ head stayed at CE 2.1--3.4 (pointer error 0.04--0.20) where the probe, with the identical head, pooling, and backbone, had reached 0.74 at 32k samples; and the gate fell from its open initialization to 0.29 by the end of chunk 1, to 0.11 by chunk 2, and to 0.03--0.04 from step $\sim$1100 onward, never reopening. Per-chunk held-out rollouts ($n{=}12$): 25\%, 58\%, 33\%, 58\%, \textbf{67\%} (MAE 0.387, 0.108, 0.132, 0.074, 0.167). On the four-arm held-out evaluation ($n{=}60$; \code{results/stage2\_mlx8b4/final\_eval\_summary.json}) the coupled system reaches \textbf{41.7\%} (MAE 0.183) against 6.7\% (MAE 0.706) for the backbone alone and 100\% (MAE 0.0026) for the oracle --- a six-fold gain over the uncoupled model on an eight-billion-parameter frozen backbone, and the first 8B run that learned end to end, but well short of the 0.5B and 1.7B systems, which close to within three points of their oracles. (The text arms of an 8B need a 768-token budget: Qwen3-8B writes a derivation before its \code{Answer:} line, and at 160 tokens every item truncated; even at 768, only 35\% of the uncoupled model's replies reach the line, against 100\% for the oracle and for \psilm{}.)
+
+Two causes, found by code review after the run and quantified against its log, are removed in the sixth run (in progress at submission; its trainer is committed): the optimizer state is now persisted across chunks with bias correction on, the pointer is detached on its way into the reverse bridge, and a readout-only warm-up phase locks the pointer before the channel first opens, so the gate never meets a wrong lookup. (i) The MLX trainer builds a fresh AdamW at every 500-step resume and, with the library's default of no bias correction, the first $\sim$15 steps after each resume take effectively $2$--$4\times$ larger steps; both gate collapses in the log ($0.29\to0.25$ at step 525, $0.11\to0.05$ at 1025) and the answer-loss spike ($0.34\to0.58$ at step 1025) coincide with resumes, though the first boundary also changed the clipping and the loss weight. The PyTorch trainer persists optimizer state. (ii) The $x_0$ estimate feeds the reverse bridge's lookup kernel without a stop-gradient, so the pointer head also receives lookup and answer gradients --- near-orthogonal to its own cross-entropy gradient and about $0.4\times$ its norm at initialization --- the one structural difference from the probe, in which the same head converged three times faster. Budget is the confound behind both: the 1.7B needed its full 80k samples to reach 1.00 rollouts, and the 8B has seen a quarter of that.
+
+\textbf{Mixture-of-experts verdict.} The natural next backbone on 24\,GB is a sparse one. Qwen3-30B-A3B-4bit \citep{qwen2025qwen3} (48 layers, hidden 2048, 128 experts, 8 active) loads in 17.2\,GB and trains at a 19.8\,GB peak, and the staged forward is bit-exact through its MoE blocks. One blocker had to be fixed: \code{mlx-lm}'s MoE block feeds the router's \code{argpartition} indices straight into the expert gather, so autograd raises on the vector--Jacobian product; \code{moe\_patch.py} wraps the routing indices in \code{stop\_gradient}, which is also the mathematically correct statement (discrete selections carry no gradient; the router's softmax scores and the expert paths still do), with parity unchanged. The verdict is on cost: 97.8\,s/step at batch 4 --- roughly 24\,s per sample against 1.5 for the dense 8B --- because sparsity saves FLOPs, not the gather/scatter dispatch that dominates on Metal. A MoE backbone is feasible here but not economical, and dense 8B remains the scaling vehicle. We note one measurement it uniquely affords: with untrained bridges, the injection already changes the top-8 expert selection at 9.3\% of positions at the coupling layer, so routing steering by the physics hemisphere is directly observable.
+
+\textbf{What the campaign established.} The architecture transfers to 1.7B within three points of its oracle, and a trained revision loop extends what the 0.5B interface can compose. At 8B the latent channel works (copy probe), the readout's content is present and linearly readable (span probe), and the learned attention pointer is dead at any budget --- a scale-dependent failure of \emph{optimization}, not of capacity or of the frozen model's willingness to be steered. Three interface changes survive from the campaign as general lessons: scale-free bridges, digit-weighted answer loss for backbones that have already solved the format, and deterministic pointers wherever the task can supply them. Whether the 8B system closes the remaining gap end-to-end is the open result above.
+
 \section{Discussion and Limitations}
 \label{sec:discussion}
 
 \textbf{What has been shown.} A frozen 0.5B language model and frozen partner models of three kinds (a twin LLM driving a calculator; a purpose-trained FNO; pretrained DPOT-Tiny) can be composed into systems that answer questions none of the parts can answer, with all inter-model traffic in latent space and only 2--7M trained parameters. At this scale the latent channel matches text-level oracle accuracy; its digit-level fidelity (Stage~1's long products) is bounded by interface capacity and training budget, consistent with \citet{flamant2026bicameral}.
 
-\textbf{What has not been shown.} The forward readouts are parametric: the interface extracts a fixed set of quantities the task designer chose, and Section~\ref{sec:gen} shows transfer beyond their trained support is partial. General language-to-field translation --- arbitrary ICs described in free text --- remains open, as does scaling the language side beyond 0.5B, where Stage~0 predicts larger gains in evidence use. Our tasks are also ones where the oracle-text arm saturates; the deeper promise of latent coupling --- carrying information that does not survive verbalization, at bandwidth text cannot match --- is precisely what these tasks cannot yet measure. The brain analogy and the complementarity framing are motivations, not claims; likewise the author's broader conjecture that grounding language models in physical law may support alignment is a direction for argument, not something these experiments establish.
+\textbf{What has not been shown.} The forward readouts are parametric: the interface extracts a fixed set of quantities the task designer chose, and Section~\ref{sec:gen} shows transfer beyond their trained support is partial. General language-to-field translation --- arbitrary ICs described in free text --- remains open. Scaling the language side (Section~\ref{sec:scaling}) reaches 1.7B cleanly but, at 8B, only by supplying the pointer from the task, and its end-to-end result there is pending: where Stage~0 predicts larger gains in evidence use, we have so far measured larger \emph{costs} in interface optimization. Our tasks are also ones where the oracle-text arm saturates; the deeper promise of latent coupling --- carrying information that does not survive verbalization, at bandwidth text cannot match --- is precisely what these tasks cannot yet measure. The brain analogy and the complementarity framing are motivations, not claims; likewise the author's broader conjecture that grounding language models in physical law may support alignment is a direction for argument, not something these experiments establish.
 
 \textbf{Why small-scale results matter here.} Every mechanism-level finding in this paper --- the capability-gap reversal, the phase transitions and their causal order, the exposure-bias bootstrap, the mode collapse of unpointed attention, the support-coverage law --- was discovered by failure analysis cheap enough to run on a laptop, and each transferred forward to the next, more capable configuration. The same interfaces are, by construction, what a frontier-scale coupling would train.
 

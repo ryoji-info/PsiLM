@@ -1,0 +1,32 @@
+{
+ "summary": {
+  "n": 60,
+  "step": 2500,
+  "model": "mlx-community/Qwen3-8B-4bit",
+  "tolerance": 0.05,
+  "couple": [
+   15,
+   27,
+   36
+  ],
+  "baseline": {
+   "acc": 0.0667,
+   "mae": 0.7062,
+   "answer_line_rate": 0.35
+  },
+  "oracle": {
+   "acc": 1.0,
+   "mae": 0.0026,
+   "answer_line_rate": 1.0
+  },
+  "psilm": {
+   "acc": 0.4167,
+   "mae": 0.183
+  },
+  "zero": {
+   "acc": 0.0167,
+   "mae": 0.308
+  },
+  "note": "psilm/zero from final_eval.json (max_new 24 staged decode); baseline/oracle from final_eval_textarms.json (max_new 768)"
+ }
+}
