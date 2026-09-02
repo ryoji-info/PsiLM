@@ -86,6 +86,11 @@ def main():
                     help="phase A: first N global steps train fwd + lookup on the true x0 "
                          "through layers 0..l_fwd only (no injection, no answer loss)")
     ap.add_argument("--eval-n", type=int, default=48)
+    ap.add_argument("--inj-cap", type=float, default=None,
+                    help="cap the injection RMS at this fraction of the stream RMS (pre-gate)")
+    ap.add_argument("--reinit-channel", action="store_true",
+                    help="on resume: keep the trained readouts/lookup, re-initialize the reverse "
+                         "token heads and the gated injection (fresh optimizer)")
     ap.add_argument("--clip", default="global", choices=["global", "module"],
                     help="module: clip each bridge (fwd/rev/inject) at 1.0 separately, "
                          "so a large injection gradient cannot starve the readouts "
@@ -101,7 +106,8 @@ def main():
     fno = convert_from_torch("results/stage2/fno.pt")
     d_model = model.model.embed_tokens.weight.shape[-1] if not hasattr(
         model.model.embed_tokens, "scales") else model.args.hidden_size
-    bridges = PsiBridgesMLX(d_model=model.args.hidden_size, gate_bias=args.gate_bias)
+    bridges = PsiBridgesMLX(d_model=model.args.hidden_size, gate_bias=args.gate_bias,
+                            inj_cap=args.inj_cap)
     # bias correction matters: MLX defaults to none, so a fresh AdamW takes
     # 3-6x steps for its first ~15 updates. State is persisted across chunks
     # (the torch trainer always did; the 8B v5 gate closed at chunk boundaries).
@@ -113,7 +119,12 @@ def main():
         bridges.load_weights(str(ckpt))
         meta = json.loads(Path(str(ckpt) + ".meta").read_text())
         global_step = meta["step"]
-        if opt_path.exists():
+        if args.reinit_channel:
+            bridges.reinit_channel(gate_bias=args.gate_bias, inj_cap=args.inj_cap)
+            mx.eval(bridges.parameters())
+            print(f"resumed at step {global_step}: readouts/lookup kept, channel re-initialized "
+                  f"(gate_bias {args.gate_bias}, inj_cap {args.inj_cap}); optimizer fresh")
+        elif opt_path.exists():
             opt.state = tree_unflatten(list(mx.load(str(opt_path)).items()))
             mx.eval(opt.state)
             print(f"resumed at step {global_step} (optimizer state restored, "

@@ -106,8 +106,14 @@ class ReverseBridgeMLX(nn.Module):
 
 class GatedCrossAttentionMLX(nn.Module):
     def __init__(self, d_model: int, d_attn: int = 256, g_hidden: int = 256,
-                 gate_bias: float = -2.0):
+                 gate_bias: float = -2.0, inj_cap=None):
         super().__init__()
+        # inj_cap: hard cap on the injection's RMS relative to the receiver's
+        # stream RMS (before the gate). 8B v6 showed Adam inflating to_out until
+        # the injection ran at 30-50% of the residual stream at every position,
+        # which garbled the frozen model even though the value it carried was
+        # right; the successful 8B copy probe and v5 both operated near 5%.
+        self.inj_cap = inj_cap
         self.to_q = nn.Linear(d_model, d_attn)
         self.to_k = nn.Linear(d_model, d_attn)
         self.to_v = nn.Linear(d_model, d_attn)
@@ -126,6 +132,9 @@ class GatedCrossAttentionMLX(nn.Module):
         q, k, v = self.to_q(h), self.to_k(phys_tokens), self.to_v(phys_tokens)
         attn = mx.softmax(q @ k.transpose(0, 2, 1) / math.sqrt(q.shape[-1]), axis=-1)
         inj = self.to_out(attn @ v)
+        if self.inj_cap is not None:
+            r = mx.sqrt((inj * inj).mean(axis=-1, keepdims=True) + 1e-12)
+            inj = inj * mx.minimum(mx.array(1.0), self.inj_cap / r)
         sigma = mx.sigmoid(self.g2(nn.relu(self.g1(h))))
         # scale the injection to the receiver's local stream magnitude, so
         # the channel is scale-free across backbone widths
@@ -141,8 +150,20 @@ class GatedCrossAttentionMLX(nn.Module):
 
 
 class PsiBridgesMLX(nn.Module):
-    def __init__(self, d_model: int, n_params: int = 3, gate_bias: float = -2.0):
+    def __init__(self, d_model: int, n_params: int = 3, gate_bias: float = -2.0,
+                 inj_cap=None):
         super().__init__()
         self.fwd = ForwardBridgeMLX(d_model, n_params=n_params)
         self.rev = ReverseBridgeMLX(d_model)
-        self.inject = GatedCrossAttentionMLX(d_model, gate_bias=gate_bias)
+        self.inject = GatedCrossAttentionMLX(d_model, gate_bias=gate_bias, inj_cap=inj_cap)
+
+    def reinit_channel(self, gate_bias: float = -2.0, inj_cap=None):
+        """Fresh physics->language channel (reverse-bridge token heads and the
+        gated injection) while keeping the trained readouts and lookup: fwd,
+        rev.feat, rev.u_head, rev.log_kappa."""
+        d_model = self.inject.to_q.weight.shape[1]
+        fresh = ReverseBridgeMLX(d_model)
+        self.rev.out = fresh.out
+        self.rev.lookup_out = fresh.lookup_out
+        self.rev.queries = fresh.queries
+        self.inject = GatedCrossAttentionMLX(d_model, gate_bias=gate_bias, inj_cap=inj_cap)
