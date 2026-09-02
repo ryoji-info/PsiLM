@@ -88,7 +88,8 @@ class QABuilder:
                     hit = i
             if hit >= 0:
                 return max(0, hit - 1), min(len(p_prompt), hit + len(sub) + 1)
-        return 0, len(p_prompt)   # fallback: whole prompt
+        raise ValueError(f"x0 span not found in prompt (x0={item.get('x0')!r}); "
+                     "deterministic span pooling would silently pool the whole prompt")
 
     def build(self, item):
         p_prompt = self.prompt_ids(item)

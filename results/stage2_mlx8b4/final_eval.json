@@ -1,0 +1,1771 @@
+{
+ "summary": {
+  "n": 60,
+  "step": 2500,
+  "model": "mlx-community/Qwen3-8B-4bit",
+  "tolerance": 0.05,
+  "couple": [
+   15,
+   27,
+   36
+  ],
+  "baseline": {
+   "acc": 0.0333,
+   "mae": 2.6548
+  },
+  "oracle": {
+   "acc": 0.0167,
+   "mae": 0.31
+  },
+  "psilm": {
+   "acc": 0.4167,
+   "mae": 0.183
+  },
+  "zero": {
+   "acc": 0.0167,
+   "mae": 0.308
+  }
+ },
+ "rows": [
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.86,
+    "u": -0.095
+   },
+   "text": {
+    "baseline": "\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear PDE, and solving it numerically is the standard approach. Since the domain is periodic $[0,1)$, we can use a spectral method",
+    "oracle": "ial t} + u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the",
+    "psilm": "u at x = 0.86 equals -0.11.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.11,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.57,
+    "u": -0.5394
+   },
+   "text": {
+    "baseline": "Where:\n- $ u(x,t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- The domain is periodic: $ x \\in [0,1) $,\n- The initial condition is:\n  $$\n  u(x,0) = 1.28 \\cdot \\sin(2\\pi x + 0.5)\n  $$\n",
+    "oracle": "ial t} + u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the",
+    "psilm": "u at x = 0.57 equals -0.28.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.28,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.49,
+    "u": -0.5634
+   },
+   "text": {
+    "baseline": "\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear PDE, and solving it numerically is the standard approach. Since the domain is periodic $[0,1)$, we can use a spectral method",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.49 equals -0.54.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.54,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.13,
+    "u": 0.3283
+   },
+   "text": {
+    "baseline": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nWhere:\n- $ u(x, t) $ is the velocity field\n- $ \\nu = 0.02 $ is the viscosity\n- $ x \\in [0, 1) $, periodic domain\n- Initial condition: $ u",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.13 equals -0.01.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.01,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.79,
+    "u": -0.2048
+   },
+   "text": {
+    "baseline": "rac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear PDE, and solving it numerically is the standard approach. Since the domain is periodic $[0,1)$, we can use a",
+    "oracle": "ial t} + u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the",
+    "psilm": "u at x = 0.79 equals -0.17.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.17,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.31,
+    "u": 0.581
+   },
+   "text": {
+    "baseline": "rac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear PDE, and solving it numerically is the standard approach. Since the domain is periodic $[0,1)$, we can use a",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.31 equals -0.47.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.47,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.79,
+    "u": -0.2048
+   },
+   "text": {
+    "baseline": "rac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear PDE, and solving it numerically is the standard approach. Since the domain is periodic $[0,1)$, we can use a",
+    "oracle": "ial t} + u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the",
+    "psilm": "u at x = 0.79 equals -0.17.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.17,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.84,
+    "u": -0.1264
+   },
+   "text": {
+    "baseline": "+ u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nWhere:\n- $ u(x, t) $ is the velocity field\n- $ \\nu = 0.02 $ is the viscosity\n- $ t = 0.5 $ is the final time\n- $ x \\in [0,",
+    "oracle": "ial t} + u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the",
+    "psilm": "u at x = 0.84 equals -0.17.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.17,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.19,
+    "u": 0.2206
+   },
+   "text": {
+    "baseline": "l x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 0.6 \\sin(2\\pi x + 6.24)\n  $",
+    "oracle": "rac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a **nonlinear partial differential equation** that describes the evolution of a velocity field under the influence of ad",
+    "psilm": "u at x = 0.19 equals 0.34.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 6.24,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.34,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.26,
+    "u": 0.297
+   },
+   "text": {
+    "baseline": "l x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 0.6 \\sin(2\\pi x + 6.24)\n  $",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.26 equals 0.27.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 6.24,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.27,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.57,
+    "u": -0.2894
+   },
+   "text": {
+    "baseline": "+ u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nWhere:\n- $ u(x, t) $ is the velocity field\n- $ \\nu = 0.02 $ is the viscosity\n- $ t = 0.5 $ is the final time\n- $ x \\in [0,",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.57 equals -0.33.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.33,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.7,
+    "u": -0.3461
+   },
+   "text": {
+    "baseline": "al u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\nWhere:\n- $ u(x, t) $ is the velocity field\n- $ \\nu = 0.02 $ is the viscosity\n- $ x \\in [0, 1) $, periodic domain\n- Initial condition: $ u(x",
+    "oracle": "rtial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **trusted",
+    "psilm": "u at x = 0.7 equals -0.33.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.33,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.25,
+    "u": 0.2867
+   },
+   "text": {
+    "baseline": " + u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\nWhere:\n- $ u(x, t) $ is the velocity field\n- $ \\nu = 0.02 $ is the viscosity\n- $ t = 0.5 $ is the final time\n- $ x \\in [0,",
+    "oracle": "} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **trusted solver",
+    "psilm": "u at x = 0.25 equals -0.01.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.01,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.87,
+    "u": -0.1666
+   },
+   "text": {
+    "baseline": "\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear PDE, and solving it numerically is the standard approach. Since the domain is periodic $[0,1)$, we can use a spectral method",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.87 equals -0.27.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 6.24,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.27,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.98,
+    "u": -0.0331
+   },
+   "text": {
+    "baseline": "tial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\nWhere:\n- $ u(x, t) $ is the velocity field\n- $ \\nu = 0.02 $ is the viscosity\n- $ x \\in [0, 1) $, periodic domain\n- Initial condition: $ u",
+    "oracle": "} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **trusted solver",
+    "psilm": "u at x = 0.98 equals -0.11.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.11,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": true
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.22,
+    "u": 0.2544
+   },
+   "text": {
+    "baseline": "l x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 0.6 \\sin(2\\pi x + 6.24)\n  $",
+    "oracle": "} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **trusted solver",
+    "psilm": "u at x = 0.22 equals 0.27.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 6.24,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.27,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.02,
+    "u": 0.1445
+   },
+   "text": {
+    "baseline": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear PDE, and solving it numerically is the standard approach. Since the domain is periodic $[0,1)$, we can use a spectral",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.02 equals -0.54.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.47,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.54,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.2,
+    "u": 0.4147
+   },
+   "text": {
+    "baseline": " x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 1.13 \\sin(2\\pi x + 0.47)\n  $",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.2 equals -0.54.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.47,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.54,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.96,
+    "u": 0.0531
+   },
+   "text": {
+    "baseline": "\\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear PDE, and solving it numerically is the standard approach. Since the domain is periodic $[0,1)$, we can use",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.96 equals -0.11.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.47,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.11,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.5,
+    "u": -0.5408
+   },
+   "text": {
+    "baseline": "{\\partial x^2}\n$$\n\nwhere:\n- $ u(x,t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x,0) = 1.13 \\sin(2\\pi x + 0.47)\n  $$\n- the domain is periodic: $ x",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.5 equals -0.54.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.47,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.54,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.18,
+    "u": 0.3853
+   },
+   "text": {
+    "baseline": "al x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 1.13 \\sin(2\\pi x + 0.47)\n ",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.18 equals 0.47.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.47,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.47,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.67,
+    "u": -0.3858
+   },
+   "text": {
+    "baseline": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear PDE, and solving it numerically is the standard approach. Since the domain is periodic $[0,1)$, we can use a spectral",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.67 equals -0.37.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.47,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.37,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.16,
+    "u": 0.3556
+   },
+   "text": {
+    "baseline": "nu = 0.02 $ is the viscosity, and the initial condition is:\n\n$$\nu(x,0) = 1.13 \\sin(2\\pi x + 0.47)\n$$\n\nWe are to compute the value of $ u $ at $ x = 0.16 $ and $ t = 0.5 $, on the periodic domain $ [0,",
+    "oracle": "partial t} + u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However,",
+    "psilm": "u at x = 0.16 equals 0.47.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.47,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.88,
+    "u": -0.0689
+   },
+   "text": {
+    "baseline": "\\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear PDE, and solving it numerically is the standard approach. Since the domain is periodic $[0,1)$, we can use",
+    "oracle": "partial t} + u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However,",
+    "psilm": "u at x = 0.88 equals -0.13.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.47,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.13,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.46,
+    "u": 0.5351
+   },
+   "text": {
+    "baseline": "} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 1.05 \\cdot \\sin(2\\pi x + 5.8)\n",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.46 equals -0.01.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.8,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.01,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.69,
+    "u": -0.5371
+   },
+   "text": {
+    "baseline": "rac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear PDE, and solving it numerically is the standard approach. Since the domain is periodic $[0,1)$, we can use a",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.69 equals -0.47.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.8,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.47,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.74,
+    "u": -0.4896
+   },
+   "text": {
+    "baseline": "} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 1.05 \\cdot \\sin(2\\pi x + 5.8)\n",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.74 equals -0.47.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.8,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.47,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.13,
+    "u": 0.0794
+   },
+   "text": {
+    "baseline": "} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 1.05 \\cdot \\sin(2\\pi x + 5.8)\n",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.13 equals 0.37.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.8,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.37,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.65,
+    "u": -0.5165
+   },
+   "text": {
+    "baseline": "l x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 1.05 \\sin(2\\pi x + 5.8)\n  $",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.65 equals -0.47.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.8,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.47,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.46,
+    "u": 0.5351
+   },
+   "text": {
+    "baseline": "} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 1.05 \\cdot \\sin(2\\pi x + 5.8)\n",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.46 equals -0.01.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.8,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.01,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.74,
+    "u": -0.4896
+   },
+   "text": {
+    "baseline": "} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 1.05 \\cdot \\sin(2\\pi x + 5.8)\n",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.74 equals -0.47.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.8,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.47,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.24,
+    "u": 0.243
+   },
+   "text": {
+    "baseline": "} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 1.05 \\cdot \\sin(2\\pi x + 5.8)\n",
+    "oracle": " u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a **",
+    "psilm": "u at x = 0.24 equals 0.27.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.8,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.27,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.23,
+    "u": 0.0889
+   },
+   "text": {
+    "baseline": "tial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\nWhere:\n- $ u(x, t) $ is the velocity field\n- $ \\nu = 0.02 $ is the viscosity\n- $ x \\in [0, 1) $, periodic domain\n- Initial condition: $ u",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.23 equals 0.17.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.17,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.79,
+    "u": -0.3786
+   },
+   "text": {
+    "baseline": "tial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\nWhere:\n- $ u(x, t) $ is the velocity field\n- $ \\nu = 0.02 $ is the viscosity\n- $ x \\in [0, 1) $, periodic domain\n- Initial condition: $ u",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.79 equals -0.37.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.37,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.27,
+    "u": 0.1378
+   },
+   "text": {
+    "baseline": "x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 0.61 \\cdot \\sin(2\\pi x + 5.29",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.27 equals 0.17.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.29,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.17,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.5,
+    "u": 0.3722
+   },
+   "text": {
+    "baseline": "= \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nWhere:\n- $ u(x,t) $ is the velocity field\n- $ \\nu = 0.02 $ is the viscosity\n- $ t = 0.5 $ is the final time\n- $ x = 0.5 $ is the point of interest\n\n---\n\n###",
+    "oracle": "c{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states",
+    "psilm": "u at x = 0.5 equals -0.01.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.01,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.04,
+    "u": -0.1452
+   },
+   "text": {
+    "baseline": "x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 0.61 \\cdot \\sin(2\\pi x + 5.29",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.04 equals -0.01.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.29,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.01,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.77,
+    "u": -0.3734
+   },
+   "text": {
+    "baseline": "x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 0.61 \\cdot \\sin(2\\pi x + 5.29",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.77 equals -0.37.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.29,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.37,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.45,
+    "u": 0.3371
+   },
+   "text": {
+    "baseline": "tial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\nWhere:\n- $ u(x, t) $ is the velocity field\n- $ \\nu = 0.02 $ is the viscosity\n- $ x \\in [0, 1) $, periodic domain\n- Initial condition: $ u",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.45 equals -0.01.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.01,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.11,
+    "u": -0.0595
+   },
+   "text": {
+    "baseline": "x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 0.61 \\cdot \\sin(2\\pi x + 5.29",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.11 equals -0.07.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.29,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.07,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.17,
+    "u": -0.4436
+   },
+   "text": {
+    "baseline": "u = 0.02 $ is the viscosity, and the initial condition is:\n\n$$\nu(x,0) = 1.41 \\cdot \\sin(2\\pi x + 3.47)\n$$\n\nWe are to find the value of $ u $ at $ x = 0.17 $ and $ t = 0.5 $, on the periodic domain $ [",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.17 equals -0.27.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.27,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.23,
+    "u": -0.3487
+   },
+   "text": {
+    "baseline": "x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 1.41 \\cdot \\sin(2\\pi x + 3.47",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.23 equals -0.57.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 3.47,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.57,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.79,
+    "u": 0.542
+   },
+   "text": {
+    "baseline": "u = 0.02 $ is the viscosity, and the initial condition is:\n\n$$\nu(x,0) = 1.41 \\cdot \\sin(2\\pi x + 3.47)\n$$\n\nWe are to find the value of $ u $ at $ x = 0.79 $ and $ t = 0.5 $, on the periodic domain $ [",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.79 equals 0.51.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": true
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.51,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.21,
+    "u": -0.3804
+   },
+   "text": {
+    "baseline": "u = 0.02 $ is the viscosity, and the initial condition is:\n\n$$\nu(x,0) = 1.41 \\cdot \\sin(2\\pi x + 3.47)\n$$\n\nWe are to find the value of $ u $ at $ x = 0.21 $ and $ t = 0.5 $, on the periodic domain $ [",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.21 equals -0.57.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.57,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.51,
+    "u": 0.1
+   },
+   "text": {
+    "baseline": "x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 1.41 \\cdot \\sin(2\\pi x + 3.47",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.51 equals -0.21.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 3.47,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.21,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.28,
+    "u": -0.269
+   },
+   "text": {
+    "baseline": "u = 0.02 $ is the viscosity, and the initial condition is:\n\n$$\nu(x,0) = 1.41 \\cdot \\sin(2\\pi x + 3.47)\n$$\n\nWe are to find the value of $ u $ at $ x = 0.28 $ and $ t = 0.5 $, on the periodic domain $ [",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.28 equals -0.57.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.57,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.24,
+    "u": -0.3328
+   },
+   "text": {
+    "baseline": "u = 0.02 $ is the viscosity, and the initial condition is:\n\n$$\nu(x,0) = 1.41 \\cdot \\sin(2\\pi x + 3.47)\n$$\n\nWe are to find the value of $ u $ at $ x = 0.24 $ and $ t = 0.5 $, on the periodic domain $ [",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.24 equals -0.57.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.57,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.58,
+    "u": 0.2122
+   },
+   "text": {
+    "baseline": " 0.02 $ is the viscosity, and the initial condition is:\n\n$$\nu(x,0) = 1.41 \\cdot \\sin(2\\pi x + 3.47)\n$$\n\nWe are to compute the value of $ u $ at $ x = 0.58 $ and $ t = 0.5 $, on the periodic domain $ [",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.58 equals 0.37.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.37,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.98,
+    "u": -0.2024
+   },
+   "text": {
+    "baseline": "$$\n\nWhere:\n- $ u(x,t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- The domain is periodic: $ x \\in [0,1) $,\n- The initial condition is:\n  $$\n  u(x,0) = 1.36 \\sin(2\\pi x + 5.61)\n  $$\n-",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.98 equals -0.37.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.37,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.04,
+    "u": -0.107
+   },
+   "text": {
+    "baseline": "$$\n\nWhere:\n- $ u(x,t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- The domain is periodic: $ x \\in [0,1) $,\n- The initial condition is:\n  $$\n  u(x,0) = 1.36 \\sin(2\\pi x + 5.61)\n  $$\n-",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.04 equals -0.04.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.04,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.52,
+    "u": 0.5978
+   },
+   "text": {
+    "baseline": "al x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nwhere:\n- $ u(x, t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- the initial condition is:\n  $$\n  u(x, 0) = 1.36 \\sin(2\\pi x + 5.61)\n ",
+    "oracle": "partial t} + u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However,",
+    "psilm": "u at x = 0.52 equals 0.57.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.57,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.76,
+    "u": -0.544
+   },
+   "text": {
+    "baseline": "$$\n\nWhere:\n- $ u(x,t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- The domain is periodic: $ x \\in [0,1) $,\n- The initial condition is:\n  $$\n  u(x,0) = 1.36 \\sin(2\\pi x + 5.61)\n  $$\n-",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.76 equals -0.57.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.57,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.56,
+    "u": 0.4944
+   },
+   "text": {
+    "baseline": " $ u(x,t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- The initial condition is $ u(x,0) = 1.36 \\sin(2\\pi x + 5.61) $,\n- The domain is periodic: $ x \\in [0,1) $,\n- We are to compute $",
+    "oracle": "sity** $ \\nu = 0.02 $:\n\n$$\n\\frac{\\partial u}{\\partial t} + u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it",
+    "psilm": "u at x = 0.56 equals -0.01.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.01,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.85,
+    "u": -0.4077
+   },
+   "text": {
+    "baseline": "+ u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nWhere:\n- $ u(x, t) $ is the velocity field\n- $ \\nu = 0.02 $ is the viscosity\n- $ t = 0.5 $ is the final time\n- $ x \\in [0,",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.85 equals -0.47.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.47,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.97,
+    "u": -0.2183
+   },
+   "text": {
+    "baseline": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear PDE, and solving it numerically is the standard approach. Since the domain is periodic $[0,1)$, we can use a spectral",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.97 equals -0.47.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.47,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.06,
+    "u": -0.0751
+   },
+   "text": {
+    "baseline": "$$\n\nWhere:\n- $ u(x,t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- The domain is periodic: $ x \\in [0,1) $,\n- The initial condition is:\n  $$\n  u(x,0) = 1.36 \\sin(2\\pi x + 5.61)\n  $$\n-",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.06 equals -0.06.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 5.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.06,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.76,
+    "u": 0.0998
+   },
+   "text": {
+    "baseline": "\nWhere:\n- $ u(x,t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- The domain is periodic: $ x \\in [0,1) $,\n- The initial condition is:\n  $$\n  u(x,0) = 0.88 \\cdot \\sin(2\\pi x + 1.95)\n  $",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.76 equals -0.03.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 1.95,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.03,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.05,
+    "u": 0.4776
+   },
+   "text": {
+    "baseline": "+ u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nWhere:\n- $ u(x, t) $ is the velocity field\n- $ \\nu = 0.02 $ is the viscosity\n- $ t = 0.5 $ is the final time\n- $ x \\in [0,",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.05 equals -0.47.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.5,
+    "ok": true
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.47,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.61,
+    "u": -0.1129
+   },
+   "text": {
+    "baseline": "\nWhere:\n- $ u(x,t) $ is the velocity field,\n- $ \\nu = 0.02 $ is the viscosity,\n- The domain is periodic: $ x \\in [0,1) $,\n- The initial condition is:\n  $$\n  u(x,0) = 0.88 \\cdot \\sin(2\\pi x + 1.95)\n  $",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.61 equals -0.11.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 1.95,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.11,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.91,
+    "u": 0.3089
+   },
+   "text": {
+    "baseline": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nWhere:\n- $ u(x, t) $ is the velocity field\n- $ \\nu = 0.02 $ is the viscosity\n- $ x \\in [0, 1) $, periodic domain\n- Initial condition: $ u",
+    "oracle": "ial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}\n$$\n\nThis is a nonlinear partial differential equation, and solving it analytically is generally difficult. However, the problem states that a",
+    "psilm": "u at x = 0.91 equals 0.33.<|im_end|>"
+   },
+   "baseline": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.02,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.33,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  }
+ ]
+}

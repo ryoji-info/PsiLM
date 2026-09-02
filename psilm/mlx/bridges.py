@@ -112,7 +112,7 @@ class GatedCrossAttentionMLX(nn.Module):
         self.g2.weight = mx.zeros_like(self.g2.weight)
         self.g2.bias = mx.full(self.g2.bias.shape, gate_bias)
 
-    def __call__(self, hidden, phys_tokens):
+    def __call__(self, hidden, phys_tokens, return_ratio=False):
         dtype = hidden.dtype
         h_raw = hidden.astype(mx.float32)
         h = _rms(h_raw)
@@ -123,7 +123,14 @@ class GatedCrossAttentionMLX(nn.Module):
         # scale the injection to the receiver's local stream magnitude, so
         # the channel is scale-free across backbone widths
         scale = mx.sqrt((h_raw * h_raw).mean(axis=-1, keepdims=True) + 1e-6)
-        return (h_raw + sigma * inj * scale).astype(dtype), sigma
+        delta = sigma * inj * scale
+        out = (h_raw + delta).astype(dtype)
+        if return_ratio:
+            # effective channel strength per position: RMS(injection)/RMS(stream).
+            # sigma alone is not the channel (to_out can absorb any fixed sigma).
+            ratio = mx.sqrt((delta * delta).mean(axis=-1) + 1e-12) / scale[..., 0]
+            return out, sigma, ratio
+        return out, sigma
 
 
 class PsiBridgesMLX(nn.Module):
