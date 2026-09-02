@@ -49,10 +49,17 @@ def parse_value(text):
     return float(m[-1]) if m else None
 
 
+def parse_answer(text):
+    """The trained reply is 'u at x = {x0} equals {u}.'; only the number after
+    'equals' counts, so a reply that stops at the x0 echo scores as a miss."""
+    m = re.search(r"equals\s*(-?\d+\.?\d*)", text)
+    return float(m.group(1)) if m else None
+
+
 def rollout_eval(psi, builder, items, n=12):
     correct, errs = 0, []
     for item in items[:n]:
-        pred = parse_value(psi.generate(builder, item))
+        pred = parse_answer(psi.generate(builder, item))
         ok = pred is not None and abs(pred - item["u"]) <= 0.05
         correct += ok
         if pred is not None:
@@ -169,8 +176,7 @@ def main():
     mx.savez(str(opt_path), **dict(tree_flatten(opt.state)))
     Path(str(ckpt) + ".meta").write_text(json.dumps({
         "step": global_step, "model": args.model, "l_rev": psi.l_rev, "l_fwd": psi.l_fwd,
-        "lam_x0": args.lam_x0, "clip": args.clip, "detach_x0": args.detach_x0,
-        "readout_only": args.readout_only, "gate_bias": args.gate_bias, "eval_n": args.eval_n}))
+        "args": vars(args)}))
     with log.open("a") as f:
         f.write(json.dumps({"step": global_step, "eval_acc": acc, "eval_mae": mae}) + "\n")
     print(f"CHUNK DONE step={global_step} acc@0.05={acc if acc is None else round(acc, 3)} mae={mae}")

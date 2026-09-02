@@ -49,6 +49,13 @@ def chat_generate(model, hf_tok, user, max_new=768):
     return mlx_lm.generate(model, hf_tok, prompt=list(ids), max_tokens=max_new, verbose=False)
 
 
+def parse_answer(text):
+    """PsiLM arm: the trained reply is 'u at x = {x0} equals {u}.' -- score only
+    the number after 'equals' (a reply that stops at the x0 echo is a miss)."""
+    m = re.search(r"equals\s*(-?\d+\.?\d*)", text)
+    return float(m.group(1)) if m else None
+
+
 def score(pred, true):
     return pred is not None and abs(pred - true) <= TOL
 
@@ -97,7 +104,7 @@ def main():
             preds["oracle"] = parse_value(texts["oracle"])
         if "psilm" in arms:
             texts["psilm"] = psi.generate(builder, item)
-            preds["psilm"] = parse_value(texts["psilm"])
+            preds["psilm"] = parse_answer(texts["psilm"])
         preds["zero"] = 0.0
         row = {"item": item, "text": {k: v[-200:] for k, v in texts.items()},
                "has_answer_line": {k: ("Answer:" in v) for k, v in texts.items()}}

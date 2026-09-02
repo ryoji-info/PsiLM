@@ -53,7 +53,14 @@ class ForwardBridgeMLX(nn.Module):
         else:
             pooled_x, w_x0 = self._pool(h, prompt_mask, self.x0_query, self.x0_key)
         x0_logits = self.x0_h2(nn.gelu(self.x0_h1(pooled_x)))
-        x0_hat = mx.softmax(x0_logits, axis=-1) @ self._bins
+        # circular mean of the bin distribution: x0 lives on the periodic
+        # domain, so a linear expectation collapses toward 0.5 while the
+        # classifier is broad and mis-wraps at 0/1; the circular mean does
+        # neither and agrees with the linear one once the distribution peaks.
+        p = mx.softmax(x0_logits, axis=-1)
+        ang = 2 * math.pi * self._bins
+        x0_hat = mx.arctan2(p @ mx.sin(ang), p @ mx.cos(ang)) / (2 * math.pi)
+        x0_hat = x0_hat - mx.floor(x0_hat)          # wrap into [0, 1)
         return params, x0_hat, x0_logits, w_x0
 
 

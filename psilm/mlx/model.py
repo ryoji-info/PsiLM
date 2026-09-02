@@ -85,8 +85,9 @@ class PsiLMMLX:
         loss = lam_param * loss_param + lam_x0 * loss_x0 + lam_u * loss_u
         zero = mx.array(0.0)
         x0_exact = (x0_logits.argmax(-1) == batch["x0_bins"]).astype(mx.float32).mean()
+        d = mx.abs(x0_hat - batch["x0"])
         return loss, (zero, loss_param, loss_x0, loss_u,
-                      mx.abs(x0_hat - batch["x0"]).mean(), zero, zero, zero, zero, x0_exact)
+                      mx.minimum(d, 1 - d).mean(), zero, zero, zero, zero, x0_exact)
 
     def loss_fn(self, batch, lam_param=1.0, lam_x0=None, lam_u=2.0, lam_attn=0.5):
         if lam_x0 is None:
@@ -120,8 +121,10 @@ class PsiLMMLX:
         gate_ans = (sigma[..., 0] * resp).sum() / n_resp
         ratio_ans = (self._last_ratio * resp).sum() / n_resp
         x0_exact = (x0_logits.argmax(-1) == x0_tgt).astype(mx.float32).mean()
+        d = mx.abs(x0_hat - batch["x0"])
+        x0_err = mx.minimum(d, 1 - d).mean()           # periodic distance
         return loss, (loss_ans, loss_param, loss_x0, loss_u,
-                      mx.abs(x0_hat - batch["x0"]).mean(), sigma.mean(), loss_attn,
+                      x0_err, sigma.mean(), loss_attn,
                       gate_ans, ratio_ans, x0_exact)
 
     def generate(self, builder, item, max_new=24):
