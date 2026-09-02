@@ -215,6 +215,11 @@ def coupling_from_log(ckpt: str):
 def resolve_coupling(args, n_layers: int):
     rule = (round(n_layers * 10 / 24), round(n_layers * 15 / 24))
     logged = coupling_from_log(args.ckpt)
+    # v6+ checkpoint meta records the coupling depths; prefer them over the log parse
+    meta_p = Path(str(args.ckpt) + ".meta")
+    meta = json.loads(meta_p.read_text()) if meta_p.exists() else {}
+    if "l_rev" in meta and "l_fwd" in meta and not logged:
+        logged = (int(meta["l_fwd"]), int(meta["l_rev"]), n_layers)
     l_fwd = args.l_fwd if args.l_fwd is not None else (logged[0] if logged else rule[0])
     l_rev = args.l_rev if args.l_rev is not None else (logged[1] if logged else rule[1])
     if logged and logged[2] != n_layers:

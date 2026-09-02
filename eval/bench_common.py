@@ -358,12 +358,15 @@ def load_physics_stack(ckpt: str, d_model: int, gate_bias: float = -2.0, fno_pat
     from psilm.mlx.fno import convert_from_torch
     fno = convert_from_torch(fno_path)
     fno.freeze()
-    bridges = PsiBridgesMLX(d_model=d_model, gate_bias=gate_bias)
+    meta_p = Path(str(ckpt) + ".meta")
+    meta = json.loads(meta_p.read_text()) if meta_p.exists() else {}
+    # v6+ checkpoints record their construction; older ones fall back to the CLI value
+    margs = meta.get("args", {})
+    bridges = PsiBridgesMLX(d_model=d_model, gate_bias=margs.get("gate_bias", gate_bias),
+                            inj_cap=margs.get("inj_cap"), channel=margs.get("channel", "field"))
     bridges.load_weights(str(ckpt))
     bridges.freeze()
     mx.eval(bridges.parameters(), fno.parameters())
-    meta_p = Path(str(ckpt) + ".meta")
-    meta = json.loads(meta_p.read_text()) if meta_p.exists() else {}
     return fno, bridges, meta
 
 
@@ -418,6 +421,8 @@ class StagedDecoder:
         feats = self.fno.features(ic)
         u_field = self.fno.proj(feats).squeeze(-1)
         tokens, u_hat = self.phi.rev(feats, u_field, x0_hat)
+        if getattr(self.phi, "channel", "field") == "value":
+            tokens = self.phi.val(u_hat)          # mirrors PsiLMMLX._couple
         mx.eval(tokens, u_hat, params_hat, x0_hat)
         diag = {"x0_hat": round(float(x0_hat[0].item()), 4),
                 "u_hat": round(float(u_hat[0].item()), 4),
