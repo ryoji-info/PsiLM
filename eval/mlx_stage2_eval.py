@@ -78,10 +78,13 @@ def main():
     model, tok = mlx_lm.load(args.model)
     hf_tok = AutoTokenizer.from_pretrained(args.hf_tokenizer)
     fno = convert_from_torch("results/stage2/fno.pt")
-    bridges = PsiBridgesMLX(d_model=model.args.hidden_size)
     ckpt = Path(f"results/stage2{args.tag}/bridges.npz")
-    bridges.load_weights(str(ckpt))
     meta = json.loads(Path(str(ckpt) + ".meta").read_text())
+    margs = meta.get("args", {})
+    bridges = PsiBridgesMLX(d_model=model.args.hidden_size,
+                            gate_bias=margs.get("gate_bias", -2.0),
+                            inj_cap=margs.get("inj_cap"), channel=margs.get("channel", "field"))
+    bridges.load_weights(str(ckpt))
     psi = PsiLMMLX(model, tok, fno, bridges, l_rev=args.l_rev)
     builder = QABuilder(hf_tok)
     print(f"{args.model} | bridges step {meta['step']} | couple {psi.l_fwd}/{psi.l_rev} of {psi.n_layers}",

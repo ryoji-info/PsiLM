@@ -104,6 +104,32 @@ class ReverseBridgeMLX(nn.Module):
         return mx.concatenate([lookup, tokens], axis=1), u_hat
 
 
+class ValueTokensMLX(nn.Module):
+    """Physics->language channel in the form the 8B copy probe proved readable:
+    the looked-up value u(x0) -> Fourier features -> K soft tokens. The field
+    tokens of ReverseBridgeMLX let an 8B collapse to per-trajectory constants
+    (it reads the amplitude and ignores the one x0-dependent token); this
+    channel can only carry what depends on x0."""
+
+    def __init__(self, d_model: int, k_tokens: int = 8, d_hidden: int = 256, n_freq: int = 16):
+        super().__init__()
+        self.k = k_tokens
+        self.d_model = d_model
+        self.n_freq = n_freq
+        self.enc1 = nn.Linear(1 + 2 * n_freq, d_hidden)
+        self.enc2 = nn.Linear(d_hidden, k_tokens * (d_model // 8))
+        self.proj = nn.Linear(d_model // 8, d_model)
+
+    def __call__(self, u):                       # u: (B,)
+        ks = mx.arange(1, self.n_freq + 1, dtype=mx.float32)
+        feats = mx.concatenate([u[:, None],
+                                mx.sin(ks[None, :] * u[:, None]),
+                                mx.cos(ks[None, :] * u[:, None])], axis=-1)
+        h = nn.gelu(self.enc1(feats))
+        h = self.enc2(h).reshape(u.shape[0], self.k, self.d_model // 8)
+        return self.proj(h)
+
+
 class GatedCrossAttentionMLX(nn.Module):
     def __init__(self, d_model: int, d_attn: int = 256, g_hidden: int = 256,
                  gate_bias: float = -2.0, inj_cap=None):
@@ -151,19 +177,26 @@ class GatedCrossAttentionMLX(nn.Module):
 
 class PsiBridgesMLX(nn.Module):
     def __init__(self, d_model: int, n_params: int = 3, gate_bias: float = -2.0,
-                 inj_cap=None):
+                 inj_cap=None, channel: str = "field"):
         super().__init__()
+        self.channel = channel          # "field": lookup + K field tokens; "value": ValueTokensMLX(u_hat)
         self.fwd = ForwardBridgeMLX(d_model, n_params=n_params)
         self.rev = ReverseBridgeMLX(d_model)
+        if channel == "value":
+            self.val = ValueTokensMLX(d_model)
         self.inject = GatedCrossAttentionMLX(d_model, gate_bias=gate_bias, inj_cap=inj_cap)
 
-    def reinit_channel(self, gate_bias: float = -2.0, inj_cap=None):
-        """Fresh physics->language channel (reverse-bridge token heads and the
-        gated injection) while keeping the trained readouts and lookup: fwd,
-        rev.feat, rev.u_head, rev.log_kappa."""
+    def reinit_channel(self, gate_bias: float = -2.0, inj_cap=None, channel: str = None):
+        """Fresh physics->language channel (token heads and the gated injection)
+        while keeping the trained readouts and lookup: fwd, rev.feat, rev.u_head,
+        rev.log_kappa. Optionally switch the channel form."""
         d_model = self.inject.to_q.weight.shape[1]
+        if channel is not None:
+            self.channel = channel
         fresh = ReverseBridgeMLX(d_model)
         self.rev.out = fresh.out
         self.rev.lookup_out = fresh.lookup_out
         self.rev.queries = fresh.queries
+        if self.channel == "value":
+            self.val = ValueTokensMLX(d_model)
         self.inject = GatedCrossAttentionMLX(d_model, gate_bias=gate_bias, inj_cap=inj_cap)

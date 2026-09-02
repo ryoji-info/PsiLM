@@ -1,0 +1,288 @@
+{
+ "summary": {
+  "n": 12,
+  "step": 2000,
+  "model": "mlx-community/Qwen3-8B-4bit",
+  "tolerance": 0.05,
+  "couple": [
+   15,
+   27,
+   36
+  ],
+  "psilm": {
+   "acc": 0.3333,
+   "mae": 0.3963,
+   "answer_line_rate": 0.0
+  },
+  "zero": {
+   "acc": 0.0,
+   "mae": 0.3164
+  }
+ },
+ "rows": [
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.86,
+    "u": -0.095
+   },
+   "text": {
+    "psilm": "u at x = 0.86 equals -0.54.<|im_end|>"
+   },
+   "has_answer_line": {
+    "psilm": false
+   },
+   "psilm": {
+    "pred": -0.54,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.57,
+    "u": -0.5394
+   },
+   "text": {
+    "psilm": "u at x = 0.57 equals -0.53.<|im_end|>"
+   },
+   "has_answer_line": {
+    "psilm": false
+   },
+   "psilm": {
+    "pred": -0.53,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.49,
+    "u": -0.5634
+   },
+   "text": {
+    "psilm": "u at x = 0.49 equals -0.53.<|im_end|>"
+   },
+   "has_answer_line": {
+    "psilm": false
+   },
+   "psilm": {
+    "pred": -0.53,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.13,
+    "u": 0.3283
+   },
+   "text": {
+    "psilm": "u at x = 0.13 equals -0.53.<|im_end|>"
+   },
+   "has_answer_line": {
+    "psilm": false
+   },
+   "psilm": {
+    "pred": -0.53,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.79,
+    "u": -0.2048
+   },
+   "text": {
+    "psilm": "u at x = 0.79 equals -0.53.<|im_end|>"
+   },
+   "has_answer_line": {
+    "psilm": false
+   },
+   "psilm": {
+    "pred": -0.53,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.31,
+    "u": 0.581
+   },
+   "text": {
+    "psilm": "u at x = 0.31 equals -0.54.<|im_end|>"
+   },
+   "has_answer_line": {
+    "psilm": false
+   },
+   "psilm": {
+    "pred": -0.54,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.79,
+    "u": -0.2048
+   },
+   "text": {
+    "psilm": "u at x = 0.79 equals -0.53.<|im_end|>"
+   },
+   "has_answer_line": {
+    "psilm": false
+   },
+   "psilm": {
+    "pred": -0.53,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.84,
+    "u": -0.1264
+   },
+   "text": {
+    "psilm": "u at x = 0.84 equals -0.53.<|im_end|>"
+   },
+   "has_answer_line": {
+    "psilm": false
+   },
+   "psilm": {
+    "pred": -0.53,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.19,
+    "u": 0.2206
+   },
+   "text": {
+    "psilm": "u at x = 0.19 equals -0.33.<|im_end|>"
+   },
+   "has_answer_line": {
+    "psilm": false
+   },
+   "psilm": {
+    "pred": -0.33,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.26,
+    "u": 0.297
+   },
+   "text": {
+    "psilm": "u at x = 0.26 equals -0.33.<|im_end|>"
+   },
+   "has_answer_line": {
+    "psilm": false
+   },
+   "psilm": {
+    "pred": -0.33,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.57,
+    "u": -0.2894
+   },
+   "text": {
+    "psilm": "u at x = 0.57 equals -0.33.<|im_end|>"
+   },
+   "has_answer_line": {
+    "psilm": false
+   },
+   "psilm": {
+    "pred": -0.33,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.7,
+    "u": -0.3461
+   },
+   "text": {
+    "psilm": "u at x = 0.7 equals -0.33.<|im_end|>"
+   },
+   "has_answer_line": {
+    "psilm": false
+   },
+   "psilm": {
+    "pred": -0.33,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  }
+ ]
+}

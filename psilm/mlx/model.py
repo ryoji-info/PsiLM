@@ -64,6 +64,10 @@ class PsiLMMLX:
         u_field = self.fno.proj(feats).squeeze(-1)
         x0_in = mx.stop_gradient(x0_hat) if self.detach_x0 else x0_hat
         tokens, u_hat = self.phi.rev(feats, u_field, x0_in)
+        if getattr(self.phi, "channel", "field") == "value":
+            # the language side learns to READ the physics side's answer; the
+            # lookup itself stays purely deep-supervised (loss_u)
+            tokens = self.phi.val(mx.stop_gradient(u_hat))
         stream.run(self.l_fwd, self.l_rev)
         stream.hidden, sigma, ratio = self.phi.inject(stream.hidden, tokens, return_ratio=True)
         stream.run(self.l_rev, self.n_layers)

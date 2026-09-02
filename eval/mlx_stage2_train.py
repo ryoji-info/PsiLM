@@ -88,6 +88,9 @@ def main():
     ap.add_argument("--eval-n", type=int, default=48)
     ap.add_argument("--inj-cap", type=float, default=None,
                     help="cap the injection RMS at this fraction of the stream RMS (pre-gate)")
+    ap.add_argument("--channel", default="field", choices=["field", "value"],
+                    help="physics->language channel: lookup + field tokens, or value tokens "
+                         "(Fourier encoding of the looked-up u(x0), the 8B copy-probe form)")
     ap.add_argument("--reinit-channel", action="store_true",
                     help="on resume: keep the trained readouts/lookup, re-initialize the reverse "
                          "token heads and the gated injection (fresh optimizer)")
@@ -107,7 +110,7 @@ def main():
     d_model = model.model.embed_tokens.weight.shape[-1] if not hasattr(
         model.model.embed_tokens, "scales") else model.args.hidden_size
     bridges = PsiBridgesMLX(d_model=model.args.hidden_size, gate_bias=args.gate_bias,
-                            inj_cap=args.inj_cap)
+                            inj_cap=args.inj_cap, channel=args.channel)
     # bias correction matters: MLX defaults to none, so a fresh AdamW takes
     # 3-6x steps for its first ~15 updates. State is persisted across chunks
     # (the torch trainer always did; the 8B v5 gate closed at chunk boundaries).
@@ -116,11 +119,16 @@ def main():
 
     global_step = 0
     if ckpt.exists() and not args.fresh:
-        bridges.load_weights(str(ckpt))
+        # non-strict only when re-initializing the channel (the checkpoint may
+        # come from a different channel form); the readouts must still load
+        ref = bridges.fwd.x0_h2.weight
+        bridges.load_weights(str(ckpt), strict=not args.reinit_channel)
+        assert float(mx.abs(bridges.fwd.x0_h2.weight - ref).max()) > 0, "readout did not load"
         meta = json.loads(Path(str(ckpt) + ".meta").read_text())
         global_step = meta["step"]
         if args.reinit_channel:
-            bridges.reinit_channel(gate_bias=args.gate_bias, inj_cap=args.inj_cap)
+            bridges.reinit_channel(gate_bias=args.gate_bias, inj_cap=args.inj_cap,
+                                   channel=args.channel)
             mx.eval(bridges.parameters())
             print(f"resumed at step {global_step}: readouts/lookup kept, channel re-initialized "
                   f"(gate_bias {args.gate_bias}, inj_cap {args.inj_cap}); optimizer fresh")
