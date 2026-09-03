@@ -26,6 +26,7 @@ from transformers import AutoTokenizer  # noqa: E402
 
 from psilm.mlx.bridges import PsiBridgesMLX  # noqa: E402
 from psilm.mlx.fno import convert_from_torch  # noqa: E402
+from psilm.mlx.gemma_loader import load_backbone_any  # noqa: E402
 from psilm.mlx.model import PsiLMMLX  # noqa: E402
 from psilm.stage2.qa import QABuilder, make_batch as torch_make_batch  # noqa: E402
 
@@ -135,11 +136,9 @@ def main():
     log = Path(f"results/stage2{args.tag}/train_log.jsonl")
     ckpt.parent.mkdir(parents=True, exist_ok=True)
 
-    model, tok = mlx_lm.load(args.model)
+    model, stock, tok = load_backbone_any(args.model)     # tower for the staged forward
     hf_tok = AutoTokenizer.from_pretrained(args.hf_tokenizer)
     fno = convert_from_torch("results/stage2/fno.pt")
-    d_model = model.model.embed_tokens.weight.shape[-1] if not hasattr(
-        model.model.embed_tokens, "scales") else model.args.hidden_size
     bridges = PsiBridgesMLX(d_model=model.args.hidden_size, gate_bias=args.gate_bias,
                             inj_cap=args.inj_cap, channel=args.channel)
     # bias correction matters: MLX defaults to none, so a fresh AdamW takes

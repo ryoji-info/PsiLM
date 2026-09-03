@@ -345,9 +345,13 @@ def task_manifest(t: Task, hf_tok=None, full_text: bool = False) -> Dict[str, An
 # ----------------------------------------------------------------------------
 
 def load_backbone(model_id: str = DEFAULT_MODEL, hf_tok_id: str = DEFAULT_HF_TOKENIZER):
-    import mlx_lm
-    from transformers import AutoTokenizer
-    model, tok = mlx_lm.load(model_id)
+    """(tower, mlx_tokenizer, hf_tokenizer). The tower drives the staged decoder;
+    its stock model (for mlx_lm.generate) is reachable as tower._model on Gemma
+    towers and is the tower itself otherwise."""
+    from psilm.mlx.gemma_loader import load_backbone_any
+    model, stock, tok = load_backbone_any(model_id)
+    if not hasattr(model, "_model"):
+        model._model = stock
     model.freeze()
     hf_tok = AutoTokenizer.from_pretrained(hf_tok_id)
     return model, tok, hf_tok

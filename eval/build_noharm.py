@@ -82,12 +82,13 @@ def main():
     rng.shuffle(prompts)
     print(f"{len(prompts)} prompts ({n_skip} excluded as benchmark test items)", flush=True)
 
-    model, tok = mlx_lm.load(args.model)
+    from psilm.mlx.gemma_loader import load_backbone_any
+    _, model, tok = load_backbone_any(args.model)          # stock model + mlx tokenizer (all stop ids)
     hf_tok = AutoTokenizer.from_pretrained(args.hf_tokenizer)
     out, t0 = [], time.time()
     for k, p in enumerate(prompts):
         ids = chat_ids(hf_tok, p["user"])
-        text = mlx_lm.generate(model, hf_tok, prompt=list(ids), max_tokens=args.max_new, verbose=False)
+        text = mlx_lm.generate(model, tok, prompt=list(ids), max_tokens=args.max_new, verbose=False)
         tgt = hf_tok.encode(text, add_special_tokens=False)[: args.max_new]
         if not tgt:
             continue

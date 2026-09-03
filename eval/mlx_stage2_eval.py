@@ -23,6 +23,7 @@ from transformers import AutoTokenizer  # noqa: E402
 
 from psilm.mlx.bridges import PsiBridgesMLX  # noqa: E402
 from psilm.mlx.fno import convert_from_torch  # noqa: E402
+from psilm.mlx.gemma_loader import load_backbone_any  # noqa: E402
 from psilm.mlx.model import PsiLMMLX  # noqa: E402
 from psilm.stage2.qa import QUESTION, SYSTEM, QABuilder  # noqa: E402
 
@@ -77,7 +78,7 @@ def main():
     args = ap.parse_args()
     arms = args.arms.split(",")
 
-    model, tok = mlx_lm.load(args.model)
+    model, stock, tok = load_backbone_any(args.model)     # tower for PsiLM, stock for generate
     hf_tok = AutoTokenizer.from_pretrained(args.hf_tokenizer)
     fno = convert_from_torch("results/stage2/fno.pt")
     ckpt = Path(f"results/stage2{args.tag}/bridges.npz")
@@ -101,11 +102,11 @@ def main():
         true = item["u"]
         preds, texts = {}, {}
         if "baseline" in arms:
-            texts["baseline"] = chat_generate(model, hf_tok, q + NUDGE, args.max_new, gen_tok=tok)
+            texts["baseline"] = chat_generate(stock, hf_tok, q + NUDGE, args.max_new, gen_tok=tok)
             preds["baseline"] = parse_value(texts["baseline"])
         if "oracle" in arms:
             oq = q + f"\n\nA trusted solver reports: u({item['x0']}) = {true:.2f}." + NUDGE
-            texts["oracle"] = chat_generate(model, hf_tok, oq, args.max_new, gen_tok=tok)
+            texts["oracle"] = chat_generate(stock, hf_tok, oq, args.max_new, gen_tok=tok)
             preds["oracle"] = parse_value(texts["oracle"])
         if "psilm" in arms:
             texts["psilm"] = psi.generate(builder, item)
