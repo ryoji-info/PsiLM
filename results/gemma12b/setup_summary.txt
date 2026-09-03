@@ -1,0 +1,12 @@
+loaded in 4s: layers=48 hidden=3840 window=1024 softcap=30.0 tied=True  peak 6.70 GB
+parity A: max|diff| 0.00e+00  one-shot 0.49s staged 0.45s  next token 'The'
+padding parity (batch 1, 3 trailing pads): 0.00e+00
+row-count regime (QA prompt 112 tokens): batch1 vs batch8 max|diff| 4.00, argmax agree 0.973  [informational]
+batch 4 step 0: loss=3.622 loss_ans=1.367 x0_err=0.225 gate=0.500 11.6s  peak 12.88 GB  couple 20/30 of 48
+batch 4 step 1: loss=3.761 loss_ans=1.365 x0_err=0.326 gate=0.495 12.1s  peak 13.27 GB  couple 20/30 of 48
+batch 4 step 2: loss=3.440 loss_ans=1.381 x0_err=0.257 gate=0.499 12.2s  peak 13.27 GB  couple 20/30 of 48
+batch 8 step 0: loss=3.817 loss_ans=1.394 x0_err=0.228 gate=0.500 23.4s  peak 18.82 GB  couple 20/30 of 48
+batch 8 step 1: loss=3.577 loss_ans=1.405 x0_err=0.188 gate=0.496 23.3s  peak 19.21 GB  couple 20/30 of 48
+batch 8 step 2: loss=3.200 loss_ans=1.198 x0_err=0.153 gate=0.500 23.3s  peak 19.21 GB  couple 20/30 of 48
+GEMMA SETUP OK
+SETUP EXIT 0
