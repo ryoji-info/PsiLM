@@ -408,8 +408,11 @@ class StagedDecoder:
     def _logits_last(self, h):
         h = self.inner.norm(h[:, -1:, :])
         if hasattr(self.model, "lm_head"):
-            return self.model.lm_head(h)[:, -1, :]
-        return self.inner.embed_tokens.as_linear(h)[:, -1, :]
+            logits = self.model.lm_head(h)[:, -1, :]
+        else:
+            logits = self.inner.embed_tokens.as_linear(h)[:, -1, :]
+        post = getattr(self.model, "logit_postprocess", None)     # Gemma's tanh soft-cap
+        return post(logits) if post is not None else logits
 
     def _physics_tokens(self, h_prompt, x0_span):
         import mlx.core as mx

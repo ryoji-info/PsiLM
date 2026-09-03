@@ -38,7 +38,9 @@ def parse_value(text):
     return float(m[-1]) if m else None
 
 
-def chat_generate(model, hf_tok, user, max_new=768):
+def chat_generate(model, hf_tok, user, max_new=768, gen_tok=None):
+    """gen_tok: the mlx-lm tokenizer wrapper (knows all of a backbone's stop ids,
+    e.g. Gemma's <eos>/<turn|>); hf_tok only builds the chat prompt."""
     messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
     ids = hf_tok.apply_chat_template(messages, tokenize=True, add_generation_prompt=True,
                                      enable_thinking=False)
@@ -46,7 +48,7 @@ def chat_generate(model, hf_tok, user, max_new=768):
         ids = ids["input_ids"]
     if ids and isinstance(ids[0], list):
         ids = ids[0]
-    return mlx_lm.generate(model, hf_tok, prompt=list(ids), max_tokens=max_new, verbose=False)
+    return mlx_lm.generate(model, gen_tok or hf_tok, prompt=list(ids), max_tokens=max_new, verbose=False)
 
 
 def parse_answer(text):
@@ -99,11 +101,11 @@ def main():
         true = item["u"]
         preds, texts = {}, {}
         if "baseline" in arms:
-            texts["baseline"] = chat_generate(model, hf_tok, q + NUDGE, args.max_new)
+            texts["baseline"] = chat_generate(model, hf_tok, q + NUDGE, args.max_new, gen_tok=tok)
             preds["baseline"] = parse_value(texts["baseline"])
         if "oracle" in arms:
             oq = q + f"\n\nA trusted solver reports: u({item['x0']}) = {true:.2f}." + NUDGE
-            texts["oracle"] = chat_generate(model, hf_tok, oq, args.max_new)
+            texts["oracle"] = chat_generate(model, hf_tok, oq, args.max_new, gen_tok=tok)
             preds["oracle"] = parse_value(texts["oracle"])
         if "psilm" in arms:
             texts["psilm"] = psi.generate(builder, item)
