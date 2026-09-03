@@ -56,6 +56,27 @@ def parse_answer(text):
     return float(m.group(1)) if m else None
 
 
+def make_noharm_batch(items, pad_id):
+    """Right-padded batch of (prompt + backbone continuation); labels only on the
+    continuation; x0_span = whole prompt (the guard-rail's non-physics convention)."""
+    seqs = [it["prompt_ids"] + it["target_ids"] for it in items]
+    plens = [len(it["prompt_ids"]) for it in items]
+    L = max(len(q) for q in seqs)
+    B = len(seqs)
+    I = np.full((B, L), pad_id, dtype=np.int32)
+    A = np.zeros((B, L), dtype=np.int32)
+    LB = np.full((B, L), -100, dtype=np.int32)
+    PM = np.zeros((B, L), dtype=bool)
+    for i, (q, pl) in enumerate(zip(seqs, plens)):
+        I[i, :len(q)] = q
+        A[i, :len(q)] = 1
+        LB[i, pl:len(q)] = q[pl:]
+        PM[i, :pl] = True
+    span = np.array([[0, pl] for pl in plens], dtype=np.int32)
+    return {"p_ids": mx.array(I), "p_attn": mx.array(A), "p_labels": mx.array(LB),
+            "prompt_mask": mx.array(PM), "x0_span": mx.array(span), "noharm": True}
+
+
 def rollout_eval(psi, builder, items, n=12):
     correct, errs = 0, []
     for item in items[:n]:
@@ -91,6 +112,11 @@ def main():
     ap.add_argument("--channel", default="field", choices=["field", "value"],
                     help="physics->language channel: lookup + field tokens, or value tokens "
                          "(Fourier encoding of the looked-up u(x0), the 8B copy-probe form)")
+    ap.add_argument("--noharm-data", default=None,
+                    help="data/noharm_train.json from eval/build_noharm.py: non-physics prompts with "
+                         "the backbone's own continuations; enables gate-selectivity training")
+    ap.add_argument("--noharm-every", type=int, default=2,
+                    help="every k-th step is a no-harm batch (2 = alternate 1:1)")
     ap.add_argument("--reinit-channel", action="store_true",
                     help="on resume: keep the trained readouts/lookup, re-initialize the reverse "
                          "token heads and the gated injection (fresh optimizer)")
@@ -144,6 +170,9 @@ def main():
     psi.detach_x0 = args.detach_x0
     builder = QABuilder(hf_tok)
     train_items = json.loads(Path("data/stage2_qa_train.json").read_text())
+    noharm_items = json.loads(Path(args.noharm_data).read_text()) if args.noharm_data else None
+    if noharm_items:
+        print(f"no-harm arm: {len(noharm_items)} prompts, every {args.noharm_every}th step")
     val_items = json.loads(Path("data/stage2_qa_val.json").read_text())
     n_params = sum(v.size for _, v in tree_flatten(bridges.parameters()))
     print(f"bridges: {n_params/1e6:.2f}M | backbone: {args.model} | "
@@ -158,8 +187,12 @@ def main():
     t0 = time.time()
     for i in range(args.steps):
         rng = random.Random(21_000_000 + global_step)
-        batch = to_mlx_batch(torch_make_batch(builder, rng.sample(train_items, args.batch), "cpu"))
         psi.readout_only = global_step < args.readout_only
+        if noharm_items and not psi.readout_only and (global_step % args.noharm_every == args.noharm_every - 1):
+            pad = hf_tok.pad_token_id or hf_tok.eos_token_id
+            batch = make_noharm_batch(rng.sample(noharm_items, args.batch), pad)
+        else:
+            batch = to_mlx_batch(torch_make_batch(builder, rng.sample(train_items, args.batch), "cpu"))
         (loss, aux), grads = loss_and_grad(bridges, batch)
         if args.clip == "module":
             grads = {k: clip_grad_norm(g, 1.0)[0] for k, g in grads.items()}
@@ -180,7 +213,7 @@ def main():
                    "gate_ans": round(aux[7].item(), 4),
                    "inj_ratio_ans": round(aux[8].item(), 4),
                    "x0_exact": round(aux[9].item(), 4),
-                   "phase": "A" if psi.readout_only else "B",
+                   "phase": "A" if psi.readout_only else ("N" if batch.get("noharm") else "B"),
                    "sec_per_step": round((time.time() - t0) / (i + 1), 2)}
             with log.open("a") as f:
                 f.write(json.dumps(rec) + "\n")

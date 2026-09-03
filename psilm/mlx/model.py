@@ -74,6 +74,24 @@ class PsiLMMLX:
         self._last_ratio = ratio
         return params_hat, x0_hat, x0_logits, u_hat, sigma, w_x0
 
+    def _noharm_loss(self, batch):
+        """Gate-selectivity arm: a non-physics prompt through the FULL coupled
+        pipeline (readout over the whole prompt, FNO, value tokens, injection),
+        trained to reproduce the frozen backbone's own greedy continuation with
+        a plain (unweighted) CE. The only way to lower this loss is for the gate
+        to close, or the injection to become harmless, where physics is
+        irrelevant. No readout targets exist, so no readout losses."""
+        s = MlxStream(self.model, batch["p_ids"], batch["p_attn"])
+        _, x0_hat, x0_logits, _, sigma, _ = self._couple(s, batch["prompt_mask"], batch["x0_span"])
+        logits = s.finish()
+        loss = cross_entropy_masked(logits, batch["p_labels"], None, 1.0)
+        zero = mx.array(0.0)
+        resp = (batch["p_labels"] != -100).astype(mx.float32)
+        n_resp = resp.sum() + 1e-6
+        gate_ans = (sigma[..., 0] * resp).sum() / n_resp
+        ratio_ans = (self._last_ratio * resp).sum() / n_resp
+        return loss, (loss, zero, zero, zero, zero, sigma.mean(), zero, gate_ans, ratio_ans, zero)
+
     def _readout_only_loss(self, batch, lam_param, lam_x0, lam_u):
         s = MlxStream(self.model, batch["p_ids"], batch["p_attn"])
         s.run(0, self.l_fwd)
@@ -98,6 +116,8 @@ class PsiLMMLX:
             lam_x0 = self.lam_x0
         if self.readout_only:
             return self._readout_only_loss(batch, lam_param, lam_x0, lam_u)
+        if batch.get("noharm"):
+            return self._noharm_loss(batch)
         s = MlxStream(self.model, batch["p_ids"], batch["p_attn"])
         params_hat, x0_hat, x0_logits, u_hat, sigma, w_x0 = self._couple(
             s, batch["prompt_mask"], batch.get("x0_span"))
