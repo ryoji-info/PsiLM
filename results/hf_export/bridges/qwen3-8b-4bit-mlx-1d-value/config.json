@@ -1,0 +1,35 @@
+{
+ "backbone": "mlx-community/Qwen3-8B-4bit",
+ "hf_tokenizer": "Qwen/Qwen3-8B",
+ "physics": "results/stage2/fno.pt (1D Burgers FNO, 70K params)",
+ "bridges_class": "psilm.mlx.bridges.PsiBridgesMLX",
+ "construct": {
+  "d_model": 4096,
+  "channel": "value",
+  "inj_cap": 0.2,
+  "gate_bias": 0.0
+ },
+ "coupling": {
+  "l_fwd": 15,
+  "l_rev": 22,
+  "n_layers": 36
+ },
+ "pointer": "deterministic span pooling over the QA builder's x0 token span (fwd.x0_query/x0_key omitted: unused)",
+ "training": {
+  "steps_total": 4500,
+  "phase_A_readout_only": 1000,
+  "coupled_steps": 2500,
+  "batch": 8,
+  "lr": 0.0003,
+  "detach_x0": true,
+  "clip": "module"
+ },
+ "held_out_n48_per_chunk": [
+  0.896,
+  0.917,
+  0.958,
+  1.0,
+  0.979
+ ],
+ "license": "apache-2.0"
+}
