@@ -26,7 +26,8 @@ that gap, on consumer hardware first (Apple Silicon, 24 GB unified memory).
 | **1** | Reproduce the Bicameral Model at 0.5B: two frozen Qwen2.5-0.5B twins, trainable gated hidden-state interface, PyTorch-MPS. | **mechanism reproduced — results below** |
 | **2** | Swap the twin for a physics hemisphere: frozen LLM ⇄ frozen FNO through bidirectional latent bridges. | **works — results below** |
 | **2b–2d** | Harden: multi-mode ICs, held-out families, 2D physics via pretrained DPOT-Tiny. | **done — results below** |
-| **3** | Port the loop to MLX; ship as a Mac app. | planned |
+| **3** | Port to MLX (4-bit backbones) and scale the language hemisphere: Qwen3-1.7B, Qwen3-8B. | **done — 8B at 98.3%, results below** |
+| **4** | Guard-rail benchmarks (GSM8K/MMLU gate selectivity), 27B flagship, Mac app. | in progress |
 
 ## Stage 0
 
@@ -275,6 +276,53 @@ front profile with mean u ≈ 0.62):
 The 1D result survives the move to 2D and to a real pretrained physics
 foundation model: the coupled system reaches within five points of the
 oracle-text ceiling with nothing but hidden states crossing the interface.
+
+## Scaling the language hemisphere — MLX, 1.7B, 8B
+
+The bridges are parameterized by the backbone's config alone (coupling depths
+as fractions of depth, widths from the hidden size), and `psilm/mlx/` ports
+the staged forward, the FNO and the bridges to MLX so 4-bit backbones train
+on 24 GB. Same physics model, same task, same 60 held-out questions:
+
+| backbone | LLM alone | **PsiLM** | oracle (answer in text) | bridges |
+|---|---:|---:|---:|---:|
+| Qwen2.5-0.5B (fp16, torch) | 8.3% / 0.682 | **100%** / 0.014 | 100% / 0.003 | 3.5M |
+| Qwen3-1.7B (fp16, torch) | 1.7% / 2.57 | **93.3%** / 0.022 | 96.7% / 0.021 | 12.6M |
+| Qwen3-8B-4bit (MLX) | 6.7% / 0.706 | **98.3%** / 0.0135 | 100% / 0.0026 | 28.4M |
+
+The 8B took eight runs, and the paper's Section 9 reports them as a
+scale-dependent failure analysis. Two things broke at 4096 dimensions, and
+neither was the frozen model's willingness to be steered:
+
+- **The learned attention pointer never trains at 8B.** A readout probe with
+  the identical head shows learned pooling stuck at uniform cross-entropy for
+  2000 steps (0% exact bins) while pooling over the known x₀ token span
+  reaches 83% / error 0.005. The 8B readout therefore pools deterministically
+  over the QA builder's span — a stated concession: the pointer is supplied
+  by the task, not learned from the words.
+- **A channel carrying the whole field is shortcut.** With the pointer and
+  lookup verified exact inside the full pipeline (run 6), the 8B still
+  collapsed to per-trajectory constants: it read the amplitude and ignored
+  the one x₀-dependent token among seventeen. Replacing the channel with the
+  8B copy probe's form — the looked-up value through Fourier features into
+  eight soft tokens, nothing else — took the same checkpoint from 17% to
+  89.6% in one 500-step chunk and to 98.3% at the end.
+
+Trainer lessons that came out of it and now live in `eval/mlx_stage2_train.py`:
+persist the optimizer across chunks with bias correction (MLX's AdamW defaults
+to none; each fresh start kicked the gate), detach the pointer on its way into
+the reverse bridge, warm up the readout before the channel opens, cap the
+injection magnitude, and log the gate at the answer positions rather than
+averaged over the prompt.
+
+Reproduce (Qwen3-8B, ~12 h): `python eval/mlx_stage2_train.py --model
+mlx-community/Qwen3-8B-4bit --hf-tokenizer Qwen/Qwen3-8B --tag _mlx8b8
+--steps 500 --batch 8 --readout-only 1000 --detach-x0 --clip module --lam-x0 1.0
+--channel value --l-rev 22 --inj-cap 0.2 --gate-bias 0.0 --eval-n 48` (×7,
+first with `--fresh`), then `python eval/mlx_stage2_eval.py --model
+mlx-community/Qwen3-8B-4bit --hf-tokenizer Qwen/Qwen3-8B --tag _mlx8b8 --n 60`.
+Trained bridges for every backbone are on Hugging Face as safetensors
+(`ryoji-info/PsiLM-bridges`).
 
 ## Repository layout
 
