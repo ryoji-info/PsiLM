@@ -1,0 +1,25 @@
+backbone mlx-community/Qwen3.8-27B-4bit: qwen3_5 ['Qwen3_5ForConditionalGeneration']
+  hidden 5120  layers 64 (linear 48, full 16 at [3, 7, 11, 15]...)  vocab 248320  tied False  heads 24/4 x 256 (rope 64 dims)  quant {'group_size': 64, 'bits': 4, 'mode': 'affine'}
+  coupling l_fwd=27 l_rev=40 of 64  (post-injection layers: 24, linear among them: 18)
+  checkpoint: language tower 15.133 GB, vision tower 0.921 GB (dropped), 3 shards
+memory budget  batch=1 seq_len=128 l_rev=40 (post-injection layers 24, of which linear 18; checkpoint=True)
+  weights (4-bit language tower)   15.13 GB
+  post-injection activations       0.51 GB
+  logits (V x 128 x 1)          0.32 GB
+  DeltaNet BPTT states             0.81 GB (0.81 GB per layer)
+  forward transient + overhead     0.76 GB
+  TRAINING STEP TOTAL             17.52 GB
+  inference only                  15.89 GB
+  device Apple M2: RAM 25.8 GB, Metal recommended working set 19.07 GB -> FITS (headroom +1.55 GB)
+  currently free+inactive on this machine: 18.9 GB
+loader CPU self-test OK (2.4s)
+loaded in 6s: LanguageTower(layers=64, hidden=5120, linear=48, full=16, differentiable_from=None, checkpoint=True)  active 15.13 GB peak 15.13 GB
+parity A (eval regime): 0.00e+00 (bit-exact)  one-shot 2.09s staged 0.62s  next token ' Paris'
+padded-batch parity: unpadded row 0.00e+00, right-padded row 1.88e-01
+regime: {'differentiable_from': 40, 'checkpoint': True, 'ops_path_layers': [40, 41, 42, 44, 45, 46, 48, 49, 50, 52, 53, 54, 56, 57, 58, 60, 61, 62], 'kernel_path_layers': [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 20, 21, 22, 24, 25, 26, 28, 29, 30, 32, 33, 34, 36, 37, 38]}
+parity B (ops-path recurrence for layers >= 40): 1.88e-01  staged 1.63s
+step 0: loss=2.919 loss_ans=0.915 loss_x0=4.609 x0_err=0.096 gate=0.119  91.6s (batch 1, L=128)  active 16.17 GB peak 38.67 GB
+step 1: loss=7.457 loss_ans=0.999 loss_x0=4.878 x0_err=0.172 gate=0.115  107.3s (batch 1, L=128)  active 16.17 GB peak 39.27 GB
+generate: 'To find the value of the velocity $u(x, t' (truth 0.2668)
+27B SETUP OK
+SETUP EXIT 0
