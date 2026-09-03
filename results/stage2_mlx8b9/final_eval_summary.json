@@ -1,0 +1,33 @@
+{
+ "summary": {
+  "n": 60,
+  "step": 5000,
+  "model": "mlx-community/Qwen3-8B-4bit",
+  "tolerance": 0.05,
+  "couple": [
+   15,
+   22,
+   36
+  ],
+  "psilm": {
+   "acc": 0.95,
+   "mae": 0.0213,
+   "answer_line_rate": 0.0
+  },
+  "zero": {
+   "acc": 0.0167,
+   "mae": 0.308
+  },
+  "baseline": {
+   "acc": 0.0667,
+   "mae": 0.7062,
+   "answer_line_rate": 0.35
+  },
+  "oracle": {
+   "acc": 1.0,
+   "mae": 0.0026,
+   "answer_line_rate": 1.0
+  },
+  "note": "psilm/zero: v9 bridges (step 5000, value channel + gate-selectivity training); baseline/oracle: backbone-only arms from results/stage2_mlx8b4/final_eval_textarms.json"
+ }
+}
