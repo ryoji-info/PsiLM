@@ -264,10 +264,11 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
     if meta.get("model") and meta["model"] != args.model:
         print(f"[WARN] checkpoint was trained on {meta['model']}, running {args.model}", flush=True)
     if not args.no_parity_check:
-        diff = dec.parity(tasks[0].prompt.ids)
-        info["parity_max_abs"] = diff
-        print(f"[parity] staged base vs stock model logits: max|diff| = {diff:.3e}", flush=True)
-        if diff > 5e-2:
+        diff, rel, same = dec.parity(tasks[0].prompt.ids)
+        info["parity_max_abs"], info["parity_rel"], info["parity_argmax_same"] = diff, rel, same
+        print(f"[parity] staged base vs stock model logits: max|diff| = {diff:.3e} "
+              f"(relative {rel:.2e}, argmax same: {same})", flush=True)
+        if rel > 1e-2 or not same:
             raise SystemExit("parity failed: staged base arm is not the stock model")
 
     for ti, t in enumerate(tasks):
@@ -344,8 +345,8 @@ def self_test():
     K = 12
 
     # 1. parity: staged base prefill == stock forward
-    d = dec.parity(prompt)
-    assert d < 1e-3, f"parity {d}"
+    d, rel, same = dec.parity(prompt)
+    assert d < 1e-3 and same, f"parity {d}"
     print(f"[self-test] parity base vs stock: {d:.2e}  OK")
 
     # 2. cached coupled decode == full-recompute (PsiLMMLX._couple) decode

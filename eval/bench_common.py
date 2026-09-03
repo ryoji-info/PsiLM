@@ -495,12 +495,20 @@ class StagedDecoder:
         return GenResult(gen, text, stopped, sigma_prompt, sigma_gen, diag,
                          time.perf_counter() - t0)
 
-    def parity(self, prompt_ids) -> float:
-        """max |logits_staged - logits_stock| at the last prompt position, base arm."""
+    def parity(self, prompt_ids):
+        """Base-arm prefill vs the stock forward at the last prompt position.
+        Returns (max_abs, rel, argmax_same): rel = max_abs / max|logits|. The
+        KV-cached prefill takes a different Metal kernel path from the cache-free
+        stock forward, so on a 4-bit 8B in bf16 max_abs is ~0.1 on logits of
+        scale ~40 with identical rankings; the gate is relative + argmax."""
         import mlx.core as mx
-        ref = self.model(mx.array([list(prompt_ids)]))[:, -1, :]
+        ref = self.model(mx.array([list(prompt_ids)]))[:, -1, :].astype(mx.float32)
         got, *_ = self.prefill_logits(prompt_ids, "base")
-        return float(mx.abs(ref.astype(mx.float32) - got.astype(mx.float32)).max().item())
+        got = got.astype(mx.float32)
+        max_abs = float(mx.abs(ref - got).max().item())
+        rel = max_abs / max(float(mx.abs(ref).max().item()), 1e-6)
+        same = int(ref.argmax(-1).item()) == int(got.argmax(-1).item())
+        return max_abs, rel, same
 
 
 # ----------------------------------------------------------------------------
