@@ -320,7 +320,8 @@ Reproduce (Qwen3-8B, ~12 h): `python eval/mlx_stage2_train.py --model
 mlx-community/Qwen3-8B-4bit --hf-tokenizer Qwen/Qwen3-8B --tag _mlx8b8
 --steps 500 --batch 8 --readout-only 1000 --detach-x0 --clip module --lam-x0 1.0
 --channel value --l-rev 22 --inj-cap 0.2 --gate-bias 0.0 --eval-n 48` (×7,
-first with `--fresh`), then `python eval/mlx_stage2_eval.py --model
+first with `--fresh`; the committed checkpoint instead kept run 6's step-2000
+readouts and resumed them with `--reinit-channel`, five chunks to step 4500), then `python eval/mlx_stage2_eval.py --model
 mlx-community/Qwen3-8B-4bit --hf-tokenizer Qwen/Qwen3-8B --tag _mlx8b8 --n 60`.
 Trained bridges for every backbone are on Hugging Face as safetensors
 (`ryoji-info/PsiLM-bridges`).
@@ -350,18 +351,23 @@ within fifty such steps:
 | MMLU, 5 subjects (256 tokens) | 60% | – | **61%** | 60% | 0.99 → 0.003 (open on 0%) |
 
 One gate MLP, conditioned on the residual stream, is open on every physics
-question and shut on every other prompt — including a prompt format that
-appears in neither training arm — and the bridges are otherwise the backbone
-to the byte. (The v8 MMLU number is omitted: at the original 24-token budget
+question and shut on every other prompt — with or without the "Answer:"
+line, so it is not keying on the template — and the bridges are otherwise
+the backbone to the byte. (The physics backbone figure is from the v9 run's
+768-token budget; the v8 run's backbone arm scored 2% at 160 tokens.) (The v8 MMLU number is omitted: at the original 24-token budget
 it was a parse artifact, 55% → 69% only because the injection forced terse
 answers.)
 
 Reproduce: `python eval/build_noharm.py` (twice, `--nudge-prob 1.0` and
-`0.0`), then resume the v8 checkpoint with `--noharm-data
+`--nudge-prob 0.0 --out data/noharm_train_nonudge.json`, the two lists
+concatenated into `data/noharm_train_all.json`), then copy the v8 checkpoint
+(`bridges.npz`, `bridges.npz.meta`, `opt.npz`) into `results/stage2_mlx8b9/`
+and resume it with the training command above plus `--tag _mlx8b9 --noharm-data
 data/noharm_train_all.json --noharm-every 2 --noharm-gate-only 1 --lam-gate 1.0`
 for 500 steps, then `python eval/bench_guardrail.py --tag v9_8b --ckpt
 results/stage2_mlx8b9/bridges.npz --n 100 --max-new-mmlu 256
---max-new-physics-base 768` and the same with `--datasets gsm8k --gsm8k-nudge 0`.
+--max-new-physics-base 768` and the same with `--tag v9_8b_nonudge --datasets
+gsm8k --gsm8k-nudge 0`.
 
 ## Repository layout
 
