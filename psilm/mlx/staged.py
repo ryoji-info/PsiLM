@@ -40,5 +40,9 @@ class MlxStream:
     def finish(self):
         h = self.inner.norm(self.hidden)
         if hasattr(self.model, "lm_head"):
-            return self.model.lm_head(h)
-        return self.inner.embed_tokens.as_linear(h)
+            logits = self.model.lm_head(h)
+        else:
+            logits = self.inner.embed_tokens.as_linear(h)
+        # backbones with a final logit transform (Gemma: tanh soft-cap) expose it here
+        post = getattr(self.model, "logit_postprocess", None)
+        return post(logits) if post is not None else logits
