@@ -36,19 +36,42 @@ def main():
     ap.add_argument("--max-new", type=int, default=32)
     ap.add_argument("--seed", type=int, default=7)
     ap.add_argument("--out", default="data/noharm_train.json")
+    ap.add_argument("--nudge-prob", type=float, default=1.0,
+                    help="fraction of prompts that keep the benchmark's 'Answer:' nudge line; the rest "
+                         "drop it, so the gate cannot learn the wrapper instead of relevance")
     args = ap.parse_args()
 
     from datasets import load_dataset
+    from eval.bench_common import MMLU_SUBJECTS
     rng = random.Random(args.seed)
+    # never train on a question the benchmark can score: exclude every GSM8K test
+    # question and every MMLU test question of the benchmark subjects (cais/mmlu
+    # has verbatim validation/test duplicates)
+    norm = lambda q: " ".join(q.lower().split())
+    excluded = set()
+    for r in load_dataset("openai/gsm8k", "main", split="test"):
+        excluded.add(norm(r["question"]))
+    for subj in MMLU_SUBJECTS:
+        for r in load_dataset("cais/mmlu", subj, split="test"):
+            excluded.add(norm(r["question"]))
     prompts = []
+    def strip_nudge(user):
+        return user if rng.random() < args.nudge_prob else user.split("\nEnd your reply")[0].rstrip()
     ds = load_dataset("openai/gsm8k", "main", split="train")
+    n_skip = 0
     for i in rng.sample(range(len(ds)), args.n_gsm8k):
-        prompts.append({"source": f"gsm8k:train:{i}", "user": gsm8k_user(ds[i]["question"])})
+        if norm(ds[i]["question"]) in excluded:
+            n_skip += 1
+            continue
+        prompts.append({"source": f"gsm8k:train:{i}", "user": strip_nudge(gsm8k_user(ds[i]["question"]))})
     try:
         ds = load_dataset("cais/mmlu", "all", split="validation")
         for i in rng.sample(range(len(ds)), args.n_mmlu):
             r = ds[i]
-            prompts.append({"source": f"mmlu:validation:{i}", "user": mmlu_user(r["question"], list(r["choices"]))})
+            if norm(r["question"]) in excluded:
+                n_skip += 1
+                continue
+            prompts.append({"source": f"mmlu:validation:{i}", "user": strip_nudge(mmlu_user(r["question"], list(r["choices"])))})
     except Exception as e:      # HF storage faults: fall back to GSM8K-only rather than block
         print(f"[warn] MMLU validation unavailable ({str(e)[:120]}); using GSM8K train only", flush=True)
         extra = [i for i in range(len(load_dataset("openai/gsm8k", "main", split="train")))]
@@ -57,6 +80,7 @@ def main():
         for i in rng.sample([i for i in extra if i not in used], args.n_mmlu):
             prompts.append({"source": f"gsm8k:train:{i}", "user": gsm8k_user(ds[i]["question"])})
     rng.shuffle(prompts)
+    print(f"{len(prompts)} prompts ({n_skip} excluded as benchmark test items)", flush=True)
 
     model, tok = mlx_lm.load(args.model)
     hf_tok = AutoTokenizer.from_pretrained(args.hf_tokenizer)
@@ -67,6 +91,8 @@ def main():
         tgt = hf_tok.encode(text, add_special_tokens=False)[: args.max_new]
         if not tgt:
             continue
+        if len(tgt) < args.max_new:          # generation stopped: the backbone's stop is part of the target
+            tgt.append(int(hf_tok.eos_token_id))
         out.append({"source": p["source"], "prompt_ids": list(map(int, ids)),
                     "target_ids": list(map(int, tgt)), "target_text": text})
         if (k + 1) % 50 == 0:

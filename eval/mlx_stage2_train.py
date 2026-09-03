@@ -18,7 +18,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import mlx.core as mx  # noqa: E402
 import mlx.nn as nn  # noqa: E402
-from mlx.utils import tree_flatten, tree_unflatten  # noqa: E402
+from mlx.utils import tree_flatten, tree_map, tree_unflatten  # noqa: E402
 import mlx.optimizers as optim  # noqa: E402
 from mlx.optimizers import clip_grad_norm  # noqa: E402
 import mlx_lm  # noqa: E402
@@ -116,7 +116,12 @@ def main():
                     help="data/noharm_train.json from eval/build_noharm.py: non-physics prompts with "
                          "the backbone's own continuations; enables gate-selectivity training")
     ap.add_argument("--noharm-every", type=int, default=2,
-                    help="every k-th step is a no-harm batch (2 = alternate 1:1)")
+                    help="every k-th step is a no-harm batch (2 = alternate 1:1; must be >= 2)")
+    ap.add_argument("--noharm-gate-only", type=int, default=1,
+                    help="1: on no-harm steps update only the gate (inject.g1/g2), so the only "
+                         "route to a lower no-harm loss is closing the gate; 0: update all bridges")
+    ap.add_argument("--lam-gate", type=float, default=1.0,
+                    help="weight of the mean-gate penalty on no-harm steps (explicit sigma -> 0)")
     ap.add_argument("--reinit-channel", action="store_true",
                     help="on resume: keep the trained readouts/lookup, re-initialize the reverse "
                          "token heads and the gated injection (fresh optimizer)")
@@ -160,11 +165,16 @@ def main():
                   f"(gate_bias {args.gate_bias}, inj_cap {args.inj_cap}); optimizer fresh")
         elif opt_path.exists():
             opt.state = tree_unflatten(list(mx.load(str(opt_path)).items()))
+            opt.state["learning_rate"] = mx.array(args.lr)     # the checkpoint's lr must not override the CLI
             mx.eval(opt.state)
             print(f"resumed at step {global_step} (optimizer state restored, "
-                  f"opt step {int(opt.state['step'].item())})")
+                  f"opt step {int(opt.state['step'].item())}, lr {args.lr})")
         else:
             print(f"resumed at step {global_step} (optimizer state fresh)")
+        prev = meta.get("args", {})
+        for k in ("channel", "inj_cap", "detach_x0", "lam_x0", "clip", "l_rev", "gate_bias"):
+            if k in prev and prev[k] != getattr(args, k):
+                print(f"[WARN] --{k.replace('_', '-')}={getattr(args, k)} differs from the checkpoint's {prev[k]}")
 
     psi = PsiLMMLX(model, tok, fno, bridges, l_rev=args.l_rev, lam_x0=args.lam_x0)
     psi.detach_x0 = args.detach_x0
@@ -172,7 +182,10 @@ def main():
     train_items = json.loads(Path("data/stage2_qa_train.json").read_text())
     noharm_items = json.loads(Path(args.noharm_data).read_text()) if args.noharm_data else None
     if noharm_items:
-        print(f"no-harm arm: {len(noharm_items)} prompts, every {args.noharm_every}th step")
+        assert args.noharm_every >= 2, "--noharm-every 1 would starve the physics arm"
+        print(f"no-harm arm: {len(noharm_items)} prompts, every {args.noharm_every}th step, "
+              f"gate-only updates: {bool(args.noharm_gate_only)}, lam_gate {args.lam_gate}")
+    psi.lam_gate = args.lam_gate
     val_items = json.loads(Path("data/stage2_qa_val.json").read_text())
     n_params = sum(v.size for _, v in tree_flatten(bridges.parameters()))
     print(f"bridges: {n_params/1e6:.2f}M | backbone: {args.model} | "
@@ -185,6 +198,12 @@ def main():
     loss_and_grad = nn.value_and_grad(bridges, wrapped)
 
     t0 = time.time()
+    run = {"B": {}, "N": {}}          # running sums per phase between log points
+    def _acc(phase, **kv):
+        d = run[phase]
+        for k, v in kv.items():
+            d[k] = d.get(k, 0.0) + v
+        d["_n"] = d.get("_n", 0) + 1
     for i in range(args.steps):
         rng = random.Random(21_000_000 + global_step)
         psi.readout_only = global_step < args.readout_only
@@ -194,6 +213,11 @@ def main():
         else:
             batch = to_mlx_batch(torch_make_batch(builder, rng.sample(train_items, args.batch), "cpu"))
         (loss, aux), grads = loss_and_grad(bridges, batch)
+        if batch.get("noharm") and args.noharm_gate_only:
+            # keep only the gate's gradients: closing the gate is the one allowed route
+            keep = {"g1": grads["inject"]["g1"], "g2": grads["inject"]["g2"]}
+            grads = tree_map(lambda g: mx.zeros_like(g), grads)
+            grads["inject"]["g1"], grads["inject"]["g2"] = keep["g1"], keep["g2"]
         if args.clip == "module":
             grads = {k: clip_grad_norm(g, 1.0)[0] for k, g in grads.items()}
         else:
@@ -201,6 +225,11 @@ def main():
         opt.update(bridges, grads)
         mx.eval(bridges.parameters(), opt.state)
         global_step += 1
+        ph = "A" if psi.readout_only else ("N" if batch.get("noharm") else "B")
+        if ph == "B":
+            _acc("B", loss_ans=aux[0].item(), gate_ans=aux[7].item(), inj_ratio=aux[8].item())
+        elif ph == "N":
+            _acc("N", ce=aux[0].item(), gate_ans=aux[7].item(), gate_all=aux[5].item(), inj_ratio=aux[8].item())
         if global_step % 25 == 0:
             rec = {"step": global_step,
                    "loss_ans": round(aux[0].item(), 4),
@@ -213,8 +242,16 @@ def main():
                    "gate_ans": round(aux[7].item(), 4),
                    "inj_ratio_ans": round(aux[8].item(), 4),
                    "x0_exact": round(aux[9].item(), 4),
-                   "phase": "A" if psi.readout_only else ("N" if batch.get("noharm") else "B"),
+                   "phase": ph,
                    "sec_per_step": round((time.time() - t0) / (i + 1), 2)}
+            for pk, d in run.items():
+                n = d.get("_n", 0)
+                if n:
+                    for k, v in d.items():
+                        if k != "_n":
+                            rec[f"{pk}_{k}"] = round(v / n, 4)
+                    rec[f"{pk}_n"] = n
+            run = {"B": {}, "N": {}}
             with log.open("a") as f:
                 f.write(json.dumps(rec) + "\n")
             print(rec, flush=True)

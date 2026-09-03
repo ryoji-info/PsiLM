@@ -84,13 +84,16 @@ class PsiLMMLX:
         s = MlxStream(self.model, batch["p_ids"], batch["p_attn"])
         _, x0_hat, x0_logits, _, sigma, _ = self._couple(s, batch["prompt_mask"], batch["x0_span"])
         logits = s.finish()
-        loss = cross_entropy_masked(logits, batch["p_labels"], None, 1.0)
+        ce = cross_entropy_masked(logits, batch["p_labels"], None, 1.0)
         zero = mx.array(0.0)
+        valid = batch["p_attn"].astype(mx.float32)
+        gate_mean = (sigma[..., 0] * valid).sum() / (valid.sum() + 1e-6)     # over real tokens only
+        loss = ce + getattr(self, "lam_gate", 0.0) * gate_mean
         resp = (batch["p_labels"] != -100).astype(mx.float32)
         n_resp = resp.sum() + 1e-6
         gate_ans = (sigma[..., 0] * resp).sum() / n_resp
         ratio_ans = (self._last_ratio * resp).sum() / n_resp
-        return loss, (loss, zero, zero, zero, zero, sigma.mean(), zero, gate_ans, ratio_ans, zero)
+        return loss, (ce, zero, zero, zero, zero, gate_mean, zero, gate_ans, ratio_ans, zero)
 
     def _readout_only_loss(self, batch, lam_param, lam_x0, lam_u):
         s = MlxStream(self.model, batch["p_ids"], batch["p_attn"])
