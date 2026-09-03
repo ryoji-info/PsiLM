@@ -27,7 +27,8 @@ that gap, on consumer hardware first (Apple Silicon, 24 GB unified memory).
 | **2** | Swap the twin for a physics hemisphere: frozen LLM ⇄ frozen FNO through bidirectional latent bridges. | **works — results below** |
 | **2b–2d** | Harden: multi-mode ICs, held-out families, 2D physics via pretrained DPOT-Tiny. | **done — results below** |
 | **3** | Port to MLX (4-bit backbones) and scale the language hemisphere: Qwen3-1.7B, Qwen3-8B. | **done — 8B at 98.3%, results below** |
-| **4** | Guard-rail benchmarks (GSM8K/MMLU gate selectivity), 27B flagship, Mac app. | in progress |
+| **4** | Guard-rail benchmarks (GSM8K/MMLU gate selectivity). | **done — gate selective, results below** |
+| **5** | 27B flagship, loop coupling at 8B, Mac app. | planned |
 
 ## Stage 0
 
@@ -323,6 +324,44 @@ first with `--fresh`), then `python eval/mlx_stage2_eval.py --model
 mlx-community/Qwen3-8B-4bit --hf-tokenizer Qwen/Qwen3-8B --tag _mlx8b8 --n 60`.
 Trained bridges for every backbone are on Hugging Face as safetensors
 (`ryoji-info/PsiLM-bridges`).
+
+## Guard-rail: does the coupled model still do everything else?
+
+`eval/bench_guardrail.py` runs the same backbone on GSM8K, a five-subject
+MMLU slice and the physics set (100 each) in three arms — backbone alone,
+PsiLM, and PsiLM with the injection zeroed — and records the gate per
+question. The first run on the 98.3% checkpoint (v8) found the gate **open on
+every prompt** (σ 0.98–0.99): physics tokens computed from a math word
+problem were injected at full strength and GSM8K fell from 89% to 34%. The
+zeroed arm equalled the backbone byte for byte, so the damage was the
+injection alone. The gate had only ever seen physics prompts.
+
+v9 adds a **no-harm arm**: 1,049 non-physics prompts (GSM8K train, MMLU
+validation; with and without the "Answer:" line; benchmark test items
+excluded) paired with the backbone's own continuation, alternated with
+physics batches; on those steps only the gate is updated. The gate closed
+within fifty such steps:
+
+| dataset (n=100) | backbone | PsiLM v8 | **PsiLM v9** | zeroed | gate v8 → v9 |
+|---|---:|---:|---:|---:|---:|
+| physics QA | 5% | 97% | **95%** | 0% | 0.99 → 0.79 (open on 100%) |
+| GSM8K | 89% | 34% | **89%** | 89% | 0.98 → 0.002 (open on 0%) |
+| GSM8K, no "Answer:" line | 79% | – | **79%** | 79% | 0.001 (open on 0%) |
+| MMLU, 5 subjects (256 tokens) | 60% | – | **61%** | 60% | 0.99 → 0.003 (open on 0%) |
+
+One gate MLP, conditioned on the residual stream, is open on every physics
+question and shut on every other prompt — including a prompt format that
+appears in neither training arm — and the bridges are otherwise the backbone
+to the byte. (The v8 MMLU number is omitted: at the original 24-token budget
+it was a parse artifact, 55% → 69% only because the injection forced terse
+answers.)
+
+Reproduce: `python eval/build_noharm.py` (twice, `--nudge-prob 1.0` and
+`0.0`), then resume the v8 checkpoint with `--noharm-data
+data/noharm_train_all.json --noharm-every 2 --noharm-gate-only 1 --lam-gate 1.0`
+for 500 steps, then `python eval/bench_guardrail.py --tag v9_8b --ckpt
+results/stage2_mlx8b9/bridges.npz --n 100 --max-new-mmlu 256
+--max-new-physics-base 768` and the same with `--datasets gsm8k --gsm8k-nudge 0`.
 
 ## Repository layout
 
