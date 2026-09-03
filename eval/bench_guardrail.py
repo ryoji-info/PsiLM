@@ -82,6 +82,8 @@ def parse_args():
     ap.add_argument("--resume", action="store_true")
     ap.add_argument("--fresh", action="store_true", help="discard an existing rows file")
     ap.add_argument("--no-parity-check", action="store_true")
+    ap.add_argument("--gsm8k-nudge", type=int, default=1,
+                    help="0: drop the 'Answer:' nudge from GSM8K prompts (wrapper-cue probe for the gate)")
     ap.add_argument("--print-every", type=int, default=5)
     ap.add_argument("--save-every", type=int, default=5)
     ap.add_argument("--text-chars", type=int, default=1200)
@@ -102,7 +104,7 @@ def build_all(args, hf_tok):
         if ds == "gsm8k":
             recs = load_gsm8k(args.n, args.seed)
             tasks += build_tasks("gsm8k", recs, hf_tok, args.max_new_gsm8k,
-                                 nonphys_span=args.nonphys_span)
+                                 nonphys_span=args.nonphys_span, gsm8k_nudge=bool(args.gsm8k_nudge))
         elif ds == "mmlu":
             recs = load_mmlu(args.n, args.seed, args.mmlu_subjects.split(","))
             tasks += build_tasks("mmlu", recs, hf_tok, args.max_new_mmlu,

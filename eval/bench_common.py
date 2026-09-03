@@ -148,8 +148,8 @@ def mmlu_user(question: str, choices: List[str]) -> str:
     return "\n".join(lines) + "\n" + NUDGE_LETTER
 
 
-def gsm8k_user(question: str) -> str:
-    return question.strip() + NUDGE_NUMBER
+def gsm8k_user(question: str, nudge: bool = True) -> str:
+    return question.strip() + (NUDGE_NUMBER if nudge else "")
 
 
 def gsm8k_gold(answer: str) -> float:
@@ -276,7 +276,8 @@ def load_physics(n: int, path: str = PHYSICS_DATA) -> List[Dict[str, Any]]:
 
 def build_tasks(dataset: str, records: List[Dict[str, Any]], hf_tok, max_new: int,
                 builder=None, physics_base_protocol: str = "nudge",
-                max_new_physics_base: int = 160, nonphys_span: str = "whole") -> List[Task]:
+                max_new_physics_base: int = 160, nonphys_span: str = "whole",
+                gsm8k_nudge: bool = True) -> List[Task]:
     """Turn dataset records into Tasks (ids + protocol + span).
 
     nonphys_span: what the forward bridge's x0 pointer sees on a question that
@@ -287,7 +288,7 @@ def build_tasks(dataset: str, records: List[Dict[str, Any]], hf_tok, max_new: in
     tasks = []
     if dataset == "gsm8k":
         for r in records:
-            ids = chat_ids(hf_tok, gsm8k_user(r["question"]))
+            ids = chat_ids(hf_tok, gsm8k_user(r["question"], nudge=gsm8k_nudge))
             span = (0, len(ids)) if nonphys_span == "whole" else None
             p = Prompt(ids, hf_tok.decode(ids), "number", max_new, span)
             tasks.append(Task("gsm8k", r["qid"], r["gold"], p,
