@@ -86,7 +86,8 @@ def main():
     margs = meta.get("args", {})
     bridges = PsiBridgesMLX(d_model=model.args.hidden_size,
                             gate_bias=margs.get("gate_bias", -2.0),
-                            inj_cap=margs.get("inj_cap"), channel=margs.get("channel", "field"))
+                            inj_cap=margs.get("inj_cap"), channel=margs.get("channel", "field"),
+                            readout_norm=margs.get("readout_norm", "rms"))
     bridges.load_weights(str(ckpt))
     psi = PsiLMMLX(model, tok, fno, bridges, l_rev=args.l_rev)
     builder = QABuilder(hf_tok)

@@ -368,7 +368,8 @@ def load_physics_stack(ckpt: str, d_model: int, gate_bias: float = -2.0, fno_pat
     # v6+ checkpoints record their construction; older ones fall back to the CLI value
     margs = meta.get("args", {})
     bridges = PsiBridgesMLX(d_model=d_model, gate_bias=margs.get("gate_bias", gate_bias),
-                            inj_cap=margs.get("inj_cap"), channel=margs.get("channel", "field"))
+                            inj_cap=margs.get("inj_cap"), channel=margs.get("channel", "field"),
+                            readout_norm=margs.get("readout_norm", "rms"))
     bridges.load_weights(str(ckpt))
     bridges.freeze()
     mx.eval(bridges.parameters(), fno.parameters())

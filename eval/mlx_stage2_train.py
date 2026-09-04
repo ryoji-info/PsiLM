@@ -27,6 +27,7 @@ from transformers import AutoTokenizer  # noqa: E402
 from psilm.mlx.bridges import PsiBridgesMLX  # noqa: E402
 from psilm.mlx.fno import convert_from_torch  # noqa: E402
 from psilm.mlx.gemma_loader import load_backbone_any  # noqa: E402
+from psilm.mlx.staged import MlxStream  # noqa: E402
 from psilm.mlx.model import PsiLMMLX  # noqa: E402
 from psilm.stage2.qa import QABuilder, make_batch as torch_make_batch  # noqa: E402
 
@@ -108,6 +109,10 @@ def main():
                     help="phase A: first N global steps train fwd + lookup on the true x0 "
                          "through layers 0..l_fwd only (no injection, no answer loss)")
     ap.add_argument("--eval-n", type=int, default=48)
+    ap.add_argument("--readout-norm", default="rms", choices=["rms", "dim"],
+                    help="dim: per-dimension standardization of the readout input from a "
+                         "calibration batch (for backbones with constant massive activations)")
+    ap.add_argument("--calib-n", type=int, default=32)
     ap.add_argument("--inj-cap", type=float, default=None,
                     help="cap the injection RMS at this fraction of the stream RMS (pre-gate)")
     ap.add_argument("--channel", default="field", choices=["field", "value"],
@@ -140,7 +145,8 @@ def main():
     hf_tok = AutoTokenizer.from_pretrained(args.hf_tokenizer)
     fno = convert_from_torch("results/stage2/fno.pt")
     bridges = PsiBridgesMLX(d_model=model.args.hidden_size, gate_bias=args.gate_bias,
-                            inj_cap=args.inj_cap, channel=args.channel)
+                            inj_cap=args.inj_cap, channel=args.channel,
+                            readout_norm=args.readout_norm)
     # bias correction matters: MLX defaults to none, so a fresh AdamW takes
     # 3-6x steps for its first ~15 updates. State is persisted across chunks
     # (the torch trainer always did; the 8B v5 gate closed at chunk boundaries).
@@ -177,6 +183,17 @@ def main():
 
     psi = PsiLMMLX(model, tok, fno, bridges, l_rev=args.l_rev, lam_x0=args.lam_x0)
     psi.detach_x0 = args.detach_x0
+    if args.readout_norm == "dim" and (args.fresh or not ckpt.exists()):
+        # calibration: per-dimension statistics of the readout layer on a prompt batch
+        cb = QABuilder(hf_tok)
+        citems = json.loads(Path("data/stage2_qa_train.json").read_text())
+        cbatch = to_mlx_batch(torch_make_batch(cb, random.Random(7).sample(citems, args.calib_n), "cpu"))
+        cs = MlxStream(model, cbatch["p_ids"], cbatch["p_attn"])
+        cs.run(0, psi.l_fwd)
+        bridges.fwd.calibrate_readout(cs.hidden, cbatch["prompt_mask"])
+        print(f"readout calibrated on {args.calib_n} prompts at layer {psi.l_fwd}: "
+              f"sigma max {float(bridges.fwd.dim_sigma.max()):.1f} median "
+              f"{float(mx.sort(bridges.fwd.dim_sigma)[bridges.fwd.dim_sigma.shape[0]//2]):.3f}")
     builder = QABuilder(hf_tok)
     train_items = json.loads(Path("data/stage2_qa_train.json").read_text())
     noharm_items = json.loads(Path(args.noharm_data).read_text()) if args.noharm_data else None

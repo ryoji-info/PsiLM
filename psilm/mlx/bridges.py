@@ -17,8 +17,21 @@ def _rms(h):
 
 
 class ForwardBridgeMLX(nn.Module):
-    def __init__(self, d_model: int, d_hidden: int = 256, n_params: int = 3):
+    def __init__(self, d_model: int, d_hidden: int = 256, n_params: int = 3,
+                 readout_norm: str = "rms"):
         super().__init__()
+        # readout_norm "dim": standardize each hidden dimension with calibration
+        # statistics (mean/std over positions of a calibration batch at the
+        # readout layer) BEFORE the per-position RMS norm. Backbones whose
+        # massive-activation dimensions are constant across prompts (Gemma 4:
+        # top-5 dims hold 95% of the energy) otherwise leave the pooled span
+        # vector with ~26x less across-item variance than Qwen's, and the x0
+        # classifier crawls. The buffers are frozen parameters (saved with the
+        # bridges); calibrate_readout() fills them.
+        self.readout_norm = readout_norm
+        self.dim_mu = mx.zeros((d_model,))
+        self.dim_sigma = mx.ones((d_model,))
+        self.freeze(keys=["dim_mu", "dim_sigma"], recurse=False)
         self.query = mx.random.normal((d_model,)) / math.sqrt(d_model)
         self.key = nn.Linear(d_model, d_model)
         self.mlp1 = nn.Linear(d_model, d_hidden)
@@ -35,8 +48,27 @@ class ForwardBridgeMLX(nn.Module):
         w = mx.softmax(scores, axis=-1)
         return (w[..., None] * h).sum(axis=1), w
 
+    def calibrate_readout(self, hidden, valid):
+        """hidden (B, L, d) at the readout layer, valid (B, L) bool: set per-dim
+        mean/std over the valid positions."""
+        h = hidden.astype(mx.float32)
+        w = valid.astype(mx.float32)[..., None]
+        n = w.sum()
+        mu = (h * w).sum(axis=(0, 1)) / n
+        var = (((h - mu) ** 2) * w).sum(axis=(0, 1)) / n
+        self.dim_mu = mu
+        self.dim_sigma = mx.sqrt(var + 1e-6)
+        self.freeze(keys=["dim_mu", "dim_sigma"], recurse=False)
+        mx.eval(self.dim_mu, self.dim_sigma)
+
+    def _normalize(self, hidden):
+        h = hidden.astype(mx.float32)
+        if self.readout_norm == "dim":
+            h = (h - self.dim_mu) / self.dim_sigma
+        return _rms(h)
+
     def __call__(self, hidden, prompt_mask, x0_span=None):
-        h = _rms(hidden.astype(mx.float32))
+        h = self._normalize(hidden)
         pooled_p, _ = self._pool(h, prompt_mask, self.query, self.key)
         params = self.mlp2(nn.gelu(self.mlp1(pooled_p)))
         if x0_span is not None:
@@ -177,10 +209,10 @@ class GatedCrossAttentionMLX(nn.Module):
 
 class PsiBridgesMLX(nn.Module):
     def __init__(self, d_model: int, n_params: int = 3, gate_bias: float = -2.0,
-                 inj_cap=None, channel: str = "field"):
+                 inj_cap=None, channel: str = "field", readout_norm: str = "rms"):
         super().__init__()
         self.channel = channel          # "field": lookup + K field tokens; "value": ValueTokensMLX(u_hat)
-        self.fwd = ForwardBridgeMLX(d_model, n_params=n_params)
+        self.fwd = ForwardBridgeMLX(d_model, n_params=n_params, readout_norm=readout_norm)
         self.rev = ReverseBridgeMLX(d_model)
         if channel == "value":
             self.val = ValueTokensMLX(d_model)
