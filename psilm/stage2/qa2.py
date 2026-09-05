@@ -89,12 +89,29 @@ class QA2Builder:
             {"role": "user", "content": QUESTION.format(
                 ic=ic_text(item["modes"]), x0=item["x0"])},
         ]
-        out = self.tok.apply_chat_template(messages, tokenize=True, add_generation_prompt=True)
+        out = self.tok.apply_chat_template(messages, tokenize=True, add_generation_prompt=True,
+                                           enable_thinking=False)
         if not isinstance(out, list):
             out = out["input_ids"]
         if out and isinstance(out[0], list):
             out = out[0]
         return list(out)
+
+    def x0_span(self, p_prompt, item):
+        """Token span of x0 in the prompt (mirror of QABuilder.x0_span): x0 is
+        the last number mentioned, so the last sublist match is unambiguous.
+        Widened by 1 for tokenizer boundary effects. Raises if no match, so
+        deterministic span pooling can never silently pool the whole prompt."""
+        for cand in (f" {item['x0']}", f"{item['x0']}"):
+            sub = self.tok.encode(cand, add_special_tokens=False)
+            hit = -1
+            for i in range(len(p_prompt) - len(sub) + 1):
+                if p_prompt[i:i + len(sub)] == sub:
+                    hit = i
+            if hit >= 0:
+                return max(0, hit - 1), min(len(p_prompt), hit + len(sub) + 1)
+        raise ValueError(f"x0 span not found in prompt (x0={item.get('x0')!r}); "
+                         "deterministic span pooling would silently pool the whole prompt")
 
     def build(self, item):
         p_prompt = self.prompt_ids(item)
@@ -115,6 +132,7 @@ class QA2Builder:
             "prompt_len": len(p_prompt),
             "params": params, "param_mask": mask,
             "x0": item["x0"],
+            "x0_span": self.x0_span(p_prompt, item),
             "meta": item,
         }
 
@@ -145,5 +163,6 @@ def make_batch(builder, items, device, pad_multiple=8):
             [[round(e["params"][3 * m] * 100) for m in range(N_MODES)] for e in exs],
             dtype=torch.long).to(device),
         "u_true": torch.tensor([e["meta"]["u"] for e in exs], dtype=torch.float32).to(device),
+        "x0_span": torch.tensor([e["x0_span"] for e in exs], dtype=torch.long).to(device),
         "metas": [e["meta"] for e in exs],
     }

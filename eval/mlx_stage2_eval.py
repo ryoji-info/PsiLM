@@ -39,9 +39,18 @@ def parse_value(text):
     return float(m[-1]) if m else None
 
 
-def chat_generate(model, hf_tok, user, max_new=768, gen_tok=None):
+FORCE_SUFFIX = "\n\nAnswer:"
+
+
+def chat_generate(model, hf_tok, user, max_new=768, gen_tok=None, force_answer=True):
     """gen_tok: the mlx-lm tokenizer wrapper (knows all of a backbone's stop ids,
-    e.g. Gemma's <eos>/<turn|>); hf_tok only builds the chat prompt."""
+    e.g. Gemma's <eos>/<turn|>); hf_tok only builds the chat prompt.
+
+    force_answer: if the reply used its whole budget without an 'Answer:' line,
+    start the model's own continuation with 'Answer:' and let it commit to a
+    number (16 more tokens). Backbones that derive at length (Gemma 4 never
+    reaches the line in 768 tokens) otherwise score on a parser fallback that
+    reads numbers out of their unfinished algebra. Returns (text, forced)."""
     messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
     ids = hf_tok.apply_chat_template(messages, tokenize=True, add_generation_prompt=True,
                                      enable_thinking=False)
@@ -49,7 +58,12 @@ def chat_generate(model, hf_tok, user, max_new=768, gen_tok=None):
         ids = ids["input_ids"]
     if ids and isinstance(ids[0], list):
         ids = ids[0]
-    return mlx_lm.generate(model, gen_tok or hf_tok, prompt=list(ids), max_tokens=max_new, verbose=False)
+    text = mlx_lm.generate(model, gen_tok or hf_tok, prompt=list(ids), max_tokens=max_new, verbose=False)
+    if force_answer and "Answer:" not in text:
+        cont = list(ids) + hf_tok.encode(text + FORCE_SUFFIX, add_special_tokens=False)
+        tail = mlx_lm.generate(model, gen_tok or hf_tok, prompt=cont, max_tokens=16, verbose=False)
+        return text + FORCE_SUFFIX + tail, True
+    return text, False
 
 
 def parse_answer(text):
@@ -75,6 +89,8 @@ def main():
                     help="token budget for the text arms; Qwen3-8B writes a long derivation "
                          "before its Answer line (160 truncated every item)")
     ap.add_argument("--out", default="final_eval.json")
+    ap.add_argument("--no-force-answer", action="store_true",
+                    help="disable answer forcing for the text arms (the pre-2026-09-06 protocol)")
     args = ap.parse_args()
     arms = args.arms.split(",")
 
@@ -102,19 +118,23 @@ def main():
         q = QUESTION.format(a=item["a"], phi=item["phi"], x0=item["x0"])
         true = item["u"]
         preds, texts = {}, {}
+        forced = {}
         if "baseline" in arms:
-            texts["baseline"] = chat_generate(stock, hf_tok, q + NUDGE, args.max_new, gen_tok=tok)
+            texts["baseline"], forced["baseline"] = chat_generate(
+                stock, hf_tok, q + NUDGE, args.max_new, gen_tok=tok, force_answer=not args.no_force_answer)
             preds["baseline"] = parse_value(texts["baseline"])
         if "oracle" in arms:
             oq = q + f"\n\nA trusted solver reports: u({item['x0']}) = {true:.2f}." + NUDGE
-            texts["oracle"] = chat_generate(stock, hf_tok, oq, args.max_new, gen_tok=tok)
+            texts["oracle"], forced["oracle"] = chat_generate(
+                stock, hf_tok, oq, args.max_new, gen_tok=tok, force_answer=not args.no_force_answer)
             preds["oracle"] = parse_value(texts["oracle"])
         if "psilm" in arms:
             texts["psilm"] = psi.generate(builder, item)
             preds["psilm"] = parse_answer(texts["psilm"])
         preds["zero"] = 0.0
         row = {"item": item, "text": {k: v[-200:] for k, v in texts.items()},
-               "has_answer_line": {k: ("Answer:" in v) for k, v in texts.items()}}
+               "has_answer_line": {k: ("Answer:" in v) for k, v in texts.items()},
+               "forced": forced}
         for k, p in preds.items():
             ok = score(p, true)
             agg[k][0] += ok
@@ -135,6 +155,7 @@ def main():
         if k in texts:
             summary[k]["answer_line_rate"] = round(
                 sum(r["has_answer_line"][k] for r in rows) / n, 4)
+            summary[k]["forced_rate"] = round(sum(r["forced"].get(k, False) for r in rows) / n, 4)
     Path(f"results/stage2{args.tag}/{args.out}").write_text(
         json.dumps({"summary": summary, "rows": rows}, indent=1))
     print("FINAL " + json.dumps(summary), flush=True)

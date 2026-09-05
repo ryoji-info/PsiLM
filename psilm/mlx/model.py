@@ -25,13 +25,22 @@ def cross_entropy_masked(logits, labels, digit_ids=None, digit_weight=5.0):
     return (ce * w).sum() / w.sum()
 
 
+def _param_loss_plain(params_hat, batch):
+    """Default readout loss: plain MSE against the (a, sin phi, cos phi) target."""
+    return ((params_hat - batch["params"]) ** 2).mean()
+
+
 class PsiLMMLX:
     def __init__(self, model, tokenizer, fno, bridges, l_fwd=None, l_rev=None,
-                 digit_weight=5.0, lam_x0=0.3):
+                 digit_weight=5.0, lam_x0=0.3, ic_fn=None, param_loss_fn=None):
         self.model = model
         self.tok = tokenizer
         self.fno = fno
         self.phi = bridges
+        # pluggable task pieces (psilm/mlx/multimode.py overrides both for the
+        # multi-mode Burgers task); the defaults are the single-mode behaviour
+        self.ic_fn = ic_fn if ic_fn is not None else build_ic_mlx
+        self.param_loss_fn = param_loss_fn if param_loss_fn is not None else _param_loss_plain
         n = len(model.model.layers)
         self.n_layers = n
         self.l_fwd = l_fwd if l_fwd is not None else round(n * 10 / 24)
@@ -59,7 +68,7 @@ class PsiLMMLX:
     def _couple(self, stream, prompt_mask, x0_span=None):
         stream.run(0, self.l_fwd)
         params_hat, x0_hat, x0_logits, w_x0 = self.phi.fwd(stream.hidden, prompt_mask, x0_span)
-        ic = build_ic_mlx(params_hat)
+        ic = self.ic_fn(params_hat)
         feats = self.fno.features(ic)
         u_field = self.fno.proj(feats).squeeze(-1)
         x0_in = mx.stop_gradient(x0_hat) if self.detach_x0 else x0_hat
@@ -100,11 +109,11 @@ class PsiLMMLX:
         s.run(0, self.l_fwd)
         params_hat, x0_hat, x0_logits, _ = self.phi.fwd(s.hidden, batch["prompt_mask"],
                                                         batch.get("x0_span"))
-        ic = build_ic_mlx(params_hat)
+        ic = self.ic_fn(params_hat)
         feats = self.fno.features(ic)
         u_field = self.fno.proj(feats).squeeze(-1)
         _, u_hat = self.phi.rev(feats, u_field, batch["x0"])   # lookup at the TRUE x0
-        loss_param = ((params_hat - batch["params"]) ** 2).mean()
+        loss_param = self.param_loss_fn(params_hat, batch)
         loss_x0 = nn.losses.cross_entropy(x0_logits, batch["x0_bins"], reduction="mean")
         loss_u = ((u_hat - batch["u_true"]) ** 2).mean()
         loss = lam_param * loss_param + lam_x0 * loss_x0 + lam_u * loss_u
@@ -126,7 +135,7 @@ class PsiLMMLX:
             s, batch["prompt_mask"], batch.get("x0_span"))
         logits = s.finish()
         loss_ans = cross_entropy_masked(logits, batch["p_labels"], self.digit_ids, self.digit_weight)
-        loss_param = ((params_hat - batch["params"]) ** 2).mean()
+        loss_param = self.param_loss_fn(params_hat, batch)
         x0_tgt = batch["x0_bins"]
         loss_x0 = nn.losses.cross_entropy(x0_logits, x0_tgt, reduction="mean")
         loss_u = ((u_hat - batch["u_true"]) ** 2).mean()
