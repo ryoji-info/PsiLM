@@ -348,6 +348,7 @@ def load_backbone(model_id: str = DEFAULT_MODEL, hf_tok_id: str = DEFAULT_HF_TOK
     """(tower, mlx_tokenizer, hf_tokenizer). The tower drives the staged decoder;
     its stock model (for mlx_lm.generate) is reachable as tower._model on Gemma
     towers and is the tower itself otherwise."""
+    from transformers import AutoTokenizer
     from psilm.mlx.gemma_loader import load_backbone_any
     model, stock, tok = load_backbone_any(model_id)
     if not hasattr(model, "_model"):
