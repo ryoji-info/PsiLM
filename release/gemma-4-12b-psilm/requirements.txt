@@ -12,6 +12,7 @@ torch>=2.4              # imported by psilm.stage2.qa (batching helpers); CPU wh
 huggingface_hub>=0.30   # downloads the backbone from mlx-community
 numpy>=1.26
 safetensors>=0.4
+einops>=0.8            # --task 2d only (imported by the DPOT-Tiny definition)
 
 # The PsiLM package itself (bridges, staged forward, Gemma loader, FNO, QA builder).
 # Alternative to this line: clone the repository and set PSILM_REPO=/path/to/PsiLM.

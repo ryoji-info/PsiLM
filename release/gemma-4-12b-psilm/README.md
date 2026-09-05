@@ -69,7 +69,24 @@ python psilm_infer.py --question-only                 # print the exact prompt, 
 python psilm_infer.py --help                          # --bridges DIR, --physics FILE, --backbone ID, ...
 ```
 
-Without `pip install`-ing the package, a clone of the GitHub repository works too: `PSILM_REPO=/path/to/PsiLM python psilm_infer.py`.
+The same script runs the two other tasks once their bridges are in this repo (`--task` is auto-detected from the bridges directory, so it can be omitted when `--bridges` is given):
+
+```bash
+# 1D Burgers, single-mode initial condition (the released bridges; the default task)
+python psilm_infer.py --task 1d --a 1.28 --phi 0.5 --x0 0.76
+
+# 1D Burgers, multi-mode initial condition u(x,0) = sum a*sin(2*pi*m*x + phi), m in {1, 2}
+# (--modes takes m:a:phi triples; one mode is the training family, two modes the held-out combination)
+python psilm_infer.py --task multimode --modes "1:0.55:2.10" --x0 0.76
+python psilm_infer.py --task multimode --modes "1:0.55:0.50,2:0.75:1.10" --x0 0.33
+
+# 2D Fisher-KPP: a Gaussian bump (height a, center (cx, cy), width w), value at (x0, y0)
+python psilm_infer.py --task 2d --a 0.6 --cx 0.35 --cy 0.6 --w 0.07 --x0 0.4 --y0 0.55
+```
+
+Each task reads `bridges/<task directory>/config.json` for its construction and coupling depths and its physics file (`physics/fno_burgers_multimode.safetensors`, `physics/dpot_tiny_fisher2d_finetuned.safetensors`). The 2D physics model is DPOT-Tiny and runs in **torch** (MPS, CPU fallback; `--phys-device`): it needs the `einops` package (`pip install einops`; not yet in `requirements.txt`), the upstream DPOT-Tiny base checkpoint `physics/model_Ti.pth` (`--dpot-base`; when the file is absent the script downloads it from [`hzk17/DPOT`](https://huggingface.co/hzk17/DPOT) into the Hugging Face cache), and the vendored DPOT definition `vendor/dpot_model.py`, which the pip package does not ship, so the 2D task runs with a clone of the GitHub repository: `PSILM_REPO=/path/to/PsiLM python psilm_infer.py --task 2d ...`.
+
+Without `pip install`-ing the package, a clone of the GitHub repository works for every task: `PSILM_REPO=/path/to/PsiLM python psilm_infer.py`.
 
 Loading the pieces yourself, in Python:
 
