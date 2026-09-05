@@ -28,7 +28,8 @@ that gap, on consumer hardware first (Apple Silicon, 24 GB unified memory).
 | **2b–2d** | Harden: multi-mode ICs, held-out families, 2D physics via pretrained DPOT-Tiny. | **done — results below** |
 | **3** | Port to MLX (4-bit backbones) and scale the language hemisphere: Qwen3-1.7B, Qwen3-8B. | **done — 8B at 98.3%, results below** |
 | **4** | Guard-rail benchmarks (GSM8K/MMLU gate selectivity). | **done — gate selective, results below** |
-| **5** | 27B flagship, loop coupling at 8B, Mac app. | planned |
+| **5** | Second model family (Gemma 4 12B): recipe transfers in one pass with a calibrated readout. | **done — 96.7%, gate selective** |
+| **6** | 27B: inference-only on this machine (training peaks at 39 GB); loop coupling at 8B; Mac app. | planned |
 
 ## Stage 0
 
@@ -325,6 +326,37 @@ readouts and resumed them with `--reinit-channel`, five chunks to step 4500), th
 mlx-community/Qwen3-8B-4bit --hf-tokenizer Qwen/Qwen3-8B --tag _mlx8b8 --n 60`.
 Trained bridges for every backbone are on Hugging Face as safetensors
 (`ryoji-info/PsiLM-bridges`).
+
+## A second family: Gemma 4 12B
+
+The finished recipe (deterministic span pointer, value-token channel,
+readout warm-up, no-harm arm) was run once, as a single pass, on
+`mlx-community/gemma-4-12B-it-4bit` (48 layers, hidden 3840, sliding +
+global attention, 262k tied vocabulary, logit soft-cap). The staged forward
+is bit-exact through `psilm/mlx/gemma_loader.py`; a batch-4 training step
+takes 12 s at a 13 GB peak.
+
+| backbone | LLM alone | **PsiLM** | oracle (answer in text) | bridges |
+|---|---:|---:|---:|---:|
+| Gemma 4 12B (4-bit, MLX) | 0% (never reaches an Answer line in 768 tokens) | **96.7% / MAE 0.017** | 98.3% / 0.007 | 25.5M |
+
+**One backbone-specific fix, measured not tuned.** The first pass plateaued
+at 40% because the pointer would not sharpen: Gemma's massive-activation
+dimensions are nearly constant across prompts, so the per-position RMS
+normalization of the bridge input divides the digit signal by them, and the
+pooled x₀-span vector has 26× less across-item variance than on Qwen.
+`--readout-norm dim` standardizes each dimension with statistics from a
+32-prompt calibration pass (two frozen vectors saved with the bridges),
+restores the signal to twice Qwen's, and the warm-up then ends with the
+sharpest pointer of any backbone (CE 1.24, 69% exact bins).
+
+**Guard-rail on Gemma** (n=100 per dataset; `results/bench/gemma12b_*`):
+physics 0 / 97 / 10% (backbone / PsiLM / zeroed; gate 0.14, open on 100%),
+GSM8K 84 / 84 / 84% (gate 0.004, open on 0%), MMLU@256 53 / 55 / 53%
+(79.1 / 79.1% on the 67 items both arms answer), GSM8K without the "Answer:"
+line 83 / 83 / 83%. Gemma's gate operates at 0.14 on physics and its
+injection at 3–4% of the stream, a much gentler point than Qwen's saturated
+gate at the 20% cap; both are selective.
 
 ## Guard-rail: does the coupled model still do everything else?
 
