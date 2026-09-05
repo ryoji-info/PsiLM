@@ -22,5 +22,5 @@ stage1 = [
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["psilm"]
+[tool.setuptools.packages.find]
+include = ["psilm*"]

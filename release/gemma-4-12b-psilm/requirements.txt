@@ -1,0 +1,18 @@
+# PsiLM on Gemma 4 12B -- Apple Silicon (MLX). Verified 2026-09-06 on macOS / Python 3.11
+# with: mlx 0.32.2, mlx-lm 0.31.3, transformers 5.16.1, torch 2.13.0, huggingface_hub 1.29.0.
+#
+#   pip install -r requirements.txt
+#   python psilm_infer.py
+#
+mlx>=0.32
+mlx-lm==0.31.3          # exact: the Gemma 4 loader (psilm.mlx.gemma_loader) goes through
+                        # mlx_lm.utils internals; other versions are untested
+transformers>=4.51      # chat template only (apply_chat_template); the model runs in MLX
+torch>=2.4              # imported by psilm.stage2.qa (batching helpers); CPU wheel is fine
+huggingface_hub>=0.30   # downloads the backbone from mlx-community
+numpy>=1.26
+safetensors>=0.4
+
+# The PsiLM package itself (bridges, staged forward, Gemma loader, FNO, QA builder).
+# Alternative to this line: clone the repository and set PSILM_REPO=/path/to/PsiLM.
+psilm @ git+https://github.com/ryoji-info/PsiLM

@@ -1,16 +1,42 @@
 ---
 license: apache-2.0
-tags: [psilm, latent-coupling, physics, qwen]
+tags:
+  - psilm
+  - latent-coupling
+  - physics
+  - neural-operator
+  - pde
+  - qwen
+  - gemma
+  - mlx
+  - safetensors
+  - research
 ---
+
+<!-- Maintainer: upload assets/psilm-banner.png from the GitHub repository to the root of this HF repo so the image below resolves. -->
+![PsiLM banner](psilm-banner.png)
 
 # PsiLM bridges
 
-Trained **bridge checkpoints** for [PsiLM](https://github.com/ryoji-info/PsiLM):
-a frozen language model coupled to a frozen physics model through small
-trainable latent bridges — no text at the interface. Each directory holds the
-bridge weights for one (backbone, task) pair; backbones and physics models are
-**not** included (they are public models, loaded separately; bridges do not
-transfer between backbones).
+**Trained bridge checkpoints for [PsiLM](https://github.com/ryoji-info/PsiLM) (ΨLM), one directory per (backbone, task) pair.**
+
+## What is PsiLM, and what is in this repo?
+
+PsiLM couples a **frozen** language model to a **frozen** physics model through small trainable *latent bridges*; no text crosses the interface. A forward bridge reads the physics model's inputs out of the prompt's hidden states (deterministic span pooling over each number's tokens plus 100-bin classifiers). The physics model (a 70K-parameter Burgers FNO, or DPOT-Tiny for 2D) runs on those inputs. A reverse channel turns the value at the queried position into Fourier features and eight soft tokens, injected back into the language model through gated cross-attention at a later layer; a no-harm training arm makes the gate open only on physics prompts. This repo holds **only the bridge weights**: backbones and physics models are loaded separately (see below), and bridges do not transfer between backbones.
+
+**Easiest entry point:** the standalone repo [`ryoji-info/Gemma-4-12B-PsiLM`](https://huggingface.co/ryoji-info/Gemma-4-12B-PsiLM) packages the Gemma 4 12B bridges with the physics model and a runnable example. Use this repo when you want a specific backbone or task.
+
+Links: [GitHub](https://github.com/ryoji-info/PsiLM) · [paper (PDF)](https://github.com/ryoji-info/PsiLM/blob/main/paper/psilm.pdf) · physics models: [`ryoji-info/PsiLM-physics`](https://huggingface.co/ryoji-info/PsiLM-physics)
+
+## Which directory do I want?
+
+- **Best result on a large backbone with a selective gate:** `gemma-4-12b-4bit-mlx-1d-value-selective` or `qwen3-8b-4bit-mlx-1d-value-selective` (MLX, Apple Silicon).
+- **Smallest working system (PyTorch or MLX, runs on a laptop in minutes):** `qwen2.5-0.5b-1d` or `qwen2.5-0.5b-4bit-mlx-1d`.
+- **2D physics with a pretrained physics foundation model:** `qwen2.5-0.5b-2d-dpot`.
+- **Generalization / loop-coupling studies:** `qwen2.5-0.5b-multimode`, `qwen2.5-0.5b-loop2` (and the refuted `-v2` kept for the record).
+- **The Bicameral-Model reproduction (twin LLMs + calculator, no physics):** `qwen2.5-0.5b-bicameral`.
+
+Held-out accuracy is within ±0.05 of the ground truth unless the row says otherwise. Every number below is copied from the evaluation records committed in the GitHub repository (`results/**/final_eval*.json`, `results/bench/*_summary.json`).
 
 | directory | backbone | task | trained params | held-out result |
 |---|---|---|---|---|
@@ -21,17 +47,18 @@ transfer between backbones).
 | `qwen2.5-0.5b-loop2` | Qwen2.5-0.5B-Instruct | two-pass loop coupling | 3.5M | combination 47.9% (+16.7 over single-pass), iid 100% |
 | `qwen2.5-0.5b-2d-dpot` | Qwen2.5-0.5B-Instruct | 2D Fisher–KPP with fine-tuned DPOT-Tiny | 3.7M | 95.0% @±0.05, MAE 0.0168 |
 | `qwen3-1.7b-1d` | Qwen3-1.7B (fp16) | 1D Burgers field QA | 12.6M | 93.3% @±0.05, MAE 0.0221 |
-| `qwen2.5-0.5b-4bit-mlx-1d` | Qwen2.5-0.5B-Instruct-4bit (MLX) | 1D Burgers field QA, MLX stack | 3.5M | 1.00 rollouts, MAE 0.0136 |
+| `qwen2.5-0.5b-4bit-mlx-1d` | Qwen2.5-0.5B-Instruct-4bit (MLX) | 1D Burgers field QA, MLX stack (step 5000; learned pointer, field channel, trained with the pre-readout-norm `psilm.mlx` code — loads with `strict=False` only and does not reproduce under the current code; kept for the record) | 3.5M | 1.00 rollouts, MAE 0.0136 (at training time) |
 | `qwen3-8b-4bit-mlx-1d-value` | Qwen3-8B-4bit (MLX) | 1D Burgers field QA; deterministic span pointer, value-token channel (8 soft tokens from the looked-up u(x0)), inject @ layer 22/36, injection cap 0.2 | 28.4M | **98.3% @±0.05, MAE 0.0135** (n=60; backbone alone 6.7%, oracle 100%) |
 | `qwen3-8b-4bit-mlx-1d-value-selective` | Qwen3-8B-4bit (MLX) | as above + gate-selectivity training (no-harm arm, 500 steps) | 28.4M | physics **95%** (n=100) / 93.8% (n=48); **GSM8K 89% = backbone, MMLU 61% vs 60%**; gate 0.79 on physics, 0.002 elsewhere |
 | `gemma-4-12b-4bit-mlx-1d-value-selective` | Gemma 4 12B-it-4bit (MLX) | 1D Burgers field QA; calibrated per-dimension readout (`readout_norm: dim`, buffers included), value-token channel, inject @ layer 30/48, cap 0.2, gate-selectivity training | 25.5M | **96.7% @±0.05, MAE 0.017** (n=60; oracle 98.3%); GSM8K 84% = backbone, MMLU 55% vs 53%; gate 0.14 on physics, 0.004 elsewhere |
+| `gemma-4-12b-4bit-mlx-multimode` *(in progress)* | Gemma 4 12B-it-4bit (MLX) | 1D multi-mode + generalization study (run tag `stage2b_gemma12b_2b`) | — | *in progress — not yet uploaded* |
+| `gemma-4-12b-4bit-mlx-2d-dpot` *(in progress)* | Gemma 4 12B-it-4bit (MLX) | 2D Fisher–KPP with fine-tuned DPOT-Tiny (run tag `stage2d_gemma12b_2d`) | — | *in progress — not yet uploaded* |
 
-Loading, training scripts, evaluation records, and the paper are in the
-[GitHub repository](https://github.com/ryoji-info/PsiLM). All results are
-reproducible on a single Apple M2 (24 GB).
+Which physics model each directory needs: the `-1d` / `-value` directories use `fno_burgers_singlemode`, the `-multimode`, `-v2-refuted` and `-loop2` directories use `fno_burgers_multimode`, and `-2d-dpot` uses `dpot_tiny_fisher2d_finetuned`, all from `ryoji-info/PsiLM-physics`. The bicameral interface uses no physics model. The backbones are the public checkpoints named in the table (`mlx-community/*` for MLX rows); the two 8B directories and the Gemma directory carry a `config.json` with the exact backbone id, coupling layers and training recipe.
 
-*Research generated by Claude Fable 5 (Anthropic) under the direction of
-Ryoji Furui; see the repository's AI generation disclosure.*
+## Loading
+
+Clone the GitHub repository and `pip install -e .` first; the loaders live in the `psilm` package. Fetch one directory with `huggingface_hub.snapshot_download("ryoji-info/PsiLM-bridges", allow_patterns="<directory>/*")`.
 
 ### Loading the Qwen3-8B / Gemma 4 bridges (any of the three directories; Gemma loads through `psilm.mlx.gemma_loader.load_backbone_any`)
 
@@ -41,9 +68,36 @@ from psilm.mlx.bridges import PsiBridgesMLX
 cfg = json.load(open("qwen3-8b-4bit-mlx-1d-value/config.json"))
 c = dict(cfg["construct"]); bridges = PsiBridgesMLX(**c)
 bridges.load_weights("qwen3-8b-4bit-mlx-1d-value/bridges.safetensors", strict=False)  # the retired learned-pointer tensors are omitted
+# Backbone (works for Qwen and Gemma 4; Gemma checkpoints are wrapped in a text tower):
+import psilm.mlx.gemma_loader
+tower, stock, tok = psilm.mlx.gemma_loader.load_backbone_any(cfg["backbone"])
 ```
-Couple at layers 15 (read) / 22 (inject) of 36 and pass the QA builder's `x0_span` to the forward bridge (see `eval/mlx_stage2_eval.py`).
+Couple at layers 15 (read) / 22 (inject) of 36 and pass the QA builder's `x0_span` to the forward bridge (see `eval/mlx_stage2_eval.py`). For Gemma the coupling layers are 20 (read) / 30 (inject) of 48, as recorded in its `config.json`; the calibrated readout buffers (`fwd.dim_mu`, `fwd.dim_sigma`) are inside `bridges.safetensors`.
+
+The PyTorch directories (`qwen2.5-0.5b-*`, `qwen3-1.7b-1d`) hold `bridges.safetensors` (or `interface.safetensors` for the bicameral run) in the `psilm.stage2` / `psilm.bicameral` state-dict layout; the matching evaluation scripts (`eval/stage2_eval.py`, `eval/stage2b_eval.py`, `eval/stage2d_eval.py`, `eval/stage1_eval.py`) show how each is instantiated. Training scripts, evaluation records and the paper are in the [GitHub repository](https://github.com/ryoji-info/PsiLM). All results are reproducible on a single Apple M2 (24 GB).
+
+## Limitations
+
+- **Narrow task.** Every bridge was trained and evaluated on one synthetic field-value question family (1D Burgers or 2D Fisher–KPP) with exact solver ground truth, in-distribution test sets, and greedy decoding. Held-out families in the multi-mode study drop to 31–50%.
+- **Pointer supplied by the task at 8B and 12B.** The large-backbone readouts pool over the question builder's `x0` token span; the learned attention pointer did not train at 4096 dimensions (paper, Section 9). Prompts must follow the builder's template.
+- **Backbone-specific.** Bridges are sized from the backbone config and do not transfer across backbones or quantizations.
+- **Guard-rail is measured, not guaranteed.** Selectivity was checked on n=100 GSM8K / MMLU slices and the physics set; gate behaviour on other prompt types is untested. The non-selective `qwen3-8b-4bit-mlx-1d-value` directory loses 55 GSM8K points (89% → 34%) and is kept for the record.
+- **Hardware.** MLX directories need Apple Silicon; the 8B and 12B rows were trained and evaluated on a 24 GB M2.
 
 ## Beyond physics
 
 The bridges here couple a frozen language model to a frozen *physics* model, but the recipe (read a fixed set of quantities from text; let a frozen quantitative model compute; return one value through a selective gate) is not specific to PDEs. A calibrated market or event-probability model in the physics model's seat would be the same architecture, and the appeal is the same: a language model's forecast grounded in a model that can be validated separately, with a gate that stays shut when the model does not apply. Nothing in this repository has been trained or tested on financial data; the physics results relied on exact oracles, deterministic targets and no distribution shift, none of which markets provide. This is a research direction, not a capability, and not a basis for investment decisions.
+
+## Citation
+
+```bibtex
+@misc{furui2026psilm,
+  title  = {PsiLM: Coupling Frozen Language and Physics Models through Trainable Latent Bridges},
+  author = {Furui, Ryoji},
+  year   = {2026},
+  note   = {Research generated by Claude Fable 5 (Anthropic) under the author's direction},
+  url    = {https://github.com/ryoji-info/PsiLM}
+}
+```
+
+*Research generated by Claude Fable 5 (Anthropic) under the direction of Ryoji Furui; see the repository's AI generation disclosure.* License: Apache-2.0.

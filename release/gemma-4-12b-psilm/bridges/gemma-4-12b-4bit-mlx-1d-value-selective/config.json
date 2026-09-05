@@ -1,0 +1,47 @@
+{
+ "backbone": "mlx-community/gemma-4-12B-it-4bit",
+ "hf_tokenizer": "mlx-community/gemma-4-12B-it-4bit",
+ "loader": "psilm.mlx.gemma_loader.load_backbone_any (gemma4_unified -> text tower)",
+ "physics": "results/stage2/fno.pt (1D Burgers FNO, 70K params)",
+ "bridges_class": "psilm.mlx.bridges.PsiBridgesMLX",
+ "construct": {
+  "d_model": 3840,
+  "channel": "value",
+  "inj_cap": 0.2,
+  "gate_bias": 0.0,
+  "readout_norm": "dim"
+ },
+ "coupling": {
+  "l_fwd": 20,
+  "l_rev": 30,
+  "n_layers": 48
+ },
+ "pointer": "deterministic span pooling with calibrated per-dimension standardization (fwd.dim_mu/dim_sigma included; fwd.x0_query/x0_key omitted: unused)",
+ "training": {
+  "steps_total": 7000,
+  "phase_A_readout_only": 2000,
+  "coupled_steps": 4000,
+  "no_harm_steps": 1500,
+  "batch": 4,
+  "lr": "3e-4 (warm-up, coupled), 1e-4 (no-harm phase, from the step-5500 checkpoint)",
+  "no_harm_arm": "1046 non-physics prompts (GSM8K train, MMLU validation; with/without the Answer nudge) paired with the backbone's own greedy continuation; gate-only updates + mean-gate penalty"
+ },
+ "held_out_n48_per_chunk": {
+  "coupled": [
+   0.625,
+   0.667,
+   0.625,
+   0.875,
+   0.875,
+   0.625,
+   0.792,
+   0.542
+  ],
+  "no_harm_phase": [
+   1.0,
+   1.0,
+   0.979
+  ]
+ },
+ "license": "apache-2.0"
+}

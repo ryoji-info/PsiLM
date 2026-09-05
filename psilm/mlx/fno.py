@@ -60,6 +60,11 @@ class FNO1dMLX(nn.Module):
     def __call__(self, u0):
         return self.proj(self.features(u0)).squeeze(-1)
 
+    @classmethod
+    def from_safetensors(cls, path: str) -> "FNO1dMLX":
+        """The HF-exported FNO (see ``load_fno_safetensors``); no torch needed."""
+        return load_fno_safetensors(path)
+
 
 def convert_from_torch(pt_path: str) -> FNO1dMLX:
     import torch
@@ -78,4 +83,41 @@ def convert_from_torch(pt_path: str) -> FNO1dMLX:
     fno.proj1.bias = mx.array(sd["proj.0.bias"].numpy())
     fno.proj2.weight = mx.array(sd["proj.2.weight"].numpy())
     fno.proj2.bias = mx.array(sd["proj.2.bias"].numpy())
+    return fno
+
+
+def load_fno_safetensors(path: str) -> FNO1dMLX:
+    """Load an FNO1d exported to safetensors (results/hf_export/physics/*.safetensors,
+    the Hugging Face ``ryoji-info/PsiLM-physics`` files) into an FNO1dMLX.
+
+    The file holds the PyTorch ``psilm.physics.fno.FNO1d`` state dict under its
+    torch key names, except that safetensors cannot store complex64, so each
+    spectral weight ``spectral.{i}.weight`` (C, C, M) is split into
+    ``spectral.{i}.weight.real`` / ``spectral.{i}.weight.imag``. This applies
+    exactly the key mapping of ``convert_from_torch`` to those tensors -- the
+    two loaders give identical MLX weights for the same network -- without
+    needing torch. Width, modes and depth are read from the tensor shapes.
+    """
+    sd = mx.load(str(path))                     # safetensors -> {name: mx.array}
+    layers = sum(1 for k in sd if k.startswith("spectral.") and k.endswith(".weight.real"))
+    if layers == 0:
+        raise ValueError(f"{path}: no 'spectral.<i>.weight.real' tensors; "
+                         "not a PsiLM FNO1d safetensors export")
+    width = int(sd["lift.weight"].shape[0])
+    modes = int(sd["spectral.0.weight.real"].shape[-1])
+    fno = FNO1dMLX(width=width, modes=modes, layers=layers)
+    f32 = lambda k: sd[k].astype(mx.float32)   # noqa: E731
+    fno.lift.weight = f32("lift.weight")
+    fno.lift.bias = f32("lift.bias")
+    for i in range(layers):
+        fno.spectral[i].wr = f32(f"spectral.{i}.weight.real")     # (C, C, M)
+        fno.spectral[i].wi = f32(f"spectral.{i}.weight.imag")
+        cw = f32(f"pointwise.{i}.weight")                          # (Cout, Cin, 1)
+        fno.pointwise[i].weight = cw[:, :, 0]
+        fno.pointwise[i].bias = f32(f"pointwise.{i}.bias")
+    fno.proj1.weight = f32("proj.0.weight")
+    fno.proj1.bias = f32("proj.0.bias")
+    fno.proj2.weight = f32("proj.2.weight")
+    fno.proj2.bias = f32("proj.2.bias")
+    mx.eval(fno.parameters())
     return fno
