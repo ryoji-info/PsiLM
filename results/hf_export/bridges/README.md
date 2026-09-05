@@ -43,3 +43,7 @@ c = dict(cfg["construct"]); bridges = PsiBridgesMLX(**c)
 bridges.load_weights("qwen3-8b-4bit-mlx-1d-value/bridges.safetensors", strict=False)  # the retired learned-pointer tensors are omitted
 ```
 Couple at layers 15 (read) / 22 (inject) of 36 and pass the QA builder's `x0_span` to the forward bridge (see `eval/mlx_stage2_eval.py`).
+
+## Beyond physics
+
+The bridges here couple a frozen language model to a frozen *physics* model, but the recipe (read a fixed set of quantities from text; let a frozen quantitative model compute; return one value through a selective gate) is not specific to PDEs. A calibrated market or event-probability model in the physics model's seat would be the same architecture, and the appeal is the same: a language model's forecast grounded in a model that can be validated separately, with a gate that stays shut when the model does not apply. Nothing in this repository has been trained or tested on financial data; the physics results relied on exact oracles, deterministic targets and no distribution shift, none of which markets provide. This is a research direction, not a capability, and not a basis for investment decisions.

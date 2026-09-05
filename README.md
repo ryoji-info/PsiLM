@@ -401,6 +401,33 @@ results/stage2_mlx8b9/bridges.npz --n 100 --max-new-mmlu 256
 --max-new-physics-base 768` and the same with `--tag v9_8b_nonudge --datasets
 gsm8k --gsm8k-nudge 0`.
 
+## Beyond physics: what would and would not transfer
+
+PsiLM is a recipe for coupling a frozen language model to a frozen
+*quantitative* model, and nothing in the recipe is specific to PDEs. The
+language side reads a fixed set of quantities out of the text, the frozen
+model computes from them, and a selective gate returns one value into the
+language model's reasoning only on questions that model can answer. A
+calibrated market model, an event-probability model, or an agent-based
+simulator in the physics model's seat would be the same architecture, and
+the reason to want it is the same: a language model's forecast grounded in
+a model that can be validated separately, with a gate that stays shut when
+the model does not apply.
+
+That is the extent of what this repository supports. Everything that made
+the physics results possible is absent in markets: every training example
+here has an exact oracle, the targets are deterministic, and the test
+distribution matches the training one. Prediction markets and asset prices
+have no oracle, stochastic targets, and constant distribution shift, so the
+training signal would be noisy, calibration would have to be earned by
+backtesting rather than assumed, and the guard-rail question ("does the
+gate open only when it should?") would become the central problem rather
+than a final check. No experiment in this repository touches financial
+data, and nothing here is evidence of forecasting performance or a basis
+for investment decisions. If someone builds a market model into PsiLM, the
+first result worth reporting is the equivalent of this repository's
+guard-rail table, not a return.
+
 ## Repository layout
 
 ```
