@@ -1,0 +1,14 @@
+{
+ "model": "mlx-community/gemma-4-12B-it-4bit",
+ "layer": 20,
+ "n_layers": 48,
+ "n_items": 8,
+ "calib_n": 32,
+ "top5_dim_energy_share": 0.9543,
+ "dim_rms_max": 195.87,
+ "dim_rms_median": 0.092,
+ "pooled_span_var_total_rms": 0.995,
+ "pooled_span_var_maxdim_rms": 0.01325,
+ "pooled_span_var_total_dim_standardized_rms": 51.779,
+ "pooled_span_var_maxdim_dim_standardized_rms": 0.19504
+}

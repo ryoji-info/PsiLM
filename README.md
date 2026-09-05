@@ -354,9 +354,9 @@ sharpest pointer of any backbone (CE 1.24, 69% exact bins).
 physics 0 / 97 / 10% (backbone / PsiLM / zeroed; gate 0.14, open on 100%),
 GSM8K 84 / 84 / 84% (gate 0.004, open on 0%), MMLU@256 53 / 55 / 53%
 (79.1 / 79.1% on the 67 items both arms answer), GSM8K without the "Answer:"
-line 83 / 83 / 83%. Gemma's gate operates at 0.14 on physics and its
-injection at 3–4% of the stream, a much gentler point than Qwen's saturated
-gate at the 20% cap; both are selective.
+line 83 / 83 / 83%. In the training logs Gemma's gate sits near 0.15–0.19
+on physics batches with the injection at 3–4% of the stream, a much gentler
+operating point than Qwen's saturated gate at the 20% cap; both are selective.
 
 ## Guard-rail: does the coupled model still do everything else?
 
