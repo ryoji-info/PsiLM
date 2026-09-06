@@ -250,6 +250,12 @@ guard-rail table, not a return.
 | 5b | Gemma 4 12B on the multi-mode and 2D tasks | in progress |
 | 6 | 27B inference-only on this machine; loop coupling at 8B; Mac app | planned |
 
+## Support
+
+PsiLM is independent research, run on a single Apple M2. If it is useful to
+you, you can support the work at
+[ko-fi.com/ryojifurui](https://ko-fi.com/ryojifurui).
+
 ## Citation
 
 ```bibtex

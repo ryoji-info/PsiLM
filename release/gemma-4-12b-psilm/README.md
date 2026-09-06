@@ -196,6 +196,12 @@ README.md               this card
 - Bridges for every backbone (Qwen2.5-0.5B, Qwen3-1.7B, Qwen3-8B, Gemma 4 12B): [ryoji-info/PsiLM-bridges](https://huggingface.co/ryoji-info/PsiLM-bridges)
 - The frozen physics models: [ryoji-info/PsiLM-physics](https://huggingface.co/ryoji-info/PsiLM-physics)
 
+## Support
+
+PsiLM is independent research, run on a single Apple M2. If it is useful to
+you, you can support the work at
+[ko-fi.com/ryojifurui](https://ko-fi.com/ryojifurui).
+
 ## Citation
 
 ```bibtex
