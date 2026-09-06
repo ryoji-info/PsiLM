@@ -46,11 +46,21 @@ from psilm.mlx.fno import convert_from_torch  # noqa: E402
 from psilm.mlx.gemma_loader import load_backbone_any  # noqa: E402
 from psilm.mlx.staged import MlxStream  # noqa: E402
 from psilm.mlx.multimode import PsiLMMLXMulti, make_bridges_multi  # noqa: E402
+from psilm.mlx.multimode_span import (  # noqa: E402
+    PsiLMMLXMultiSpan, batch_extras, empty_spans, make_bridges_multi_span)
 from psilm.stage2.qa2 import QA2Builder, make_batch as torch_make_batch  # noqa: E402
 
 FNO_PATH = "results/stage2b/fno.pt"           # the multi-mode FNO (eval/stage2b_pretrain_fno.py)
 TRAIN_DATA = "data/stage2b_qa_train.json"
 VAL_DATA = "data/stage2b_qa_val_iid.json"
+
+
+def add_spans(batch, builder, items):
+    """Span-readout extras; x0_span carries the whole span set, which is what
+    the span bridge reads (the pooled bridge keeps its two-column x0 span)."""
+    batch.update(batch_extras(builder, items))
+    batch["x0_span"] = batch["spans"]
+    return batch
 
 
 def to_mlx_batch(tb):
@@ -141,6 +151,11 @@ def main():
     ap.add_argument("--channel", default="field", choices=["field", "value"],
                     help="physics->language channel: lookup + field tokens, or value tokens "
                          "(Fourier encoding of the looked-up u(x0), the 8B copy-probe form)")
+    ap.add_argument("--readout", default="pooled", choices=["pooled", "span"],
+                    help="pooled: one learned pool -> 6 regressed values (the released "
+                         "design). span: every number read from its own token span with "
+                         "amplitude/phase heads SHARED across modes, which is what lets a "
+                         "mode-1 amplitude of 0.9 be read from mode-2's training range")
     ap.add_argument("--noharm-data", default=None,
                     help="data/noharm_train.json from eval/build_noharm.py: non-physics prompts with "
                          "the backbone's own continuations; enables gate-selectivity training")
@@ -168,9 +183,11 @@ def main():
     model, stock, tok = load_backbone_any(args.model)     # tower for the staged forward
     hf_tok = AutoTokenizer.from_pretrained(args.hf_tokenizer)
     fno = convert_from_torch(FNO_PATH)
-    bridges = make_bridges_multi(model.args.hidden_size, gate_bias=args.gate_bias,
-                                 inj_cap=args.inj_cap, channel=args.channel,
-                                 readout_norm=args.readout_norm)
+    span_readout = args.readout == "span"
+    make_bridges = make_bridges_multi_span if span_readout else make_bridges_multi
+    bridges = make_bridges(model.args.hidden_size, gate_bias=args.gate_bias,
+                           inj_cap=args.inj_cap, channel=args.channel,
+                           readout_norm=args.readout_norm)
     # bias correction matters: MLX defaults to none, so a fresh AdamW takes
     # 3-6x steps for its first ~15 updates. State is persisted across chunks
     # (the torch trainer always did; the 8B v5 gate closed at chunk boundaries).
@@ -205,13 +222,17 @@ def main():
             if k in prev and prev[k] != getattr(args, k):
                 print(f"[WARN] --{k.replace('_', '-')}={getattr(args, k)} differs from the checkpoint's {prev[k]}")
 
-    psi = PsiLMMLXMulti(model, tok, fno, bridges, l_rev=args.l_rev, lam_x0=args.lam_x0)
+    psi_cls = PsiLMMLXMultiSpan if span_readout else PsiLMMLXMulti
+    psi = psi_cls(model, tok, fno, bridges, l_rev=args.l_rev, lam_x0=args.lam_x0)
     psi.detach_x0 = args.detach_x0
     if args.readout_norm == "dim" and (args.fresh or not ckpt.exists()):
         # calibration: per-dimension statistics of the readout layer on a prompt batch
         cb = QA2Builder(hf_tok)
         citems = json.loads(Path(TRAIN_DATA).read_text())
-        cbatch = to_mlx_batch(torch_make_batch(cb, random.Random(7).sample(citems, args.calib_n), "cpu"))
+        csample = random.Random(7).sample(citems, args.calib_n)
+        cbatch = to_mlx_batch(torch_make_batch(cb, csample, "cpu"))
+        if span_readout:
+            add_spans(cbatch, cb, csample)
         cs = MlxStream(model, cbatch["p_ids"], cbatch["p_attn"])
         cs.run(0, psi.l_fwd)
         bridges.fwd.calibrate_readout(cs.hidden, cbatch["prompt_mask"])
@@ -228,7 +249,7 @@ def main():
     psi.lam_gate = args.lam_gate
     val_items = json.loads(Path(VAL_DATA).read_text())
     n_params = sum(v.size for _, v in tree_flatten(bridges.parameters()))
-    print(f"bridges: {n_params/1e6:.2f}M (6-value multi-mode readout) | backbone: {args.model} | "
+    print(f"bridges: {n_params/1e6:.2f}M ({args.readout} multi-mode readout) | backbone: {args.model} | "
           f"coupling {psi.l_fwd}/{psi.l_rev} of {psi.n_layers} | train items {len(train_items)}")
 
     def wrapped(bridges_, batch):
@@ -250,8 +271,13 @@ def main():
         if noharm_items and not psi.readout_only and (global_step % args.noharm_every == args.noharm_every - 1):
             pad = hf_tok.pad_token_id or hf_tok.eos_token_id
             batch = make_noharm_batch(rng.sample(noharm_items, args.batch), pad)
+            if span_readout:
+                batch["x0_span"] = empty_spans(args.batch)
         else:
-            batch = to_mlx_batch(torch_make_batch(builder, rng.sample(train_items, args.batch), "cpu"))
+            sample = rng.sample(train_items, args.batch)
+            batch = to_mlx_batch(torch_make_batch(builder, sample, "cpu"))
+            if span_readout:
+                add_spans(batch, builder, sample)
         (loss, aux), grads = loss_and_grad(bridges, batch)
         if batch.get("noharm") and args.noharm_gate_only:
             # keep only the gate's gradients: closing the gate is the one allowed route

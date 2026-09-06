@@ -36,6 +36,8 @@ from transformers import AutoTokenizer  # noqa: E402
 from psilm.mlx.fno import convert_from_torch  # noqa: E402
 from psilm.mlx.gemma_loader import load_backbone_any  # noqa: E402
 from psilm.mlx.multimode import PsiLMMLXMulti, make_bridges_multi  # noqa: E402
+from psilm.mlx.multimode_span import (  # noqa: E402
+    PsiLMMLXMultiSpan, make_bridges_multi_span)
 from psilm.stage2.qa import SYSTEM  # noqa: E402
 from psilm.stage2.qa2 import QUESTION, QA2Builder, ic_text  # noqa: E402
 
@@ -110,13 +112,16 @@ def main():
     ckpt = Path(f"results/stage2b{args.tag}/bridges.npz")
     meta = json.loads(Path(str(ckpt) + ".meta").read_text())
     margs = meta.get("args", {})
-    bridges = make_bridges_multi(model.args.hidden_size,
-                                 gate_bias=margs.get("gate_bias", -2.0),
-                                 inj_cap=margs.get("inj_cap"), channel=margs.get("channel", "field"),
-                                 readout_norm=margs.get("readout_norm", "rms"))
+    span_readout = margs.get("readout", "pooled") == "span"
+    make_bridges = make_bridges_multi_span if span_readout else make_bridges_multi
+    bridges = make_bridges(model.args.hidden_size,
+                           gate_bias=margs.get("gate_bias", -2.0),
+                           inj_cap=margs.get("inj_cap"), channel=margs.get("channel", "field"),
+                           readout_norm=margs.get("readout_norm", "rms"))
     bridges.load_weights(str(ckpt))
     l_rev = args.l_rev if args.l_rev is not None else meta.get("l_rev")
-    psi = PsiLMMLXMulti(model, tok, fno, bridges, l_rev=l_rev)
+    psi = (PsiLMMLXMultiSpan if span_readout else PsiLMMLXMulti)(
+        model, tok, fno, bridges, l_rev=l_rev)
     builder = QA2Builder(hf_tok)
     print(f"{args.model} | bridges step {meta['step']} | couple {psi.l_fwd}/{psi.l_rev} of {psi.n_layers}",
           flush=True)

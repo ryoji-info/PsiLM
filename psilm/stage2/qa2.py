@@ -78,6 +78,28 @@ def generate_dataset(n_traj, x0_per_traj, seed, family, out_path):
     return items
 
 
+
+def _span_of(tok, p_prompt, prefixes, value, cursor, name):
+    """(lo, hi) of `value`'s tokens, located by the first candidate prefix that
+    both tokenizes cleanly (prefix tokens are a prefix of prefix+value tokens)
+    and matches the prompt at or after `cursor`.
+
+    Several spellings are tried because tokenizers bind the surrounding
+    punctuation differently -- Gemma reads ' =' as one token, so the prefix has
+    to carry the leading space. Raises when none matches: a silent fallback
+    would pool the whole prompt."""
+    enc = lambda t: tok.encode(t, add_special_tokens=False)
+    for prefix in prefixes:
+        pre_ids, pv_ids = enc(prefix), enc(prefix + value)
+        if pv_ids[:len(pre_ids)] != pre_ids or len(pv_ids) == len(pre_ids):
+            continue
+        for i in range(cursor, len(p_prompt) - len(pv_ids) + 1):
+            if p_prompt[i:i + len(pv_ids)] == pv_ids:
+                return i + len(pre_ids), i + len(pv_ids)
+    raise ValueError(f"span of {name}={value!r} not found after token {cursor} with any of "
+                     f"{prefixes}; deterministic span pooling would pool the whole prompt")
+
+
 class QA2Builder:
     def __init__(self, tokenizer):
         self.tok = tokenizer
@@ -112,6 +134,41 @@ class QA2Builder:
                 return max(0, hit - 1), min(len(p_prompt), hit + len(sub) + 1)
         raise ValueError(f"x0 span not found in prompt (x0={item.get('x0')!r}); "
                          "deterministic span pooling would silently pool the whole prompt")
+
+
+    # Slot order of the span readout: (a, phi) per mode, then x0. Absent modes
+    # keep a (0, 0) span and a 0 in the mask; the trainer supervises their
+    # amplitude to zero without pooling anything.
+    SLOTS = tuple(f"{q}{m}" for m in range(1, N_MODES + 1) for q in ("a", "phi")) + ("x0",)
+
+    def spans(self, p_prompt, item):
+        """Token span (lo, hi) of every number in the prompt, in SLOTS order,
+        widened by one token each side (mirror of QA2DBuilder.spans).
+
+        Each value is located by matching the token sublist of prefix+value at
+        or after the previous match, so repeated prefixes ('x + ' occurs once
+        per mode) stay unambiguous. Returns (spans, present) where present[i]
+        is 1.0 for a slot whose mode occurs in this item. Raises if a match
+        fails or the tokenizer merges across a prefix boundary -- a silent
+        fallback would pool the whole prompt."""
+        enc = lambda t: self.tok.encode(t, add_special_tokens=False)
+        modes = sorted(item["modes"], key=lambda t: t[0])
+        spans = [(0, 0)] * len(self.SLOTS)
+        present = [0.0] * len(self.SLOTS)
+        cursor = 0
+        for k, (m, a, phi) in enumerate(modes):
+            first = (k == 0)
+            for name, prefixes, value in (
+                    (f"a{m}", (" = ", "= ") if first else (" + ", "+ "), str(a)),
+                    (f"phi{m}", ("*x + ", "x + ", " + "), str(phi))):
+                lo, hi = _span_of(self.tok, p_prompt, prefixes, value, cursor, name)
+                i = self.SLOTS.index(name)
+                spans[i] = (max(0, lo - 1), min(len(p_prompt), hi + 1))
+                present[i] = 1.0
+                cursor = hi
+        spans[-1] = self.x0_span(p_prompt, item)
+        present[-1] = 1.0
+        return spans, present
 
     def build(self, item):
         p_prompt = self.prompt_ids(item)
