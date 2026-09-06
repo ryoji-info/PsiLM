@@ -154,10 +154,10 @@ Training: 7,000 steps at batch 4 on one Apple M2 (24 GB) — 2,000 readout-only 
 | directory | task | physics model | trained params | held-out | status |
 |---|---|---|---|---:|---|
 | `bridges/gemma-4-12b-4bit-mlx-1d-value-selective/` | 1D Burgers, single-mode initial conditions, value at *x₀* | `physics/fno_burgers_singlemode.safetensors` | 25.5M | **96.7%** @±0.05, MAE 0.017 (n=60); GSM8K 84/84 | **released** |
-| `bridges/gemma-4-12b-4bit-mlx-multimode/` | 1D Burgers, multi-mode initial conditions (modes 1–4, mixed amplitudes) + generalization families | `physics/fno_burgers_multimode.safetensors` | — | *in progress* | run in progress; row filled when the evaluation lands |
+| `bridges/gemma-4-12b-4bit-mlx-multimode/` | 1D Burgers, multi-mode initial conditions (modes 1–2, mixed amplitudes) + generalization families | `physics/fno_burgers_multimode.safetensors` | 25.5M | **iid 100%** @±0.05, MAE 0.009 (n=48); combination 25.0%, amplitude extrapolation 52.1% | **released** |
 | `bridges/gemma-4-12b-4bit-mlx-2d-dpot/` | 2D Fisher–KPP, replicated-IC history → u(0.4), value at (x₀, y₀) | `physics/dpot_tiny_fisher2d_finetuned.safetensors` (DPOT-Tiny, 7.5M, fine-tuned) | — | *in progress* | run in progress; row filled when the evaluation lands |
 
-The two in-progress rows are the multi-mode (stage 2b) and 2D (stage 2d) tasks that the 0.5B backbone completed earlier (iid 97.9% and 95.0% respectively, see [`ryoji-info/PsiLM-bridges`](https://huggingface.co/ryoji-info/PsiLM-bridges)); their Gemma runs are training now and will be added with their own `config.json`, the matching physics file, and a `--task` switch in `psilm_infer.py`.
+The multi-mode bridges are released: they reach 100% in-distribution (n=48, MAE 0.009) and do **not** transfer to the two generalization families — 25.0% on the held-out mode combination and 52.1% on amplitude extrapolation, against a backbone of 16.7% / 10.4% and an oracle of 100% on both. The physics model is exact on those families (MAE 0.0008), so the gap is in the readout: 19 of 48 combination answers match a *single*-mode field value, and on extrapolation the implied amplitude is below the true one for 71% of items. A second run with a span readout and mode-shared heads is training and will replace this directory if it does better. The 2D row is the stage-2d task that the 0.5B backbone completed at 95.0%; its Gemma run is training now and will be added with its own `config.json` and the matching physics file.
 
 ## How it works, in one paragraph
 

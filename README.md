@@ -46,7 +46,7 @@ prompts (the guard-rail below).
 | Qwen3-1.7B (fp16, torch) | 1.7% | **93.3%** | 96.7% | not trained | `results/stage2_qwen3-1.7b/final_eval.json` |
 | Qwen3-8B-4bit (MLX) | 6.7% | **95.0%** (98.3% before selectivity training) | 100% | **yes** | `results/stage2_mlx8b9/final_eval_summary.json` (98.3%: `results/stage2_mlx8b8/final_eval_summary.json`) |
 | Gemma 4 12B-4bit (MLX) | 0%[^gemma0] | **96.7%** | 98.3% | **yes** | `results/stage2_gemma12b/final_eval.json` |
-| Gemma 4 12B-4bit, multi-mode ICs | in progress | in progress | in progress | — | `results/stage2b_gemma12b_2b/` (pending) |
+| Gemma 4 12B-4bit, multi-mode ICs | 20.8% | **100%** in-distribution[^mm] | 100% | **yes** | `results/stage2b_gemma12b_2b/final_eval.json` |
 | Gemma 4 12B-4bit, 2D Fisher-KPP (DPOT-Tiny) | in progress | in progress | in progress | — | `results/stage2d_gemma12b_2d/` (pending) |
 
 **Guard-rail** (n = 100 per dataset, `results/bench/*_summary.json`): with the
@@ -59,6 +59,16 @@ training the 8B's gate was open everywhere and GSM8K fell from 89% to 34%
 [^gemma0]: Under the text-only protocol Gemma never reaches an "Answer:" line
 within 768 tokens (`answer_line_rate` 0.0 in the file), so the backbone-alone
 arm scores 0% and MAE is reported against its last number.
+[^mm]: Multi-mode families (n=48 each, `results/stage2b_gemma12b_2b/final_eval.json`):
+in-distribution 100% (MAE 0.009), the held-out mode combination 25.0% (MAE
+0.123) and amplitude extrapolation 52.1% (MAE 0.086), against a backbone of
+20.8% / 16.7% / 10.4% and an oracle of 100% on all three. The FNO is exact on
+every family (MAE 0.0008), so the two generalization gaps are the readout's:
+19 of 48 combination answers match a *single*-mode field value, and on
+extrapolation the implied amplitude is below the true one for 71% of items
+(median ratio 0.68, inside mode 1's training range). A second run with a span
+readout and mode-shared heads is training; the row will be updated with it.
+
 [^mae]: The same files carry MAE: PsiLM 0.014 / 0.022 / 0.021 / 0.017 for the
 four backbones, oracle 0.003 / 0.021 / 0.003 / 0.007. Full tables, per-arm
 protocols and the earlier 0.5B results (multi-mode generalization, loop
@@ -247,7 +257,8 @@ guard-rail table, not a return.
 | 3 | MLX port, 4-bit backbones, Qwen3-1.7B and Qwen3-8B | done |
 | 4 | Guard-rail benchmarks (GSM8K/MMLU) and the selective gate | done |
 | 5 | Second model family, Gemma 4 12B, single-pass recipe transfer | done — 96.7% |
-| 5b | Gemma 4 12B on the multi-mode and 2D tasks | in progress |
+| 5b | Gemma 4 12B on the multi-mode task (in-distribution 100%; generalization families open) | done |
+| 5c | Span readout with mode-shared heads, for the two generalization families | in progress |
 | 6 | 27B inference-only on this machine; loop coupling at 8B; Mac app | planned |
 
 ## Support
