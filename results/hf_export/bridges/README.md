@@ -28,6 +28,38 @@ PsiLM couples a **frozen** language model to a **frozen** physics model through 
 
 Links: [GitHub](https://github.com/ryoji-info/PsiLM) · [paper (PDF)](https://github.com/ryoji-info/PsiLM/blob/main/paper/psilm.pdf) · physics models: [`ryoji-info/PsiLM-physics`](https://huggingface.co/ryoji-info/PsiLM-physics)
 
+## What the bridges cost, and what they buy
+
+What the 25.5M trained parameters in one of these directories are worth, on the
+largest backbone measured (Gemma 4 12B-it 4-bit, Apple M2 24 GB).
+
+| component | parameters | on disk | trained? |
+|---|---:|---:|---|
+| Gemma 4 12B-it, 4-bit MLX (language tower) | 12.28B | 6.3 GB | **frozen** |
+| PsiLM bridges, one (backbone, task) pair | **25.5M** | 102 MB | **trained** |
+| Burgers FNO, the physics hemisphere | 0.07M | 0.55 MB | frozen, pretrained |
+| DPOT-Tiny, 2D task only | 7.5M | 30 MB | frozen, fine-tuned |
+
+The trained part is **0.21% of the backbone's parameters** and 1.6% of its
+checkpoint size. The 12.28B never move.
+
+| Gemma 4 12B, n = 100 per dataset | alone | **+ PsiLM** | injection zeroed | gate σ |
+|---|---:|---:|---:|---:|
+| physics QA | 0% | **97%** | 10% | 0.144 |
+| MMLU, 5 subjects | 53% | 55% | 53% | 0.008 |
+| GSM8K | 84% | 84% | 84% | 0.004 |
+| physics, seconds per question | 77.0 (768 tokens) | **3.14** (16.9 tokens) | — | — |
+| GSM8K, seconds per question | 25.07 | 25.06 | — | — |
+
+**+0.21% parameters and +103 MB turn 0% into 97%, at 24× lower latency on the
+task, with nothing measurable lost elsewhere.** The last column is why the
+middle rows do not move: the gate's σ is 0.14 on physics against 0.004–0.008 on
+everything else, so the channel is shut when physics is irrelevant. Zeroing the
+injection collapses physics to 10% — the accuracy arrives through the bridge,
+not through the prompt.
+
+Sources: `results/bench/gemma12b_guardrail_summary.json` (accuracy, gate σ and seconds per question), `results/stage2_gemma12b/final_eval.json` (n=60 held-out: PsiLM 96.7%, oracle 98.3%). Parameter counts are read from the checkpoint headers, not from the model names. The backbone's 0% is its own text protocol: it spends the whole 768-token budget deriving and never commits to an answer line; forcing it to answer (n=8 probe) also gives 0%, with its predictions clustered at 0.41/0.51 while the truths span [-0.56, +0.58]. The latency gap has the same cause — PsiLM answers in one line.
+
 ## Which directory do I want?
 
 - **Best result on a large backbone with a selective gate:** `gemma-4-12b-4bit-mlx-1d-value-selective` or `qwen3-8b-4bit-mlx-1d-value-selective` (MLX, Apple Silicon).

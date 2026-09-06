@@ -107,6 +107,24 @@ psi = PsiLMMLX(model, tok, fno, bridges, l_fwd=cfg["coupling"]["l_fwd"], l_rev=c
 # psi.generate(QABuilder(hf_tokenizer), {"a": 1.28, "phi": 0.5, "x0": 0.76}) -- see psilm_infer.py
 ```
 
+## What it costs and what it buys
+
+| component | parameters | on disk | trained? |
+|---|---:|---:|---|
+| Gemma 4 12B-it, 4-bit MLX (language tower) | 12.28B | 6.3 GB | **frozen** |
+| PsiLM bridges, one (backbone, task) pair | **25.5M** | 102 MB | **trained** |
+| Burgers FNO, the physics hemisphere | 0.07M | 0.55 MB | frozen, pretrained |
+| DPOT-Tiny, 2D task only | 7.5M | 30 MB | frozen, fine-tuned |
+
+The trained part is **0.21% of the backbone's parameters** and 1.6% of its
+checkpoint size. The 12.28B never move.
+
+Measured on one Apple M2 (24 GB): **+0.21% parameters and +103 MB turn 0% into
+97% on the physics task, at 24× lower latency** (3.14 vs 77.0 seconds per
+question, 16.9 vs 768 generated tokens), with GSM8K and MMLU unchanged — the
+gate's σ is 0.14 on physics against 0.004–0.008 elsewhere, so the channel is
+shut when physics is irrelevant. The backbone's 0% is its own text protocol: it spends the whole 768-token budget deriving and never commits to an answer line (forcing it to answer also gives 0%), which is where the latency gap comes from too. The per-dataset numbers are in the next section.
+
 ## Results for this backbone
 
 Held-out evaluation, 60 questions, accuracy within ±0.05 (`results/stage2_gemma12b/final_eval.json` in the [GitHub repository](https://github.com/ryoji-info/PsiLM)):
