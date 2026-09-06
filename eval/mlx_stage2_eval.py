@@ -12,6 +12,7 @@ Usage:
 
 import argparse
 import json
+import random
 import re
 import sys
 import time
@@ -42,7 +43,23 @@ def parse_value(text):
 FORCE_SUFFIX = "\n\nAnswer:"
 
 
-def chat_generate(model, hf_tok, user, max_new=768, gen_tok=None, force_answer=True):
+def few_shot(items, k, seed=0):
+    """k solved examples as prior chat turns, drawn deterministically from the
+    training split: format calibration for the baseline arm, not a hint at the
+    held-out answer (the examples are different (a, phi, x0) draws)."""
+    if k <= 0:
+        return []
+    rng = random.Random(seed)
+    msgs = []
+    for it in rng.sample(items, k):
+        msgs.append({"role": "user",
+                     "content": QUESTION.format(a=it["a"], phi=it["phi"], x0=it["x0"]) + NUDGE})
+        msgs.append({"role": "assistant", "content": f"Answer: {it['u']:.2f}"})
+    return msgs
+
+
+def chat_generate(model, hf_tok, user, max_new=768, gen_tok=None, force_answer=True,
+                  shots=(), thinking=False):
     """gen_tok: the mlx-lm tokenizer wrapper (knows all of a backbone's stop ids,
     e.g. Gemma's <eos>/<turn|>); hf_tok only builds the chat prompt.
 
@@ -51,9 +68,10 @@ def chat_generate(model, hf_tok, user, max_new=768, gen_tok=None, force_answer=T
     number (16 more tokens). Backbones that derive at length (Gemma 4 never
     reaches the line in 768 tokens) otherwise score on a parser fallback that
     reads numbers out of their unfinished algebra. Returns (text, forced)."""
-    messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
+    messages = ([{"role": "system", "content": SYSTEM}] + list(shots)
+                + [{"role": "user", "content": user}])
     ids = hf_tok.apply_chat_template(messages, tokenize=True, add_generation_prompt=True,
-                                     enable_thinking=False)
+                                     enable_thinking=thinking)
     if not isinstance(ids, list):
         ids = ids["input_ids"]
     if ids and isinstance(ids[0], list):
@@ -91,6 +109,13 @@ def main():
     ap.add_argument("--out", default="final_eval.json")
     ap.add_argument("--no-force-answer", action="store_true",
                     help="disable answer forcing for the text arms (the pre-2026-09-06 protocol)")
+    ap.add_argument("--shots", type=int, default=0,
+                    help="solved examples from the training split shown to the text arms "
+                         "before the question (format calibration; 0 = the default protocol)")
+    ap.add_argument("--shot-seed", type=int, default=0)
+    ap.add_argument("--thinking", action="store_true",
+                    help="let a thinking backbone (Qwen3) reason before answering; the "
+                         "default protocol runs both arms with thinking off, as PsiLM does")
     args = ap.parse_args()
     arms = args.arms.split(",")
 
@@ -111,6 +136,10 @@ def main():
           flush=True)
 
     items = json.loads(Path("data/stage2_qa_val.json").read_text())[: args.n]
+    shots = few_shot(json.loads(Path("data/stage2_qa_train.json").read_text()),
+                     args.shots, args.shot_seed)
+    gen_kw = dict(gen_tok=tok, force_answer=not args.no_force_answer,
+                  shots=shots, thinking=args.thinking)
     agg = {k: [0, []] for k in arms + ["zero"]}
     rows = []
     t0 = time.time()
@@ -121,12 +150,12 @@ def main():
         forced = {}
         if "baseline" in arms:
             texts["baseline"], forced["baseline"] = chat_generate(
-                stock, hf_tok, q + NUDGE, args.max_new, gen_tok=tok, force_answer=not args.no_force_answer)
+                stock, hf_tok, q + NUDGE, args.max_new, **gen_kw)
             preds["baseline"] = parse_value(texts["baseline"])
         if "oracle" in arms:
             oq = q + f"\n\nA trusted solver reports: u({item['x0']}) = {true:.2f}." + NUDGE
             texts["oracle"], forced["oracle"] = chat_generate(
-                stock, hf_tok, oq, args.max_new, gen_tok=tok, force_answer=not args.no_force_answer)
+                stock, hf_tok, oq, args.max_new, **gen_kw)
             preds["oracle"] = parse_value(texts["oracle"])
         if "psilm" in arms:
             texts["psilm"] = psi.generate(builder, item)
@@ -148,7 +177,9 @@ def main():
 
     n = len(items)
     summary = {"n": n, "step": meta["step"], "model": args.model, "tolerance": TOL,
-               "couple": [psi.l_fwd, psi.l_rev, psi.n_layers]}
+               "couple": [psi.l_fwd, psi.l_rev, psi.n_layers],
+               "protocol": {"max_new": args.max_new, "force_answer": not args.no_force_answer,
+                            "shots": args.shots, "thinking": args.thinking}}
     for k, (c, errs) in agg.items():
         summary[k] = {"acc": round(c / n, 4),
                       "mae": round(sum(errs) / len(errs), 4) if errs else None}
