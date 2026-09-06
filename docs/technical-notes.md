@@ -202,6 +202,35 @@ where regression at least drifts. The trained interface generalizes like a
 learned model, not like a program — coverage at training time, not readout
 cleverness, is what buys transfer.
 
+### The same study at 12B (2026-09)
+
+Gemma 4 12B, same recipe as the released 1D bridges, 7,500 steps
+(`results/stage2b_gemma12b_2b/`). Held-out, n=48 per family:
+
+| family | backbone | PsiLM | oracle | always 0.00 |
+|---|---:|---:|---:|---:|
+| in-distribution | 20.8% | **100%** (MAE 0.009) | 100% | 27.1% |
+| held-out mode combination | 16.7% | 25.0% (MAE 0.123) | 100% | 16.7% |
+| amplitude extrapolation | 10.4% | 52.1% (MAE 0.086) | 100% | 4.2% |
+
+Twenty-four times the backbone of the 0.5B study saturates the training family
+(97.9% → 100%) and leaves the other two where they were (31.3%, 50.0%). The
+support-coverage law is scale-independent.
+
+Attribution, this time without teacher forcing: running the frozen FNO on each
+item's *true* parameters scores 100% on all three families (MAE 0.0002–0.0008),
+so the physics is exact everywhere and every miss is the readout's. What it
+does instead — on the combination family 19 of 48 answers match a *single*-mode
+field value; on extrapolation the implied amplitude is below the true one for
+71% of items, median ratio 0.68, inside mode 1's training range of 0.3–0.7.
+
+The remedy the law names is coverage, not parameterization (v2's per-mode bins
+were worse, above): read every mode's amplitude with the **same** head, so
+mode 2's training range of 0.5–1.0 covers the 0.8–1.0 mode 1 is tested on, and
+let deterministic token spans carry the structure the way they already carry
+x0. `psilm/mlx/multimode_span.py`, `--readout span` in the stage-2b trainer and
+evaluator; the run is in progress.
+
 ## Loop coupling: more paths, trained end-to-end
 
 `psilm/stage2/loop_model.py` implements two read→rollout→inject passes
