@@ -412,6 +412,7 @@ eval/                  training, evaluation and benchmark scripts
   bench_guardrail.py, bench_common.py, build_noharm.py        gate-selectivity benchmark and its negatives
   copy_probe.py, readout_probe.py, readout_variance_probe.py  the diagnostic probes of the 8B/Gemma campaigns
   mlx_8b_setup.py, mlx_27b_setup.py, mlx_gemma_setup.py       parity/memory smoke tests per backbone
+  export_bridges.py                                           checkpoint -> HF layout (safetensors + config.json)
 data/                  QA datasets (single-mode, multi-mode families, 2D) and the no-harm negatives
 results/               logs, evaluations, benchmark summaries, HF export staging (weights are git-ignored)
 paper/                 the manuscript (psilm.tex, psilm.pdf, figures)
@@ -420,3 +421,25 @@ release/               the standalone Gemma-4-12B-PsiLM package as uploaded to H
 assets/                logo
 vendor/                DPOT model definition
 ```
+
+## Publishing a trained bridge
+
+`eval/export_bridges.py` turns a run directory into the two files the release
+inference script reads:
+
+```bash
+python eval/export_bridges.py \
+    --run results/stage2b_gemma12b_2b \
+    --out results/hf_export/bridges/gemma-4-12b-4bit-mlx-multimode-value-selective
+```
+
+It writes `bridges.safetensors` (the retired learned-pointer tensors
+`fwd.x0_query`/`fwd.x0_key.*` dropped, since the span pointer is deterministic;
+`--keep-unused` keeps them) and a `config.json` recording the backbone, the
+coupling depths, the construction arguments needed to rebuild `PsiBridgesMLX`,
+the phase split, and the held-out accuracy of every chunk. The phases are told
+apart by the `_noharm` suffix on the kept checkpoints, so a no-harm phase
+resumed from an earlier step does not steal a coupled chunk's score.
+
+Weights never enter git (see `.gitignore`); `results/hf_export/` is only the
+staging area from which the Hugging Face repositories are uploaded.
