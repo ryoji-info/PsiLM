@@ -35,18 +35,23 @@ N_LAYERS = {
 TASKS = {
     "stage2": {
         "task": "1d",
-        "physics": "results/stage2/fno.pt (1D Burgers FNO, 70K params)",
-        "physics_file": "fno_burgers_singlemode.safetensors",
+        "bridges_class": "psilm.mlx.bridges.PsiBridgesMLX",
+        "source": "results/stage2/fno.pt (1D Burgers FNO, 70K params)",
+        "physics": {"file": "physics/fno_burgers_singlemode.safetensors"},
     },
     "stage2b": {
         "task": "multimode",
-        "physics": "results/stage2b/fno.pt (1D Burgers FNO, multi-mode initial conditions)",
-        "physics_file": "fno_burgers_multimode.safetensors",
+        "bridges_class": ("psilm.mlx.multimode.make_bridges_multi "
+                          "(PsiBridgesMLX, n_params=6)"),
+        "source": "results/stage2b/fno.pt (1D Burgers FNO, multi-mode ICs)",
+        "physics": {"file": "physics/fno_burgers_multimode.safetensors"},
     },
     "stage2d": {
         "task": "2d",
-        "physics": "results/stage2d/dpot_ft.pt (DPOT-Tiny fine-tuned on 2D Fisher-KPP)",
-        "physics_file": "dpot_tiny_fisher2d_finetuned.safetensors",
+        "bridges_class": "psilm.mlx.bridges2d.PsiBridges2DMLX",
+        "source": "results/stage2d/dpot_ft.pt (DPOT-Tiny fine-tuned on 2D Fisher-KPP)",
+        "physics": {"file": "physics/dpot_tiny_fisher2d_finetuned.safetensors",
+                    "dpot_base": "physics/model_Ti.pth"},
     },
 }
 
@@ -126,9 +131,8 @@ def main():
         "loader": ("psilm.mlx.gemma_loader.load_backbone_any"
                    + (" (gemma4_unified -> text tower)" if "gemma" in model.lower()
                       else "")),
-        "physics": task["physics"],
-        "physics_file": task["physics_file"],
-        "bridges_class": "psilm.mlx.bridges.PsiBridgesMLX",
+        "physics": dict(task["physics"], source=task["source"]),
+        "bridges_class": task["bridges_class"],
         "construct": {
             "d_model": d_model,
             "channel": a.get("channel", "value"),

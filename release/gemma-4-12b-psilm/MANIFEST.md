@@ -90,27 +90,19 @@ are ordinary tensors of the checkpoint and must be included.
 
 #### Export recipe (maintainer, from the checkout root)
 
-```python
-import json, mlx.core as mx
-from pathlib import Path
-task, src, dst = "multimode", Path("results/stage2b_gemma12b_2b"), Path("release/gemma-4-12b-psilm/bridges/gemma-4-12b-4bit-mlx-multimode")
-# task, src, dst = "2d", Path("results/stage2d_gemma12b_2d"), Path("release/gemma-4-12b-psilm/bridges/gemma-4-12b-4bit-mlx-2d-dpot")
-meta = json.loads((src / "bridges.npz.meta").read_text()); a = meta["args"]
-w = {k: v for k, v in mx.load(str(src / "bridges.npz")).items()
-     if not k.startswith(("fwd.x0_query", "fwd.x0_key."))}          # unused learned pointer (multimode only)
-dst.mkdir(parents=True, exist_ok=True)
-mx.save_safetensors(str(dst / "bridges.safetensors"), w)
-cfg = {"task": task, "backbone": meta["model"], "hf_tokenizer": a["hf_tokenizer"],
-       "bridges_class": {"multimode": "psilm.mlx.multimode.make_bridges_multi (PsiBridgesMLX, n_params=6)",
-                         "2d": "psilm.mlx.bridges2d.PsiBridges2DMLX"}[task],
-       "construct": {"d_model": 3840, "channel": a["channel"], "inj_cap": a["inj_cap"],
-                     "gate_bias": a["gate_bias"], "readout_norm": a["readout_norm"]},
-       "coupling": {"l_fwd": meta["l_fwd"], "l_rev": meta["l_rev"], "n_layers": 48},
-       "physics": {"multimode": {"file": "physics/fno_burgers_multimode.safetensors"},
-                   "2d": {"file": "physics/dpot_tiny_fisher2d_finetuned.safetensors", "dpot_base": "physics/model_Ti.pth"}}[task],
-       "training": {"step": meta["step"], "args": a}, "license": "apache-2.0"}
-(dst / "config.json").write_text(json.dumps(cfg, indent=1))
+```bash
+python eval/export_bridges.py --run results/stage2b_gemma12b_2b \
+    --out release/gemma-4-12b-psilm/bridges/gemma-4-12b-4bit-mlx-multimode
+python eval/export_bridges.py --run results/stage2d_gemma12b_2d \
+    --out release/gemma-4-12b-psilm/bridges/gemma-4-12b-4bit-mlx-2d-dpot
 ```
+
+The script writes `bridges.safetensors` and a `config.json` in the schema above: `task`,
+`bridges_class` and `physics` follow from `bridges.npz.meta`'s stage, `construct` and
+`coupling` are copied from it verbatim, the retired learned pointer is dropped
+(`--keep-unused` keeps it), and `training` records the phase split and the held-out accuracy
+of every chunk. `physics.file` is the package-relative default the script's `--physics` flag
+falls back to; the file itself is copied from `results/hf_export/physics/`.
 
 Then `python psilm_infer.py --task multimode` / `--task 2d` from `release/gemma-4-12b-psilm`
 must print the three sections with a `PsiLM match` verdict on the defaults before upload.
