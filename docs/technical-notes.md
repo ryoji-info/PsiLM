@@ -228,8 +228,37 @@ The remedy the law names is coverage, not parameterization (v2's per-mode bins
 were worse, above): read every mode's amplitude with the **same** head, so
 mode 2's training range of 0.5–1.0 covers the 0.8–1.0 mode 1 is tested on, and
 let deterministic token spans carry the structure the way they already carry
-x0. `psilm/mlx/multimode_span.py`, `--readout span` in the stage-2b trainer and
-evaluator; the run is in progress.
+x0. `psilm/mlx/multimode_span.py`, `--readout span`.
+
+That was tested at 0.5B before spending the 12B budget
+(`eval/readout_transfer_probe.py`, records in `results/readout_transfer/`):
+train only the readout, then score what the physics model would answer from
+the parameters it produces. The pooled readout reproduces the rollout profile
+(0.99 / 0.32 / 0.44), which is what makes the proxy usable. Held-out
+combination family, layer 10, 2500 steps, three seeds per arm:
+
+| readout | in-dist | combination | extrapolation |
+|---|---:|---:|---:|
+| pooled | 0.990 | 0.323 | 0.438 |
+| span, shared heads | 1.000 | 0.608 ± 0.136 | 0.958–0.979 |
+| + distractor pinned at 0.0 | 1.000 | 0.681 ± 0.054 | 0.969 |
+| **+ distractor U(0.02, 0.25)** | **1.000** | **0.993 ± 0.012** | **0.979** |
+
+Two coverages, bought separately. **Value** coverage comes from sharing the
+amplitude head across slots — that alone takes extrapolation from 0.44 to
+~0.97, with amplitude error 0.001–0.002 on a range the slot never saw.
+**Structure** coverage has to come from the data: half the single-mode prompts
+rewritten with the absent mode at a small amplitude (`with_second_term` in
+`psilm/stage2/qa2.py`, answer recomputed by the solver). A distractor pinned
+at exactly 0.0 is the control — it supplies structure with nothing to read in
+it and gains almost nothing.
+
+Two things that did *not* survive: a readout-depth effect (layer 5 gave 0.979
+and 0.396 on two seeds of the same configuration — depth is noise), and the
+framing of the family itself. With two-term prompts in training, the
+combination family tests amplitude range in a two-term context, not
+compositional structure. It is still a generalization test, and a weaker one.
+The 12B run under this recipe is queued behind the 2D task.
 
 ## Loop coupling: more paths, trained end-to-end
 
