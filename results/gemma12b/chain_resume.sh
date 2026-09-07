@@ -2,7 +2,9 @@
 # Resume after the 2D no-harm arm died on an MPS OOM at 08:09: MLX's cached
 # buffers are invisible to torch's MPS allocator, so DPOT-Tiny could not get
 # 256 bytes. psilm/mlx/physics2d.py now returns the cache before crossing the
-# boundary and falls back to the CPU if it still fails. The coupled phase is
+# boundary and falls back to the CPU if it still fails; the no-harm chunks and
+# the evaluation now run DPOT on the CPU outright -- measured at 65 ms against
+# 48 ms per batch-4 call, which is 0.5% of a 3.6 s training step. The coupled phase is
 # done (step 6000, 93.8%); this picks up at the no-harm chunks.
 cd /Users/rxiii/Documents/GitHub/PsiLM
 PY=.venv/bin/python
@@ -15,7 +17,7 @@ keep() { S=$($PY -c "import json;print(json.load(open('$1/bridges.npz.meta'))['s
 
 D=results/stage2d_gemma12b_2d
 C2D="--batch 4 --gate-bias 0.0 --inj-cap 0.2 --channel value --lam-cls 1.0 --clip module \
-     --readout-only 2000 --eval-n 48 --readout-norm dim --calib-n 32 --phys-device mps \
+     --readout-only 2000 --eval-n 48 --readout-norm dim --calib-n 32 --phys-device cpu \
      --model $M --hf-tokenizer $M --tag _gemma12b_2d"
 echo "RESUME 2d-noharm $(date +%H:%M)" >> $LOG
 for i in 1 2 3; do
@@ -26,7 +28,7 @@ for i in 1 2 3; do
   echo "2D NOHARM CHUNK $i $(grep 'CHUNK DONE' $D/supervisor.log | tail -1)" >> $LOG
 done
 stage "2d-train"
-$PY eval/mlx_stage2d_eval.py --model $M --hf-tokenizer $M --tag _gemma12b_2d --n 60 --max-new 512 \
+$PY eval/mlx_stage2d_eval.py --model $M --hf-tokenizer $M --tag _gemma12b_2d --n 60 --max-new 512 --phys-device cpu \
     > $D/final_eval.log 2>&1 || fail "2d eval"; stage "2d-eval"
 
 $PY eval/mlx_stage2_eval.py --model $M --hf-tokenizer $M --tag _gemma12b --n 60 --arms baseline \

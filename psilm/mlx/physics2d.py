@@ -62,11 +62,11 @@ class TorchPhysics2D:
         try:
             return self._field(params)
         except RuntimeError as e:
-            if "out of memory" not in str(e).lower() or self.device.type == "cpu":
+            if "out of memory" not in str(e).lower() or str(self.device) == "cpu":
                 raise
-            print(f"[physics2d] MPS out of memory ({e.__class__.__name__}); "
-                  "moving DPOT-Tiny to the CPU for the rest of the run", flush=True)
-            self.device = torch.device("cpu")
+            print("[physics2d] MPS out of memory; moving DPOT-Tiny to the CPU "
+                  "for the rest of the run", flush=True)
+            self.device = "cpu"          # pick_device returns a string, not torch.device
             self.phys.to(self.device)
             self.dtype = next(self.phys.parameters()).dtype
             return self._field(params)
