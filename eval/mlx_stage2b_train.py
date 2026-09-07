@@ -48,7 +48,8 @@ from psilm.mlx.staged import MlxStream  # noqa: E402
 from psilm.mlx.multimode import PsiLMMLXMulti, make_bridges_multi  # noqa: E402
 from psilm.mlx.multimode_span import (  # noqa: E402
     PsiLMMLXMultiSpan, batch_extras, empty_spans, make_bridges_multi_span)
-from psilm.stage2.qa2 import QA2Builder, make_batch as torch_make_batch  # noqa: E402
+from psilm.stage2.qa2 import (  # noqa: E402
+    QA2Builder, make_batch as torch_make_batch, with_second_term)
 
 FNO_PATH = "results/stage2b/fno.pt"           # the multi-mode FNO (eval/stage2b_pretrain_fno.py)
 TRAIN_DATA = "data/stage2b_qa_train.json"
@@ -155,6 +156,11 @@ def main():
     ap.add_argument("--channel", default="field", choices=["field", "value"],
                     help="physics->language channel: lookup + field tokens, or value tokens "
                          "(Fourier encoding of the looked-up u(x0), the 8B copy-probe form)")
+    ap.add_argument("--aug-second-frac", type=float, default=0.0,
+                    help="fraction of training prompts rewritten with the absent mode at a "
+                         "small amplitude (answer recomputed): structure coverage for the "
+                         "held-out combination, see results/readout_transfer/")
+    ap.add_argument("--aug-amp-max", type=float, default=0.25)
     ap.add_argument("--readout", default="pooled", choices=["pooled", "span"],
                     help="pooled: one learned pool -> 6 regressed values (the released "
                          "design). span: every number read from its own token span with "
@@ -280,6 +286,9 @@ def main():
                 batch["x0_span"] = empty_spans(args.batch)
         else:
             sample = rng.sample(train_items, args.batch)
+            if args.aug_second_frac:
+                sample = [with_second_term(it, rng, args.aug_amp_max)
+                          if rng.random() < args.aug_second_frac else it for it in sample]
             batch = to_mlx_batch(torch_make_batch(builder, sample, "cpu"))
             if span_readout:
                 add_spans(batch, builder, sample)

@@ -14,8 +14,12 @@ mkdir -p $D
 until grep -q "FOLLOWUP COMPLETE" results/gemma12b/baseline_followup.log 2>/dev/null; do sleep 120; done
 echo "SPAN RUN START $(date +%H:%M)" >> $LOG
 
+# --aug-second-frac: structure coverage. Without it the held-out combination
+# family lands wherever the seed puts it (0.608 +/- 0.136 over three seeds at
+# 0.5B); with it, 0.993 +/- 0.012. Readout depth was tested and is noise.
 C="--batch 4 --gate-bias 0.0 --inj-cap 0.2 --channel value --lam-x0 1.0 --clip module \
-   --detach-x0 --readout span --readout-only 2000 --eval-n 48 --readout-norm dim --calib-n 32 \
+   --detach-x0 --readout span --aug-second-frac 0.5 --aug-amp-max 0.25 \
+   --readout-only 2000 --eval-n 48 --readout-norm dim --calib-n 32 \
    --model $M --hf-tokenizer $M --tag _gemma12b_span"
 keep() { S=$(python3 -c "import json;print(json.load(open('$D/bridges.npz.meta'))['step'])"); cp $D/bridges.npz $D/bridges_step${S}$1.npz; }
 probe() {   # generalization families, cheap, mid-run

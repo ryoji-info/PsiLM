@@ -100,6 +100,31 @@ def _span_of(tok, p_prompt, prefixes, value, cursor, name):
                      f"{prefixes}; deterministic span pooling would pool the whole prompt")
 
 
+def with_second_term(item, rng, amp_max=0.25):
+    """The same question written with the absent mode present at a small
+    amplitude drawn from U(0.02, amp_max), the answer recomputed by the solver.
+
+    Structure coverage: a readout trained only on one-term prompts has no
+    constraint on what it does with two, and its held-out combination accuracy
+    lands wherever the seed puts it (0.30-0.98 over the probes in
+    results/readout_transfer/). Adding two-term prompts fixes the structure
+    while leaving the combination family's amplitudes (0.3-0.7 with 0.5-1.0)
+    outside the second slot's training support, which the mode-shared heads
+    cover instead. A distractor pinned at exactly 0.0 does NOT work: it teaches
+    that a second term contributes nothing (mean 0.681 against 0.608 without).
+    """
+    present = {m for m, _, _ in item["modes"]}
+    missing = [m for m in range(1, N_MODES + 1) if m not in present]
+    if not missing:
+        return item
+    a = round(rng.uniform(0.02, amp_max), 2)
+    modes = sorted([list(m) for m in item["modes"]]
+                   + [[missing[0], a, round(rng.uniform(0.0, 6.28), 2)]],
+                   key=lambda t: t[0])
+    field = solve(initial_condition_multi([tuple(m) for m in modes]))
+    return {**item, "modes": modes, "u": round(float(fourier_interp(field, item["x0"])), 4)}
+
+
 class QA2Builder:
     def __init__(self, tokenizer):
         self.tok = tokenizer
