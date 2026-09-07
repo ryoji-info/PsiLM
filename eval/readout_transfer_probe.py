@@ -41,6 +41,22 @@ FAMILIES = ("val_iid", "val_combo", "val_amp")
 TOL = 0.05
 
 
+def with_zero_term(item, rng):
+    """The same physics, written as two terms: the absent mode is added at
+    amplitude 0.0. u(x,0) is unchanged (a zero-amplitude sinusoid contributes
+    nothing), so the IC distribution and every answer stay exactly as they
+    were -- what changes is that the prompt now HAS two terms, which is the
+    context a single-mode training set never shows the readout. The held-out
+    combination family, where both amplitudes are in their ranges, is still
+    held out."""
+    present = {m for m, _, _ in item["modes"]}
+    missing = [m for m in (1, 2) if m not in present]
+    if not missing:
+        return item
+    modes = item["modes"] + [[missing[0], 0.0, round(rng.uniform(0, 6.28), 2)]]
+    return {**item, "modes": sorted(modes, key=lambda t: t[0])}
+
+
 def to_batch(builder, items, span):
     tb = torch_make_batch(builder, items, "cpu")
     b = {"p_ids": mx.array(tb["p_ids"].numpy()),
@@ -127,7 +143,11 @@ def run(kind, args, model, tok, hf_tok, fno, train_items, evals):
 
     t0 = time.time()
     for step in range(args.steps):
-        state["batch"] = to_batch(builder, rng.sample(train_items, args.batch), span)
+        sample = rng.sample(train_items, args.batch)
+        if args.aug_zero_frac:
+            sample = [with_zero_term(it, rng) if rng.random() < args.aug_zero_frac else it
+                      for it in sample]
+        state["batch"] = to_batch(builder, sample, span)
         loss, grads = mx.value_and_grad(lf)(bridges.trainable_parameters())
         opt.update(bridges, grads)
         mx.eval(bridges.parameters(), opt.state, loss)
@@ -152,6 +172,11 @@ def main():
                     help="readout layer; earlier layers mix less context across terms, "
                          "which is what the combination family is sensitive to")
     ap.add_argument("--readouts", default="pooled,span")
+    ap.add_argument("--aug-zero-frac", type=float, default=0.0,
+                    help="fraction of training prompts rewritten with the absent mode at "
+                         "amplitude 0.0: same physics, same answers, but the readout sees "
+                         "two-term prompts. Covers the CONTEXT of a combination without "
+                         "covering its amplitudes")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", default="results/readout_transfer/probe.json")
     args = ap.parse_args()
@@ -165,7 +190,7 @@ def main():
 
     out = {"model": args.model, "steps": args.steps, "batch": args.batch,
            "readout_norm": args.readout_norm, "n_eval": args.n_eval,
-           "l_fwd": args.l_fwd, "readouts": {}}
+           "l_fwd": args.l_fwd, "aug_zero_frac": args.aug_zero_frac, "readouts": {}}
     for kind in args.readouts.split(","):
         print(f"== {kind} readout", flush=True)
         out["readouts"][kind] = run(kind, args, model, tok, hf_tok, fno, train_items, evals)

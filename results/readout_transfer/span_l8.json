@@ -1,0 +1,31 @@
+{
+ "model": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+ "steps": 2500,
+ "batch": 8,
+ "readout_norm": "dim",
+ "n_eval": 96,
+ "l_fwd": 8,
+ "readouts": {
+  "span": {
+   "params": 2495280,
+   "val_iid": {
+    "acc": 1.0,
+    "amp_mae": 0.0017,
+    "phase_mae": 0.0214,
+    "x0_mae": 0.0017
+   },
+   "val_combo": {
+    "acc": 0.302,
+    "amp_mae": 0.3616,
+    "phase_mae": 0.0403,
+    "x0_mae": 0.00196
+   },
+   "val_amp": {
+    "acc": 0.969,
+    "amp_mae": 0.0012,
+    "phase_mae": 0.0379,
+    "x0_mae": 0.00153
+   }
+  }
+ }
+}
