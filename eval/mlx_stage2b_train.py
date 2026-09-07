@@ -135,6 +135,10 @@ def main():
     ap.add_argument("--tag", default="_mlx2b")
     ap.add_argument("--gate-bias", type=float, default=-2.0)
     ap.add_argument("--l-rev", type=int, default=None)
+    ap.add_argument("--l-fwd", type=int, default=None,
+                    help="readout layer (default: 10/24 of depth). Earlier layers have "
+                         "mixed less context between a prompt's terms, which is what the "
+                         "held-out mode combination is sensitive to (results/readout_transfer/)")
     ap.add_argument("--lam-x0", type=float, default=0.3)
     ap.add_argument("--detach-x0", action="store_true",
                     help="stop_gradient on the pointer fed to the reverse bridge")
@@ -223,7 +227,8 @@ def main():
                 print(f"[WARN] --{k.replace('_', '-')}={getattr(args, k)} differs from the checkpoint's {prev[k]}")
 
     psi_cls = PsiLMMLXMultiSpan if span_readout else PsiLMMLXMulti
-    psi = psi_cls(model, tok, fno, bridges, l_rev=args.l_rev, lam_x0=args.lam_x0)
+    psi = psi_cls(model, tok, fno, bridges, l_fwd=args.l_fwd, l_rev=args.l_rev,
+                  lam_x0=args.lam_x0)
     psi.detach_x0 = args.detach_x0
     if args.readout_norm == "dim" and (args.fresh or not ckpt.exists()):
         # calibration: per-dimension statistics of the readout layer on a prompt batch

@@ -96,6 +96,8 @@ def main():
     ap.add_argument("--hf-tokenizer", default="Qwen/Qwen2.5-0.5B-Instruct")
     ap.add_argument("--tag", default="_mlx2b")
     ap.add_argument("--l-rev", type=int, default=None)
+    ap.add_argument("--l-fwd", type=int, default=None,
+                    help="default: the checkpoint's own readout layer")
     ap.add_argument("--arms", default="baseline,oracle,psilm")
     ap.add_argument("--families", default=",".join(FAMILIES))
     ap.add_argument("--max-new", type=int, default=768,
@@ -120,8 +122,9 @@ def main():
                            readout_norm=margs.get("readout_norm", "rms"))
     bridges.load_weights(str(ckpt))
     l_rev = args.l_rev if args.l_rev is not None else meta.get("l_rev")
+    l_fwd = args.l_fwd if args.l_fwd is not None else meta.get("l_fwd")
     psi = (PsiLMMLXMultiSpan if span_readout else PsiLMMLXMulti)(
-        model, tok, fno, bridges, l_rev=l_rev)
+        model, tok, fno, bridges, l_fwd=l_fwd, l_rev=l_rev)
     builder = QA2Builder(hf_tok)
     print(f"{args.model} | bridges step {meta['step']} | couple {psi.l_fwd}/{psi.l_rev} of {psi.n_layers}",
           flush=True)
