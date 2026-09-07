@@ -69,14 +69,16 @@ def fourier_interp_batch(field, x0):
 
 
 def read_family(psi, builder, items, span, batch=8):
-    """Teacher-forced readout quality on one family."""
-    a_err, hit, n = [], 0, 0
+    """Teacher-forced readout quality on one family: the answer the physics
+    model would give from the predicted parameters, plus per-quantity error so
+    a deficit can be attributed to amplitude, phase or the x0 pointer."""
+    a_err, p_err, x_err, hit, n = [], [], [], 0, 0
     for i in range(0, len(items), batch):
         chunk = items[i:i + batch]
         b = to_batch(builder, chunk, span)
         s = MlxStream(psi.model, b["p_ids"], b["p_attn"])
         s.run(0, psi.l_fwd)
-        params_hat, _, _, _ = psi.phi.fwd(s.hidden, b["prompt_mask"], b["x0_span"])
+        params_hat, x0_hat, _, _ = psi.phi.fwd(s.hidden, b["prompt_mask"], b["x0_span"])
         u = psi.fno(build_ic_multi_mlx(params_hat))
         mx.eval(u)
         pred = fourier_interp_batch(u, [it["x0"] for it in chunk])
@@ -84,10 +86,18 @@ def read_family(psi, builder, items, span, batch=8):
         hit += int((np.abs(pred - true) <= TOL).sum())
         n += len(chunk)
         p = np.array(params_hat)
+        xh = np.array(x0_hat)
         for j, it in enumerate(chunk):
-            for m, a, _ in it["modes"]:
+            d = abs(xh[j] - it["x0"])
+            x_err.append(min(d, 1 - d))
+            for m, a, phi in it["modes"]:
                 a_err.append(abs(float(p[j, 3 * m - 3]) - a))
-    return {"acc": round(hit / n, 3), "amp_mae": round(float(np.mean(a_err)), 4)}
+                phi_hat = math.atan2(float(p[j, 3 * m - 2]), float(p[j, 3 * m - 1]))
+                dp = abs((phi_hat - phi + math.pi) % (2 * math.pi) - math.pi)
+                p_err.append(dp)
+    return {"acc": round(hit / n, 3), "amp_mae": round(float(np.mean(a_err)), 4),
+            "phase_mae": round(float(np.mean(p_err)), 4),
+            "x0_mae": round(float(np.mean(x_err)), 5)}
 
 
 def run(kind, args, model, tok, hf_tok, fno, train_items, evals):
@@ -95,7 +105,8 @@ def run(kind, args, model, tok, hf_tok, fno, train_items, evals):
     bridges = (make_bridges_multi_span if span else make_bridges_multi)(
         model.args.hidden_size, gate_bias=0.0, inj_cap=0.2, channel="value",
         readout_norm=args.readout_norm)
-    psi = (PsiLMMLXMultiSpan if span else PsiLMMLXMulti)(model, tok, fno, bridges, lam_x0=1.0)
+    psi = (PsiLMMLXMultiSpan if span else PsiLMMLXMulti)(
+        model, tok, fno, bridges, l_fwd=args.l_fwd, lam_x0=1.0)
     psi.readout_only = True
     psi.detach_x0 = True
     builder = QA2Builder(hf_tok)
@@ -137,6 +148,10 @@ def main():
     ap.add_argument("--lr", type=float, default=3e-4)
     ap.add_argument("--n-eval", type=int, default=96)
     ap.add_argument("--readout-norm", default="dim", choices=["rms", "dim"])
+    ap.add_argument("--l-fwd", type=int, default=None,
+                    help="readout layer; earlier layers mix less context across terms, "
+                         "which is what the combination family is sensitive to")
+    ap.add_argument("--readouts", default="pooled,span")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", default="results/readout_transfer/probe.json")
     args = ap.parse_args()
@@ -149,8 +164,9 @@ def main():
              for f in FAMILIES}
 
     out = {"model": args.model, "steps": args.steps, "batch": args.batch,
-           "readout_norm": args.readout_norm, "n_eval": args.n_eval, "readouts": {}}
-    for kind in ("pooled", "span"):
+           "readout_norm": args.readout_norm, "n_eval": args.n_eval,
+           "l_fwd": args.l_fwd, "readouts": {}}
+    for kind in args.readouts.split(","):
         print(f"== {kind} readout", flush=True)
         out["readouts"][kind] = run(kind, args, model, tok, hf_tok, fno, train_items, evals)
         print(f"   {json.dumps(out['readouts'][kind])}", flush=True)
@@ -159,7 +175,8 @@ def main():
     print("\nteacher-forced readout -> physics answer, acc@0.05 (amplitude MAE):")
     for kind, r in out["readouts"].items():
         print(f"  {kind:7s} " + "   ".join(
-            f"{f.replace('val_', ''):6s} {r[f]['acc']:.3f} ({r[f]['amp_mae']:.3f})"
+            f"{f.replace('val_', ''):6s} {r[f]['acc']:.3f} (a {r[f]['amp_mae']:.3f} "
+            f"phi {r[f]['phase_mae']:.3f} x0 {r[f]['x0_mae']:.4f})"
             for f in FAMILIES))
 
 
