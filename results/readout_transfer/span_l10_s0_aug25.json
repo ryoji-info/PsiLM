@@ -28,5 +28,7 @@
     "x0_mae": 0.00289
    }
   }
- }
+ },
+ "aug_amp_max": 0.25,
+ "note": "aug_amp_max backfilled from results/readout_transfer/aug2.sh (the probe did not record it)"
 }

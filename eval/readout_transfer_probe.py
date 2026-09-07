@@ -217,7 +217,8 @@ def main():
 
     out = {"model": args.model, "steps": args.steps, "batch": args.batch,
            "readout_norm": args.readout_norm, "n_eval": args.n_eval,
-           "l_fwd": args.l_fwd, "aug_zero_frac": args.aug_zero_frac, "readouts": {}}
+           "l_fwd": args.l_fwd, "aug_zero_frac": args.aug_zero_frac,
+           "aug_amp_max": args.aug_amp_max, "readouts": {}}
     for kind in args.readouts.split(","):
         print(f"== {kind} readout", flush=True)
         out["readouts"][kind] = run(kind, args, model, tok, hf_tok, fno, train_items, evals)
