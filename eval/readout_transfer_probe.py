@@ -41,6 +41,27 @@ FAMILIES = ("val_iid", "val_combo", "val_amp")
 TOL = 0.05
 
 
+def with_second_term(item, rng, amp_max=0.0):
+    """As with_zero_term, but the distractor carries a small NONZERO amplitude
+    drawn from U(0.02, amp_max), with the answer recomputed by the spectral
+    solver. A distractor that is always exactly 0.0 teaches 'a second term
+    contributes nothing', which is the opposite of what the combination family
+    asks; a small nonzero one teaches 'read whatever is written there' while
+    leaving the held-out family's joint amplitude range (0.3-0.7 with 0.5-1.0)
+    unseen."""
+    present = {m for m, _, _ in item["modes"]}
+    missing = [m for m in (1, 2) if m not in present]
+    if not missing:
+        return item
+    from psilm.physics.burgers import initial_condition_multi, solve
+    from psilm.stage2.qa import fourier_interp
+    a = round(rng.uniform(0.02, amp_max), 2)
+    modes = sorted(item["modes"] + [[missing[0], a, round(rng.uniform(0, 6.28), 2)]],
+                   key=lambda t: t[0])
+    field = solve(initial_condition_multi([tuple(m) for m in modes]))
+    return {**item, "modes": modes, "u": round(float(fourier_interp(field, item["x0"])), 4)}
+
+
 def with_zero_term(item, rng):
     """The same physics, written as two terms: the absent mode is added at
     amplitude 0.0. u(x,0) is unchanged (a zero-amplitude sinusoid contributes
@@ -145,7 +166,9 @@ def run(kind, args, model, tok, hf_tok, fno, train_items, evals):
     for step in range(args.steps):
         sample = rng.sample(train_items, args.batch)
         if args.aug_zero_frac:
-            sample = [with_zero_term(it, rng) if rng.random() < args.aug_zero_frac else it
+            aug = (with_zero_term if args.aug_amp_max <= 0 else
+                   lambda it, r: with_second_term(it, r, args.aug_amp_max))
+            sample = [aug(it, rng) if rng.random() < args.aug_zero_frac else it
                       for it in sample]
         state["batch"] = to_batch(builder, sample, span)
         loss, grads = mx.value_and_grad(lf)(bridges.trainable_parameters())
@@ -172,6 +195,10 @@ def main():
                     help="readout layer; earlier layers mix less context across terms, "
                          "which is what the combination family is sensitive to")
     ap.add_argument("--readouts", default="pooled,span")
+    ap.add_argument("--aug-amp-max", type=float, default=0.0,
+                    help="distractor amplitude ceiling: 0 writes the absent mode at exactly "
+                         "0.0, >0 draws U(0.02, this) and recomputes the answer with the "
+                         "solver")
     ap.add_argument("--aug-zero-frac", type=float, default=0.0,
                     help="fraction of training prompts rewritten with the absent mode at "
                          "amplitude 0.0: same physics, same answers, but the readout sees "
