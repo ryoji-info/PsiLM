@@ -49,7 +49,30 @@ class TorchPhysics2D:
 
     @torch.no_grad()
     def field_torch(self, params):
-        """params (B, 4) float tensor [a, cx, cy, w] -> torch field (B, GRID, GRID)."""
+        """params (B, 4) float tensor [a, cx, cy, w] -> torch field (B, GRID, GRID).
+
+        MLX and torch share one unified GPU memory, and MLX's cached buffers are
+        invisible to torch's MPS allocator: the 12B no-harm arm died here asking
+        for 256 bytes while 42 GiB sat in 'other allocations'. Returning MLX's
+        cache to the system before crossing the boundary is what keeps the two
+        runtimes coexisting; on OOM anyway, this physics model (7.5M parameters)
+        moves to the CPU for the rest of the run rather than taking the job down.
+        """
+        mx.clear_cache()
+        try:
+            return self._field(params)
+        except RuntimeError as e:
+            if "out of memory" not in str(e).lower() or self.device.type == "cpu":
+                raise
+            print(f"[physics2d] MPS out of memory ({e.__class__.__name__}); "
+                  "moving DPOT-Tiny to the CPU for the rest of the run", flush=True)
+            self.device = torch.device("cpu")
+            self.phys.to(self.device)
+            self.dtype = next(self.phys.parameters()).dtype
+            return self._field(params)
+
+    @torch.no_grad()
+    def _field(self, params):
         p = torch.as_tensor(np.asarray(params, dtype=np.float32), device=self.device)
         # the torch ForwardBridge2D clamps w >= 0.02 before build_ic_2d; the MLX
         # readout's bin expectation is unclamped, and w -> 0 makes the Gaussian
