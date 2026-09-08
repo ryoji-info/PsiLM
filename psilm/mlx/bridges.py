@@ -214,6 +214,39 @@ class GatedCrossAttentionMLX(nn.Module):
         return out, sigma
 
 
+CALIBRATION_BUFFERS = ("fwd.dim_mu", "fwd.dim_sigma")
+
+
+def load_bridge_weights(bridges, path, strict: bool = True):
+    """load_weights that tolerates exactly one kind of omission: the readout
+    calibration buffers of checkpoints trained before readout_norm 'dim'
+    existed (every Qwen run). Those buffers default to mean 0 / std 1, which
+    is the identity the 'rms' readout expects, so leaving them is correct.
+    Anything else missing, and any tensor the module does not define, is
+    still an error when strict -- mlx's own strict=False would hide both."""
+    from mlx.utils import tree_flatten
+    weights = dict(mx.load(str(path)))
+    params = {k for k, _ in tree_flatten(bridges.parameters())}
+    missing = sorted(k for k in params if k not in weights)
+    unexpected = sorted(k for k in weights if k not in params)
+    tolerated = [k for k in missing if k in CALIBRATION_BUFFERS]
+    shapes = dict(tree_flatten(bridges.parameters()))
+    wrong = [(k, tuple(weights[k].shape), tuple(shapes[k].shape))
+             for k in weights if k in shapes and tuple(weights[k].shape) != tuple(shapes[k].shape)]
+    if wrong:                                   # a checkpoint of another task or width
+        lines = "; ".join(f"{k}: file {a} vs module {b}" for k, a, b in wrong[:4])
+        raise ValueError(f"{path}: tensor shapes do not match the module: {lines}")
+    if strict:
+        bad = [k for k in missing if k not in CALIBRATION_BUFFERS]
+        if bad or unexpected:
+            raise ValueError(f"{path}: missing {bad}, unexpected {unexpected}")
+    bridges.load_weights(list(weights.items()), strict=False)
+    if tolerated and getattr(getattr(bridges, "fwd", None), "readout_norm", "rms") == "dim":
+        raise ValueError(f"{path}: readout_norm 'dim' but the checkpoint carries no "
+                         f"calibration buffers {tolerated}")
+    return tolerated
+
+
 class PsiBridgesMLX(nn.Module):
     def __init__(self, d_model: int, n_params: int = 3, gate_bias: float = -2.0,
                  inj_cap=None, channel: str = "field", readout_norm: str = "rms"):

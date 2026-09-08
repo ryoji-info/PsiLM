@@ -22,7 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import mlx_lm  # noqa: E402
 from transformers import AutoTokenizer  # noqa: E402
 
-from psilm.mlx.bridges import PsiBridgesMLX  # noqa: E402
+from psilm.mlx.bridges import load_bridge_weights, PsiBridgesMLX  # noqa: E402
 from psilm.mlx.fno import convert_from_torch  # noqa: E402
 from psilm.mlx.gemma_loader import load_backbone_any  # noqa: E402
 from psilm.mlx.model import PsiLMMLX  # noqa: E402
@@ -129,7 +129,7 @@ def main():
                             gate_bias=margs.get("gate_bias", -2.0),
                             inj_cap=margs.get("inj_cap"), channel=margs.get("channel", "field"),
                             readout_norm=margs.get("readout_norm", "rms"))
-    bridges.load_weights(str(ckpt))
+    load_bridge_weights(bridges, ckpt)
     psi = PsiLMMLX(model, tok, fno, bridges, l_rev=args.l_rev)
     builder = QABuilder(hf_tok)
     print(f"{args.model} | bridges step {meta['step']} | couple {psi.l_fwd}/{psi.l_rev} of {psi.n_layers}",

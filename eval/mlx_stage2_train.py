@@ -24,7 +24,7 @@ from mlx.optimizers import clip_grad_norm  # noqa: E402
 import mlx_lm  # noqa: E402
 from transformers import AutoTokenizer  # noqa: E402
 
-from psilm.mlx.bridges import PsiBridgesMLX  # noqa: E402
+from psilm.mlx.bridges import load_bridge_weights, PsiBridgesMLX  # noqa: E402
 from psilm.mlx.fno import convert_from_torch  # noqa: E402
 from psilm.mlx.gemma_loader import load_backbone_any  # noqa: E402
 from psilm.mlx.staged import MlxStream  # noqa: E402
@@ -158,7 +158,7 @@ def main():
         # non-strict only when re-initializing the channel (the checkpoint may
         # come from a different channel form); the readouts must still load
         ref = bridges.fwd.x0_h2.weight
-        bridges.load_weights(str(ckpt), strict=not args.reinit_channel)
+        load_bridge_weights(bridges, ckpt, strict=not args.reinit_channel)
         assert float(mx.abs(bridges.fwd.x0_h2.weight - ref).max()) > 0, "readout did not load"
         meta = json.loads(Path(str(ckpt) + ".meta").read_text())
         global_step = meta["step"]

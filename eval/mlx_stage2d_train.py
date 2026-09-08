@@ -152,7 +152,7 @@ def main():
     global_step = 0
     if ckpt.exists() and not args.fresh:
         ref = bridges.fwd.h2[0].weight
-        bridges.load_weights(str(ckpt), strict=not args.reinit_channel)
+        load_bridge_weights(bridges, ckpt, strict=not args.reinit_channel)
         assert float(mx.abs(bridges.fwd.h2[0].weight - ref).max()) > 0, "readout did not load"
         meta = json.loads(Path(str(ckpt) + ".meta").read_text())
         global_step = meta["step"]

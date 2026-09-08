@@ -102,7 +102,7 @@ def main():
                               gate_bias=margs.get("gate_bias", -2.0),
                               inj_cap=margs.get("inj_cap"), channel=margs.get("channel", "value"),
                               readout_norm=margs.get("readout_norm", "rms"))
-    bridges.load_weights(str(ckpt))
+    load_bridge_weights(bridges, ckpt)
     phys = TorchPhysics2D(device=args.phys_device)
     l_rev = args.l_rev if args.l_rev is not None else meta.get("l_rev")
     psi = PsiLM2DMLX(model, tok, phys, bridges, l_fwd=meta.get("l_fwd"), l_rev=l_rev)

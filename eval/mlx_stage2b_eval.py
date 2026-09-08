@@ -33,6 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import mlx_lm  # noqa: E402
 from transformers import AutoTokenizer  # noqa: E402
 
+from psilm.mlx.bridges import load_bridge_weights  # noqa: E402
 from psilm.mlx.fno import convert_from_torch  # noqa: E402
 from psilm.mlx.gemma_loader import load_backbone_any  # noqa: E402
 from psilm.mlx.multimode import PsiLMMLXMulti, make_bridges_multi  # noqa: E402
@@ -120,7 +121,7 @@ def main():
                            gate_bias=margs.get("gate_bias", -2.0),
                            inj_cap=margs.get("inj_cap"), channel=margs.get("channel", "field"),
                            readout_norm=margs.get("readout_norm", "rms"))
-    bridges.load_weights(str(ckpt))
+    load_bridge_weights(bridges, ckpt)
     l_rev = args.l_rev if args.l_rev is not None else meta.get("l_rev")
     l_fwd = args.l_fwd if args.l_fwd is not None else meta.get("l_fwd")
     psi = (PsiLMMLXMultiSpan if span_readout else PsiLMMLXMulti)(
