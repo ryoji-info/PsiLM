@@ -172,6 +172,11 @@ class GatedCrossAttentionMLX(nn.Module):
         # which garbled the frozen model even though the value it carried was
         # right; the successful 8B copy probe and v5 both operated near 5%.
         self.inj_cap = inj_cap
+        # gate_floor: leaky gate, sigma_eff = floor + (1 - floor) * sigma. None
+        # (the trained behaviour) is a plain sigmoid gate. Set at inference by
+        # the guard-rail's leaky<eps> arms; the sigma returned is always the
+        # PRE-floor value, so the gate's own decision stays observable.
+        self.gate_floor = None
         self.to_q = nn.Linear(d_model, d_attn)
         self.to_k = nn.Linear(d_model, d_attn)
         self.to_v = nn.Linear(d_model, d_attn)
@@ -197,7 +202,9 @@ class GatedCrossAttentionMLX(nn.Module):
         # scale the injection to the receiver's local stream magnitude, so
         # the channel is scale-free across backbone widths
         scale = mx.sqrt((h_raw * h_raw).mean(axis=-1, keepdims=True) + 1e-6)
-        delta = sigma * inj * scale
+        sigma_eff = sigma if self.gate_floor is None else \
+            self.gate_floor + (1.0 - self.gate_floor) * sigma
+        delta = sigma_eff * inj * scale
         out = (h_raw + delta).astype(dtype)
         if return_ratio:
             # effective channel strength per position: RMS(injection)/RMS(stream).

@@ -69,6 +69,22 @@ MMLU_SUBJECTS = ["high_school_mathematics", "college_physics", "philosophy",
 
 ARMS = ("base", "psilm", "zeroed")
 LETTERS = "ABCD"
+NUDGE_YESNO = "\nAnswer with only yes or no, in the form \"Answer: <yes/no>\"."
+
+
+def arm_spec(arm: str):
+    """(mode, gate_floor) of an arm name. 'leaky0.05' is the psilm arm with the
+    gate floored at 0.05 (sigma_eff = 0.05 + 0.95 * sigma); the floor is applied
+    at inference only, on the trained selective bridges, so a sweep over eps is
+    a dose-response curve for the channel on prompts where it carries nothing."""
+    if arm in ARMS:
+        return arm, None
+    if arm.startswith("leaky"):
+        eps = float(arm[len("leaky"):])
+        if not 0.0 < eps <= 1.0:
+            raise ValueError(f"{arm}: the floor must be in (0, 1]")
+        return "psilm", eps
+    raise ValueError(f"unknown arm {arm!r} (base, psilm, zeroed, leaky<eps>)")
 
 
 # ----------------------------------------------------------------------------
@@ -148,6 +164,12 @@ def mmlu_user(question: str, choices: List[str]) -> str:
     return "\n".join(lines) + "\n" + NUDGE_LETTER
 
 
+def boolq_user(passage: str, question: str) -> str:
+    q = question.strip()
+    q = q[0].upper() + q[1:] + ("" if q.endswith("?") else "?")
+    return f"Passage: {passage.strip()}\n\nQuestion: {q}" + NUDGE_YESNO
+
+
 def gsm8k_user(question: str, nudge: bool = True) -> str:
     return question.strip() + (NUDGE_NUMBER if nudge else "")
 
@@ -197,6 +219,17 @@ def parse_last_decimal(text: str) -> Optional[float]:
     return float(m[-1]) if m else None
 
 
+_ANS_YN = re.compile(r"Answer\s*:?\s*\**\s*(yes|no)\b", re.I)
+_ANY_YN = re.compile(r"\b(yes|no)\b", re.I)
+
+
+def parse_yesno(text: str) -> Optional[bool]:
+    m = _ANS_YN.findall(text)
+    if not m:
+        m = _ANY_YN.findall(text)
+    return (m[-1].lower() == "yes") if m else None
+
+
 def parse_letter(text: str) -> Optional[str]:
     m = _ANS_LET.findall(text)
     if m:
@@ -218,6 +251,9 @@ def score(protocol: str, text: str, gold: Any, num_tol: float = 1e-6):
     elif protocol == "letter":
         p = parse_letter(text)
         ok = p is not None and p == gold
+    elif protocol == "yesno":
+        p = parse_yesno(text)
+        ok = p is not None and p == bool(gold)
     elif protocol == "physics_trained":
         p = parse_last_decimal(text)
         ok = p is not None and abs(p - gold) <= PHYSICS_TOL
@@ -264,6 +300,18 @@ def load_mmlu(n: int, seed: int, subjects: List[str] = MMLU_SUBJECTS) -> List[Di
     return out
 
 
+def load_boolq(n: int, seed: int) -> List[Dict[str, Any]]:
+    """Reading comprehension: BoolQ validation (yes/no over a passage)."""
+    from datasets import load_dataset
+    ds = load_dataset("google/boolq", split="validation")
+    out = []
+    for i in _seeded_prefix(len(ds), n, seed):
+        r = ds[i]
+        out.append({"qid": f"boolq:validation:{i}", "question": r["question"],
+                    "passage": r["passage"], "gold": bool(r["answer"]), "index": i})
+    return out
+
+
 def load_physics(n: int, path: str = PHYSICS_DATA) -> List[Dict[str, Any]]:
     items = json.loads(Path(path).read_text())[:n]
     return [{"qid": f"physics:{Path(path).stem}:{i}", "item": it, "gold": it["u"], "index": i}
@@ -300,6 +348,12 @@ def build_tasks(dataset: str, records: List[Dict[str, Any]], hf_tok, max_new: in
             p = Prompt(ids, hf_tok.decode(ids), "letter", max_new, span)
             tasks.append(Task("mmlu", r["qid"], r["gold"], p,
                               {"index": r["index"], "subject": r["subject"]}))
+    elif dataset == "boolq":
+        for r in records:
+            ids = chat_ids(hf_tok, boolq_user(r["passage"], r["question"]))
+            span = (0, len(ids)) if nonphys_span == "whole" else None
+            p = Prompt(ids, hf_tok.decode(ids), "yesno", max_new, span)
+            tasks.append(Task("boolq", r["qid"], r["gold"], p, {"index": r["index"]}))
     elif dataset == "physics":
         from psilm.stage2.qa import QUESTION
         assert builder is not None, "physics tasks need a QABuilder"
@@ -439,14 +493,77 @@ class StagedDecoder:
                 "params_hat": [round(float(v), 4) for v in params_hat[0].tolist()]}
         return tokens, diag
 
-    def _inject(self, h, tokens, mode):
-        h_inj, sigma = self.phi.inject(h, tokens)
+    def _inject(self, h, tokens, mode, floor=None):
+        self.phi.inject.gate_floor = floor       # None for the trained arms
+        try:
+            h_inj, sigma = self.phi.inject(h, tokens)   # sigma is pre-floor
+        finally:
+            self.phi.inject.gate_floor = None
         if mode == "psilm":
             return h_inj, sigma
         return h, sigma                      # zeroed: gate measured, hidden untouched
 
+    def _logits_range(self, h, lo, hi):
+        """Logits at positions [lo, hi) of a full-sequence hidden state."""
+        hh = self.inner.norm(h[:, lo:hi, :])
+        if hasattr(self.model, "lm_head"):
+            logits = self.model.lm_head(hh)
+        else:
+            logits = self.inner.embed_tokens.as_linear(hh)
+        post = getattr(self.model, "logit_postprocess", None)
+        return post(logits) if post is not None else logits
+
+    def _hidden_full(self, ids, mode, x0_span=None, floor=None):
+        """Final hidden state of the whole sequence in one causal pass. The
+        injection is position-wise (each position attends to the physics tokens
+        only) and every layer after it is causal, so this equals the token-by-
+        token decode the arms actually ran."""
+        import mlx.core as mx
+        from mlx_lm.models.cache import make_prompt_cache
+        cache = make_prompt_cache(self.model)
+        h = self.inner.embed_tokens(mx.array([list(ids)]))
+        if mode == "base":
+            h = self._layers(h, 0, self.n_layers, "causal", cache)
+        else:
+            h = self._layers(h, 0, self.l_fwd, "causal", cache)
+            tokens, _ = self._physics_tokens(h, x0_span)
+            h = self._layers(h, self.l_fwd, self.l_rev, "causal", cache)
+            h, _ = self._inject(h, tokens, mode, floor)
+            h = self._layers(h, self.l_rev, self.n_layers, "causal", cache)
+        del cache
+        return h
+
+    def kl_to_base(self, prompt_ids, gen_ids, mode, x0_span=None, floor=None,
+                   chunk: int = 32) -> Dict[str, Any]:
+        """Per-token KL(base || arm) over the full vocabulary, teacher-forced on
+        the BASE arm's own greedy continuation gen_ids (so every arm is measured
+        on the same tokens). Returns mean / p95 / max over the continuation."""
+        import mlx.core as mx
+        ids = list(prompt_ids) + list(gen_ids)
+        if len(gen_ids) == 0:
+            return {"n": 0, "mean": None, "p95": None, "max": None}
+        lo, hi = len(prompt_ids) - 1, len(ids) - 1     # positions predicting gen_ids
+        h_b = self._hidden_full(ids, "base")
+        h_a = self._hidden_full(ids, mode, x0_span, floor)
+        kls = []
+        for a in range(lo, hi, chunk):
+            b = min(hi, a + chunk)
+            lb = self._logits_range(h_b, a, b).astype(mx.float32)
+            la = self._logits_range(h_a, a, b).astype(mx.float32)
+            lpb = lb - mx.logsumexp(lb, axis=-1, keepdims=True)
+            lpa = la - mx.logsumexp(la, axis=-1, keepdims=True)
+            kl = (mx.exp(lpb) * (lpb - lpa)).sum(axis=-1)          # (1, b-a)
+            mx.eval(kl)
+            kls.extend(float(v) for v in np.array(kl[0]))
+        del h_b, h_a
+        if hasattr(mx, "clear_cache"):
+            mx.clear_cache()
+        arr = np.array(kls, dtype=np.float64)
+        return {"n": int(arr.size), "mean": round(float(arr.mean()), 6),
+                "p95": round(float(np.percentile(arr, 95)), 6), "max": round(float(arr.max()), 6)}
+
     # -- public ---------------------------------------------------------------
-    def prefill_logits(self, prompt_ids, mode="base", x0_span=None):
+    def prefill_logits(self, prompt_ids, mode="base", x0_span=None, floor=None):
         """Last-position logits after a prefill (used by the parity check and
         the self-test); returns (logits, cache, tokens, sigma_prompt, diag)."""
         import mlx.core as mx
@@ -462,7 +579,7 @@ class StagedDecoder:
             h = self._layers(h, 0, self.l_fwd, mask, cache)
             tokens, diag = self._physics_tokens(h, x0_span)
             h = self._layers(h, self.l_fwd, self.l_rev, mask, cache)
-            h, sig = self._inject(h, tokens, mode)
+            h, sig = self._inject(h, tokens, mode, floor)
             h = self._layers(h, self.l_rev, self.n_layers, mask, cache)
             sig_p = sig[0, :, 0].astype(mx.float32)
         logits = self._logits_last(h)
@@ -470,9 +587,9 @@ class StagedDecoder:
 
     def generate(self, prompt_ids, mode="base", max_new=64, x0_span=None) -> GenResult:
         import mlx.core as mx
-        assert mode in ARMS, mode
+        mode, floor = arm_spec(mode)
         t0 = time.perf_counter()
-        logits, cache, tokens, sig_p, diag = self.prefill_logits(prompt_ids, mode, x0_span)
+        logits, cache, tokens, sig_p, diag = self.prefill_logits(prompt_ids, mode, x0_span, floor)
         y = mx.argmax(logits, axis=-1)
         mx.eval(y)
         if sig_p is not None:
@@ -492,7 +609,7 @@ class StagedDecoder:
                 h = self._layers(h, 0, self.n_layers, None, cache)
             else:
                 h = self._layers(h, 0, self.l_rev, None, cache)
-                h, sig = self._inject(h, tokens, mode)
+                h, sig = self._inject(h, tokens, mode, floor)
                 h = self._layers(h, self.l_rev, self.n_layers, None, cache)
                 sigma_gen.append(float(sig[0, 0, 0].item()))
             y = mx.argmax(self._logits_last(h), axis=-1)
@@ -562,6 +679,12 @@ def aggregate_arm(rows: List[Dict[str, Any]], open_thresh: float) -> Dict[str, A
                         "mean_of_max": round(float(np.mean(pmax)), 5),
                         "open_rate": round(float(np.mean([m > open_thresh for m in means])), 4),
                         "open_thresh": open_thresh}
+    kls = [r["kl"]["mean"] for r in rows if r.get("kl") and r["kl"].get("mean") is not None]
+    if kls:
+        out["kl_to_base"] = {"mean": round(float(np.mean(kls)), 6),
+                             "p50": round(_pct(kls, 50), 6), "p90": round(_pct(kls, 90), 6),
+                             "max_of_means": round(float(np.max(kls)), 6),
+                             "mean_of_p95": round(float(np.mean([r["kl"]["p95"] for r in rows if r.get("kl")])), 6)}
     # per-physics MAE when applicable
     errs = [abs(r["pred"] - r["gold"]) for r in rows if r["pred"] is not None and isinstance(r["gold"], float)]
     if errs and rows[0]["dataset"] == "physics":
@@ -604,7 +727,9 @@ def summarize(rows: List[Dict[str, Any]], datasets: List[str], arms: List[str],
             if "sigma" in block["arms"][a]:
                 gate_table.append({"dataset": ds, "arm": a, **block["arms"][a]["sigma"],
                                    "n": block["arms"][a]["n"]})
-        for a, b in (("base", "psilm"), ("base", "zeroed"), ("zeroed", "psilm")):
+        pairs = [("base", a) for a in arms if a != "base"] + [("zeroed", "psilm")]
+        pairs += [("psilm", a) for a in arms if a.startswith("leaky")]
+        for a, b in pairs:
             if a in arms and b in arms and by_arm[a] and by_arm[b]:
                 block["paired"][f"{a}_vs_{b}"] = paired(by_arm[a], by_arm[b])
         if ds == "mmlu":
@@ -642,6 +767,13 @@ def format_table(summary: Dict[str, Any], arms: List[str]) -> str:
             else:
                 row += f"{'-':>10s} {'-':>6s} {'-':>6s} "
         lines.append(row)
+    kl_rows = [(ds, a, blk["arms"][a]["kl_to_base"]) for ds, blk in summary.items()
+               for a in arms if blk["arms"].get(a, {}).get("kl_to_base")]
+    if kl_rows:
+        lines.append("KL(base || arm) per token, teacher-forced on the base continuation:")
+        for ds, a, k in kl_rows:
+            lines.append(f"  {ds:8s} {a:10s} mean={k['mean']:.5f} p90={k['p90']:.5f} "
+                         f"mean_p95={k['mean_of_p95']:.5f}")
     for ds, blk in summary.items():
         for k, pr in blk.get("paired", {}).items():
             lines.append(f"  {ds:8s} {k:16s} n={pr['n']:3d} both={pr['both']:3d} "

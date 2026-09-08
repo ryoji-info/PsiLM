@@ -39,7 +39,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from eval.bench_common import (  # noqa: E402
-    ARMS, DEFAULT_CKPT, DEFAULT_FNO, DEFAULT_HF_TOKENIZER, DEFAULT_MODEL, MMLU_SUBJECTS,
+    ARMS, load_boolq, arm_spec, DEFAULT_CKPT, DEFAULT_FNO, DEFAULT_HF_TOKENIZER, DEFAULT_MODEL, MMLU_SUBJECTS,
     PHYSICS_DATA, StagedDecoder, Task, append_jsonl, build_tasks, eos_id_set, estimate_budget,
     format_table, load_backbone, load_gsm8k, load_mmlu, load_physics, load_physics_stack,
     parse_letter, parse_number, read_jsonl, score, sigma_stats, summarize, task_manifest,
@@ -71,6 +71,10 @@ def parse_args():
                          "(= QABuilder fallback) or the learned attention pointer")
     ap.add_argument("--max-new-gsm8k", type=int, default=384)
     ap.add_argument("--max-new-mmlu", type=int, default=24)
+    ap.add_argument("--max-new-boolq", type=int, default=16)
+    ap.add_argument("--kl", action="store_true",
+                    help="per-token KL(base || arm) for every non-base arm, teacher-forced "
+                         "on the base arm's own continuation (two extra full-sequence passes)")
     ap.add_argument("--max-new-physics", type=int, default=32)
     ap.add_argument("--max-new-physics-base", type=int, default=160)
     ap.add_argument("--gate-open-thresh", type=float, default=0.1,
@@ -108,6 +112,10 @@ def build_all(args, hf_tok):
         elif ds == "mmlu":
             recs = load_mmlu(args.n, args.seed, args.mmlu_subjects.split(","))
             tasks += build_tasks("mmlu", recs, hf_tok, args.max_new_mmlu,
+                                 nonphys_span=args.nonphys_span)
+        elif ds == "boolq":
+            recs = load_boolq(args.n, args.seed)
+            tasks += build_tasks("boolq", recs, hf_tok, args.max_new_boolq,
                                  nonphys_span=args.nonphys_span)
         elif ds == "physics":
             recs = load_physics(args.n, args.physics_data)
@@ -273,6 +281,7 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
         if rel > 1e-2 or not same:
             raise SystemExit("parity failed: staged base arm is not the stock model")
 
+    base_gen = {r["qid"]: r["gen_ids"] for r in rows if r["arm"] == "base" and "gen_ids" in r}
     for ti, t in enumerate(tasks):
         for arm in arms:
             key = (t.dataset, t.qid, arm)
@@ -283,6 +292,15 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
             res = dec.generate(p.ids, mode=arm, max_new=p.max_new, x0_span=span)
             pred, ok = score(p.protocol, res.text, t.gold)
             row = make_row(t, arm, p, res, pred, ok, args)
+            if args.kl:
+                if arm == "base":
+                    base_gen[t.qid] = res.gen_ids
+                    row["gen_ids"] = res.gen_ids
+                elif t.qid in base_gen:
+                    # the KL is measured on the arm's OWN prompt (the physics base
+                    # arm uses a different prompt, so there it is the trained one)
+                    mode, floor = arm_spec(arm)
+                    row["kl"] = dec.kl_to_base(p.ids, base_gen[t.qid], mode, span, floor)
             append_jsonl(rows_path, row)
             rows.append(row)
             done.add(key)
