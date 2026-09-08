@@ -59,7 +59,7 @@ everything else, so the channel is shut when physics is irrelevant. Zeroing the
 injection collapses physics to 10% — the accuracy arrives through the bridge,
 not through the prompt.
 
-Sources: `results/bench/gemma12b_guardrail_summary.json` (accuracy, gate σ and seconds per question), `results/stage2_gemma12b/final_eval.json` (n=60 held-out: PsiLM 96.7%, oracle 98.3%). Parameter counts are read from the checkpoint headers, not from the model names. The backbone's 0% is its own text protocol: it spends the whole 768-token budget deriving and never commits to an answer line; forcing it to answer (n=8 probe) also gives 0%, with its predictions clustered at 0.41/0.51 while the truths span [-0.56, +0.58]. The latency gap has the same cause — PsiLM answers in one line.
+Sources: `results/bench/gemma12b_guardrail_summary.json` (accuracy, gate σ and seconds per question), `results/stage2_gemma12b/final_eval.json` (n=60 held-out: PsiLM 96.7%, oracle 98.3%). Parameter counts are read from the checkpoint headers, not from the model names. The backbone's 0% is its own text protocol: it spends the whole 768-token budget deriving and never commits to an answer line; forced to answer (n=60, `final_eval_baseline_forced.json`) it scores 6.7%, four near-constant guesses (0.41 / 0.51 / 0.54 / 0.11, sd 0.37 against truths spanning [-0.56, +0.60]) landing inside the tolerance; the best single constant would score 13.3%. The latency gap has the same cause — PsiLM answers in one line.
 
 ## Which file do I want?
 

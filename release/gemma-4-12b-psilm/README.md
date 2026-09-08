@@ -123,7 +123,7 @@ Measured on one Apple M2 (24 GB): **+0.21% parameters and +103 MB turn 0% into
 97% on the physics task, at 24× lower latency** (3.14 vs 77.0 seconds per
 question, 16.9 vs 768 generated tokens), with GSM8K and MMLU unchanged — the
 gate's σ is 0.14 on physics against 0.004–0.008 elsewhere, so the channel is
-shut when physics is irrelevant. The backbone's 0% is its own text protocol: it spends the whole 768-token budget deriving and never commits to an answer line (forcing it to answer also gives 0%), which is where the latency gap comes from too. The per-dataset numbers are in the next section.
+shut when physics is irrelevant. The backbone's 0% is its own text protocol: it spends the whole 768-token budget deriving and never commits to an answer line (forced to answer, n=60, it scores 6.7%: near-constant guesses landing inside the tolerance), which is where the latency gap comes from too. The per-dataset numbers are in the next section.
 
 ## Results for this backbone
 
@@ -132,6 +132,7 @@ Held-out evaluation, 60 questions, accuracy within ±0.05 (`results/stage2_gemma
 | arm | accuracy | MAE | note |
 |---|---:|---:|---|
 | Gemma 4 12B alone | 0.0% | 2.93 | never reaches an `Answer:` line within 768 tokens |
+| Gemma 4 12B alone, forced to answer | 6.7% | 0.42 | continuation started with `Answer:`; four near-constant guesses (0.41 / 0.51 / 0.54 / 0.11) land inside the tolerance — the best constant would score 13.3% (`final_eval_baseline_forced.json`) |
 | **PsiLM (this repo)** | **96.7%** | **0.017** | bridges read the prompt, FNO computes, value returns in latent space |
 | oracle (true value written into the prompt) | 98.3% | 0.007 | the tool-loop ceiling |
 | always answer 0.00 | 1.7% | 0.308 | calibration |

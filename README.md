@@ -45,7 +45,7 @@ prompts (the guard-rail below).
 | Qwen2.5-0.5B (fp16, torch) | 8.3% | **100%** | 100% | not trained | `results/stage2/final_eval.json` |
 | Qwen3-1.7B (fp16, torch) | 1.7% | **93.3%** | 96.7% | not trained | `results/stage2_qwen3-1.7b/final_eval.json` |
 | Qwen3-8B-4bit (MLX) | 6.7% | **95.0%** (98.3% before selectivity training) | 100% | **yes** | `results/stage2_mlx8b9/final_eval_summary.json` (98.3%: `results/stage2_mlx8b8/final_eval_summary.json`) |
-| Gemma 4 12B-4bit (MLX) | 0%[^gemma0] | **96.7%** | 98.3% | **yes** | `results/stage2_gemma12b/final_eval.json` |
+| Gemma 4 12B-4bit (MLX) | 6.7%[^gemma0] | **96.7%** | 98.3% | **yes** | `results/stage2_gemma12b/final_eval.json` |
 | Gemma 4 12B-4bit, multi-mode ICs | 20.8% | **100%** in-distribution[^mm] | 100% | **yes** | `results/stage2b_gemma12b_2b/final_eval.json` |
 | Gemma 4 12B-4bit, 2D Fisher-KPP (DPOT-Tiny) | 10.0% | **100%** | 96.7%[^oracle2d] | **yes** | `results/stage2d_gemma12b_2d/final_eval.json` |
 
@@ -56,9 +56,13 @@ selective gate the coupled model equals its backbone on GSM8K (Qwen3-8B 89% →
 training the 8B's gate was open everywhere and GSM8K fell from 89% to 34%
 (`v8_8b_guardrail_summary.json`).[^mae]
 
-[^gemma0]: Under the text-only protocol Gemma never reaches an "Answer:" line
-within 768 tokens (`answer_line_rate` 0.0 in the file), so the backbone-alone
-arm scores 0% and MAE is reported against its last number.
+[^gemma0]: Forced-answer protocol (n=60,
+`results/stage2_gemma12b/final_eval_baseline_forced.json`): Gemma spends the
+whole 768-token budget deriving and never reaches an "Answer:" line on its own
+(0% in `final_eval.json`), so its continuation is started with "Answer:" and it
+commits to a number. It then scores 6.7% (MAE 0.42) — four near-constant
+guesses (0.41 / 0.51 / 0.54 / 0.11) landing inside the tolerance; the best
+single constant would score 13.3%.
 [^oracle2d]: PsiLM is *above* the oracle here, the only such row in this
 table. The oracle arm has to copy a number out of the prompt and occasionally
 mis-rounds it (MAE 0.021); the bridge reads the field value exactly and the
@@ -111,7 +115,7 @@ everything else, so the channel is shut when physics is irrelevant. Zeroing the
 injection collapses physics to 10% — the accuracy arrives through the bridge,
 not through the prompt.
 
-Sources: `results/bench/gemma12b_guardrail_summary.json` (accuracy, gate σ and seconds per question), `results/stage2_gemma12b/final_eval.json` (n=60 held-out: PsiLM 96.7%, oracle 98.3%). Parameter counts are read from the checkpoint headers, not from the model names. The backbone's 0% is its own text protocol: it spends the whole 768-token budget deriving and never commits to an answer line; forcing it to answer (n=8 probe) also gives 0%, with its predictions clustered at 0.41/0.51 while the truths span [-0.56, +0.58]. The latency gap has the same cause — PsiLM answers in one line.
+Sources: `results/bench/gemma12b_guardrail_summary.json` (accuracy, gate σ and seconds per question), `results/stage2_gemma12b/final_eval.json` (n=60 held-out: PsiLM 96.7%, oracle 98.3%). Parameter counts are read from the checkpoint headers, not from the model names. The backbone's 0% is its own text protocol: it spends the whole 768-token budget deriving and never commits to an answer line; forced to answer (n=60, `final_eval_baseline_forced.json`) it scores 6.7%, four near-constant guesses (0.41 / 0.51 / 0.54 / 0.11, sd 0.37 against truths spanning [-0.56, +0.60]) landing inside the tolerance; the best single constant would score 13.3%. The latency gap has the same cause — PsiLM answers in one line.
 
 ## Products
 
