@@ -78,6 +78,12 @@ def parse_args():
                          "(which makes an 8B MLX load die with SIGKILL on this machine)")
     ap.add_argument("--build-cache", action="store_true",
                     help="build --tasks-cache and exit, without loading any weights")
+    ap.add_argument("--base-gen-from", default=None,
+                    help="rows.jsonl of an earlier run whose base arm was recorded with --kl: "
+                         "its greedy continuations become this run's KL reference, so a "
+                         "follow-up sweep of new arms needs no base arm of its own. Decoding "
+                         "is greedy and the prompts come from the same task cache, so the "
+                         "reference is identical rather than merely comparable")
     ap.add_argument("--kl", action="store_true",
                     help="per-token KL(base || arm) for every non-base arm, teacher-forced "
                          "on the base arm's own continuation (two extra full-sequence passes)")
@@ -321,6 +327,19 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
             raise SystemExit("parity failed: staged base arm is not the stock model")
 
     base_gen = {r["qid"]: r["gen_ids"] for r in rows if r["arm"] == "base" and "gen_ids" in r}
+    if args.base_gen_from:
+        prior = read_jsonl(Path(args.base_gen_from))
+        borrowed = {r["qid"]: r["gen_ids"] for r in prior
+                    if r["arm"] == "base" and "gen_ids" in r}
+        if not borrowed:
+            raise SystemExit(f"{args.base_gen_from}: no base rows with gen_ids (was it run with --kl?)")
+        missing = [t.qid for t in tasks if t.qid not in borrowed and t.qid not in base_gen]
+        if missing:
+            raise SystemExit(f"{args.base_gen_from}: no base continuation for {len(missing)} "
+                             f"of this run's questions (first: {missing[0]}) -- the runs must "
+                             "share a task cache")
+        base_gen = {**borrowed, **base_gen}
+        print(f"[kl] {len(borrowed)} base continuations borrowed from {args.base_gen_from}", flush=True)
     for ti, t in enumerate(tasks):
         for arm in arms:
             key = (t.dataset, t.qid, arm)

@@ -22,10 +22,23 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("path")
     ap.add_argument("--ref", default="psilm", help="arm the McNemar tests compare against")
+    ap.add_argument("--merge", default=None,
+                    help="a second report (the upper-eps sweep) to fold into the same table; "
+                         "its arms must have run on the same task cache and seed")
     args = ap.parse_args()
 
     doc = json.loads(Path(args.path).read_text())
     summary, arms = doc["summary"], doc["arms"]
+    if args.merge:
+        other = json.loads(Path(args.merge).read_text())
+        if other.get("model") != doc.get("model") or other.get("ckpt_step") != doc.get("ckpt_step"):
+            raise SystemExit("refusing to merge: different backbone or bridges checkpoint")
+        for ds, blk in other["summary"].items():
+            if ds not in summary:
+                continue
+            summary[ds]["arms"].update({a: v for a, v in blk["arms"].items() if a not in summary[ds]["arms"]})
+            summary[ds]["paired"].update(blk.get("paired", {}))
+        arms = arms + [a for a in other["arms"] if a not in arms]
     datasets = list(doc["datasets"])
     coupled = sorted([a for a in arms if a != "base"], key=eps_of)
 
