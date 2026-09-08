@@ -47,7 +47,7 @@ prompts (the guard-rail below).
 | Qwen3-8B-4bit (MLX) | 6.7% | **95.0%** (98.3% before selectivity training) | 100% | **yes** | `results/stage2_mlx8b9/final_eval_summary.json` (98.3%: `results/stage2_mlx8b8/final_eval_summary.json`) |
 | Gemma 4 12B-4bit (MLX) | 0%[^gemma0] | **96.7%** | 98.3% | **yes** | `results/stage2_gemma12b/final_eval.json` |
 | Gemma 4 12B-4bit, multi-mode ICs | 20.8% | **100%** in-distribution[^mm] | 100% | **yes** | `results/stage2b_gemma12b_2b/final_eval.json` |
-| Gemma 4 12B-4bit, 2D Fisher-KPP (DPOT-Tiny) | in progress | in progress | in progress | — | `results/stage2d_gemma12b_2d/` (pending) |
+| Gemma 4 12B-4bit, 2D Fisher-KPP (DPOT-Tiny) | 10.0% | **100%** | 96.7%[^oracle2d] | **yes** | `results/stage2d_gemma12b_2d/final_eval.json` |
 
 **Guard-rail** (n = 100 per dataset, `results/bench/*_summary.json`): with the
 selective gate the coupled model equals its backbone on GSM8K (Qwen3-8B 89% →
@@ -59,6 +59,12 @@ training the 8B's gate was open everywhere and GSM8K fell from 89% to 34%
 [^gemma0]: Under the text-only protocol Gemma never reaches an "Answer:" line
 within 768 tokens (`answer_line_rate` 0.0 in the file), so the backbone-alone
 arm scores 0% and MAE is reported against its last number.
+[^oracle2d]: PsiLM is *above* the oracle here, the only such row in this
+table. The oracle arm has to copy a number out of the prompt and occasionally
+mis-rounds it (MAE 0.021); the bridge reads the field value exactly and the
+answer never passes through text (MAE 0.0096). The 0.5B backbone reached 95.0%
+on the same task.
+
 [^mm]: Multi-mode families (n=48 each, `results/stage2b_gemma12b_2b/final_eval.json`):
 in-distribution 100% (MAE 0.009), the held-out mode combination 25.0% (MAE
 0.123) and amplitude extrapolation 52.1% (MAE 0.086), against a backbone of

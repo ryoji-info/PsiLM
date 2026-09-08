@@ -1,0 +1,53 @@
+{
+ "backbone": "mlx-community/gemma-4-12B-it-4bit",
+ "hf_tokenizer": "mlx-community/gemma-4-12B-it-4bit",
+ "task": "2d",
+ "loader": "psilm.mlx.gemma_loader.load_backbone_any (gemma4_unified -> text tower)",
+ "physics": {
+  "file": "physics/dpot_tiny_fisher2d_finetuned.safetensors",
+  "dpot_base": "physics/model_Ti.pth",
+  "source": "results/stage2d/dpot_ft.pt (DPOT-Tiny fine-tuned on 2D Fisher-KPP)"
+ },
+ "bridges_class": "psilm.mlx.bridges2d.PsiBridges2DMLX",
+ "construct": {
+  "d_model": 3840,
+  "channel": "value",
+  "inj_cap": 0.2,
+  "gate_bias": 0.0,
+  "readout_norm": "dim"
+ },
+ "coupling": {
+  "l_fwd": 20,
+  "l_rev": 30,
+  "n_layers": 48
+ },
+ "pointer": "deterministic span pooling with calibrated per-dimension standardization (fwd.dim_mu/dim_sigma included; fwd.x0_query/x0_key omitted: unused)",
+ "training": {
+  "steps_total": 7500,
+  "phase_A_readout_only": 2000,
+  "coupled_steps": 4000,
+  "no_harm_steps": 1500,
+  "no_harm_resumed_from": 6000,
+  "batch": 4,
+  "lr": "3e-4 (warm-up, coupled), 1e-4 (no-harm phase)",
+  "no_harm_arm": "non-physics prompts (data/noharm_gemma_all.json) paired with the backbone's own greedy continuation; gate-only updates + mean-gate penalty"
+ },
+ "held_out_n48_per_chunk": {
+  "coupled": [
+   0.5,
+   0.646,
+   0.771,
+   0.771,
+   0.854,
+   0.792,
+   0.792,
+   0.938
+  ],
+  "no_harm_phase": [
+   0.979,
+   0.958,
+   1.0
+  ]
+ },
+ "license": "apache-2.0"
+}
