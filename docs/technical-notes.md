@@ -468,6 +468,53 @@ results/stage2_mlx8b9/bridges.npz --n 100 --max-new-mmlu 256
 --max-new-physics-base 768` and the same with `--tag v9_8b_nonudge --datasets
 gsm8k --gsm8k-nudge 0`.
 
+## Leaky gate: does an always-on physics signal help? (2026-09-09)
+
+A gate that is shut on non-physics prompts carries nothing there. The question
+was whether a weak always-on signal would act as a regularizer or improve
+general reasoning. Implemented as a floor applied at inference on the released
+8B selective bridges, no retraining: `sigma_eff = eps + (1 - eps) * sigma`,
+differentiable, with the logged sigma left pre-floor so the gate's own decision
+stays observable (`--arms leaky0.05`, `eval/bench_guardrail.py`). 400 questions
+x 6 arms, `results/bench/leaky_8b_guardrail_summary.json`.
+
+| arm | physics | MMLU | GSM8K | BoolQ | KL(base‖arm) physics |
+|---|---:|---:|---:|---:|---:|
+| backbone alone | 0.02 | 0.60 | 0.89 | 0.88 | — |
+| trained gate | 0.95 | 0.61 | 0.89 | 0.88 | 0.110 |
+| + floor 0.01 | 0.95 | 0.64 | 0.89 | 0.88 | 0.116 |
+| + floor 0.05 | 0.96 | 0.63 | 0.88 | 0.88 | 0.139 |
+| + floor 0.1 | 0.96 | 0.66 | 0.89 | 0.88 | 0.168 |
+| + floor 0.2 | 0.98 | 0.66 | 0.88 | 0.87 | 0.222 |
+
+Nothing reaches significance (McNemar p ≥ 0.06). Base and the trained gate
+reproduce the published 95% / 89%.
+
+**The MMLU rise is a token-budget artifact.** The floor makes the model stop
+earlier — replies fall 87 → 62 tokens, EOS rate 0.71 → 0.82, parse rate
+0.72 → 0.84 — so more answers land inside the 256-token budget and get scored.
+On the 71 questions *every* arm answered, accuracy is **0.831 for all six
+arms**, base included. GSM8K (parse rate 1.000, 384-token budget) and BoolQ
+(4-token replies) show no effect at all: the same brevity, nothing truncated,
+nothing gained.
+
+KL to the base model rises monotonically with the floor on all four datasets,
+so the channel was demonstrably carrying more; it carried nothing that helps.
+Pre-floor sigma is flat down every column (physics 0.79142 → 0.79144), which is
+the instrument check that the floor changed the injection and not the gate.
+
+**Conclusion.** A weak always-on physics signal is not a regularizer. It is a
+verbosity reducer, and it pays only where a budget binds. Worth knowing for any
+budget-limited benchmark, and worth *not* claiming as a reasoning gain.
+
+One arithmetic point for reading these numbers: `inj_cap` limits the injection
+to 0.2 of the stream RMS *before* the gate scales it, so a floor of 0.2 puts
+~4% of the residual stream through the channel — a fifth of run 8's operating
+point, where an open gate at the cap dropped GSM8K from 89% to 34%. This sweep
+bounds the channel as harmless in its range without locating where that ends;
+the eps ∈ {0.3, 0.4, 0.5} follow-up (`results/bench/leaky_sweep_hi.sh`) walks
+toward it.
+
 ## Repository layout
 
 ```
