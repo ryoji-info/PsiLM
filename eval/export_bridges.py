@@ -57,6 +57,19 @@ TASKS = {
 
 DROP = ("fwd.x0_query", "fwd.x0_key.weight", "fwd.x0_key.bias")
 
+# First projection out of the hidden state, by readout family: pooled 1D, 2D
+# per-quantity heads, multi-mode span heads. Its input width is d_model.
+D_MODEL_KEYS = ("fwd.key.weight", "fwd.h1.0.weight", "fwd.a_h1.weight", "fwd.x0_h1.weight")
+
+
+def infer_d_model(z):
+    for k in D_MODEL_KEYS:
+        if k in z.files:
+            return int(z[k].shape[1])
+    if "fwd.dim_mu" in z.files:                 # readout_norm "dim": one entry per dimension
+        return int(z["fwd.dim_mu"].shape[0])
+    raise SystemExit(f"cannot infer d_model: none of {D_MODEL_KEYS} in the checkpoint")
+
 
 def phase_steps(run: Path):
     """(n_noharm_chunks, last coupled step) from the checkpoints kept in the run.
@@ -114,7 +127,7 @@ def main():
     n_layers = args.n_layers or N_LAYERS.get(model)
     if n_layers is None:
         raise SystemExit(f"unknown layer count for {model}; pass --n-layers")
-    d_model = int(z["fwd.key.weight"].shape[1])
+    d_model = infer_d_model(z)
     readout_norm = a.get("readout_norm", "rms")
     n_noharm, last_coupled = phase_steps(run)
     coupled, noharm = chunk_scores(run, n_noharm)
@@ -132,7 +145,9 @@ def main():
                    + (" (gemma4_unified -> text tower)" if "gemma" in model.lower()
                       else "")),
         "physics": dict(task["physics"], source=task["source"]),
-        "bridges_class": task["bridges_class"],
+        "bridges_class": ("psilm.mlx.multimode_span.make_bridges_multi_span "
+                          "(span readout, mode-shared heads)"
+                          if a.get("readout") == "span" else task["bridges_class"]),
         "construct": {
             "d_model": d_model,
             "channel": a.get("channel", "value"),
