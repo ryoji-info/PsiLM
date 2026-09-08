@@ -5,15 +5,15 @@
 # with per-token KL(base || arm). eps=0.2 should reproduce the v8 collapse
 # (gate open everywhere at the 20% cap: GSM8K 89 -> 34).
 #
-# Retry-with-resume: model loads here are killed intermittently (SIGKILL/137, no
-# traceback, no OOM or Jetsam record, ~12 GB free, and the same command succeeds
-# on a rerun). The benchmark appends every row as it lands and --resume skips
-# what is already done, so an interrupted run continues instead of restarting.
+# Tasks are built once into a cache by a separate process, so the run process
+# does no dataset work. Retry-with-resume is kept as a safety net: the benchmark
+# appends every row as it lands and --resume skips what is already done.
 cd /Users/rxiii/Documents/GitHub/PsiLM
 PY=.venv/bin/python
 LOG=results/bench/leaky_sweep.log
 export HF_HUB_DISABLE_XET=1
-COMMON="--model mlx-community/Qwen3-8B-4bit --hf-tokenizer Qwen/Qwen3-8B \
+CACHE=results/bench/tasks_leaky_n100.json
+COMMON="--tasks-cache $CACHE --model mlx-community/Qwen3-8B-4bit --hf-tokenizer Qwen/Qwen3-8B \
   --ckpt results/stage2_mlx8b9/bridges.npz --fno results/stage2/fno.pt --gate-bias -2.0 \
   --datasets physics,mmlu,gsm8k,boolq --arms base,psilm,leaky0.01,leaky0.05,leaky0.1,leaky0.2 \
   --max-new-gsm8k 384 --max-new-mmlu 256 --max-new-physics 32 --max-new-boolq 16 --gsm8k-nudge 1 \
@@ -39,7 +39,10 @@ attempt() {   # tag  n  max_attempts  first_flag
 }
 
 echo "LEAKY START $(date +%H:%M)" >> $LOG
-attempt leaky_8b_smoke 2 6 --fresh || exit 1
+$PY eval/bench_guardrail.py --tag cachebuild --n 100 $COMMON --build-cache \
+    >> results/bench/cachebuild.log 2>&1 \
+  || { echo "LEAKY cache build FAILED $(date +%H:%M)" >> $LOG; exit 1; }
+echo "LEAKY cache built $(date +%H:%M)" >> $LOG
 attempt leaky_8b 100 40 --fresh || exit 1
 echo "LEAKY SWEEP COMPLETE $(date +%H:%M)" >> $LOG
 grep -A 40 "^dataset" results/bench/leaky_8b.log | tail -45 >> $LOG

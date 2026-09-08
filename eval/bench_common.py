@@ -375,6 +375,35 @@ def build_tasks(dataset: str, records: List[Dict[str, Any]], hf_tok, max_new: in
     return tasks
 
 
+def tasks_to_json(tasks: List[Task]) -> List[Dict[str, Any]]:
+    """Serialize built tasks, token ids included, so a run process can restore
+    them without importing `datasets`. That import is not merely heavy: after it,
+    loading an 8B MLX model is SIGKILLed on this machine every time, while the
+    same load with equivalent plain memory in the process succeeds (0.5B is
+    unaffected). Building tasks in one process and running the benchmark in
+    another sidesteps it entirely, and keeps prompts byte-identical."""
+    def prompt_json(p: Prompt) -> Dict[str, Any]:
+        return {"ids": list(p.ids), "text": p.text, "protocol": p.protocol,
+                "max_new": p.max_new, "x0_span": list(p.x0_span) if p.x0_span else None,
+                "span_fallback": p.span_fallback}
+    return [{"dataset": t.dataset, "qid": t.qid, "gold": t.gold, "meta": t.meta,
+             "prompt": prompt_json(t.prompt),
+             "arm_prompts": {a: prompt_json(p) for a, p in t.arm_prompts.items()}}
+            for t in tasks]
+
+
+def tasks_from_json(records: List[Dict[str, Any]]) -> List[Task]:
+    def prompt_of(d: Dict[str, Any]) -> Prompt:
+        return Prompt(d["ids"], d["text"], d["protocol"], d["max_new"],
+                      tuple(d["x0_span"]) if d["x0_span"] else None, d["span_fallback"])
+    out = []
+    for r in records:
+        t = Task(r["dataset"], r["qid"], r["gold"], prompt_of(r["prompt"]), r["meta"])
+        t.arm_prompts = {a: prompt_of(p) for a, p in r["arm_prompts"].items()}
+        out.append(t)
+    return out
+
+
 def task_manifest(t: Task, hf_tok=None, full_text: bool = False) -> Dict[str, Any]:
     d = {"dataset": t.dataset, "qid": t.qid, "gold": t.gold, "meta": t.meta,
          "n_tokens": len(t.prompt.ids), "protocol": t.prompt.protocol,
@@ -405,8 +434,13 @@ def load_backbone(model_id: str = DEFAULT_MODEL, hf_tok_id: str = DEFAULT_HF_TOK
     from transformers import AutoTokenizer
     from psilm.mlx.gemma_loader import load_backbone_any
     model, stock, tok = load_backbone_any(model_id)
-    if not hasattr(model, "_model"):
-        model._model = stock
+    if stock is not model and not hasattr(model, "_model"):
+        # object.__setattr__, not `model._model = stock`: mlx.nn.Module is a dict
+        # subclass whose __setattr__ files a Module into the parameter tree, so a
+        # plain assignment makes the model a child of itself. freeze() then walks
+        # that cycle until the OS kills the process -- SIGKILL, no traceback, no
+        # OOM record. For Qwen towers stock IS model, so there is nothing to alias.
+        object.__setattr__(model, "_model", stock)
     model.freeze()
     hf_tok = AutoTokenizer.from_pretrained(hf_tok_id)
     return model, tok, hf_tok

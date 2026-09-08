@@ -39,7 +39,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from eval.bench_common import (  # noqa: E402
-    ARMS, load_boolq, arm_spec, DEFAULT_CKPT, DEFAULT_FNO, DEFAULT_HF_TOKENIZER, DEFAULT_MODEL, MMLU_SUBJECTS,
+    ARMS, load_boolq, arm_spec, tasks_to_json, tasks_from_json, DEFAULT_CKPT, DEFAULT_FNO, DEFAULT_HF_TOKENIZER, DEFAULT_MODEL, MMLU_SUBJECTS,
     PHYSICS_DATA, StagedDecoder, Task, append_jsonl, build_tasks, eos_id_set, estimate_budget,
     format_table, load_backbone, load_gsm8k, load_mmlu, load_physics, load_physics_stack,
     parse_letter, parse_number, read_jsonl, score, sigma_stats, summarize, task_manifest,
@@ -72,6 +72,12 @@ def parse_args():
     ap.add_argument("--max-new-gsm8k", type=int, default=384)
     ap.add_argument("--max-new-mmlu", type=int, default=24)
     ap.add_argument("--max-new-boolq", type=int, default=16)
+    ap.add_argument("--tasks-cache", default=None,
+                    help="build the task set once into this JSON and restore it on later runs, "
+                         "so the process that loads the backbone never imports `datasets` "
+                         "(which makes an 8B MLX load die with SIGKILL on this machine)")
+    ap.add_argument("--build-cache", action="store_true",
+                    help="build --tasks-cache and exit, without loading any weights")
     ap.add_argument("--kl", action="store_true",
                     help="per-token KL(base || arm) for every non-base arm, teacher-forced "
                          "on the base arm's own continuation (two extra full-sequence passes)")
@@ -99,6 +105,39 @@ def parse_args():
 # ----------------------------------------------------------------------------
 
 def build_all(args, hf_tok):
+    """Build the task set, or restore it from --tasks-cache.
+
+    The cache exists to keep `datasets` out of the process that loads the
+    backbone (see tasks_to_json). --build-cache writes it and exits; a run with
+    --tasks-cache pointing at an existing file never imports datasets."""
+    cache = Path(args.tasks_cache) if args.tasks_cache else None
+    if cache and cache.is_file() and not args.build_cache:
+        doc = json.loads(cache.read_text())
+        if doc["key"] != cache_key(args):
+            raise SystemExit(f"{cache}: built for {doc['key']}, this run needs {cache_key(args)}")
+        tasks = tasks_from_json(doc["tasks"])
+        datasets = list(dict.fromkeys(t.dataset for t in tasks))
+        print(f"[tasks] {len(tasks)} restored from {cache} (no datasets import)", flush=True)
+        return datasets, tasks
+    datasets, tasks = build_all_fresh(args, hf_tok)
+    if cache:
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        cache.write_text(json.dumps({"key": cache_key(args), "tasks": tasks_to_json(tasks)}))
+        print(f"[tasks] cached {len(tasks)} tasks -> {cache}", flush=True)
+    return datasets, tasks
+
+
+def cache_key(args) -> str:
+    """Everything that changes the prompts (not the arms or the decoding)."""
+    return "|".join(str(v) for v in [args.datasets, args.n, args.seed, args.mmlu_subjects,
+                                     args.physics_data, args.physics_base_protocol,
+                                     args.nonphys_span, args.gsm8k_nudge, args.max_new_gsm8k,
+                                     args.max_new_mmlu, args.max_new_physics,
+                                     args.max_new_boolq, args.max_new_physics_base,
+                                     args.hf_tokenizer])
+
+
+def build_all_fresh(args, hf_tok):
     from psilm.stage2.qa import QABuilder
     builder = QABuilder(hf_tok)
     datasets = [d for d in args.datasets.split(",") if d]
@@ -448,6 +487,9 @@ def main():
     datasets, tasks = build_all(args, hf_tok)
     for ds in datasets:
         print(f"[stats] {ds}: {json.dumps(dataset_stats(tasks, ds))}", flush=True)
+    if args.build_cache:
+        print(f"[cache] {len(tasks)} tasks written; exiting before any weights load", flush=True)
+        return
     if args.dry_run:
         do_dry_run(args, tasks, datasets, hf_tok, dry_path)
         return
