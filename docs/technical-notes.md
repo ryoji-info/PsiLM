@@ -323,6 +323,29 @@ The 1D result survives the move to 2D and to a real pretrained physics
 foundation model: the coupled system reaches within five points of the
 oracle-text ceiling with nothing but hidden states crossing the interface.
 
+### The same task at 12B (2026-09)
+
+Gemma 4 12B, the released recipe, 7,500 steps (`results/stage2d_gemma12b_2d/`).
+Held out, n=60:
+
+| arm | accuracy | MAE |
+|---|---:|---:|
+| Gemma alone | 10.0% | 0.290 |
+| **PsiLM** | **100%** | **0.0096** |
+| oracle (value written into the prompt) | 96.7% | 0.021 |
+| always 0.00 | 1.7% | 0.673 |
+
+The only arm in this work where the latent channel beats the text ceiling: the
+oracle copies a number out of the prompt and sometimes mis-rounds it, while the
+bridge reads the field exactly and the answer never passes through text. Per
+chunk, coupled 0.50 → 0.94, then no-harm 0.979 / 0.958 / 1.00.
+
+Hybrid-stack gotcha worth knowing: MLX and torch share one unified GPU memory
+and MLX's cached buffers are invisible to torch's MPS allocator. The no-harm
+arm died asking for 256 bytes with 42 GiB in "other allocations";
+`mx.clear_cache()` at the boundary was not enough, so DPOT-Tiny runs on the CPU
+(65 ms against 48 ms per batch-4 call, against a 3.6 s training step).
+
 ## Scaling the language hemisphere — MLX, 1.7B, 8B
 
 The bridges are parameterized by the backbone's config alone (coupling depths
