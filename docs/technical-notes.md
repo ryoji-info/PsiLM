@@ -314,7 +314,7 @@ front profile with mean u ≈ 0.62):
 
 | arm | acc@0.05 | MAE |
 |---|---:|---:|
-| LLM alone | 6.7% | 0.337 |
+| LLM alone | 6.7% (text protocol; forced to answer: 0%, MAE 0.89; four shots + thinking: 3.3%) | 0.337 |
 | LLM + answer stated in text (oracle ceiling) | 100% | 0.0024 |
 | **PsiLM (latent coupling, DPOT-Tiny)** | **95.0%** | **0.0168** |
 | degenerate always-0.00 | 1.7% | 0.673 |
@@ -357,7 +357,7 @@ on 24 GB. Same physics model, same task, same 60 held-out questions:
 |---|---:|---:|---:|---:|
 | Qwen2.5-0.5B (fp16, torch) | 8.3% / 0.682 | **100%** / 0.014 | 100% / 0.003 | 3.5M |
 | Qwen3-1.7B (fp16, torch) | 1.7% / 2.57 | **93.3%** / 0.022 | 96.7% / 0.021 | 12.6M |
-| Qwen3-8B-4bit (MLX) | 6.7% / 0.706 | **98.3%** / 0.0135 | 100% / 0.0026 | 28.4M |
+| Qwen3-8B-4bit (MLX) | 6.7% / 0.706 (forced: 0% / 0.89; strengthened: 3.3%) | **98.3%** / 0.0135 | 100% / 0.0026 | 28.4M |
 
 The 8B took eight runs, and the paper's Section 9 reports them as a
 scale-dependent failure analysis. Two things broke at 4096 dimensions, and
