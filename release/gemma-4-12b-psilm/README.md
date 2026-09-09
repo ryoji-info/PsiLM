@@ -164,6 +164,24 @@ The multi-mode bridges are released: they reach 100% in-distribution (n=48, MAE 
 
 The prompt runs through Gemma's first 20 layers. The **forward bridge** reads the queried position *x₀* by pooling the hidden states over its tokens (a deterministic span pointer computed by the QA builder, plus a 100-bin classifier) and the initial-condition parameters with a learned pool, after the calibrated per-dimension standardization) and emits (*a*, sin *φ*, cos *φ*) and *x₀*; from these it builds the initial condition on a 128-point grid. The frozen **FNO** evolves it to t = 0.5. A learned periodic lookup kernel reads the field at *x₀*, and the **value-token channel** turns that single number into eight soft tokens through Fourier features. At layer 30 a **gated cross-attention** injects them into the residual stream, capped at 20% of the stream's RMS; the gate is a small MLP on the residual stream, trained to open on physics prompts and close elsewhere. Layers 30–48 and the answer are Gemma's own. Details, ablations and the failure analysis that produced this design are in the paper (`paper/psilm.pdf` in the repository, Section 9 for scaling, the guard-rail and Gemma).
 
+## Is the answer really coming through the channel?
+
+Two controls, and the second is decisive. **Zeroing the injection** while running
+everything else — readout, FNO, value tokens, gate — removes the physics result
+(0% for Qwen3-8B, 10% for Gemma, which is what the reply template alone
+recovers). **Corrupting only the number** — feeding the value encoder another
+question's answer at matched magnitude, with prompt, readout, gate, reply length
+and parsing untouched — makes the frozen model report the corruption: the spoken
+answer lands within ±0.05 of the *injected* value on **99 of 100** held-out
+questions and within ±0.05 of the truth on 9. Accuracy falls 98% → 9% while the
+KL to the base model is unchanged (0.222 either way): the output distribution
+travels just as far, to a different number.
+
+Run on non-physics prompts the same swap changes nothing (GSM8K 0.88 both ways,
+MMLU 0.66 both ways, p = 1.00), which separates what the channel does by its
+**presence** from what it does by its **content**. Full sweep and records:
+[`results/bench/leaky_8b_shuf_guardrail_summary.json`](https://github.com/ryoji-info/PsiLM/blob/main/results/bench) and §9.7 of the [paper](https://github.com/ryoji-info/PsiLM/blob/main/paper/psilm.pdf).
+
 ## Limitations
 
 - **One task family.** The bridges read exactly the three quantities of the trained question and the FNO solves exactly one equation family; a different PDE, boundary condition, viscosity or final time is out of scope, and the gate closing on non-physics text does not mean it can recognize *other* physics. Free-text initial conditions ("a Gaussian bump near the left edge") are not supported.

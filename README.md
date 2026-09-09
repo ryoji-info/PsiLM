@@ -232,6 +232,42 @@ latent field was shortcut to per-trajectory constants (17% → 98.3% after the
 swap) — and **a gate is only a gate if it is trained on prompts where it must
 close**; trained on physics alone it sat open on every input.
 
+## Is the answer really coming through the channel?
+
+The obvious worry about a system like this is that the language model isn't
+reading the physics at all — that it has learned a reply template, or picked up
+a correlate from the prompt, and the channel is decoration. Two controls answer
+that, and the second one is decisive.
+
+**Zero the injection** and run everything else — readout, FNO, value tokens,
+gate — and the physics result disappears (0% for Qwen3-8B, 10% for Gemma, which
+is what the reply template alone recovers). So the injection is load-bearing.
+
+**Corrupt only the number.** Feed the value encoder another question's answer,
+at matched magnitude, leaving the prompt, the readout, the gate, reply length
+and parsing untouched. The frozen model then reports the corrupted value:
+
+| the spoken answer sits | distance | within ±0.05 |
+|---|---:|---:|
+| from the **injected (wrong)** value | 0.0121 | **99 / 100** |
+| from the true answer | 0.4098 | 9 / 100 |
+
+```
+gold -0.095 | readout computed -0.103 | injected -0.546 | model said -0.550
+gold +0.328 | readout computed +0.286 | injected -0.478 | model said -0.490
+```
+
+Accuracy falls from 98% to 9% while the KL to the base model doesn't move
+(0.222 either way) — the output distribution travels exactly as far, just to a
+different number. The model is reading the channel.
+
+The same control run on non-physics prompts changes *nothing* (GSM8K 0.88 both
+ways, MMLU 0.66 both ways, p = 1.00), which separates the two things the channel
+does: off-task its effects come from its **presence**, on-task from its
+**content**. Details and the full ε sweep behind it are in
+[docs/technical-notes.md](docs/technical-notes.md#leaky-gate-and-what-the-channel-actually-carries-2026-0910)
+and §9.7 of the paper.
+
 ## Read more
 
 - [docs/technical-notes.md](docs/technical-notes.md) — Stage 0 → 2d narratives, the multi-mode generalization and loop-coupling studies, the 2D DPOT result, the eight-run 8B failure analysis, the Gemma calibration fix, the full guard-rail tables, and every reproduce command.
@@ -277,7 +313,8 @@ guard-rail table, not a return.
 | 4 | Guard-rail benchmarks (GSM8K/MMLU) and the selective gate | done |
 | 5 | Second model family, Gemma 4 12B, single-pass recipe transfer | done — 96.7% |
 | 5b | Gemma 4 12B on the multi-mode task (in-distribution 100%; generalization families open) | done |
-| 5c | Span readout with mode-shared heads, for the two generalization families | in progress |
+| 5c | Span readout with mode-shared heads, for the two generalization families | validated at 0.5B, 12B run not started |
+| 5d | Leaky-gate ε sweep on both backbones, and the shuffled-value content control | done |
 | 6 | 27B inference-only on this machine; loop coupling at 8B; Mac app | planned |
 
 ## Support

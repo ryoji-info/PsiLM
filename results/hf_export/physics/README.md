@@ -109,6 +109,24 @@ u_T = fno(u0)  # u0: (batch, 128) initial condition on the periodic unit interva
 
 For DPOT-Tiny, construct `psilm.physics.dpot_wrapper.DPOTPhysics` (which builds the DPOT-Tiny network and expects the published `model_Ti.pth` from hzk17/DPOT to initialize) and then overwrite its weights with the fine-tuned state: `phys.net.load_state_dict(load_file("dpot_tiny_fisher2d_finetuned.safetensors"), strict=True)`. The keys are the bare DPOT-Tiny state-dict keys (`blocks.*`, `pos_embed`, `time_agg_layer.*`, ...). `phys(u0)` maps a `(batch, 128, 128)` initial field to `u(x, y, 0.4)`; `phys.features_and_field(u0)` also returns the 256 latent patch tokens the PsiLM reverse bridge attends over.
 
+## Is the physics model's answer really what reaches the language model?
+
+Two controls, and the second is decisive. **Zeroing the injection** while running
+everything else — readout, FNO, value tokens, gate — removes the physics result
+(0% for Qwen3-8B, 10% for Gemma, which is what the reply template alone
+recovers). **Corrupting only the number** — feeding the value encoder another
+question's answer at matched magnitude, with prompt, readout, gate, reply length
+and parsing untouched — makes the frozen model report the corruption: the spoken
+answer lands within ±0.05 of the *injected* value on **99 of 100** held-out
+questions and within ±0.05 of the truth on 9. Accuracy falls 98% → 9% while the
+KL to the base model is unchanged (0.222 either way): the output distribution
+travels just as far, to a different number.
+
+Run on non-physics prompts the same swap changes nothing (GSM8K 0.88 both ways,
+MMLU 0.66 both ways, p = 1.00), which separates what the channel does by its
+**presence** from what it does by its **content**. Full sweep and records:
+[`results/bench/leaky_8b_shuf_guardrail_summary.json`](https://github.com/ryoji-info/PsiLM/blob/main/results/bench) and §9.7 of the [paper](https://github.com/ryoji-info/PsiLM/blob/main/paper/psilm.pdf).
+
 ## Limitations
 
 - **One PDE setting each.** The Burgers FNOs are trained at a single viscosity (ν=0.02), horizon (T=0.5) and 128-point resolution; the multimode model covers ICs up to mode 4 only. DPOT-Tiny is fine-tuned for one Fisher–KPP parameter pair (D=0.001, r=6) and horizon (T=0.4) with Gaussian-bump ICs.

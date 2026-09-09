@@ -468,125 +468,166 @@ results/stage2_mlx8b9/bridges.npz --n 100 --max-new-mmlu 256
 --max-new-physics-base 768` and the same with `--tag v9_8b_nonudge --datasets
 gsm8k --gsm8k-nudge 0`.
 
-## Leaky gate: does an always-on physics signal help? (2026-09-09)
+## Leaky gate, and what the channel actually carries (2026-09-09/10)
 
 A gate that is shut off-task carries nothing there. The question was whether a
 weak always-on signal would act as a regularizer or improve general reasoning.
+The answer is no — and chasing it produced the strongest evidence in the project
+that the language model reads the latent channel at all.
 
-**Setup.** A floor applied to the gate **at inference only**, on the released
-run-9 bridges (`results/stage2_mlx8b9/bridges.npz`, step 5000, coupling 15/22 of
-36), nothing retrained:
+**Setup.** A floor applied to the gate **at inference only**, nothing retrained:
 
 ```
 sigma_eff = eps + (1 - eps) * sigma          # psilm/mlx/bridges.py, gate_floor
 ```
 
-Monotone in sigma, and it leaves the open end alone — `max(eps, sigma)` would
-flatten the gate's own decision everywhere below the floor and has a dead zone
-with no gradient, which would fight the no-harm arm if this were ever trained.
-The logged sigma stays **pre-floor**, so the gate's decision remains observable;
-that column is the instrument check.
-
-Off-task the floor is nearly the whole gate, on-task nearly nothing. At
-eps = 0.2 it moves sigma_eff from 0.0016 to 0.201 on GSM8K (×123) but only from
-0.791 to 0.833 at physics prompt positions.
+Monotone in sigma and it leaves the open end alone — `max(eps, sigma)` would
+flatten the gate's decision below the floor and has a dead zone with no
+gradient. The logged sigma stays **pre-floor** (it moves by ≤5e-4 in any
+column), so the gate's own decision remains observable: that column is the
+instrument check.
 
 ```bash
 python eval/bench_guardrail.py --tag leaky_8b --n 100 \
     --arms base,psilm,leaky0.01,leaky0.05,leaky0.1,leaky0.2 \
     --datasets physics,mmlu,gsm8k,boolq --kl --tasks-cache results/bench/tasks_leaky_n100.json
-python eval/leaky_report.py results/bench/leaky_8b_guardrail.json
+python eval/leaky_report.py results/bench/leaky_8b_guardrail.json \
+    --merge results/bench/leaky_8b_hi_guardrail.json
 ```
 
-400 questions × 6 arms, seed 0, greedy, 3.3 hours on the M2.
-`results/bench/leaky_8b_guardrail_summary.json`.
+Five runs, all seed 0, greedy, n=100 per dataset, sharing a task cache per
+backbone: `leaky_8b` (eps ≤ 0.2), `leaky_8b_hi` (0.3–0.5), `leaky_8b_top`
+(0.7–1.0), `leaky_8b_shuf` (the content control), `leaky_gemma`.
 
-**Results.**
+### The dose-response curve (Qwen3-8B)
 
-| arm | physics | MMLU | GSM8K | BoolQ | physics MAE | KL(base‖arm) physics |
-|---|---:|---:|---:|---:|---:|---:|
-| backbone alone | 2%¹ | 60% | 89% | 88% | 2.239 | — |
-| trained gate | 95% | 61% | 89% | 88% | 0.0215 | 0.110 |
-| + floor 0.01 | 95% | 64% | 89% | 88% | 0.0213 | 0.116 |
-| + floor 0.05 | 96% | 63% | 88% | 88% | 0.0214 | 0.139 |
-| + floor 0.1 | 96% | 66% | 89% | 88% | 0.0204 | 0.168 |
-| + floor 0.2 | 98% | 66% | 88% | 87% | 0.0182 | 0.222 |
+| eps | physics | MMLU | GSM8K | BoolQ | physics MAE |
+|---|---:|---:|---:|---:|---:|
+| backbone | 2% | 60% (87t) | 89% (147t) | 88% | 2.239 |
+| trained gate | 95% | 61% (83t) | 89% (145t) | 88% | 0.0215 |
+| 0.1 | 96% | 66% (67t) | 89% | 88% | 0.0204 |
+| 0.2 | 98% | 66% (62t) | 88% (137t) | 87% | **0.0182** |
+| 0.5 | 94% | 70% (24t) | **81%** p=.039 (108t) | 84% | 0.0202 |
+| 0.7 | 90% | 69% (10t) | **50%** p<.001 (74t) | 77% p=.003 | 0.0219 |
+| 1.0 | 89% | 69% (7t) | **8%** p<.001 (24t) | 59% p<.001 | 0.0236 |
 
-¹ Not comparable with the 5% in the guard-rail table above: this sweep gives the
-backbone's nudge protocol a 160-token budget, at which every reply truncates,
-rather than 768.
+Nothing off-task moves until eps=0.5. At eps=1.0 — sigma_eff identically 1.0,
+which is run 8's operating point reached by force rather than by training —
+GSM8K collapses to 8%. So **the open gate alone is sufficient**; open-gate
+training is not required to produce run 8's failure.
 
-No comparison among the coupled arms, and none between the backbone and any arm
-off-task, reaches significance (McNemar p ≥ 0.0625; tightest is MMLU trained
-gate vs eps=0.1). The only significant contrasts are backbone vs every coupled
-arm on physics, as they should be. **The test bounds rather than establishes**:
-at n=100 the smallest resolvable difference is six discordant items in one
-direction, so these 36 paired comparisons show no effect exceeds ~6 items per
-dataset.
+It also refines run 8. That system, gate *trained* open, scored 34% at 70
+generated tokens; forcing the same operating point on the *selective* bridges
+gives 8% at 24 tokens. Forcing open is 4× more destructive than training open,
+so run 8 had partially **adapted** to its own channel, and the no-harm arm's
+job was closing the gate rather than repairing damage. MMLU replicates run 8
+exactly: 69% at 7 tokens in both.
 
-**The MMLU rise is a token budget, not reasoning.** It is the one off-task
-column that moves, and it moves with three others:
+### The MMLU rise is a token budget, not reasoning
 
-| arm | MMLU acc | parse rate | EOS rate | mean tokens |
+It is the one off-task column that rises, and it rises with three others:
+tokens 87 → 62 → 7, EOS rate 0.71 → 0.82, parse rate 0.72 → 0.84 → 1.00.
+Shorter replies finish inside the 256-token budget and get scored. Of the 28
+items the backbone leaves unparsed, eps=0.2 parses 13 and loses 1 — all 13 in
+college physics and mathematics, the two subjects carrying the whole movement —
+and 7 are right (54%), against the 75% the backbone scores on items it already
+parses in those subjects. **Items scored, not items solved.** On the 71
+questions every arm answered, accuracy is 83.1% in all six arms including the
+backbone (60 of those 71 are subjects where nothing truncates, so the control
+shows the floor changes nothing where length was never binding, and does not
+settle the items where it was).
+
+### The safe range belongs to the backbone, not to epsilon
+
+Gemma 4 12B, same protocol, floors around *its* operating point
+(`results/bench/leaky_gemma_guardrail_summary.json`):
+
+| eps | physics | MMLU | GSM8K | BoolQ |
 |---|---:|---:|---:|---:|
-| base | 0.600 | 0.720 | 0.710 | 87.2 |
-| + floor 0.1 | 0.660 | 0.810 | 0.800 | 67.5 |
-| + floor 0.2 | 0.660 | 0.840 | 0.820 | 62.0 |
+| backbone | 10% | 53% | 84% | 90% |
+| trained gate | 97% | 55% | 84% | 89% |
+| 0.05 | 97% | 56% | 84% | 87% |
+| 0.1 | 91% p=.031 | 54% | 71% p=.004 | 86% |
+| 0.2 | 50% | 37% | 13% | 70% |
+| 1.0 | 0% | 0% | 0% | 1% |
 
-Shorter replies finish inside the 256-token budget and get scored. Direct test:
-of the 28 items the backbone leaves unparsed, eps=0.2 parses 13 and loses 1 —
-all 13 in college physics and mathematics, the two subjects carrying the whole
-movement — and 7 are right (54%), against the 75% the backbone scores on items
-it already parses in those subjects. **Items scored, not items solved.**
+Gemma breaks 4–8× earlier in eps. Most of that is where each gate was trained
+to sit — Qwen 0.791 on physics, Gemma 0.144 — so the same floor is a different
+multiple of the model's own operating point:
 
-On the 71 questions *every* arm answered, accuracy is **83.1% in all six arms**
-including the backbone — though not item-identical: each coupled arm loses one
-and gains one. Read that control carefully: 60 of the 71 are philosophy,
-biology and foreign policy, where every arm emits 4 tokens and parses, and only
-9 college-physics and 2 mathematics items survive into it. It shows the floor
-changes nothing where length was never binding; it does not settle the items
-where it was. GSM8K and BoolQ close that from the other side — parse rate 1.000
-in every arm, same brevity on GSM8K (147 → 137 tokens), accuracy flat.
+| | eps | sigma_eff / sigma_trained | GSM8K |
+|---|---:|---:|---:|
+| Qwen | 0.5 | 1.13× | 81% (breaks) |
+| Qwen | 1.0 | 1.26× | 8% (destroyed) |
+| Gemma | 0.05 | 1.30× | 84% (intact) |
+| Gemma | 0.1 | 1.59× | 71% (breaks) |
+| Gemma | 0.2 | 2.18× | 13% (destroyed) |
 
-BoolQ replies are 4 tokens in **every** arm including the backbone, too short
-for the mechanism to act at all, so its flatness is a control rather than a
-confirmation.
+Eight-fold apart in eps, ~1.4-fold apart in this ratio. **Not a law** — closing
+the rest needs the realized injection-to-stream ratio, which `return_ratio` in
+`psilm/mlx/bridges.py` can log and these sweeps did not. Log it next time.
 
-**One real dose-response, on-task and continuous.** Physics MAE falls
-0.0215 → 0.0182, and per item eps=0.2 is nearer the truth than the trained gate
-on **30 items against 12** (58 tied; two-sided sign test **p = 0.008**). The
-±0.05 tolerance hides it — accuracy moves 3 items, p = 0.25. The readout is
-identical in every arm, so this is not better physics: the frozen model renders
-the injected value more faithfully when the channel pushes harder, and at the
-trained gate it under-commits by a few hundredths.
+**One finding does not survive the backbone change.** On Gemma the floor makes
+replies *longer* and parsing *worse* (MMLU 139 → 163 tokens, parse 0.67 → 0.00;
+GSM8K 253 → 329), the opposite of Qwen. Generation is perturbed on both; the
+sign is backbone-specific. Do not state the brevity direction as general.
 
-**Conclusion.** A weak always-on physics signal is not a regularizer. It is a
-verbosity reducer that pays only where a budget binds — worth knowing for any
-budget-limited benchmark, worth not claiming as a reasoning gain. The claim is
-about *inference*: these bridges were trained with a zero floor and a no-harm
-arm penalizing exactly the gate this sweep forces open, so nothing ever asked
-the channel to carry something useful off-task. A system **co-trained** with an
-always-on channel is untested. Measured on one backbone and one checkpoint.
+### The content control: presence vs content
+
+`shuffled<eps>` is `leaky<eps>` with one substitution — the value encoder gets
+the `u_hat` of a **different question** from the same dataset, by a one-step
+rotation of the sorted qids over the first sweep's own recorded readouts: 400
+substitutions, **zero fixed points**, multiset of injected values unchanged, so
+magnitude is matched by construction. Readout still runs on the real prompt,
+gate still decides, `diag.u_injected` records what went in.
+
+```bash
+python eval/bench_guardrail.py --tag leaky_8b_shuf --n 100 --arms shuffled0.2,shuffled1.0 \
+    --shuffle-values-from results/bench/leaky_8b_guardrail.rows.jsonl \
+    --base-gen-from results/bench/leaky_8b_guardrail.rows.jsonl --kl ...
+```
+
+**Off-task the swap changes nothing** (eps=0.2): MMLU 0.66 vs 0.66 (61 vs 62
+tokens), GSM8K 0.88 vs 0.88 (136 vs 137), BoolQ 0.87 vs 0.87, every paired test
+p=1.00; at eps=1.0 the collapse reproduces at 0.07 vs 0.08. Even the KL matches
+(GSM8K 0.055 vs 0.058). The brevity, the MMLU gain and the collapse are
+**content-independent**.
+
+**On-task the same swap is annihilating**: physics 98% → **9%** (p<1e-4, MAE
+0.018 → 0.410) at identical tokens and parse rate, with KL to base *unchanged*
+at 0.222 — the distribution moves just as far, to a different place. Per item:
+
+| the spoken answer sits | distance | within ±0.05 |
+|---|---:|---:|
+| from the **injected (wrong)** value | 0.0121 | **99/100** |
+| from the readout's own u_hat | 0.4000 | — |
+| from the true answer | 0.4098 | 9/100 |
+
+```
+gold -0.095 | readout computed -0.103 | injected -0.546 | model said -0.550
+gold +0.328 | readout computed +0.286 | injected -0.478 | model said -0.490
+```
+
+This is the cleanest evidence in the project that the frozen model **reads the
+channel** rather than a template or a prompt correlate. The zeroed arm shows
+removing the injection removes the physics result; the shuffled arm shows
+corrupting *only the number* redirects the answer to the corruption with 99%
+fidelity, while length, parsing, gate and off-task behaviour stay comparable.
+Presence explains everything the channel does off-task; content explains
+everything it does on-task.
+
+### Conclusion
+
+A weak always-on physics signal is not a regularizer. What it improves is the
+chance of finishing inside a token budget — a decoding effect, not a capability.
+The claim is about *inference*: these bridges were trained with a zero floor and
+a no-harm arm penalizing exactly the gate the sweep forces open, so nothing ever
+asked the channel to be useful off-task. A system **co-trained** with an
+always-on channel is untested.
 
 **Dose arithmetic.** `inj_cap` limits the injection to 0.2 of the stream RMS
 *before* the gate scales it, so eps=0.2 delivers **at most** 4% of the residual
-stream — a ceiling, not a measurement, since this sweep logged the gate but not
-the realized ratio (`return_ratio` in `psilm/mlx/bridges.py` exists for that).
-That is a fifth of run 8's operating point, where a gate open at the cap cost 55
-points on GSM8K. So the sweep bounds the channel as harmless across its range
-without locating where that ends; eps ∈ {0.3, 0.4, 0.5}
-(`results/bench/leaky_sweep_hi.sh`, same task cache and base continuations, so
-the two merge into one curve) walks toward it.
-
-**Method notes worth reusing.** The physics tokens are computed once from the
-prompt and re-injected unchanged at every position, so the always-on signal is
-one constant vector per question, not a per-token readout. On a non-physics
-prompt the value it carries is a Burgers field value for whatever initial
-condition the readout extracted from a word problem — a number, not a fact
-about the question. The KL is teacher-forced on the base arm's own greedy
-continuation so every arm is scored on the same tokens; off-task both arms share
-the prompt, but on physics the base arm uses the nudge protocol, so there it is
-a common-token comparison rather than a same-prompt one.
+stream — a ceiling, not a measurement. Run 8's operating point was 20%.
 
 ## Repository layout
 

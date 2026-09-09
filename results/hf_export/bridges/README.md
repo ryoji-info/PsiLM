@@ -108,6 +108,24 @@ Couple at layers 15 (read) / 22 (inject) of 36 and pass the QA builder's `x0_spa
 
 The PyTorch directories (`qwen2.5-0.5b-*`, `qwen3-1.7b-1d`) hold `bridges.safetensors` (or `interface.safetensors` for the bicameral run) in the `psilm.stage2` / `psilm.bicameral` state-dict layout; the matching evaluation scripts (`eval/stage2_eval.py`, `eval/stage2b_eval.py`, `eval/stage2d_eval.py`, `eval/stage1_eval.py`) show how each is instantiated. Training scripts, evaluation records and the paper are in the [GitHub repository](https://github.com/ryoji-info/PsiLM). All results are reproducible on a single Apple M2 (24 GB).
 
+## Is the answer really coming through the channel?
+
+Two controls, and the second is decisive. **Zeroing the injection** while running
+everything else — readout, FNO, value tokens, gate — removes the physics result
+(0% for Qwen3-8B, 10% for Gemma, which is what the reply template alone
+recovers). **Corrupting only the number** — feeding the value encoder another
+question's answer at matched magnitude, with prompt, readout, gate, reply length
+and parsing untouched — makes the frozen model report the corruption: the spoken
+answer lands within ±0.05 of the *injected* value on **99 of 100** held-out
+questions and within ±0.05 of the truth on 9. Accuracy falls 98% → 9% while the
+KL to the base model is unchanged (0.222 either way): the output distribution
+travels just as far, to a different number.
+
+Run on non-physics prompts the same swap changes nothing (GSM8K 0.88 both ways,
+MMLU 0.66 both ways, p = 1.00), which separates what the channel does by its
+**presence** from what it does by its **content**. Full sweep and records:
+[`results/bench/leaky_8b_shuf_guardrail_summary.json`](https://github.com/ryoji-info/PsiLM/blob/main/results/bench) and §9.7 of the [paper](https://github.com/ryoji-info/PsiLM/blob/main/paper/psilm.pdf).
+
 ## Limitations
 
 - **Narrow task.** Every bridge was trained and evaluated on one synthetic field-value question family (1D Burgers or 2D Fisher–KPP) with exact solver ground truth, in-distribution test sets, and greedy decoding. Held-out families in the multi-mode study drop to 31–50%.

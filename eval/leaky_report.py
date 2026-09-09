@@ -15,7 +15,14 @@ from pathlib import Path
 
 
 def eps_of(arm):
-    return 0.0 if arm in ("base", "psilm", "zeroed") else float(arm[len("leaky"):])
+    """Sort key: the floor, with the content-control arms just after their
+    matched leaky arm rather than crashing on the prefix."""
+    if arm in ("base", "psilm", "zeroed"):
+        return 0.0
+    for prefix, tie in (("leaky", 0.0), ("shuffled", 0.001)):
+        if arm.startswith(prefix):
+            return float(arm[len(prefix):]) + tie
+    raise ValueError(f"unrecognized arm {arm!r}")
 
 
 def main():
