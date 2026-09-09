@@ -192,11 +192,6 @@ def main():
     ckpt.parent.mkdir(parents=True, exist_ok=True)
 
     model, stock, tok = load_backbone_any(args.model)     # tower for the staged forward
-    if getattr(model, "needs_train_mode_for_grad", False):
-        # backbones whose gradient path crosses a custom Metal kernel need training
-        # mode to select a differentiable fallback (see psilm/mlx/qwen35_loader.py)
-        model.train()
-        print("[backbone] training mode: differentiable SSM scan selected", flush=True)
 
     hf_tok = AutoTokenizer.from_pretrained(args.hf_tokenizer)
     fno = convert_from_torch(FNO_PATH)
@@ -240,6 +235,16 @@ def main():
                 print(f"[WARN] --{k.replace('_', '-')}={getattr(args, k)} differs from the checkpoint's {prev[k]}")
 
     psi_cls = PsiLMMLXMultiSpan if span_readout else PsiLMMLXMulti
+
+    if getattr(model, "needs_train_mode_for_grad", False):
+        # This backbone's SSM scan is a Metal kernel with no VJP, so the layers
+        # the backward pass reaches need mlx-lm's differentiable fallback, which
+        # training mode selects. Confining it to layers >= l_rev keeps the fast
+        # kernel below the injection: at batch 4 that is 17.3 s/step and 22.2 GB
+        # against 101.7 s and 41.9 GB with the ops path everywhere.
+        model.set_grad_window(psi.l_rev)
+        print(f"[backbone] differentiable SSM scan from layer {psi.l_rev} up; "
+              f"kernel below", flush=True)
     psi = psi_cls(model, tok, fno, bridges, l_fwd=args.l_fwd, l_rev=args.l_rev,
                   lam_x0=args.lam_x0)
     psi.detach_x0 = args.detach_x0
