@@ -8,6 +8,11 @@ public by hand once the cards read right live. Uses the ambient
 import os
 
 os.environ.setdefault("HF_HUB_DISABLE_XET", "1")
+# the cache (and the login token with it) was relocated on 2026-09-10; a
+# non-interactive shell does not read ~/.zshrc, so point at it explicitly
+_HOME = "/Users/rxiii/Documents/huggingface"
+if os.path.isfile(os.path.join(_HOME, "token")):
+    os.environ.setdefault("HF_HOME", _HOME)
 from huggingface_hub import HfApi
 
 CARDS = [("results/hf_export/bridges/README.md", "ryoji-info/PsiLM-bridges"),
