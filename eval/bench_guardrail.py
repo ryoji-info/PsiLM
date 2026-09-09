@@ -4,7 +4,15 @@ Claim under test: attaching the bridges does not damage the backbone's
 general capability, and the injection gate is selective - near-closed on
 non-physics questions, open on the PsiLM physics questions it was trained on.
 
-Three arms on the SAME backbone weights, same prompts, greedy decoding:
+Arms on the SAME backbone weights, same prompts, greedy decoding. The three
+originals are base / psilm / zeroed; leaky<eps> floors the gate at inference
+(sigma_eff = eps + (1-eps)*sigma) and shuffled<eps> is its content control,
+feeding the value encoder another question's value at the same floor. See
+arm_spec() in eval/bench_common.py.
+
+Datasets: physics, mmlu, gsm8k, boolq. The leaky family all ran with
+--datasets physics,mmlu,gsm8k,boolq --max-new-mmlu 256; the flag defaults below
+are the older three-dataset protocol and are kept so earlier runs reproduce.
     base    frozen LLM alone
     psilm   bridges attached, gate free
     zeroed  bridges attached, physics injection multiplied by 0

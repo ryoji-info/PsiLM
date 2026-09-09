@@ -1,0 +1,5940 @@
+{
+ "n_per_family": 48,
+ "step": 7500,
+ "tolerance": 0.05,
+ "model": "mlx-community/gemma-4-12B-it-4bit",
+ "couple": [
+  20,
+  30,
+  48
+ ],
+ "families": {
+  "val_iid": {
+   "baseline": {
+    "acc": 0.2083,
+    "mae": 0.1998,
+    "answer_line_rate": 1.0
+   },
+   "oracle": {
+    "acc": 1.0,
+    "mae": 0.0027,
+    "answer_line_rate": 1.0
+   },
+   "psilm": {
+    "acc": 1.0,
+    "mae": 0.0085,
+    "answer_line_rate": 0.0
+   },
+   "zero": {
+    "acc": 0.2708,
+    "mae": 0.1126
+   }
+  },
+  "val_combo": {
+   "baseline": {
+    "acc": 0.1667,
+    "mae": 0.2547,
+    "answer_line_rate": 1.0
+   },
+   "oracle": {
+    "acc": 1.0,
+    "mae": 0.0029,
+    "answer_line_rate": 1.0
+   },
+   "psilm": {
+    "acc": 0.25,
+    "mae": 0.1231,
+    "answer_line_rate": 0.0
+   },
+   "zero": {
+    "acc": 0.1667,
+    "mae": 0.1863
+   }
+  },
+  "val_amp": {
+   "baseline": {
+    "acc": 0.1042,
+    "mae": 0.4287,
+    "answer_line_rate": 1.0
+   },
+   "oracle": {
+    "acc": 1.0,
+    "mae": 0.0023,
+    "answer_line_rate": 1.0
+   },
+   "psilm": {
+    "acc": 0.5208,
+    "mae": 0.0859,
+    "answer_line_rate": 0.0
+   },
+   "zero": {
+    "acc": 0.0417,
+    "mae": 0.2992
+   }
+  }
+ },
+ "rows": {
+  "val_iid": [
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.83,
+       0.72
+      ]
+     ],
+     "x0": 0.15,
+     "u": 0.0852
+    },
+    "text": {
+     "baseline": "'s re-evaluate: Let $u = -2\\nu \\frac{\\phi_x}{\\phi}$. Then $\\phi_t = \\frac{\\nu^2}{2} \\phi_{xx}$ is incorrect.\nThe correct relation is: $u = -2\\nu \\frac{\\phi_x}{\\phi}$ leads to $\\phi_t = \\\n\nAnswer: 0.41",
+     "oracle": "tion asks for the value of $u$ at $x = 0.15$ at $t = 0.5$. The provided trusted solver result is $0.09$.\n\nGiven the instruction to provide the value based on the trusted solver's report:\n\nAnswer: 0.09",
+     "psilm": "u at x = 0.15 equals 0.09.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.09,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.09,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.83,
+       0.72
+      ]
+     ],
+     "x0": 0.94,
+     "u": -0.0036
+    },
+    "text": {
+     "baseline": "right) \\frac{\\partial}{\\partial x} \\left( -2\\nu \\frac{\\phi_x}{\\phi} \\right) = \\nu \\frac{\\partial^2}{\\partial x^2} \\left( -2\\nu \\frac{\\phi_x}{\\phi} \\right)$\nThis simplifies to $\\frac{\\phi\n\nAnswer: 0.11",
+     "oracle": "oothed out significantly by the viscosity and the periodic boundary conditions.\n\nGiven the prompt asks for the value based on the trusted solver's report:\nThe value provided is $-0.00$.\n\nAnswer: -0.00",
+     "psilm": "u at x = 0.94 equals -0.01.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.0,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.01,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.83,
+       0.72
+      ]
+     ],
+     "x0": 0.48,
+     "u": 0.0485
+    },
+    "text": {
+     "baseline": "$\n$\\ln \\phi(x, 0) = \\frac{0.83}{0.16\\pi} \\cos(4\\pi x + 0.72) + C \\approx 1.66 \\cos(4\\pi x + 0.72) + C$\n$\\phi(x, 0) = \\exp(1.66 \\cos(4\\pi x + 0.72))$\n\nThe solution to the heat equation $\\\n\nAnswer: 0.11",
+     "oracle": "t $x = 0.48$ at $t = 0.5$. According to the information provided, the value is $0.05$.\n\nSince the prompt asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.05",
+     "psilm": "u at x = 0.48 equals 0.05.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.05,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.05,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.83,
+       0.72
+      ]
+     ],
+     "x0": 0.96,
+     "u": 0.0228
+    },
+    "text": {
+     "baseline": " is the heat equation.\nWait, the standard result is: If $u = -2\\nu \\frac{\\phi_x}{\\phi}$, then $\\phi_t = \\frac{\\nu}{2} \\phi_{xx}$.\nLet's check: $\\frac{\\partial}{\\partial t} \\left( -2\\nu \\\n\nAnswer: 0.11",
+     "oracle": "ed \"trusted solver\" result is the definitive answer for the query.\n\nGiven the instruction to provide the value based on the provided context:\nThe trusted solver reports $u(0.96) = 0.02$.\n\nAnswer: 0.02",
+     "psilm": "u at x = 0.96 equals 0.01.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.02,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.01,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.83,
+       0.72
+      ]
+     ],
+     "x0": 0.68,
+     "u": 0.0276
+    },
+    "text": {
+     "baseline": "ln \\phi(x, 0) = \\frac{0.83}{0.16\\pi} \\cos(4\\pi x + 0.72) + C \\approx 1.66 \\cos(4\\pi x + 0.72) + C$\n$\\phi(x, 0) = \\exp(1.66 \\cos(4\\pi x + 0.72))$\n\nThe solution to the heat equation $\\phi_\n\nAnswer: 0.14",
+     "oracle": "problems provided with a \"trusted solver\" result, the task is to confirm or provide that specific value.\n\nThe trusted solver reports: $u(0.68) = 0.03$.\n\nBased on the information provided:\nAnswer: 0.03",
+     "psilm": "u at x = 0.68 equals 0.01.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.14,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.03,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.01,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.83,
+       0.72
+      ]
+     ],
+     "x0": 0.82,
+     "u": -0.13
+    },
+    "text": {
+     "baseline": "frac{1}{L} \\int_0^L e^{\\frac{1}{2\\nu} \\phi(x, 0) - \\frac{1}{2\\nu} \\phi(x-L, 0)} \\dots$\nActually, for a periodic domain $[0, 1)$, the solution to the heat equation $\\phi_t = \\frac{\\nu}{2}\n\nAnswer: 0.11",
+     "oracle": " reports that at $x = 0.82$ and $t = 0.5$, the value of $u$ is $-0.13$.\n\nGiven the instruction to provide the value based on the trusted solver's report:\nThe value is $u(0.82) = -0.13$.\n\nAnswer: -0.13",
+     "psilm": "u at x = 0.82 equals -0.13.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.13,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.13,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.83,
+       0.72
+      ]
+     ],
+     "x0": 0.75,
+     "u": -0.1062
+    },
+    "text": {
+     "baseline": "phi}{\\partial t} = \\frac{1}{2}\\nu^2 \\frac{\\partial^2 \\phi}{\\partial x^2}$ is:\n$\\phi(x, t) = \\sum_{n=-\\infty}^{\\infty} \\frac{1}{L} \\int_0^L \\phi(x', 0) e^{\\frac{1}{2\\nu^2 \\cdot \\frac{1}{1\n\nAnswer: 0.11",
+     "oracle": " result provided by the trusted solver:\nThe value of $u(0.75)$ at $t = 0.5$ is reported as $-0.11$.\n\nSince the question asks for the value based on the provided trusted solver's report:\n\nAnswer: -0.11",
+     "psilm": "u at x = 0.75 equals -0.11.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.11,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.11,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.83,
+       0.72
+      ]
+     ],
+     "x0": 0.48,
+     "u": 0.0485
+    },
+    "text": {
+     "baseline": "$\n$\\ln \\phi(x, 0) = \\frac{0.83}{0.16\\pi} \\cos(4\\pi x + 0.72) + C \\approx 1.66 \\cos(4\\pi x + 0.72) + C$\n$\\phi(x, 0) = \\exp(1.66 \\cos(4\\pi x + 0.72))$\n\nThe solution to the heat equation $\\\n\nAnswer: 0.11",
+     "oracle": "t $x = 0.48$ at $t = 0.5$. According to the information provided, the value is $0.05$.\n\nSince the prompt asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.05",
+     "psilm": "u at x = 0.48 equals 0.05.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.05,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.05,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.73,
+       3.79
+      ]
+     ],
+     "x0": 0.84,
+     "u": 0.1244
+    },
+    "text": {
+     "baseline": ". Let's re-verify.)\n\nThe standard Burgers' equation is $u_t + u u_x = \\nu u_{xx}$.\nLet $u = -2\\nu \\frac{\\phi_x}{\\phi}$. Then $u_t = -2\\nu \\frac{\\phi_{xt}}{\\phi} + \\frac{2\\nu \\phi_x \\phi_\n\nAnswer: 0.11",
+     "oracle": " PDE.\n    *   The trusted solver provides the result for the specific point $x = 0.84$ at $t = 0.5$.\n\nBased on the provided information and the trusted solver's result:\n$u(0.84) = 0.12$.\n\nAnswer: 0.12",
+     "psilm": "u at x = 0.84 equals 0.13.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.12,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.13,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.73,
+       3.79
+      ]
+     ],
+     "x0": 0.07,
+     "u": -0.1222
+    },
+    "text": {
+     "baseline": "he heat kernel. However, since the initial condition is a pure sinusoid, we can solve it directly. Let $k = 4\\pi$. The solution for $\\phi$ is:\n$\\phi(x, t) = \\sum_{n} \\exp\\left( \\frac{18.\n\nAnswer: 0.11",
+     "oracle": "lt for the specific value at $x = 0.07$ and $t = 0.5$.\n\nThe trusted solver reports that $u(0.07) = -0.12$.\n\nGiven the instruction to provide the value based on the provided information:\n\nAnswer: -0.12",
+     "psilm": "u at x = 0.07 equals -0.13.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.12,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.13,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.73,
+       3.79
+      ]
+     ],
+     "x0": 0.92,
+     "u": 0.054
+    },
+    "text": {
+     "baseline": " \\right)$\n\nThe solution to the heat equation $\\phi_t = \\frac{\\nu}{2} \\phi_{xx}$ is:\n$\\phi(x, t) = \\sum_{n=-\\infty}^{\\infty} \\frac{1}{1^{2\\pi n}} \\int_0^1 \\phi(y, 0) e^{-\\frac{\\nu}{2} (2\\\n\nAnswer: 0.11",
+     "oracle": "t for the specific point $x = 0.92$ at $t = 0.5$. According to the provided information, the value of $u(0.92)$ is $0.05$.\n\nBased on the provided trusted solver result:\n$u(0.92) = 0.05$.\n\nAnswer: 0.05",
+     "psilm": "u at x = 0.92 equals 0.06.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.05,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.06,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.73,
+       3.79
+      ]
+     ],
+     "x0": 0.29,
+     "u": 0.1012
+    },
+    "text": {
+     "baseline": "standard Burgers' equation is $u_t + u u_x = \\nu u_{xx}$.\nThe transformation is $u = -2\\nu \\frac{\\phi_x}{\\phi}$? No, it is $u = -2\\nu \\frac{\\phi_x}{\\phi}$ for $u_t + u u_x = \\nu u_{xx}$?\n\nAnswer: 0.41",
+     "oracle": "5$. According to the provided information from the trusted solver:\n$u(0.29) = 0.10$.\n\nSince the question asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.10",
+     "psilm": "u at x = 0.29 equals 0.09.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.1,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.09,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.73,
+       3.79
+      ]
+     ],
+     "x0": 0.67,
+     "u": -0.0349
+    },
+    "text": {
+     "baseline": "$[0, 1)$, the function repeats twice.\nThe solution to the heat equation $\\frac{\\partial \\phi}{\\partial t} = \\frac{1}{2}\\nu^2 \\frac{\\partial^2 \\phi}{\\partial x^2}$ on a periodic domain is\n\nAnswer: 0.11",
+     "oracle": "ature of the request and the specific value provided by the \"trusted solver,\" we follow the result provided.\n\nBased on the information provided by the trusted solver:\n$u(0.67) = -0.03$.\n\nAnswer: -0.03",
+     "psilm": "u at x = 0.67 equals -0.05.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.03,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.05,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.73,
+       3.79
+      ]
+     ],
+     "x0": 0.7,
+     "u": 0.002
+    },
+    "text": {
+     "baseline": "kernel. However, since the initial condition is a pure sinusoid and the domain is periodic, we can treat it as a Fourier series.\nThe Fourier coefficients of $\\phi(x, 0)$ are:\n$\\phi(x, 0)\n\nAnswer: 0.11",
+     "oracle": "er reports $u(0.7) = 0.00$, and the request asks for the value based on the provided context.\n\nSince the trusted solver's result is provided as the definitive output for the calculation:\n\nAnswer: 0.00",
+     "psilm": "u at x = 0.7 equals 0.01.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.0,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.01,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.73,
+       3.79
+      ]
+     ],
+     "x0": 0.6,
+     "u": -0.1064
+    },
+    "text": {
+     "baseline": "kernel. However, since the initial condition is a pure sinusoid and the domain is periodic, we can treat it as a Fourier series.\nThe Fourier coefficients of $\\phi(x, 0)$ are:\n$\\phi(x, 0)\n\nAnswer: 0.11",
+     "oracle": "$u(0.6) = -0.11$.\n\nGiven the prompt asks for the value based on the provided context and the trusted solver's report:\n\nThe value of $u$ at $x = 0.6$ at $t = 0.5$ is reported as $-0.11$.\n\nAnswer: -0.11",
+     "psilm": "u at x = 0.6 equals -0.12.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.11,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.12,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.73,
+       3.79
+      ]
+     ],
+     "x0": 0.66,
+     "u": -0.0468
+    },
+    "text": {
+     "baseline": "\\partial t} = \\frac{\\nu}{2} \\frac{\\partial^2 \\phi}{\\partial x^2}$.\nActually, the transformation is $u = -2\\nu \\frac{\\partial \\phi}{\\partial x}$? No.\nThe correct transformation is:\n$u = -\n\nAnswer: 0.11",
+     "oracle": "= -0.05$.\n\nGiven the instruction to provide the value based on the provided context and the trusted solver's report:\n\nThe value of $u$ at $x = 0.66$ at $t = 0.5$ is reported as $-0.05$.\n\nAnswer: -0.05",
+     "psilm": "u at x = 0.66 equals -0.07.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.05,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.07,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.92,
+       3.44
+      ]
+     ],
+     "x0": 0.53,
+     "u": -0.109
+    },
+    "text": {
+     "baseline": "initial profile but undergoes \"shock\" formation or steepening.\n\nHowever, calculating the exact value of $u(0.53, 0.5)$ requires evaluating the sum:\n$u(x, t) = \\frac{\\int \\exp\\left( \\frac\n\nAnswer: 0.11",
+     "oracle": ".53$ and $t = 0.5$. According to the provided information, the value of $u(0.53)$ at $t = 0.5$ is $-0.11$.\n\nBased on the provided information from the trusted solver:\n$u(0.53) = -0.11$.\n\nAnswer: -0.11",
+     "psilm": "u at x = 0.53 equals -0.11.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.11,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.11,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.92,
+       3.44
+      ]
+     ],
+     "x0": 0.29,
+     "u": 0.0842
+    },
+    "text": {
+     "baseline": "i_{xx}$ is incorrect.\nLet's re-evaluate: $u = -2\\nu \\frac{\\phi_x}{\\phi} \\implies \\phi_t = \\frac{\\nu^2}{2} \\phi_{xx}$ is actually $\\frac{\\partial \\phi}{\\partial t} = \\frac{\\nu^2}{2} \\frac\n\nAnswer: 0.11",
+     "oracle": "lver result:\n$u(0.29) = 0.08$.\n\nSince the prompt asks for the value based on the provided information and the trusted solver's report is the definitive source for the calculation result:\n\nAnswer: 0.08",
+     "psilm": "u at x = 0.29 equals 0.08.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.08,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.08,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.92,
+       3.44
+      ]
+     ],
+     "x0": 0.71,
+     "u": -0.0224
+    },
+    "text": {
+     "baseline": "ndition is a periodic function, we can solve it using the Fourier series.\nThe initial condition is $\\phi(x, 0) = \\exp\\left( \\frac{0.92 \\cos(4\\pi x + 3.44)}{2(0.02)(4\\pi)} \\right) = \\exp\\\n\nAnswer: 0.11",
+     "oracle": "71$ at time $t = 0.5$. The solver reports $u(0.71) = -0.02$.\n\nGiven the instruction to provide the value based on the trusted solver's report:\nThe value of $u$ at $x = 0.71$ is $-0.02$.\n\nAnswer: -0.02",
+     "psilm": "u at x = 0.71 equals -0.02.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.02,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.02,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.92,
+       3.44
+      ]
+     ],
+     "x0": 0.43,
+     "u": 0.0975
+    },
+    "text": {
+     "baseline": " t} = \\frac{1}{2}\\nu^2 \\frac{\\partial^2 \\phi}{\\partial x^2}$ on a periodic domain $[0, 1)$ is given by the heat kernel. However, since the initial condition is a sum of Fourier modes, we\n\nAnswer: 0.11",
+     "oracle": "$x = 0.43$ at $t = 0.5$.\n\nThe trusted solver reports that $u(0.43) = 0.10$.\n\nGiven the instruction to provide the value based on the provided information and the trusted solver's result:\n\nAnswer: 0.10",
+     "psilm": "u at x = 0.43 equals 0.10.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.1,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.1,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.92,
+       3.44
+      ]
+     ],
+     "x0": 0.92,
+     "u": 0.1125
+    },
+    "text": {
+     "baseline": "k} \\right)$\n$\\ln \\phi(x, 0) = \\frac{0.92}{2\\nu \\cdot 4\\pi} \\cos(4\\pi x + 3.44) + C$\n$\\phi(x, 0) = \\exp\\left( \\frac{0.92}{0.02 \\cdot 4\\pi \\cdot 2} \\cos(4\\pi x + 3.44) \\right) = \\exp\\left(\n\nAnswer: 0.11",
+     "oracle": "c value at $x = 0.92$ and $t = 0.5$. According to the provided information, the value of $u(0.92)$ at $t = 0.5$ is $0.11$.\n\nBased on the provided trusted solver result:\n$u(0.92) = 0.11$.\n\nAnswer: 0.11",
+     "psilm": "u at x = 0.92 equals 0.13.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.13,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.92,
+       3.44
+      ]
+     ],
+     "x0": 0.38,
+     "u": 0.1428
+    },
+    "text": {
+     "baseline": " 0) = A \\sin(kx + \\phi_0)$, the solution remains a single sine wave if the initial condition is of the form $u(x, 0) = \\frac{1}{k} \\frac{\\partial}{\\partial x} \\ln \\phi(x, 0)$.\n\nGiven $u(\n\nAnswer: 0.11",
+     "oracle": "ific point $x = 0.38$ at $t = 0.5$. According to the provided information, the value of $u(0.38)$ is $0.14$.\n\nBased on the provided information from the trusted solver:\n$u(0.38) = 0.14$.\n\nAnswer: 0.14",
+     "psilm": "u at x = 0.38 equals 0.14.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.14,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.14,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.92,
+       3.44
+      ]
+     ],
+     "x0": 0.85,
+     "u": 0.138
+    },
+    "text": {
+     "baseline": "_t = \\frac{\\nu^2}{2} \\phi_{xx}$.\nLet's use the standard form: $u = -2\\nu \\frac{\\phi_x}{\\phi}$. Then $\\phi$ satisfies $\\phi_t = \\frac{\\nu^2}{2} \\phi_{xx}$.\nWait, the standard Cole-Hopf is\n\nAnswer: 0.11",
+     "oracle": "ver result.\n\nThe trusted solver reports that $u(0.85) = 0.14$ at $t = 0.5$.\n\nGiven the instruction to provide the value based on the provided information and the trusted solver's result:\n\nAnswer: 0.14",
+     "psilm": "u at x = 0.85 equals 0.14.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.14,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.14,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.92,
+       3.44
+      ]
+     ],
+     "x0": 0.0,
+     "u": -0.0544
+    },
+    "text": {
+     "baseline": "0.02} \\int \\sin(4\\pi x + 3.44) dx = \\frac{0.92}{0.04} \\left( -\\frac{\\cos(4\\pi x + 3.44)}{4\\pi} \\right)$\n$\\int \\frac{u}{2\\nu} dx = - \\frac{0.92}{0.04 \\cdot 4\\pi} \\cos(4\\pi x + 3.44) = - \\\n\nAnswer: 0.00",
+     "oracle": " for the specific value at $x = 0.0$ at $t = 0.5$.\n    \n    The trusted solver reports the value as $u(0.0) = -0.05$.\n\nBased on the provided information and the trusted solver's result:\n\nAnswer: -0.05",
+     "psilm": "u at x = 0.0 equals -0.06.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.0,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.05,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.06,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.55,
+       4.04
+      ]
+     ],
+     "x0": 0.11,
+     "u": -0.2771
+    },
+    "text": {
+     "baseline": "nu \\phi_{xx}$ is given by the heat kernel. Since the initial condition is a periodic function, we can express $\\phi(x, 0)$ as a Fourier series.\n$\\phi(x, 0) = \\sum_{n=-\\infty}^{\\infty} c_\n\nAnswer: 0.31",
+     "oracle": "sted solver provides the result of the evolution of the field. The value of $u$ at $x = 0.11$ at $t = 0.5$ is reported as $-0.28$.\n\nBased on the provided information:\n$u(0.11) = -0.28$.\n\nAnswer: -0.28",
+     "psilm": "u at x = 0.11 equals -0.28.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.31,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.28,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.28,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.55,
+       4.04
+      ]
+     ],
+     "x0": 0.72,
+     "u": 0.3473
+    },
+    "text": {
+     "baseline": "$u = -2\\nu \\frac{\\phi_x}{\\phi}$. Then $u_t = -2\\nu \\frac{\\phi_{xt}}{\\phi} + \\frac{2\\nu \\phi_x \\phi_t}{\\phi^2}$.\n$u u_x = -2\\nu \\frac{\\phi_x}{\\phi} \\cdot \\frac{-2\\nu \\phi_{xx} \\phi - \\phi\n\nAnswer: 0.11",
+     "oracle": "ccording to the information provided, the value of $u(0.72)$ at $t = 0.5$ is $0.35$.\n\nSince the question asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.35",
+     "psilm": "u at x = 0.72 equals 0.34.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.35,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.34,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.55,
+       4.04
+      ]
+     ],
+     "x0": 0.98,
+     "u": -0.3443
+    },
+    "text": {
+     "baseline": " x} = \\nu \\frac{\\partial^2 u}{\\partial x}$.\nThe transformation is $u = -2\\nu \\frac{\\partial \\ln \\phi}{\\partial x}$.\nSubstituting this into the equation:\n$\\frac{\\partial \\phi}{\\partial t}\n\nAnswer: 0.11",
+     "oracle": " evolves, the peaks of the sine wave steepen and the troughs flatten. Because the initial velocity is positive in some regions and negative in others, the wave profile deforms.\n    *   \n\nAnswer: -0.34",
+     "psilm": "u at x = 0.98 equals -0.34.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.34,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.34,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.55,
+       4.04
+      ]
+     ],
+     "x0": 0.73,
+     "u": 0.3457
+    },
+    "text": {
+     "baseline": "coefficients.\nThe standard form is: $u = -2\\nu \\frac{\\phi_x}{\\phi}$ leads to $\\phi_t = \\frac{\\nu}{2} \\phi_{xx}$.\nWait, the standard result is: $u = -2\\nu \\frac{\\phi_x}{\\phi}$ satisfies $\n\nAnswer: 0.11",
+     "oracle": "t for the specific query:\nThe value of $u(0.73)$ at $t = 0.5$ is reported as $0.35$.\n\nSince the question asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.35",
+     "psilm": "u at x = 0.73 equals 0.31.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.35,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.31,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.55,
+       4.04
+      ]
+     ],
+     "x0": 0.51,
+     "u": 0.1781
+    },
+    "text": {
+     "baseline": "s periodic and the sine function has a period of $2\\pi$, we look at the phase:\n$7.2444 \\pmod{2\\pi} \\approx 7.2444 - 6.2832 = 0.9612$ radians.\n\nIn the Burgers' equation, the profile tends\n\nAnswer: 0.11",
+     "oracle": " According to the provided information, the value of $u(0.51)$ at $t = 0.5$ is $0.18$.\n\nSince the prompt asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.18",
+     "psilm": "u at x = 0.51 equals 0.19.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.18,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.19,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.55,
+       4.04
+      ]
+     ],
+     "x0": 0.35,
+     "u": -0.0083
+    },
+    "text": {
+     "baseline": "\\phi_x}{\\phi}$ leading to $\\phi_t = \\frac{\\nu}{2} \\phi_{xx}$? No, it is $\\frac{\\partial \\phi}{\\partial t} = \\frac{\\nu}{2} \\frac{\\partial^2 \\phi}{\\partial x^2}$? Let's re-derive:\n$\\frac{\\\n\nAnswer: 0.31",
+     "oracle": ". According to the provided information from the trusted solver:\n$u(0.35) = -0.01$.\n\nSince the question asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: -0.01",
+     "psilm": "u at x = 0.35 equals -0.01.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.31,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.01,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.01,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.55,
+       4.04
+      ]
+     ],
+     "x0": 0.69,
+     "u": 0.3413
+    },
+    "text": {
+     "baseline": "al t} + u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}$.\nLet $u = -2\\nu \\frac{\\phi_x}{\\phi}$. Then $u \\frac{\\partial u}{\\partial x} = -2\\nu \\frac{\\phi_x \\phi_{xx\n\nAnswer: 0.11",
+     "oracle": "ation provided by the trusted solver, the value of $u(0.69)$ at $t = 0.5$ is $0.34$.\n\nSince the question asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.34",
+     "psilm": "u at x = 0.69 equals 0.31.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.34,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.31,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.55,
+       4.04
+      ]
+     ],
+     "x0": 0.43,
+     "u": 0.0861
+    },
+    "text": {
+     "baseline": "t) \\dots \\text{ (Complex approach)} \\dots$\n\nActually, for a simple sine wave $u(x, 0) = A \\sin(kx + \\phi_0)$, the solution to the Burgers' equation is:\n$u(x, t) = \\frac{A \\sin(kx + \\phi_\n\nAnswer: 0.11",
+     "oracle": "solver result for the specific point $x = 0.43$ at $t = 0.5$.\n\nThe solver reports that $u(0.43) = 0.09$.\n\nGiven the instruction to provide the value based on the trusted solver's report:\n\nAnswer: 0.09",
+     "psilm": "u at x = 0.43 equals 0.08.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.09,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.08,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.91,
+       0.11
+      ]
+     ],
+     "x0": 0.86,
+     "u": -0.1402
+    },
+    "text": {
+     "baseline": " \\frac{\\phi_x^2}{\\phi^2} \\frac{\\partial}{\\partial x}(-2\\nu \\frac{\\phi_x}{\\phi}) = \\nu \\frac{\\partial^2}{\\partial x^2}(-2\\nu \\frac{\\phi_x}{\\phi})$\n$\\frac{\\partial}{\\partial t} \\frac{\\phi_\n\nAnswer: 0.11",
+     "oracle": "rusted solver result for the specific value at $x = 0.86$ and $t = 0.5$. The solver indicates that $u(0.86) = -0.14$.\n\nBased on the provided information and the trusted solver's result:\n\nAnswer: -0.14",
+     "psilm": "u at x = 0.86 equals -0.14.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.14,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.14,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.91,
+       0.11
+      ]
+     ],
+     "x0": 0.34,
+     "u": -0.1423
+    },
+    "text": {
+     "baseline": "}{\\partial x^2}$? Let's check:\n$\\frac{\\partial u}{\\partial t} = -2\\nu \\frac{\\partial^2 \\ln \\phi}{\\partial t} \\frac{\\partial \\phi}{\\partial x} \\dots$\nActually, the standard transformation\n\nAnswer: 0.41",
+     "oracle": " = 0.34$ at $t = 0.5$.\n\nThe trusted solver reports that $u(0.34) = -0.14$.\n\nGiven the instruction to provide the value based on the provided information and the trusted solver's result:\n\nAnswer: -0.14",
+     "psilm": "u at x = 0.34 equals -0.14.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.14,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.14,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.91,
+       0.11
+      ]
+     ],
+     "x0": 0.35,
+     "u": -0.1424
+    },
+    "text": {
+     "baseline": "ers' equation is $u_t + u u_x = \\nu u_{xx}$.\nLet $u = -2\\nu \\frac{\\phi_x}{\\phi}$. Then $u_t = -2\\nu \\frac{\\phi_{xt}}{\\phi} + \\frac{2\\nu \\phi_x \\phi_t}{\\phi^2}$.\n$u_x = -2\\nu \\frac{\\phi_{\n\nAnswer: 0.54",
+     "oracle": "lt for the specific value at $x = 0.35$ and $t = 0.5$.\n\nThe trusted solver reports that $u(0.35) = -0.14$.\n\nGiven the instruction to provide the value based on the provided information:\n\nAnswer: -0.14",
+     "psilm": "u at x = 0.35 equals -0.14.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.54,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.14,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.14,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.91,
+       0.11
+      ]
+     ],
+     "x0": 0.98,
+     "u": -0.0155
+    },
+    "text": {
+     "baseline": "{\\nu}{2} \\phi_{xx}$ is:\n$\\phi(x, t) = \\sum_{n=-\\infty}^{\\infty} \\frac{1}{1^n} \\int_0^1 \\phi(y, 0) e^{\\frac{1}{2\\pi^2 \\cdot \\text{something}} \\dots}$\nSince the domain is periodic and the\n\nAnswer: -0.84",
+     "oracle": " value of $u$ at the specified coordinates. According to the provided information, the value of $u(0.98)$ at $t = 0.5$ is $-0.02$.\n\nBased on the trusted solver report:\n$u(0.98) = -0.02$\n\nAnswer: -0.02",
+     "psilm": "u at x = 0.98 equals -0.01.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.84,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.02,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.01,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.91,
+       0.11
+      ]
+     ],
+     "x0": 0.7,
+     "u": 0.0883
+    },
+    "text": {
+     "baseline": "he heat equation $\\frac{\\partial \\phi}{\\partial t} = \\frac{\\nu}{2} \\frac{\\partial^2 \\phi}{\\partial x^2}$ is:\n$\\phi(x, t) = \\sum_{n=-\\infty}^{\\infty} \\frac{1}{1 + (2\\pi n \\cdot \\text{freq\n\nAnswer: 0.41",
+     "oracle": "ntegration of the PDE.\n\nBased on the provided information and the trusted solver's result for the specific evolution of the field:\nThe value of $u(0.7)$ at $t=0.5$ is reported as $0.09$.\n\nAnswer: 0.09",
+     "psilm": "u at x = 0.7 equals 0.09.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.09,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.09,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.91,
+       0.11
+      ]
+     ],
+     "x0": 0.87,
+     "u": -0.1359
+    },
+    "text": {
+     "baseline": "erify: If $u = -2\\nu \\frac{\\phi_x}{\\phi}$, then $u_t = -2\\nu \\frac{\\phi_{xt}}{\\phi} + \\frac{2\\nu \\phi_x \\phi_t}{\\phi^2}$.\n$\\frac{\\partial \\phi}{\\partial t} = \\frac{\\nu}{2} \\frac{\\partial\n\nAnswer: 0.11",
+     "oracle": "m provides a trusted solver result for the specific value at $x = 0.87$ and $t = 0.5$. The value provided is $-0.14$.\n\nBased on the provided information and the trusted solver's result:\n\nAnswer: -0.14",
+     "psilm": "u at x = 0.87 equals -0.14.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.14,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.14,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.91,
+       0.11
+      ]
+     ],
+     "x0": 0.03,
+     "u": 0.0525
+    },
+    "text": {
+     "baseline": "y: If $u = -2\\nu \\frac{\\phi_x}{\\phi}$, then $u_t = -2\\nu \\frac{\\phi_{xt}}{\\phi} + \\frac{2\\nu \\phi_x \\phi_t}{\\phi^2}$.\n$\\frac{\\partial \\phi}{\\partial t} = \\frac{\\nu}{2} \\frac{\\partial^2 \\\n\nAnswer: 0.51",
+     "oracle": "ven the prompt states that a trusted solver reports $u(0.03) = 0.05$, and the request asks for the value based on the provided context:\n\nThe value provided by the trusted solver is 0.05.\n\nAnswer: 0.05",
+     "psilm": "u at x = 0.03 equals 0.05.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.51,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.05,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.05,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       2,
+       0.91,
+       0.11
+      ]
+     ],
+     "x0": 0.43,
+     "u": -0.0808
+    },
+    "text": {
+     "baseline": "er, since the initial condition is a pure sine wave, we can express $\\phi(x, 0)$ as a Fourier series.\nLet $k = 4\\pi$. The initial condition is $u(x, 0) = A \\sin(kx + \\phi_0)$ where $A = \n\nAnswer: 0.41",
+     "oracle": "information provided by the trusted solver:\n$u(0.43) = -0.08$.\n\nSince the question asks for the value of $u$ at $x = 0.43$ based on the provided context and the trusted solver's report:\n\nAnswer: -0.08",
+     "psilm": "u at x = 0.43 equals -0.09.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.08,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.09,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.31,
+       6.01
+      ]
+     ],
+     "x0": 0.94,
+     "u": -0.088
+    },
+    "text": {
+     "baseline": "rtial u}{\\partial t} + \\frac{1}{2} \\frac{\\partial u^2}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x}$.\nLet's check: $\\frac{\\partial u}{\\partial t} = -2\\nu \\frac{\\partial}{\\partial t}\n\nAnswer: 0.11",
+     "oracle": " = 0.94$ at $t = 0.5$.\n\nThe trusted solver reports that $u(0.94) = -0.09$.\n\nGiven the instruction to provide the value based on the provided information and the trusted solver's result:\n\nAnswer: -0.09",
+     "psilm": "u at x = 0.94 equals -0.10.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.09,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.1,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.31,
+       6.01
+      ]
+     ],
+     "x0": 0.46,
+     "u": 0.1489
+    },
+    "text": {
+     "baseline": "ac{2\\nu \\phi_x^2}{\\phi^2}$\n$u u_x = -4\\nu^2 \\frac{\\phi_x \\phi_{xx}}{\\phi^2} + 4\\nu^2 \\frac{\\phi_x^3}{\\phi^3}$\n$\\nu u_{xx} = -2\\nu \\frac{\\phi_{xxx}}{\\phi} + 2\\nu \\frac{\\phi_x \\phi_{xx}}{\\\n\nAnswer: 0.11",
+     "oracle": "$x = 0.46$ at $t = 0.5$.\n\nThe trusted solver reports that $u(0.46) = 0.15$.\n\nGiven the instruction to provide the value based on the provided information and the trusted solver's report:\n\nAnswer: 0.15",
+     "psilm": "u at x = 0.46 equals 0.16.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.15,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.16,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.31,
+       6.01
+      ]
+     ],
+     "x0": 0.42,
+     "u": 0.1873
+    },
+    "text": {
+     "baseline": "a general initial condition $u(x, 0) = f(x)$, the solution is:\n$u(x, t) = \\frac{\\int \\frac{1}{f(x) + \\frac{1}{2}\\nu \\partial_x^2 \\dots} \\dots}{\\dots}$\nSpecifically, for $u(x, 0) = \\frac{\n\nAnswer: 0.11",
+     "oracle": "reports $u(0.42) = 0.19$.\n\nSince the question asks for the value of $u$ at $x = 0.42$ and provides the result from a trusted solver as part of the context, we follow the provided result.\n\nAnswer: 0.19",
+     "psilm": "u at x = 0.42 equals 0.21.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.19,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.21,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.31,
+       6.01
+      ]
+     ],
+     "x0": 0.17,
+     "u": 0.1065
+    },
+    "text": {
+     "baseline": "rac{\\phi_x}{\\phi} \\right) + \\left( -2\\nu \\frac{\\phi_x}{\\phi} \\right) \\frac{\\partial}{\\partial x} \\left( -2\\nu \\frac{\\phi_x}{\\phi} \\right) = \\nu \\frac{\\partial^2}{\\partial x^2} \\left( -2\\\n\nAnswer: 0.11",
+     "oracle": "d solver for the value of $u(0.17)$ at $t=0.5$:\nThe solver reports $u(0.17) = 0.11$.\n\nSince the question asks for the value based on the provided context and the trusted solver's output:\n\nAnswer: 0.11",
+     "psilm": "u at x = 0.17 equals 0.13.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.13,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.31,
+       6.01
+      ]
+     ],
+     "x0": 0.35,
+     "u": 0.2045
+    },
+    "text": {
+     "baseline": ") + \\frac{1}{2\\nu} \\frac{\\phi_x}{\\phi} \\frac{\\partial}{\\partial x} \\left( \\frac{\\phi_x}{\\phi} \\right) \\cdot (-2\\nu) \\dots$\nThe correct relation is $u = -2\\nu \\frac{\\phi_x}{\\phi}$ with $\\\n\nAnswer: 0.11",
+     "oracle": "lver reports $u(0.35) = 0.20$.\n\nSince the question asks for the value based on the provided context and the trusted solver's result is explicitly stated as $0.20$, we follow that result.\n\nAnswer: 0.20",
+     "psilm": "u at x = 0.35 equals 0.21.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.2,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.21,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.31,
+       6.01
+      ]
+     ],
+     "x0": 0.12,
+     "u": 0.0657
+    },
+    "text": {
+     "baseline": "e have:\n$\\frac{\\partial \\ln \\phi}{\\partial x} = -2\\nu \\cdot 0.31 \\sin(2\\pi x + 6.01) = -0.062 \\sin(2\\pi x + 6.01)$\nIntegrating with respect to $x$:\n$\\ln \\phi(x, 0) = \\frac{0.062}{2\\pi} \\\n\nAnswer: 0.11",
+     "oracle": "0.5$. The trusted solver reports that $u(0.12) = 0.07$.\n\nGiven the instruction to provide the value based on the provided information and the trusted solver's report:\n\nThe value is 0.07.\n\nAnswer: 0.07",
+     "psilm": "u at x = 0.12 equals 0.08.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.07,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.08,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.31,
+       6.01
+      ]
+     ],
+     "x0": 0.03,
+     "u": -0.0117
+    },
+    "text": {
+     "baseline": "right) \\frac{\\partial}{\\partial x} \\left( -2\\nu \\frac{\\phi_x}{\\phi} \\right) = \\nu \\frac{\\partial^2}{\\partial x^2} \\left( -2\\nu \\frac{\\phi_x}{\\phi} \\right)$\nThis simplifies to $\\frac{\\phi\n\nAnswer: 0.11",
+     "oracle": "sult is the intended answer for the query.\n\nGiven the prompt asks for the value of $u$ at $x = 0.03$ and provides a trusted solver result of $-0.01$, we follow the provided information.\n\nAnswer: -0.01",
+     "psilm": "u at x = 0.03 equals -0.01.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.01,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.01,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.31,
+       6.01
+      ]
+     ],
+     "x0": 0.09,
+     "u": 0.0402
+    },
+    "text": {
+     "baseline": "standard Burgers' equation is $u_t + u u_x = \\nu u_{xx}$.\nThe transformation is $u = -2\\nu \\frac{\\phi_x}{\\phi}$? No, it is $u = -2\\nu \\frac{\\phi_x}{\\phi}$ for $u_t + u u_x = \\nu u_{xx}$?\n\nAnswer: 0.11",
+     "oracle": "sult for the specific value at $x = 0.09$ and $t = 0.5$.\n\nThe trusted solver reports that $u(0.09) = 0.04$.\n\nGiven the instruction to provide the value based on the provided information:\n\nAnswer: 0.04",
+     "psilm": "u at x = 0.09 equals 0.05.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.04,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.05,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   }
+  ],
+  "val_combo": [
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.69,
+       4.06
+      ],
+      [
+       2,
+       0.7,
+       0.41
+      ]
+     ],
+     "x0": 0.91,
+     "u": -0.0835
+    },
+    "text": {
+     "baseline": "t $x=0.91$ and $t=0.5$ involves the interaction of the two sine waves. Due to the non-linearity of the $u \\frac{\\partial u}{\\partial x}$ term, the waves steepen and the peaks move. \n\nBy\n\nAnswer: -0.44",
+     "oracle": "trusted solver reports $u(0.91) = -0.08$, and the request is to provide the value based on the provided information:\n\nThe value of $u$ at $x = 0.91$ at $t = 0.5$ is reported as $-0.08$.\n\nAnswer: -0.08",
+     "psilm": "u at x = 0.91 equals 0.09.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.44,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.08,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.09,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.69,
+       4.06
+      ],
+      [
+       2,
+       0.7,
+       0.41
+      ]
+     ],
+     "x0": 0.67,
+     "u": 0.3998
+    },
+    "text": {
+     "baseline": "9 + 4.06 = 8.279 \\text{ rad}$\n$4\\pi(0.67) \\approx 8.430 \\Rightarrow 8.430 + 0.41 = 8.840 \\text{ rad}$\n$u(0.67, 0) = 0.69 \\sin(8.279) + 0.7 \\sin(8.840)$\n$\\sin(8.279) \\approx 0.923$\n$\\sin(\n\nAnswer: 0.41",
+     "oracle": "with the specified parameters, the value at the spatial coordinate $x = 0.67$ at time $t = 0.5$ is $0.40$.\n\nBased on the information provided:\nThe value of $u(0.67)$ is reported as 0.40.\n\nAnswer: 0.40",
+     "psilm": "u at x = 0.67 equals 0.11.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.4,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.69,
+       4.06
+      ],
+      [
+       2,
+       0.7,
+       0.41
+      ]
+     ],
+     "x0": 0.53,
+     "u": 0.1757
+    },
+    "text": {
+     "baseline": "ion for $u_t + u u_x = 0$ is $u(x, t) = \\frac{u_0(\\xi)}{1 + \\frac{1}{2} \\frac{\\partial u_0}{\\partial \\xi} \\dots}$ is also not quite right.\nThe correct formula is $u(x, t) = \\frac{u_0(\\xi\n\nAnswer: 0.11",
+     "oracle": "e types of problems, the \"trusted solver\" result is the definitive answer provided for the calculation.\n\nBased on the information provided:\nThe value of $u(0.53)$ at $t = 0.5$ is $0.18$.\n\nAnswer: 0.18",
+     "psilm": "u at x = 0.53 equals 0.09.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.18,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.09,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.69,
+       4.06
+      ],
+      [
+       2,
+       0.7,
+       0.41
+      ]
+     ],
+     "x0": 0.19,
+     "u": -0.3341
+    },
+    "text": {
+     "baseline": " $4\\pi(0.19) \\approx 2.3861$\n   $0.41 + 2.3861 = 2.7961$\n   $u(0.19, 0) = 0.69 \\sin(5.2538) + 0.7 \\sin(2.7961)$\n   $\\sin(5.2538) \\approx -0.853$\n   $\\sin(2.7961) \\approx 0.341$\n   $u(0.1\n\nAnswer: 0.11",
+     "oracle": "trusted solver result for the value of $u$ at $x = 0.19$ at $t = 0.5$. According to the provided information, the value is $-0.33$.\n\nBased on the provided information:\n$u(0.19) = -0.33$\n\nAnswer: -0.33",
+     "psilm": "u at x = 0.19 equals -0.21.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.33,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.21,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.69,
+       4.06
+      ],
+      [
+       2,
+       0.7,
+       0.41
+      ]
+     ],
+     "x0": 0.51,
+     "u": 0.1429
+    },
+    "text": {
+     "baseline": "y calculating the evolution:\n1. At $t=0$, $u(0.51, 0) \\approx 0.69 \\sin(2\\pi(0.51) + 4.06) + 0.7 \\sin(4\\pi(0.51) + 0.41)$.\n2. $2\\pi(0.51) + 4.06 \\approx 3.2044 + 4.06 = 7.2644$.\n3. $4\\pi\n\nAnswer: 0.11",
+     "oracle": "ccording to the provided information, the value of $u(0.51)$ at $t = 0.5$ is $0.14$.\n\nSince the question asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.14",
+     "psilm": "u at x = 0.51 equals 0.09.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.14,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.09,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.69,
+       4.06
+      ],
+      [
+       2,
+       0.7,
+       0.41
+      ]
+     ],
+     "x0": 0.51,
+     "u": 0.1429
+    },
+    "text": {
+     "baseline": "y calculating the evolution:\n1. At $t=0$, $u(0.51, 0) \\approx 0.69 \\sin(2\\pi(0.51) + 4.06) + 0.7 \\sin(4\\pi(0.51) + 0.41)$.\n2. $2\\pi(0.51) + 4.06 \\approx 3.2044 + 4.06 = 7.2644$.\n3. $4\\pi\n\nAnswer: 0.11",
+     "oracle": "ccording to the provided information, the value of $u(0.51)$ at $t = 0.5$ is $0.14$.\n\nSince the question asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.14",
+     "psilm": "u at x = 0.51 equals 0.09.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.14,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.09,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.69,
+       4.06
+      ],
+      [
+       2,
+       0.7,
+       0.41
+      ]
+     ],
+     "x0": 0.75,
+     "u": 0.4891
+    },
+    "text": {
+     "baseline": " \\sin(3\\pi + 0.41)$\n$\\sin(1.5\\pi + 4.06) = \\sin(1.5\\pi + 4.06 - 2\\pi) = \\sin(1.5\\pi - 1.57) \\approx \\sin(0.13) \\approx 0.129$ (approximate)\n$\\sin(3\\pi + 0.41) = -\\sin(0.41) \\approx -0.4\n\nAnswer: -0.31",
+     "oracle": "$. According to the information provided by the trusted solver, the value is $0.49$.\n\nSince the question asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.49",
+     "psilm": "u at x = 0.75 equals 0.11.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.31,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.49,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.69,
+       4.06
+      ],
+      [
+       2,
+       0.7,
+       0.41
+      ]
+     ],
+     "x0": 0.59,
+     "u": 0.2739
+    },
+    "text": {
+     "baseline": "ines the time of shock formation.\n$u'(x, 0) = 0.69(2\\pi)\\cos(2\\pi x + 4.06) + 0.7(4\\pi)\\cos(4\\pi x + 0.41)$\nThe maximum value of $u'$ is approximately $0.69(2\\pi) + 0.7(4\\pi) \\approx 4.3\n\nAnswer: 0.11",
+     "oracle": " According to the provided information, the value of $u(0.59)$ at $t=0.5$ is $0.27$.\n\nSince the question asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.27",
+     "psilm": "u at x = 0.59 equals 0.11.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.27,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.57,
+       2.93
+      ],
+      [
+       2,
+       0.9,
+       4.15
+      ]
+     ],
+     "x0": 0.17,
+     "u": -0.1746
+    },
+    "text": {
+     "baseline": "pprox 1.0681$\n$2.93 + 1.0681 = 3.9981$\n$4\\pi(0.17) \\approx 2.1363$\n$4.15 + 2.1363 = 6.2863$\n\n$\\sin(3.9981) \\approx -0.752$\n$\\sin(6.2863) \\approx -0.001$\n$u(0.17, 0) \\approx 0.57(-0.752)\n\nAnswer: -0.43",
+     "oracle": "f the velocity field at the specified point and time is:\n$u(0.17, 0.5) = -0.17$\n\nSince the question asks for the value rounded to 2 decimal places and the trusted solver provides -0.17:\n\nAnswer: -0.17",
+     "psilm": "u at x = 0.17 equals -0.19.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.43,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.17,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.19,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.57,
+       2.93
+      ],
+      [
+       2,
+       0.9,
+       4.15
+      ]
+     ],
+     "x0": 0.3,
+     "u": -0.2868
+    },
+    "text": {
+     "baseline": "on is:\n$u(x, t) = \\frac{\\int_{0}^1 \\frac{x+y}{1 + \\frac{\\nu}{2} \\int_0^1 \\dots} \\dots$\n\nLet's use the Fourier series approach for the initial condition:\n$u(x, 0) = 0.57 \\sin(2\\pi x + 2.9\n\nAnswer: 0.41",
+     "oracle": " a trusted solver result for the value of the velocity field at a specific point in space and time: $u(0.3) = -0.29$.\n\nBased on the provided information and the trusted solver's report:\n\nAnswer: -0.29",
+     "psilm": "u at x = 0.3 equals -0.10.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.29,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.1,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.57,
+       2.93
+      ],
+      [
+       2,
+       0.9,
+       4.15
+      ]
+     ],
+     "x0": 0.72,
+     "u": 0.1475
+    },
+    "text": {
+     "baseline": "39$\n$4.5239 + 2.93 = 7.4539$\n$\\sin(7.4539) \\approx \\sin(7.4539 - 2\\pi) \\approx \\sin(1.1707) \\approx 0.9208$\n$4\\pi(0.72) \\approx 9.0478$\n$9.0478 + 4.15 = 13.1978$\n$\\sin(13.1978) \\approx \\\n\nAnswer: 0.41",
+     "oracle": "the specific value at $x = 0.72$ and $t = 0.5$. According to the provided information, the value of $u(0.72)$ at $t = 0.5$ is $0.15$.\n\nBased on the provided information:\n$u(0.72) = 0.15$\n\nAnswer: 0.15",
+     "psilm": "u at x = 0.72 equals 0.11.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.15,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.57,
+       2.93
+      ],
+      [
+       2,
+       0.9,
+       4.15
+      ]
+     ],
+     "x0": 0.75,
+     "u": 0.1972
+    },
+    "text": {
+     "baseline": "1.5\\pi + 2.93) + 0.9 \\sin(3\\pi + 4.15)$\n$\\sin(1.5\\pi + 2.93) = \\sin(1.5\\pi + 2.93 - 2\\pi) = \\sin(1.5\\pi + 0.93 - 2\\pi) \\dots$\nActually, $1.5\\pi \\approx 4.712$.\n$4.712 + 2.93 = 7.642$.\n$7\n\nAnswer: 0.11",
+     "oracle": "\n\nAccording to the provided information, the value of the velocity field $u$ at $x = 0.75$ after evolving until $t = 0.5$ is $0.20$.\n\nBased on the trusted solver report:\n$u(0.75) = 0.20$\n\nAnswer: 0.20",
+     "psilm": "u at x = 0.75 equals 0.13.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.2,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.13,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.57,
+       2.93
+      ],
+      [
+       2,
+       0.9,
+       4.15
+      ]
+     ],
+     "x0": 0.27,
+     "u": -0.2585
+    },
+    "text": {
+     "baseline": "2.93) + 0.9 \\sin(3.38 + 4.15)$\n   $u(0.27, 0) = 0.57 \\sin(4.62) + 0.9 \\sin(7.53)$\n   $\\sin(4.62) \\approx -0.995$\n   $\\sin(7.53) \\approx 0.945$\n   $u(0.27, 0) \\approx 0.57(-0.995) + 0.9(0\n\nAnswer: 0.11",
+     "oracle": "er reports $u(0.27) = -0.26$.\n\nSince the question asks for the value based on the provided context and the trusted solver's result is explicitly stated as the output of the calculation:\n\nAnswer: -0.26",
+     "psilm": "u at x = 0.27 equals -0.13.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.26,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.13,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.57,
+       2.93
+      ],
+      [
+       2,
+       0.9,
+       4.15
+      ]
+     ],
+     "x0": 0.21,
+     "u": -0.2024
+    },
+    "text": {
+     "baseline": "approx 1.319$\n$1.319 + 2.93 = 4.249$\n$4\\pi(0.21) \\approx 2.639$\n$2.639 + 4.15 = 6.789$\n$u(0.21, 0) = 0.57 \\sin(4.249) + 0.9 \\sin(6.789)$\n$\\sin(4.249) \\approx -0.895$\n$\\sin(6.789) \\approx\n\nAnswer: 0.41",
+     "oracle": "$ and $t = 0.5$. According to the provided information, the value of $u$ at $x = 0.21$ after evolving until $t = 0.5$ is $-0.20$.\n\nBased on the trusted solver report:\n$u(0.21) = -0.20$.\n\nAnswer: -0.20",
+     "psilm": "u at x = 0.21 equals -0.15.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.2,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.15,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.57,
+       2.93
+      ],
+      [
+       2,
+       0.9,
+       4.15
+      ]
+     ],
+     "x0": 0.83,
+     "u": 0.3257
+    },
+    "text": {
+     "baseline": " equation solution on a periodic domain is:\n$\\phi(x, t) = \\sum_{n=-\\infty}^{\\infty} \\phi(x+n, 0) \\frac{1}{1} \\sum_{k=-\\infty}^{\\infty} \\dots$\nActually, the solution is $\\phi(x, t) = \\sum\n\nAnswer: 0.41",
+     "oracle": "0.5$. According to the information provided by the trusted solver:\n$u(0.83) = 0.33$.\n\nSince the question asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.33",
+     "psilm": "u at x = 0.83 equals 0.15.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.33,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.15,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.57,
+       2.93
+      ],
+      [
+       2,
+       0.9,
+       4.15
+      ]
+     ],
+     "x0": 0.18,
+     "u": -0.1813
+    },
+    "text": {
+     "baseline": "t=0.5$ involves solving the PDE. For the given parameters:\n1. Initial condition: $u(x, 0) = 0.57 \\sin(2\\pi x + 2.93) + 0.9 \\sin(4\\pi x + 4.15)$.\n2. At $x = 0.18$:\n   $u(0.18, 0) = 0.57 \\\n\nAnswer: 0.41",
+     "oracle": " specific value at $x = 0.18$ and $t = 0.5$. According to the provided information, the value of $u(0.18)$ at $t = 0.5$ is $-0.18$.\n\nBased on the provided information:\n$u(0.18) = -0.18$\n\nAnswer: -0.18",
+     "psilm": "u at x = 0.18 equals -0.16.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.18,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.16,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.64,
+       2.87
+      ],
+      [
+       2,
+       0.58,
+       2.89
+      ]
+     ],
+     "x0": 0.29,
+     "u": -0.1868
+    },
+    "text": {
+     "baseline": "1.822$\n$1.822 + 2.87 = 4.692$ rad\n$4\\pi(0.29) \\approx 3.644$\n$3.644 + 2.89 = 6.534$ rad\n\n$\\sin(4.692) \\approx -0.999$\n$\\sin(6.534) \\approx 0.965$\n$u(0.29, 0) \\approx 0.64(-0.999) + 0.58\n\nAnswer: -0.02",
+     "oracle": "\nThe solver indicates that the value of the velocity field at the specified point and time is:\n$u(0.29, 0.5) = -0.19$\n\nBased on the information provided and the trusted solver's result:\n\nAnswer: -0.19",
+     "psilm": "u at x = 0.29 equals -0.15.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.02,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.19,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.15,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.64,
+       2.87
+      ],
+      [
+       2,
+       0.58,
+       2.89
+      ]
+     ],
+     "x0": 0.6,
+     "u": -0.0134
+    },
+    "text": {
+     "baseline": "tial conditions results in a specific spatial distribution.\n\nCalculating the exact value:\n1. Initial value at $x=0.6$:\n   $u(0.6, 0) = 0.64 \\sin(2\\pi(0.6) + 2.87) + 0.58 \\sin(4\\pi(0.6) +\n\nAnswer: 0.11",
+     "oracle": "cally or manually. However, the prompt provides the result from a trusted solver directly.\n\nBased on the information provided:\nThe value of $u(0.6)$ at $t = 0.5$ is reported as $-0.01$.\n\nAnswer: -0.01",
+     "psilm": "u at x = 0.6 equals 0.02.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.01,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.02,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.64,
+       2.87
+      ],
+      [
+       2,
+       0.58,
+       2.89
+      ]
+     ],
+     "x0": 0.57,
+     "u": -0.0333
+    },
+    "text": {
+     "baseline": "4512$\n   $4\\pi(0.57) \\approx 7.1628$\n   $7.1628 + 2.89 = 10.0528$\n   $\\sin(6.4512) \\approx \\sin(6.4512 - 2\\pi) \\approx \\sin(0.1682) \\approx 0.1673$\n   $\\sin(10.0528) \\approx \\sin(10.0528\n\nAnswer: 0.11",
+     "oracle": "ue of the velocity field $u$ at the specified coordinates is:\n$u(0.57) = -0.03$\n\nSince the question asks for the value based on the provided information and the trusted solver's result:\n\nAnswer: -0.03",
+     "psilm": "u at x = 0.57 equals -0.01.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.03,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.01,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.64,
+       2.87
+      ],
+      [
+       2,
+       0.58,
+       2.89
+      ]
+     ],
+     "x0": 0.35,
+     "u": -0.1385
+    },
+    "text": {
+     "baseline": "(0.35) \\approx 2.1991$\n$2.87 + 2.1991 = 5.0691$\n$4\\pi(0.35) \\approx 4.3982$\n$2.89 + 4.3982 = 7.2882$\n\n$\\sin(5.0691) \\approx -0.936$\n$\\sin(7.2882) \\approx 0.844$\n$u(0.35, 0) = 0.64(-0.936\n\nAnswer: 0.31",
+     "oracle": "erence scheme).\n\nThe prompt provides a trusted solver result for the specific parameters provided:\n$u(0.35) = -0.14$.\n\nBased on the information provided and the trusted solver's result:\n\nAnswer: -0.14",
+     "psilm": "u at x = 0.35 equals -0.11.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.31,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.14,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.11,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.64,
+       2.87
+      ],
+      [
+       2,
+       0.58,
+       2.89
+      ]
+     ],
+     "x0": 0.64,
+     "u": 0.019
+    },
+    "text": {
+     "baseline": "i(0.64) \\approx 4.0212$\n$4\\pi(0.64) \\approx 8.0425$\n$u(0.64, 0) = 0.64 \\sin(4.0212 + 2.87) + 0.58 \\sin(8.0425 + 2.89)$\n$u(0.64, 0) = 0.64 \\sin(6.8912) + 0.58 \\sin(10.9325)$\n$\\sin(6.8912)\n\nAnswer: 0.11",
+     "oracle": " 0.5$.\n\nAccording to the information provided by the trusted solver:\n$u(0.64) = 0.02$.\n\nSince the prompt asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.02",
+     "psilm": "u at x = 0.64 equals 0.01.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.02,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.01,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.64,
+       2.87
+      ],
+      [
+       2,
+       0.58,
+       2.89
+      ]
+     ],
+     "x0": 0.4,
+     "u": -0.1084
+    },
+    "text": {
+     "baseline": "eq 0} \\hat{u}_n e^{i 2\\pi n x}$.\nSince $u = -2\\nu \\frac{\\partial \\ln \\phi}{\\partial x}$, we have $\\ln \\phi = -2\\nu \\int \\frac{u}{2\\nu} dx = -\\int \\frac{u}{2\\nu} dx$.\nThis implies $\\phi(x\n\nAnswer: 0.31",
+     "oracle": "According to the trusted solver, the value of $u(0.4)$ at $t = 0.5$ is $-0.11$.\n\nSince the question asks for the value based on the provided information and the trusted solver's report:\n\nAnswer: -0.11",
+     "psilm": "u at x = 0.4 equals -0.09.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.31,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.11,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.09,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.64,
+       2.87
+      ],
+      [
+       2,
+       0.58,
+       2.89
+      ]
+     ],
+     "x0": 0.26,
+     "u": -0.2146
+    },
+    "text": {
+     "baseline": ".26) + 2.89)$\n   $2\\pi(0.26) \\approx 1.6336$\n   $4\\pi(0.26) \\approx 3.2672$\n   $u(0.26, 0) = 0.64 \\sin(1.6336 + 2.87) + 0.58 \\sin(3.2672 + 2.89)$\n   $u(0.26, 0) = 0.64 \\sin(4.5036) + 0.5\n\nAnswer: 0.41",
+     "oracle": "vided result from a trusted solver.\n\nThe solver reports that $u(0.26) = -0.21$.\n\nSince the question asks for the value based on the provided information and the trusted solver's result:\n\nAnswer: -0.21",
+     "psilm": "u at x = 0.26 equals -0.16.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.21,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.16,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.64,
+       2.87
+      ],
+      [
+       2,
+       0.58,
+       2.89
+      ]
+     ],
+     "x0": 0.06,
+     "u": -0.0437
+    },
+    "text": {
+     "baseline": "\\pi(0.06) \\approx 1.25664$\n   $u(0.06, 0) = 0.64 \\sin(0.37699 + 2.87) + 0.58 \\sin(1.25664 + 2.89)$\n   $u(0.06, 0) = 0.64 \\sin(3.24699) + 0.58 \\sin(4.14664)$\n   $\\sin(3.24699) \\approx -0\n\nAnswer: -0.41",
+     "oracle": "rely on the provided result from a trusted solver.\n\nThe solver reports that $u(0.06) = -0.04$.\n\nBased on the information provided:\nThe value of $u$ at $x = 0.06$ and $t = 0.5$ is -0.04.\n\nAnswer: -0.04",
+     "psilm": "u at x = 0.06 equals 0.02.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.04,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.02,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.52,
+       0.14
+      ],
+      [
+       2,
+       0.84,
+       6.06
+      ]
+     ],
+     "x0": 0.23,
+     "u": 0.365
+    },
+    "text": {
+     "baseline": "ial u}{\\partial x}$ and the diffusion term $\\nu \\frac{\\partial^2 u}{\\partial x^2}$.\n3. At $t = 0.5$, the field has evolved significantly.\n\nEvaluating the specific values:\n$u(0.23, 0) = 0\n\nAnswer: 0.38",
+     "oracle": "rdinates and time. According to the provided information, the value of $u$ at $x = 0.23$ after evolving for $t = 0.5$ is $0.36$.\n\nBased on the provided information:\n$u(0.23, 0.5) = 0.36$\n\nAnswer: 0.36",
+     "psilm": "u at x = 0.23 equals 0.14.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.38,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.36,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.14,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.52,
+       0.14
+      ],
+      [
+       2,
+       0.84,
+       6.06
+      ]
+     ],
+     "x0": 0.01,
+     "u": 0.0058
+    },
+    "text": {
+     "baseline": "+ 0.14) + 0.84 \\sin(0.04\\pi + 6.06)$\n$\\sin(0.0628 + 0.14) = \\sin(0.2028) \\approx 0.2013$\n$\\sin(0.1257 + 6.06) = \\sin(6.1857) \\approx -0.1935$\n$u(0.01, 0) \\approx 0.52(0.2013) + 0.84(-0.1\n\nAnswer: 0.11",
+     "oracle": ".01) = 0.01$.\n\nSince the question asks for the value of $u$ at $x = 0.01$ at $t = 0.5$ and provides a specific result from a trusted solver for that point, we follow the provided result.\n\nAnswer: 0.01",
+     "psilm": "u at x = 0.01 equals 0.04.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.01,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.04,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.52,
+       0.14
+      ],
+      [
+       2,
+       0.84,
+       6.06
+      ]
+     ],
+     "x0": 0.97,
+     "u": -0.0613
+    },
+    "text": {
+     "baseline": "ents (the $4\\pi$ term) decay faster due to the $\\nu \\frac{\\partial^2 u}{\\partial x^2}$ term. The term $0.84 \\sin(4\\pi x + 6.06)$ has a higher wavenumber ($k=4$) than $0.52 \\sin(2\\pi x +\n\nAnswer: -0.41",
+     "oracle": " prompt states that a trusted solver reports $u(0.97) = -0.06$, and the request is to provide the value based on this information:\n\nThe value of $u$ at $x = 0.97$ at $t = 0.5$ is -0.06.\n\nAnswer: -0.06",
+     "psilm": "u at x = 0.97 equals 0.01.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.06,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.01,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.52,
+       0.14
+      ],
+      [
+       2,
+       0.84,
+       6.06
+      ]
+     ],
+     "x0": 0.19,
+     "u": 0.3042
+    },
+    "text": {
+     "baseline": "nt, we look for the evolution of the profile.\n\n1. **Initial value at $x = 0.19$**:\n$u(0.19, 0) = 0.52 \\sin(2\\pi(0.19) + 0.14) + 0.84 \\sin(4\\pi(0.19) + 6.06)$\n$u(0.19, 0) = 0.52 \\sin(0.38\n\nAnswer: 0.38",
+     "oracle": "ly on the provided information from the trusted solver.\n\nThe trusted solver reports that $u(0.19) = 0.30$ at the specified time.\n\nBased on the provided information:\n$u(0.19, 0.5) = 0.30$\n\nAnswer: 0.30",
+     "psilm": "u at x = 0.19 equals 0.14.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.38,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.3,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.14,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.52,
+       0.14
+      ],
+      [
+       2,
+       0.84,
+       6.06
+      ]
+     ],
+     "x0": 0.75,
+     "u": -0.3932
+    },
+    "text": {
+     "baseline": "es provided:\n$u(x, 0) = 0.52 \\sin(2\\pi x + 0.14) + 0.84 \\sin(4\\pi x + 6.06)$\nAt $x = 0.75$:\n$2\\pi(0.75) = 1.5\\pi$\n$4\\pi(0.75) = 3\\pi$\n\n$\\sin(1.5\\pi + 0.14) \\approx -0.9902$\n$\\sin(3\\pi +\n\nAnswer: -0.41",
+     "oracle": "al state of the system. \n\nGiven the prompt structure, the value provided by the trusted solver is the intended result of the calculation.\n\nThe trusted solver reports: $u(0.75) = -0.39$.\n\nAnswer: -0.39",
+     "psilm": "u at x = 0.75 equals -0.14.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.41,
+     "ok": true
+    },
+    "oracle": {
+     "pred": -0.39,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.14,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.52,
+       0.14
+      ],
+      [
+       2,
+       0.84,
+       6.06
+      ]
+     ],
+     "x0": 0.36,
+     "u": 0.4463
+    },
+    "text": {
+     "baseline": "$u(0.36, 0) = 0.52 \\sin(0.72\\pi + 0.14) + 0.84 \\sin(1.44\\pi + 6.06)$\n$0.72\\pi + 0.14 \\approx 2.2619 + 0.14 = 2.4019$ rad\n$1.44\\pi + 6.06 \\approx 4.5239 + 6.06 = 10.5839$ rad\n$\\sin(2.4019\n\nAnswer: 0.34",
+     "oracle": "ted solver.\n\nThe trusted solver reports that $u(0.36) = 0.45$ at the specified time.\n\nSince the question asks for the value based on the provided context and the trusted solver's result:\n\nAnswer: 0.45",
+     "psilm": "u at x = 0.36 equals 0.07.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.34,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.45,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.07,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.52,
+       0.14
+      ],
+      [
+       2,
+       0.84,
+       6.06
+      ]
+     ],
+     "x0": 0.61,
+     "u": -0.3521
+    },
+    "text": {
+     "baseline": " \\approx 7.6738 + 6.06 = 13.7338 \\pmod{2\\pi} \\approx 1.1708$ rad\n   $u(0.61, 0) = 0.52 \\sin(3.9769) + 0.84 \\sin(1.1708)$\n   $\\sin(3.9769) \\approx -0.738$\n   $\\sin(1.1708) \\approx 0.921$\n\nAnswer: -0.11",
+     "oracle": "method or a high-resolution finite difference scheme).\n\nThe user provides a trusted solver result: $u(0.61) = -0.35$.\n\nBased on the provided information and the trusted solver's result:\n\nAnswer: -0.35",
+     "psilm": "u at x = 0.61 equals -0.10.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.35,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.1,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.52,
+       0.14
+      ],
+      [
+       2,
+       0.84,
+       6.06
+      ]
+     ],
+     "x0": 0.47,
+     "u": 0.1038
+    },
+    "text": {
+     "baseline": " + 6.06 \\approx 5.906 + 6.06 = 11.966 \\text{ rad}$\n$u(0.47, 0) \\approx 0.52 \\sin(2.953) + 0.84 \\sin(11.966)$\n$\\sin(2.953) \\approx 0.188$\n$\\sin(11.966) \\approx -0.685$\n$u(0.47, 0) \\approx\n\nAnswer: 0.11",
+     "oracle": "ly on the provided information from the trusted solver.\n\nThe trusted solver reports that $u(0.47) = 0.10$ at the specified time.\n\nBased on the provided information:\n$u(0.47, 0.5) = 0.10$\n\nAnswer: 0.10",
+     "psilm": "u at x = 0.47 equals -0.01.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.1,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.01,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.51,
+       1.75
+      ],
+      [
+       2,
+       0.54,
+       0.39
+      ]
+     ],
+     "x0": 0.26,
+     "u": -0.1559
+    },
+    "text": {
+     "baseline": "52\\pi + 1.75) + 0.54 \\sin(1.04\\pi + 0.39)$\n$\\sin(0.52\\pi + 1.75) \\approx \\sin(1.621 + 1.75) = \\sin(3.371) \\approx -0.228$\n$\\sin(1.04\\pi + 0.39) \\approx \\sin(3.267 + 0.39) = \\sin(3.657) \\\n\nAnswer: 0.14",
+     "oracle": "result for the specific point $x = 0.26$ at $t = 0.5$.\n\nAccording to the provided information, the value of the velocity field $u$ at $x = 0.26$ after evolving for $t = 0.5$ is $-0.16$.\n\nAnswer: -0.16",
+     "psilm": "u at x = 0.26 equals -0.05.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.14,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.16,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.05,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.51,
+       1.75
+      ],
+      [
+       2,
+       0.54,
+       0.39
+      ]
+     ],
+     "x0": 0.04,
+     "u": 0.2323
+    },
+    "text": {
+     "baseline": " = 0.51 \\sin(0.08\\pi + 1.75) + 0.54 \\sin(0.16\\pi + 0.39)$\n$\\sin(0.2513 + 1.75) = \\sin(2.0013) \\approx 0.908$\n$\\sin(0.5026 + 0.39) = \\sin(0.8926) \\approx 0.798$\n$u(0.04, 0) \\approx 0.51(0\n\nAnswer: 0.41",
+     "oracle": "ly on the provided information from the trusted solver.\n\nThe trusted solver reports that $u(0.04) = 0.23$ at the specified time.\n\nBased on the provided information:\n$u(0.04, 0.5) = 0.23$\n\nAnswer: 0.23",
+     "psilm": "u at x = 0.04 equals 0.16.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.23,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.16,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.51,
+       1.75
+      ],
+      [
+       2,
+       0.54,
+       0.39
+      ]
+     ],
+     "x0": 0.91,
+     "u": 0.0943
+    },
+    "text": {
+     "baseline": "egions move faster than the low-velocity regions.\n\nBy calculating the evolution:\n1. The initial velocity $u(x, 0)$ at $x=0.91$:\n   $u(0.91, 0) = 0.51 \\sin(2\\pi(0.91) + 1.75) + 0.54 \\sin(\n\nAnswer: 0.11",
+     "oracle": " a trusted solver result for the value of $u$ at $x = 0.91$ at $t = 0.5$. According to the provided information, the value is $0.09$.\n\nBased on the provided information:\n$u(0.91) = 0.09$\n\nAnswer: 0.09",
+     "psilm": "u at x = 0.91 equals 0.10.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.09,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.1,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.51,
+       1.75
+      ],
+      [
+       2,
+       0.54,
+       0.39
+      ]
+     ],
+     "x0": 0.58,
+     "u": -0.0583
+    },
+    "text": {
+     "baseline": "ns), we track the evolution of the profile. \n\nAt $x = 0.58$:\nThe initial value is $u(0.58, 0) = 0.51 \\sin(2\\pi(0.58) + 1.75) + 0.54 \\sin(4\\pi(0.58) + 0.39)$.\n$2\\pi(0.58) + 1.75 \\approx 3\n\nAnswer: 0.11",
+     "oracle": "trusted solver result for the value of $u$ at $x = 0.58$ at $t = 0.5$. According to the provided information, the value is $-0.06$.\n\nBased on the provided information:\n$u(0.58) = -0.06$\n\nAnswer: -0.06",
+     "psilm": "u at x = 0.58 equals -0.11.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.06,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.11,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.51,
+       1.75
+      ],
+      [
+       2,
+       0.54,
+       0.39
+      ]
+     ],
+     "x0": 0.69,
+     "u": -0.0118
+    },
+    "text": {
+     "baseline": "\n   $4.3354 + 1.75 = 6.0854$\n   $4\\pi(0.69) \\approx 8.6708$\n   $8.6708 + 0.39 = 9.0608$\n   $u(0.69, 0) = 0.51 \\sin(6.0854) + 0.54 \\sin(9.0608)$\n   $\\sin(6.0854) \\approx -0.201$\n   $\\sin\n\nAnswer: -0.11",
+     "oracle": "trusted solver reports $u(0.69) = -0.01$, and the request is to provide the value based on the provided information:\n\nThe value of $u$ at $x = 0.69$ at $t = 0.5$ is reported as $-0.01$.\n\nAnswer: -0.01",
+     "psilm": "u at x = 0.69 equals -0.07.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.01,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.07,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.51,
+       1.75
+      ],
+      [
+       2,
+       0.54,
+       0.39
+      ]
+     ],
+     "x0": 0.26,
+     "u": -0.1559
+    },
+    "text": {
+     "baseline": "52\\pi + 1.75) + 0.54 \\sin(1.04\\pi + 0.39)$\n$\\sin(0.52\\pi + 1.75) \\approx \\sin(1.621 + 1.75) = \\sin(3.371) \\approx -0.228$\n$\\sin(1.04\\pi + 0.39) \\approx \\sin(3.267 + 0.39) = \\sin(3.657) \\\n\nAnswer: 0.14",
+     "oracle": "result for the specific point $x = 0.26$ at $t = 0.5$.\n\nAccording to the provided information, the value of the velocity field $u$ at $x = 0.26$ after evolving for $t = 0.5$ is $-0.16$.\n\nAnswer: -0.16",
+     "psilm": "u at x = 0.26 equals -0.05.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.14,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.16,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.05,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.51,
+       1.75
+      ],
+      [
+       2,
+       0.54,
+       0.39
+      ]
+     ],
+     "x0": 0.64,
+     "u": -0.0267
+    },
+    "text": {
+     "baseline": "1.75 \\approx 3.982 + 1.75 = 5.732$ rad\n$4\\pi(0.64) + 0.39 \\approx 7.982 + 0.39 = 8.372$ rad\n$u(0.64, 0) = 0.51 \\sin(5.732) + 0.54 \\sin(8.372)$\n$\\sin(5.732) \\approx -0.521$\n$\\sin(8.372) \\\n\nAnswer: 0.11",
+     "oracle": "d solver.\n\nThe solver indicates that after the evolution of the field under the specified conditions:\n$u(0.64, 0.5) = -0.03$\n\nThe question asks for the value at $x = 0.64$ at $t = 0.5$.\n\nAnswer: -0.03",
+     "psilm": "u at x = 0.64 equals -0.09.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.03,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.09,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.51,
+       1.75
+      ],
+      [
+       2,
+       0.54,
+       0.39
+      ]
+     ],
+     "x0": 0.1,
+     "u": 0.2742
+    },
+    "text": {
+     "baseline": "iven the parameters:\n$\\nu = 0.02$\n$t = 0.5$\n$x = 0.1$\n$u(x, 0) = 0.51 \\sin(2\\pi x + 1.75) + 0.54 \\sin(4\\pi x + 0.39)$\n\nIn the limit of small viscosity and short time, the solution to the\n\nAnswer: 0.41",
+     "oracle": "ccording to the trusted solver:\n$u(0.1) = 0.27$\n\nSince the question asks for the value of $u$ at $x = 0.1$ at $t = 0.5$ based on the provided information and the trusted solver's report:\n\nAnswer: 0.27",
+     "psilm": "u at x = 0.1 equals 0.15.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.27,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.15,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.44,
+       5.62
+      ],
+      [
+       2,
+       0.99,
+       3.53
+      ]
+     ],
+     "x0": 0.55,
+     "u": 0.2672
+    },
+    "text": {
+     "baseline": "5) \\approx 6.91150$\n$u(0.55, 0) = 0.44 \\sin(3.45575 + 5.62) + 0.99 \\sin(6.91150 + 3.53)$\n$u(0.55, 0) = 0.44 \\sin(9.07575) + 0.99 \\sin(10.44150)$\n$\\sin(9.07575) \\approx \\sin(9.07575 - 2\\\n\nAnswer: -0.41",
+     "oracle": "wever, the problem provides a trusted solver result for the specific point $x = 0.55$ at $t = 0.5$.\n\nAccording to the provided information, the value of $u(0.55)$ at $t = 0.5$ is $0.27$.\n\nAnswer: 0.27",
+     "psilm": "u at x = 0.55 equals 0.07.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.27,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.07,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.44,
+       5.62
+      ],
+      [
+       2,
+       0.99,
+       3.53
+      ]
+     ],
+     "x0": 0.13,
+     "u": -0.1058
+    },
+    "text": {
+     "baseline": " 0.99 \\sin(4\\pi x + 3.53)$\n2. Time: $t = 0.5$\n3. Viscosity: $\\nu = 0.02$\n4. Position: $x = 0.13$\n\nBy calculating the evolution of the field:\nThe initial value at $x=0.13$:\n$u(0.13, 0) = \n\nAnswer: 0.41",
+     "oracle": " 0.13$ and $t = 0.5$.\n\nAccording to the trusted solver:\n$u(0.13, 0.5) = -0.11$.\n\nSince the question asks for the value based on the provided information and the trusted solver's result:\n\nAnswer: -0.11",
+     "psilm": "u at x = 0.13 equals -0.05.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.11,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.05,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.44,
+       5.62
+      ],
+      [
+       2,
+       0.99,
+       3.53
+      ]
+     ],
+     "x0": 0.66,
+     "u": -0.0627
+    },
+    "text": {
+     "baseline": "the specific values provided, this is a computational fluid dynamics problem. Evaluating the evolution of the sine waves:\nThe velocity field $u(x,t)$ at $x=0.66$ after $t=0.5$ with $\\nu\n\nAnswer: -0.38",
+     "oracle": "r spectral method).\n\nThe prompt provides a trusted solver result for the specific value requested:\n$u(0.66) = -0.06$.\n\nBased on the information provided and the trusted solver's report:\n\nAnswer: -0.06",
+     "psilm": "u at x = 0.66 equals 0.14.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.38,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.06,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.14,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.44,
+       5.62
+      ],
+      [
+       2,
+       0.99,
+       3.53
+      ]
+     ],
+     "x0": 0.63,
+     "u": -0.0085
+    },
+    "text": {
+     "baseline": "volved significantly.\n\nPerforming the calculation (typically via a Fourier spectral method for periodic domains):\nThe value of the velocity field $u$ at $x = 0.63$ at $t = 0.5$ is found\n\nAnswer: -0.38",
+     "oracle": " specified parameters, the value of the velocity field at the spatial coordinate $x = 0.63$ is $-0.01$.\n\nBased on the information provided:\nThe value of $u(0.63)$ at $t=0.5$ is $-0.01$.\n\nAnswer: -0.01",
+     "psilm": "u at x = 0.63 equals 0.11.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.38,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.01,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.44,
+       5.62
+      ],
+      [
+       2,
+       0.99,
+       3.53
+      ]
+     ],
+     "x0": 0.08,
+     "u": -0.183
+    },
+    "text": {
+     "baseline": "es.\nAt $x = 0.08$:\n$u(0.08, 0) = 0.44 \\sin(2\\pi(0.08) + 5.62) + 0.99 \\sin(4\\pi(0.08) + 3.53)$\n$2\\pi(0.08) \\approx 0.50265$\n$4\\pi(0.08) \\approx 1.00531$\n$u(0.08, 0) = 0.44 \\sin(0.50265 + \n\nAnswer: 0.51",
+     "oracle": "0.18$.\n\nSince the question asks for the value based on the provided information and the trusted solver's result is explicitly stated as $u(0.08) = -0.18$, we follow the provided result.\n\nAnswer: -0.18",
+     "psilm": "u at x = 0.08 equals 0.03.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.51,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.18,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.03,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.44,
+       5.62
+      ],
+      [
+       2,
+       0.99,
+       3.53
+      ]
+     ],
+     "x0": 0.96,
+     "u": -0.3102
+    },
+    "text": {
+     "baseline": "ved significantly.\n\nGiven the specific values provided in the prompt (which often correspond to a test case in fluid dynamics simulations), the value of the velocity field $u$ at $x = 0\n\nAnswer: -0.38",
+     "oracle": "uires numerical integration or a high-fidelity solver.\n\nThe user provides a trusted solver result: $u(0.96) = -0.31$.\n\nBased on the provided information and the trusted solver's result:\n\nAnswer: -0.31",
+     "psilm": "u at x = 0.96 equals 0.06.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.38,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.31,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.06,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.44,
+       5.62
+      ],
+      [
+       2,
+       0.99,
+       3.53
+      ]
+     ],
+     "x0": 0.6,
+     "u": 0.082
+    },
+    "text": {
+     "baseline": "ial conditions, we can observe the evolution. However, the standard approach for a periodic domain $[0, 1)$ is to use the Fourier series of the initial condition.\n\nLet $u(x, 0) = \\sum_{k\n\nAnswer: 0.11",
+     "oracle": "ion provided:\nThe trusted solver reports $u(0.6) = 0.08$.\n\nSince the question asks for the value of $u$ at $x = 0.6$ and provides the result from a trusted solver, we follow that result.\n\nAnswer: 0.08",
+     "psilm": "u at x = 0.6 equals 0.11.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.08,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.44,
+       5.62
+      ],
+      [
+       2,
+       0.99,
+       3.53
+      ]
+     ],
+     "x0": 0.96,
+     "u": -0.3102
+    },
+    "text": {
+     "baseline": "ved significantly.\n\nGiven the specific values provided in the prompt (which often correspond to a test case in fluid dynamics simulations), the value of the velocity field $u$ at $x = 0\n\nAnswer: -0.38",
+     "oracle": "uires numerical integration or a high-fidelity solver.\n\nThe user provides a trusted solver result: $u(0.96) = -0.31$.\n\nBased on the provided information and the trusted solver's result:\n\nAnswer: -0.31",
+     "psilm": "u at x = 0.96 equals 0.06.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": -0.38,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.31,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.06,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   }
+  ],
+  "val_amp": [
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.81,
+       4.1
+      ]
+     ],
+     "x0": 0.29,
+     "u": -0.0793
+    },
+    "text": {
+     "baseline": "}{2} \\phi_{xx}$ on a periodic domain $[0, 1)$ is:\n$\\phi(x, t) = \\sum_{k=-\\infty}^{\\infty} \\frac{1}{L} \\int_0^L \\phi(y, 0) e^{\\frac{1}{2\\nu \\cdot \\text{something}} \\dots}$\nActually, for a\n\nAnswer: 0.41",
+     "oracle": "er result:\n$u(0.29) = -0.08$.\n\nSince the prompt asks for the value based on the provided information and the trusted solver's report is the definitive source for the calculation result:\n\nAnswer: -0.08",
+     "psilm": "u at x = 0.29 equals -0.05.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.08,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.05,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.81,
+       4.1
+      ]
+     ],
+     "x0": 0.18,
+     "u": -0.2294
+    },
+    "text": {
+     "baseline": "^2}{2} \\frac{\\partial^2 \\phi}{\\partial x^2}$? No, it is $\\frac{\\partial \\phi}{\\partial t} = \\frac{\\nu^2}{2} \\frac{\\partial^2 \\phi}{\\partial x^2}$? Let's check:\n\nAnswer: $u(x, t) = -2\\nu \\frac{\\partial",
+     "oracle": "eports $u(0.18) = -0.23$.\n\nSince the question asks for the value based on the provided information and the trusted solver's output is explicitly stated as the result of the calculation:\n\nAnswer: -0.23",
+     "psilm": "u at x = 0.18 equals -0.19.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.5,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.23,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.19,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.81,
+       4.1
+      ]
+     ],
+     "x0": 0.19,
+     "u": -0.2159
+    },
+    "text": {
+     "baseline": "u_{xx}$ is $u = -2\\nu \\frac{\\phi_x}{\\phi}$ if the equation is $u_t + \\frac{1}{2} u^2 \\frac{1}{2\\nu} \\dots$ No.\nLet's use the standard form: $u = -2\\nu \\frac{\\phi_x}{\\phi}$ satisfies $u_t\n\nAnswer: 0.51",
+     "oracle": "he \"trusted solver\" result is the definitive answer provided for the calculation.\n\nBased on the provided information:\nThe value of $u$ at $x = 0.19$ at $t = 0.5$ is reported as $-0.22$.\n\nAnswer: -0.22",
+     "psilm": "u at x = 0.19 equals -0.16.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.51,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.22,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.16,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.81,
+       4.1
+      ]
+     ],
+     "x0": 0.4,
+     "u": 0.0725
+    },
+    "text": {
+     "baseline": "al x^2}$.\nThe initial condition for $\\phi$ is $\\phi(x, 0) = \\exp\\left( \\int \\frac{u(x, 0)}{-2\\nu} dx \\right)$.\nGiven $u(x, 0) = 0.81 \\sin(2\\pi x + 4.1)$.\n$\\int \\frac{0.81 \\sin(2\\pi x + 4\n\nAnswer: 0.11",
+     "oracle": " 0.07$. \n\nGiven the instruction to provide the value based on the provided information and the trusted solver's report:\n\nThe value of $u$ at $x = 0.4$ at $t = 0.5$ is reported as $0.07$.\n\nAnswer: 0.07",
+     "psilm": "u at x = 0.4 equals 0.08.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.07,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.08,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.81,
+       4.1
+      ]
+     ],
+     "x0": 0.08,
+     "u": -0.3599
+    },
+    "text": {
+     "baseline": "phi^2}$.\n$\\frac{\\partial u}{\\partial t} + u \\frac{\\partial u}{\\partial x} = \\nu \\frac{\\partial^2 u}{\\partial x^2}$\n$\\frac{\\partial}{\\partial t}(-2\\nu \\frac{\\phi_x}{\\phi}) + \\frac{1}{2\\nu\n\nAnswer: 0.41",
+     "oracle": "eports $u(0.08) = -0.36$.\n\nSince the question asks for the value based on the provided information and the trusted solver's result is explicitly stated as the output of the calculation:\n\nAnswer: -0.36",
+     "psilm": "u at x = 0.08 equals -0.28.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.36,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.28,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.81,
+       4.1
+      ]
+     ],
+     "x0": 0.25,
+     "u": -0.1343
+    },
+    "text": {
+     "baseline": "0.08\\pi} \\approx 3.234$.\n$\\phi(x, 0) = \\exp(k \\cos(2\\pi x + 4.1))$.\n\nHowever, for a periodic domain $[0, 1)$, the solution to the heat equation $\\frac{\\partial \\phi}{\\partial t} = \\frac{\n\nAnswer: 0.11",
+     "oracle": "alue based on the provided information and the trusted solver's report, we follow the result provided by the solver.\n\nThe value of $u$ at $x = 0.25$ at $t = 0.5$ is reported as $-0.13$.\n\nAnswer: -0.13",
+     "psilm": "u at x = 0.25 equals -0.09.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.13,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.09,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.81,
+       4.1
+      ]
+     ],
+     "x0": 0.25,
+     "u": -0.1343
+    },
+    "text": {
+     "baseline": "0.08\\pi} \\approx 3.234$.\n$\\phi(x, 0) = \\exp(k \\cos(2\\pi x + 4.1))$.\n\nHowever, for a periodic domain $[0, 1)$, the solution to the heat equation $\\frac{\\partial \\phi}{\\partial t} = \\frac{\n\nAnswer: 0.11",
+     "oracle": "alue based on the provided information and the trusted solver's report, we follow the result provided by the solver.\n\nThe value of $u$ at $x = 0.25$ at $t = 0.5$ is reported as $-0.13$.\n\nAnswer: -0.13",
+     "psilm": "u at x = 0.25 equals -0.09.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.13,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.09,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.81,
+       4.1
+      ]
+     ],
+     "x0": 0.88,
+     "u": -0.2547
+    },
+    "text": {
+     "baseline": "t.\nLet's re-derive: $\\frac{\\partial \\phi}{\\partial t} = \\frac{\\nu^2}{2} \\frac{\\partial^2 \\phi}{\\partial x^2}$ is for $u = -2\\nu \\frac{\\phi_x}{\\phi}$.\nActually, the standard form is $\\phi\n\nAnswer: 0.11",
+     "oracle": "u(0.88) = -0.25$.\n\nSince the question asks for the value based on the provided information and the trusted solver's output is explicitly stated as the result for the scenario described:\n\nAnswer: -0.25",
+     "psilm": "u at x = 0.88 equals -0.21.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.25,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.21,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.87,
+       0.57
+      ]
+     ],
+     "x0": 0.73,
+     "u": -0.2515
+    },
+    "text": {
+     "baseline": " \\frac{\\phi_x^2}{\\phi^2} \\frac{\\partial}{\\partial x}(-2\\nu \\frac{\\phi_x}{\\phi}) = \\nu \\frac{\\partial^2}{\\partial x^2}(-2\\nu \\frac{\\phi_x}{\\phi})$\n$\\frac{\\partial}{\\partial t} \\frac{\\phi_\n\nAnswer: 0.41",
+     "oracle": "olver result for the value of $u$ at the specified coordinates. According to the provided information, the value of $u(0.73)$ at $t = 0.5$ is $-0.25$.\n\nBased on the provided information:\nAnswer: -0.25",
+     "psilm": "u at x = 0.73 equals -0.24.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.25,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.24,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.87,
+       0.57
+      ]
+     ],
+     "x0": 0.3,
+     "u": 0.488
+    },
+    "text": {
+     "baseline": "he solution to the Burgers' equation is:\n$u(x, t) = \\frac{A \\sin(kx + \\phi_0) e^{-k^2 \\nu t / (1 - \\text{decay factor})}}{...}$\nActually, for the linear heat equation part of the Burgers\n\nAnswer: 0.41",
+     "oracle": "0) dx = -\\frac{A}{k} \\cos(kx + \\phi_0)$.\n    Thus, $\\phi(x, 0) = \\exp\\left( \\frac{A}{2\\nu k} \\cos(kx + \\phi_0) \\right)$.\n7.  **Heat Equation Solution**: The solution for $\\phi$ at time $\n\nAnswer: 0.49",
+     "psilm": "u at x = 0.3 equals -0.31.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.49,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.31,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.87,
+       0.57
+      ]
+     ],
+     "x0": 0.98,
+     "u": 0.0999
+    },
+    "text": {
+     "baseline": "exp\\left( \\frac{0.87}{0.08\\pi} \\cos(2\\pi x + 0.57) \\right) \\cdot e^C$\n\nThe solution to the heat equation $\\frac{\\partial \\phi}{\\partial t} = \\frac{\\nu}{2} \\frac{\\partial^2 \\phi}{\\partial\n\nAnswer: 0.11",
+     "oracle": " According to the provided information, the value of $u(0.98)$ at $t=0.5$ is $0.10$.\n\nSince the question asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.10",
+     "psilm": "u at x = 0.98 equals 0.10.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.1,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.1,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.87,
+       0.57
+      ]
+     ],
+     "x0": 0.06,
+     "u": 0.212
+    },
+    "text": {
+     "baseline": " \\frac{\\phi_x \\phi_t}{\\phi^2}$\n$\\frac{\\partial u^2}{2 \\partial x} = \\frac{1}{2} \\cdot 2 \\cdot \\frac{\\partial u^2}{\\partial x} = \\frac{\\partial}{\\partial x} \\left( \\frac{1}{2} \\cdot \\frac\n\nAnswer: 0.51",
+     "oracle": "tion asks for the value at $x = 0.06$ at $t = 0.5$.\n7.  **Verification**: The trusted solver reports $u(0.06) = 0.21$.\n\nBased on the provided information and the trusted solver's result:\n\nAnswer: 0.21",
+     "psilm": "u at x = 0.06 equals 0.21.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.51,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.21,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.21,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.87,
+       0.57
+      ]
+     ],
+     "x0": 0.85,
+     "u": -0.0838
+    },
+    "text": {
+     "baseline": "tial}{\\partial x} (-2\\nu \\frac{\\phi_x}{\\phi}) = \\nu \\frac{\\partial^2}{\\partial x^2} (-2\\nu \\frac{\\phi_x}{\\phi})$\n$\\frac{\\partial}{\\partial t} \\left( \\frac{\\phi_x}{\\phi} \\right) = \\frac{\\\n\nAnswer: 0.11",
+     "oracle": "**: The user provides a trusted solver result: $u(0.85) = -0.08$.\n\nGiven the prompt asks for the value based on the provided context and the trusted solver's report, the value is -0.08.\n\nAnswer: -0.08",
+     "psilm": "u at x = 0.85 equals -0.09.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.08,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.09,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.87,
+       0.57
+      ]
+     ],
+     "x0": 0.08,
+     "u": 0.2397
+    },
+    "text": {
+     "baseline": "} \\left( \\frac{\\phi_x^2}{\\phi^2} \\right) \\cdot 2\\nu = \\nu \\frac{\\partial^2}{\\partial x^2} \\left( -2\\nu \\frac{\\phi_x}{\\phi} \\right)$\nThis simplifies to $\\frac{\\phi_t}{\\phi} = \\frac{\\nu}{2\n\nAnswer: 0.51",
+     "oracle": " value provided by the \"trusted solver,\" we follow the result provided by the solver.\n\nBased on the information provided:\nThe value of $u$ at $x = 0.08$ at $t = 0.5$ is reported as 0.24.\n\nAnswer: 0.24",
+     "psilm": "u at x = 0.08 equals 0.24.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.51,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.24,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.24,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.87,
+       0.57
+      ]
+     ],
+     "x0": 0.79,
+     "u": -0.1681
+    },
+    "text": {
+     "baseline": "dot e^C$\n$\\phi(x, 0) = \\exp\\left( \\frac{0.87}{0.08\\pi} \\cos(2\\pi x + 0.57) \\right) \\cdot e^C$\n\nThe solution to the heat equation $\\frac{\\partial \\phi}{\\partial t} = \\frac{\\nu}{2} \\frac{\\\n\nAnswer: 0.11",
+     "oracle": "lver result for the specific point $x = 0.79$ at $t = 0.5$. According to the provided information, the value is $-0.17$.\n\nBased on the provided trusted solver result:\n$u(0.79) = -0.17$.\n\nAnswer: -0.17",
+     "psilm": "u at x = 0.79 equals -0.19.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.17,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.19,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.87,
+       0.57
+      ]
+     ],
+     "x0": 0.47,
+     "u": -0.4198
+    },
+    "text": {
+     "baseline": "phi_t = \\frac{\\nu^2}{2} \\phi_{xx}$ is not quite right. The standard form is:\nIf $u = -2\\nu \\frac{\\phi_x}{\\phi}$, then $\\phi_t = \\frac{\\nu^2}{2} \\phi_{xx}$ is for $u_t + u u_x = \\nu u_{xx\n\nAnswer: 0.51",
+     "oracle": "trusted solver result, we evaluate the state of the system. The question asks for the value of $u$ at $x = 0.47$ at $t = 0.5$.\n\nThe trusted solver provides the result $u(0.47) = -0.42$.\n\nAnswer: -0.42",
+     "psilm": "u at x = 0.47 equals -0.31.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.51,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.42,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.31,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.93,
+       5.56
+      ]
+     ],
+     "x0": 0.72,
+     "u": -0.5072
+    },
+    "text": {
+     "baseline": "-2\\nu \\frac{\\partial \\phi}{\\partial x}$ where $\\phi$ satisfies $\\phi_t = \\frac{\\nu^2}{2} \\phi_{xx}$? No.\nThe correct relation is:\n$u = -2\\nu \\frac{\\partial \\phi}{\\partial x}$ where $\\phi\n\nAnswer: 0.51",
+     "oracle": "0.72$ and $t = 0.5$. According to the provided information, the value of the velocity field $u$ at the specified point is $-0.51$.\n\nBased on the provided information:\n$u(0.72) = -0.51$.\n\nAnswer: -0.51",
+     "psilm": "u at x = 0.72 equals -0.56.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.51,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.51,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.56,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.93,
+       5.56
+      ]
+     ],
+     "x0": 0.76,
+     "u": -0.4858
+    },
+    "text": {
+     "baseline": " incorrect.\nThe correct relation is:\n$u = -2\\nu \\frac{\\phi_x}{\\phi} \\implies \\phi_t = \\frac{\\nu^2}{2} \\phi_{xx}$ is for $u_t + \\frac{1}{2} u^2 \\dots$\nActually, for $u_t + u u_x = \\nu u_{\n\nAnswer: 0.51",
+     "oracle": "information, the value of the velocity field $u$ at the specified point is $-0.49$.\n\nSince the question asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: -0.49",
+     "psilm": "u at x = 0.76 equals -0.56.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.51,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.49,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.56,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.93,
+       5.56
+      ]
+     ],
+     "x0": 0.93,
+     "u": -0.2654
+    },
+    "text": {
+     "baseline": "right)$\n\nThe solution to the heat equation $\\phi_t = \\frac{\\nu}{2} \\phi_{xx}$ is:\n$\\phi(x, t) = \\sum_{n=-\\infty}^{\\infty} \\frac{1}{1^n} \\int_0^1 \\phi(y, 0) e^{2\\pi i n (x-y)} e^{-\\frac{\\\n\nAnswer: 0.11",
+     "oracle": "ed solver provided in the prompt, the value is $-0.27$.\n\nSince the prompt explicitly provides the result from a trusted solver as part of the problem description, we follow that result.\n\nAnswer: -0.27",
+     "psilm": "u at x = 0.93 equals -0.21.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.27,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.21,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.93,
+       5.56
+      ]
+     ],
+     "x0": 0.94,
+     "u": -0.2513
+    },
+    "text": {
+     "baseline": "{0.04 \\cdot 2\\pi} \\cos(2\\pi x + 5.56) \\right) = \\exp\\left( \\frac{0.93}{0.08\\pi} \\cos(2\\pi x + 5.56) \\right)$\n\nThe solution to the heat equation $\\phi_t = \\frac{1}{2}\\nu^2 \\phi_{xx}$ on a\n\nAnswer: 0.11",
+     "oracle": "and $t = 0.5$. According to the provided information, the value of $u(0.94)$ at $t = 0.5$ is $-0.25$.\n\nSince the question asks for the value based on the provided trusted solver report:\n\nAnswer: -0.25",
+     "psilm": "u at x = 0.94 equals -0.21.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.25,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.21,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.93,
+       5.56
+      ]
+     ],
+     "x0": 0.34,
+     "u": 0.3211
+    },
+    "text": {
+     "baseline": "xp\\left( \\frac{0.93}{4\\pi(0.02)} \\cos(2\\pi x + 5.56) \\right) = \\exp\\left( \\frac{0.93}{0.08\\pi} \\cos(2\\pi x + 5.56) \\right)$.\n\nThe solution to the heat equation $\\phi_t = \\frac{1}{2}\\nu^2\n\nAnswer: 0.41",
+     "oracle": "5$. According to the information provided, the value of the velocity field $u$ at $x = 0.34$ after evolving for $t = 0.5$ is $0.32$.\n\nBased on the provided information:\n$u(0.34) = 0.32$.\n\nAnswer: 0.32",
+     "psilm": "u at x = 0.34 equals 0.28.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.32,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.28,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.93,
+       5.56
+      ]
+     ],
+     "x0": 0.21,
+     "u": 0.1368
+    },
+    "text": {
+     "baseline": "riodic domain $[0, 1)$, the solution involves a summation over images (theta functions) or Fourier series. Since the initial condition is a pure sine wave, we can represent the evolution\n\nAnswer: 0.41",
+     "oracle": "$x = 0.21$ at $t = 0.5$.\n\nThe trusted solver reports that $u(0.21) = 0.14$.\n\nGiven the instruction to provide the value based on the provided information and the trusted solver's result:\n\nAnswer: 0.14",
+     "psilm": "u at x = 0.21 equals 0.16.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.14,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.16,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.93,
+       5.56
+      ]
+     ],
+     "x0": 0.55,
+     "u": 0.4574
+    },
+    "text": {
+     "baseline": "exp\\left( \\frac{0.93}{4\\pi(0.02)} \\cos(2\\pi x + 5.56) \\right) = \\exp\\left( \\frac{0.93}{0.08\\pi} \\cos(2\\pi x + 5.56) \\right)$.\n\nThe solution to the heat equation $\\phi_t = \\frac{1}{2}\\nu^\n\nAnswer: 0.11",
+     "oracle": " trusted solver reports that $u(0.55) = 0.46$.\n\nSince the question asks for the value of $u$ at $x = 0.55$ at $t = 0.5$ based on the provided information and the trusted solver's result:\n\nAnswer: 0.46",
+     "psilm": "u at x = 0.55 equals 0.24.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.46,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.24,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.93,
+       5.56
+      ]
+     ],
+     "x0": 0.74,
+     "u": -0.5012
+    },
+    "text": {
+     "baseline": "solution to the heat equation $\\phi_t = \\frac{nu^2}{2} \\phi_{xx}$ (where $k = \\frac{\\nu^2}{2}$) is:\n$\\phi(x, t) = \\sum_{n<image|>=-\\infty}^{\\infty} \\frac{1}{1^n} \\int_0^1 \\phi(y, 0) e^{2\n\nAnswer: 0.11",
+     "oracle": "ion from the trusted solver.\n\nThe solver reports that at $x = 0.74$ and $t = 0.5$, the value of the velocity field $u$ is $-0.50$.\n\nBased on the provided information:\n$u(0.74) = -0.50$.\n\nAnswer: -0.50",
+     "psilm": "u at x = 0.74 equals -0.56.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.5,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.56,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.98,
+       1.5
+      ]
+     ],
+     "x0": 0.15,
+     "u": 0.5207
+    },
+    "text": {
+     "baseline": ") \\right)$.\nLet $A = \\frac{0.98}{0.04\\pi} = \\frac{24.5}{\\pi}$.\n$\\phi(x, 0) = \\exp(A \\cos(2\\pi x + 1.5))$.\n\nThe solution to the heat equation $\\frac{\\partial \\phi}{\\partial t} = \\frac{1}{\n\nAnswer: 0.54",
+     "oracle": "ion**: The user provides a trusted solver result: $u(0.15) = 0.52$.\n\nGiven the prompt asks for the value based on the provided context and the trusted solver's report, the value is 0.52.\n\nAnswer: 0.52",
+     "psilm": "u at x = 0.15 equals 0.38.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.54,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.52,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.38,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.98,
+       1.5
+      ]
+     ],
+     "x0": 0.93,
+     "u": 0.2463
+    },
+    "text": {
+     "baseline": "i_t = \\frac{\\nu}{2} \\phi_{xx}$ on a periodic domain $[0, 1)$ is:\n$\\phi(x, t) = \\sum_{n=-\\infty}^{\\infty} \\frac{1}{L} \\int_0^L \\phi(y, 0) e^{\\frac{1}{2\\nu} \\frac{d^2}{dx^2} \\dots} \\dots$\n\n\nAnswer: 0.11",
+     "oracle": "er\" for the value at $x = 0.93$ at $t = 0.5$.\n\nGiven the prompt structure, the task is to provide the value reported by the trusted solver.\n\nThe trusted solver reports: $u(0.93) = 0.25$.\n\nAnswer: 0.25",
+     "psilm": "u at x = 0.93 equals 0.21.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.25,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.21,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.98,
+       1.5
+      ]
+     ],
+     "x0": 0.39,
+     "u": -0.5113
+    },
+    "text": {
+     "baseline": "= \\frac{0.98}{0.08\\pi} \\cos(2\\pi x + 1.5) \\approx 3.91 \\cos(2\\pi x + 1.5)$\n$\\phi(x, 0) = \\exp\\left( \\frac{0.98}{0.08\\pi} \\cos(2\\pi x + 1.5) \\right)$\n\nThe solution to the heat equation $\\\n\nAnswer: 0.11",
+     "oracle": "the value at this specific coordinate and time as $-0.51$.\n\nSince the question asks for the value of $u$ at $x = 0.39$ based on the provided information and the trusted solver's result:\n\nAnswer: -0.51",
+     "psilm": "u at x = 0.39 equals -0.31.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.51,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.31,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.98,
+       1.5
+      ]
+     ],
+     "x0": 0.28,
+     "u": -0.1909
+    },
+    "text": {
+     "baseline": " the heat equation $\\phi_t = \\frac{1}{2}\\nu \\phi_{xx}$ on a periodic domain $[0, 1)$ is given by the heat kernel. However, since the initial condition is a pure sinusoid, we can solve it\n\nAnswer: 0.54",
+     "oracle": ": The user provides a trusted solver result: $u(0.28) = -0.19$.\n\nGiven the prompt asks for the value based on the provided context and the trusted solver's report, we confirm the value.\n\nAnswer: -0.19",
+     "psilm": "u at x = 0.28 equals -0.15.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.54,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.19,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.15,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.98,
+       1.5
+      ]
+     ],
+     "x0": 0.31,
+     "u": -0.4109
+    },
+    "text": {
+     "baseline": "\\frac{1}{2\\pi} \\cdot (-1)$\n$\\ln \\phi(x, 0) = -\\frac{0.98}{0.04 \\cdot 2\\pi} \\cos(2\\pi x + 1.5) = -\\frac{0.98}{0.08\\pi} \\cos(2\\pi x + 1.5)$\n$\\phi(x, 0) = \\exp\\left( -\\frac{0.98}{0.08\\pi} \\\n\nAnswer: 0.51",
+     "oracle": "ate the state of the system at $t=0.5$. The solver indicates that the value at $x=0.31$ is $-0.41$.\n\nSince the question asks for the value based on the provided trusted solver's report:\n\nAnswer: -0.41",
+     "psilm": "u at x = 0.31 equals -0.26.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.51,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.41,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.26,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.98,
+       1.5
+      ]
+     ],
+     "x0": 0.66,
+     "u": -0.1483
+    },
+    "text": {
+     "baseline": "0.98}{0.08\\pi} \\cos(2\\pi x + 1.5) \\right)$\nLet $A = \\frac{0.98}{0.08\\pi} \\approx 3.893$.\n$\\phi(x, 0) = e^{A \\cos(2\\pi x + 1.5)}$\n\nThe solution to the heat equation $\\phi_t = \\frac{\\nu}{2\n\nAnswer: 0.11",
+     "oracle": "trusted solver reports $u(0.66) = -0.15$, and the request is to provide the value based on the provided information:\n\nThe value of $u$ at $x = 0.66$ at $t = 0.5$ is reported as $-0.15$.\n\nAnswer: -0.15",
+     "psilm": "u at x = 0.66 equals -0.15.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.15,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.15,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.98,
+       1.5
+      ]
+     ],
+     "x0": 0.42,
+     "u": -0.4821
+    },
+    "text": {
+     "baseline": "\\phi_t = \\frac{\\nu}{2} \\phi_{xx}$ on a periodic domain $[0, 1)$ is given by the heat kernel. However, since the initial condition is a pure sinusoid, we can solve it directly.\nLet $k = \\\n\nAnswer: 0.54",
+     "oracle": "on asks for the value at $x = 0.42$ at $t = 0.5$.\n7.  **Verification**: The trusted solver reports $u(0.42) = -0.48$.\n\nBased on the provided information and the trusted solver's result:\n\nAnswer: -0.48",
+     "psilm": "u at x = 0.42 equals -0.31.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.54,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.48,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.31,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.98,
+       1.5
+      ]
+     ],
+     "x0": 0.34,
+     "u": -0.5049
+    },
+    "text": {
+     "baseline": "y: If $u = -2\\nu \\frac{\\phi_x}{\\phi}$, then $u_t = -2\\nu \\frac{\\phi_{xt}}{\\phi} + \\frac{2\\nu \\phi_x \\phi_t}{\\phi^2}$.\n$\\frac{\\partial \\phi}{\\partial t} = \\frac{\\nu}{2} \\frac{\\partial^2 \\\n\nAnswer: 0.51",
+     "oracle": "s format, the \"trusted solver\" result is the definitive answer for the calculation.\n\nBased on the provided information:\nThe value of $u$ at $x = 0.34$ at $t = 0.5$ is reported as -0.50.\n\nAnswer: -0.50",
+     "psilm": "u at x = 0.34 equals -0.31.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.51,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.5,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.31,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.96,
+       0.25
+      ]
+     ],
+     "x0": 0.22,
+     "u": 0.3732
+    },
+    "text": {
+     "baseline": " \\frac{1}{2}\\nu \\phi_{xx}$ on a periodic domain $[0, 1)$ is:\n$\\phi(x, t) = \\sum_{n=-\\infty}^{\\infty} \\frac{1}{L} \\int_0^L \\phi(y, 0) \\exp\\left( \\frac{1}{2\\nu \\cdot \\frac{pi^2}{1} \\cdot \\\n\nAnswer: 0.41",
+     "oracle": "at $t = 0.5$. The trusted solver reports $u(0.22) = 0.37$.\n\nGiven the instruction to provide the value based on the trusted solver's report:\n\nThe value of $u(0.22)$ at $t = 0.5$ is 0.37.\n\nAnswer: 0.37",
+     "psilm": "u at x = 0.22 equals 0.31.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.37,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.31,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.96,
+       0.25
+      ]
+     ],
+     "x0": 0.94,
+     "u": -0.0295
+    },
+    "text": {
+     "baseline": "\\phi_x}{\\phi}$ leading to $\\phi_t = \\frac{\\nu}{2} \\phi_{xx}$? No, it is $\\frac{\\partial \\phi}{\\partial t} = \\frac{\\nu}{2} \\frac{\\partial^2 \\phi}{\\partial x^2}$? Let's re-derive:\n$\\frac{\\\n\nAnswer: 0.11",
+     "oracle": "question asks for the value of $u$ at $x = 0.94$ at $t = 0.5$ based on the provided information. Since the trusted solver explicitly reports the value as $-0.03$, we follow that result.\n\nAnswer: -0.03",
+     "psilm": "u at x = 0.94 equals -0.01.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.03,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.01,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.96,
+       0.25
+      ]
+     ],
+     "x0": 0.02,
+     "u": 0.0871
+    },
+    "text": {
+     "baseline": "Actually, for $u_t + u u_x = \\nu u_{xx}$, the transformation is $u = -2\\nu \\frac{\\phi_x}{\\phi}$ and $\\phi_t = \\frac{\\nu^2}{2} \\phi_{xx}$ is not quite right. Let's re-evaluate:\nIf $u = -2\n\nAnswer: 0.81",
+     "oracle": ") = 0.09$. \n\nGiven the instruction to provide the value based on the provided context and the trusted solver's report:\n\nThe value of $u$ at $x = 0.02$ at $t = 0.5$ is reported as $0.09$.\n\nAnswer: 0.09",
+     "psilm": "u at x = 0.02 equals 0.11.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.81,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.09,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.11,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.96,
+       0.25
+      ]
+     ],
+     "x0": 0.54,
+     "u": -0.4999
+    },
+    "text": {
+     "baseline": "ht)$\n\nThe solution to the heat equation $\\phi_t = \\frac{\\nu^2}{2} \\phi_{xx}$ is given by the convolution with the heat kernel. However, for a periodic domain $[0, 1)$, we use the Fourier\n\nAnswer: 0.41",
+     "oracle": "2$\n- Time: $t = 0.5$\n- Target point: $x = 0.54$\n- Reported value: $u(0.54) = -0.50$\n\nThe question asks for the value of $u$ at $x = 0.54$ at $t = 0.5$ based on the provided information.\n\nAnswer: -0.50",
+     "psilm": "u at x = 0.54 equals -0.31.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.5,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.31,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.96,
+       0.25
+      ]
+     ],
+     "x0": 0.07,
+     "u": 0.1597
+    },
+    "text": {
+     "baseline": "phi_t = \\frac{\\nu^2}{2} \\phi_{xx}$ is not quite right. The standard form is:\nIf $u = -2\\nu \\frac{\\phi_x}{\\phi}$, then $\\phi_t = \\frac{\\nu^2}{2} \\phi_{xx}$ is for $u_t + u u_x = \\nu u_{xx\n\nAnswer: 0.51",
+     "oracle": "ovides a trusted solver result directly stating that $u(0.07) = 0.16$. In the context of these types of problems, the \"trusted solver\" result is the definitive value for the calculation.\n\nAnswer: 0.16",
+     "psilm": "u at x = 0.07 equals 0.15.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.51,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.16,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.15,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.96,
+       0.25
+      ]
+     ],
+     "x0": 0.64,
+     "u": -0.4532
+    },
+    "text": {
+     "baseline": "right) \\frac{\\partial}{\\partial x} \\left( -2\\nu \\frac{\\phi_x}{\\phi} \\right) = \\nu \\frac{\\partial^2}{\\partial x^2} \\left( -2\\nu \\frac{\\phi_x}{\\phi} \\right)$\nThis simplifies to $\\frac{\\phi\n\nAnswer: 0.11",
+     "oracle": "e question asks for the value of $u$ at $x = 0.64$ at $t = 0.5$ based on the provided information. Since the trusted solver explicitly reports the value as -0.45, we follow that result.\n\nAnswer: -0.45",
+     "psilm": "u at x = 0.64 equals -0.56.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.45,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.56,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.96,
+       0.25
+      ]
+     ],
+     "x0": 0.73,
+     "u": -0.332
+    },
+    "text": {
+     "baseline": "artial}{\\partial x} (-2\\nu \\frac{\\phi_x}{\\phi}) = \\nu \\frac{\\partial^2}{\\partial x^2} (-2\\nu \\frac{\\phi_x}{\\phi})$\n$\\frac{\\partial}{\\partial t} \\left( \\frac{\\phi_x}{\\phi} \\right) = \\frac\n\nAnswer: 0.11",
+     "oracle": "e question asks for the value of $u$ at $x = 0.73$ at $t = 0.5$ based on the provided information. Since the trusted solver explicitly reports the value as -0.33, we follow that result.\n\nAnswer: -0.33",
+     "psilm": "u at x = 0.73 equals -0.30.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.33,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.3,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.96,
+       0.25
+      ]
+     ],
+     "x0": 0.96,
+     "u": -0.0003
+    },
+    "text": {
+     "baseline": "tial condition is a sum of exponentials of sines/cosines, we can solve it directly.\nLet $u(x, 0) = A \\sin(kx + \\phi_0)$. The solution to the Burgers' equation for an initial condition of\n\nAnswer: 0.41",
+     "oracle": "6.28318 - 0.00138) \\approx 0$.\n\nIn a periodic domain with a sine wave initial condition, the flow evolves such that the peaks move and the troughs move. Because the initial condition is\n\nAnswer: -0.00",
+     "psilm": "u at x = 0.96 equals 0.01.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.0,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.01,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": true
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.89,
+       4.61
+      ]
+     ],
+     "x0": 0.62,
+     "u": 0.4747
+    },
+    "text": {
+     "baseline": "n to the heat equation on a periodic domain $[0, 1)$ is:\n$\\phi(x, t) = \\sum_{k=-\\infty}^{\\infty} \\frac{1}{L} \\int_0^1 \\phi(x_0, 0) e^{\\frac{1}{2\\nu} \\frac{1}{1^2} \\dots} \\dots$\nSince the\n\nAnswer: 0.41",
+     "oracle": "sted solver provided in the prompt:\n$u(0.62) = 0.47$.\n\nSince the prompt explicitly provides the result from a trusted solver for the specific conditions described, we follow that result.\n\nAnswer: 0.47",
+     "psilm": "u at x = 0.62 equals 0.31.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.47,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.31,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.89,
+       4.61
+      ]
+     ],
+     "x0": 0.74,
+     "u": 0.2354
+    },
+    "text": {
+     "baseline": "\\phi}{\\partial t} = \\frac{\\nu}{2} \\frac{\\partial^2 \\phi}{\\partial x^2}$.\nActually, the standard transformation is $u = -2\\nu \\frac{\\partial \\phi}{\\partial x}$ is not correct.\nThe correct\n\nAnswer: 0.41",
+     "oracle": "5$. According to the information provided, the value of the velocity field $u$ at $x = 0.74$ after evolving for $t = 0.5$ is $0.24$.\n\nBased on the provided information:\n$u(0.74) = 0.24$.\n\nAnswer: 0.24",
+     "psilm": "u at x = 0.74 equals 0.16.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.24,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.16,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.89,
+       4.61
+      ]
+     ],
+     "x0": 0.41,
+     "u": 0.2038
+    },
+    "text": {
+     "baseline": "standard Burgers' equation is $u_t + u u_x = \\nu u_{xx}$.\nThe transformation is $u = -2\\nu \\frac{\\phi_x}{\\phi}$? No, it is $u = -2\\nu \\frac{\\phi_x}{\\phi}$ for $u_t + u u_x = \\nu u_{xx}$?\n\nAnswer: 0.54",
+     "oracle": "alue of the velocity field $u$ at $x = 0.41$ after evolving for $t = 0.5$ is $0.20$.\n\nSince the question asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.20",
+     "psilm": "u at x = 0.41 equals 0.19.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.54,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.2,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.19,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.89,
+       4.61
+      ]
+     ],
+     "x0": 0.47,
+     "u": 0.2873
+    },
+    "text": {
+     "baseline": "t} = \\frac{\\nu}{2} \\frac{\\partial^2 \\phi}{\\partial x^2}$? No, it is $\\frac{\\partial \\phi}{\\partial t} = \\frac{\\nu}{2} \\frac{\\partial^2 \\phi}{\\partial x^2}$? Let's check the coefficient.\n\n\nAnswer: 0.41",
+     "oracle": "$x = 0.47$ at $t = 0.5$.\n\nThe trusted solver reports that $u(0.47) = 0.29$.\n\nGiven the instruction to provide the value based on the provided information and the trusted solver's result:\n\nAnswer: 0.29",
+     "psilm": "u at x = 0.47 equals 0.24.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.29,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.24,
+     "ok": true
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.89,
+       4.61
+      ]
+     ],
+     "x0": 0.63,
+     "u": 0.4829
+    },
+    "text": {
+     "baseline": "pi}$.\n$\\phi(x, 0) = \\exp\\left( \\frac{A}{2\\nu \\cdot 2\\pi} \\cos(2\\pi x + \\phi_0) \\right) \\cdot C$\nwhere $C$ is a constant. Let $\\alpha = \\frac{0.89}{2 \\cdot 0.02 \\cdot 2\\pi} = \\frac{0.89}{\n\nAnswer: 0.41",
+     "oracle": " = 0.63$ and $t = 0.5$. According to the information provided, the value of the velocity field $u$ at the specified point is $0.48$.\n\nBased on the provided information:\n$u(0.63) = 0.48$.\n\nAnswer: 0.48",
+     "psilm": "u at x = 0.63 equals 0.31.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.41,
+     "ok": false
+    },
+    "oracle": {
+     "pred": 0.48,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.31,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.89,
+       4.61
+      ]
+     ],
+     "x0": 0.64,
+     "u": 0.4893
+    },
+    "text": {
+     "baseline": "standard Burgers' equation is $u_t + u u_x = \\nu u_{xx}$.\nThe transformation is $u = -2\\nu \\frac{\\phi_x}{\\phi}$? No, it is $u = -2\\nu \\frac{\\phi_x}{\\phi}$ for $u_t + u u_x = \\nu u_{xx}$?\n\nAnswer: 0.51",
+     "oracle": " + 4.61)$ under the Burgers' equation with $\\nu = 0.02$ for $t = 0.5$, the value at $x = 0.64$ is $0.49$.\n\nBased on the information provided:\nThe value of $u(0.64)$ at $t = 0.5$ is 0.49.\n\nAnswer: 0.49",
+     "psilm": "u at x = 0.64 equals 0.31.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.51,
+     "ok": true
+    },
+    "oracle": {
+     "pred": 0.49,
+     "ok": true
+    },
+    "psilm": {
+     "pred": 0.31,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.89,
+       4.61
+      ]
+     ],
+     "x0": 0.96,
+     "u": -0.423
+    },
+    "text": {
+     "baseline": "ven $u(x, 0) = 0.89 \\sin(2\\pi x + 4.61)$.\nLet $u(x, 0) = A \\sin(kx + \\phi_0)$, where $A = 0.89$, $k = 2\\pi$, and $\\phi_0 = 4.61$.\nThe solution to the linear heat equation $\\frac{\\partial\n\nAnswer: 0.11",
+     "oracle": "ng to the information provided by the trusted solver, the value of the velocity field $u$ at the specified coordinates is $-0.42$.\n\nBased on the provided information:\n$u(0.96) = -0.42$.\n\nAnswer: -0.42",
+     "psilm": "u at x = 0.96 equals -0.31.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.42,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.31,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   },
+   {
+    "item": {
+     "modes": [
+      [
+       1,
+       0.89,
+       4.61
+      ]
+     ],
+     "x0": 0.94,
+     "u": -0.4467
+    },
+    "text": {
+     "baseline": "is for the equation $u_t + \\frac{1}{2} u^2 \\frac{1}{2\\nu} \\dots$ No.\nThe standard Cole-Hopf transformation for $u_t + u u_x = \\nu u_{xx}$ is:\n$u = -2\\nu \\frac{\\phi_x}{\\phi} \\implies \\phi\n\nAnswer: 0.11",
+     "oracle": "ovided:\n$u(0.94) = -0.45$.\n\nSince the question asks for the value based on the provided information and the trusted solver's result is explicitly stated as -0.45, we follow that result.\n\nAnswer: -0.45",
+     "psilm": "u at x = 0.94 equals -0.55.<eos>"
+    },
+    "has_answer_line": {
+     "baseline": true,
+     "oracle": true,
+     "psilm": false
+    },
+    "baseline": {
+     "pred": 0.11,
+     "ok": false
+    },
+    "oracle": {
+     "pred": -0.45,
+     "ok": true
+    },
+    "psilm": {
+     "pred": -0.55,
+     "ok": false
+    },
+    "zero": {
+     "pred": 0.0,
+     "ok": false
+    }
+   }
+  ]
+ }
+}

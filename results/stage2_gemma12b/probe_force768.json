@@ -1,0 +1,225 @@
+{
+ "summary": {
+  "n": 8,
+  "step": 7000,
+  "model": "mlx-community/gemma-4-12B-it-4bit",
+  "tolerance": 0.05,
+  "couple": [
+   20,
+   30,
+   48
+  ],
+  "baseline": {
+   "acc": 0.0,
+   "mae": 0.5683,
+   "answer_line_rate": 1.0,
+   "forced_rate": 1.0
+  },
+  "zero": {
+   "acc": 0.0,
+   "mae": 0.3304
+  }
+ },
+ "rows": [
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.86,
+    "u": -0.095
+   },
+   "text": {
+    "baseline": "kx + \\phi_0) / (2\\nu k)}$ is:\n$\\phi(x, t) = \\frac{1}{2\\pi} \\int_0^{2\\pi} e^{\\frac{A}{2\\nu k} \\cos(\\theta + \\phi_0)} e^{\\frac{1}{2\\nu k} \\frac{1}{1 - \\frac{1}{2\\nu k^2} \\dots}}$\nActually,\n\nAnswer: 0.41"
+   },
+   "has_answer_line": {
+    "baseline": true
+   },
+   "forced": {
+    "baseline": true
+   },
+   "baseline": {
+    "pred": 0.41,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.57,
+    "u": -0.5394
+   },
+   "text": {
+    "baseline": "dot \\dots}$\nWait, the heat equation is $\\frac{\\partial \\phi}{\\partial t} = \\frac{1}{2}\\nu^2 \\frac{\\partial^2 \\phi}{\\partial x^2}$.\nThe solution for $\\phi(x, t)$ given $\\phi(x, 0) = \\exp(\n\nAnswer: 0.41"
+   },
+   "has_answer_line": {
+    "baseline": true
+   },
+   "forced": {
+    "baseline": true
+   },
+   "baseline": {
+    "pred": 0.41,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.49,
+    "u": -0.5634
+   },
+   "text": {
+    "baseline": "als.\nSpecifically, $\\phi(x, 0) = \\sum_{n=-\\infty}^{\\infty} \\exp\\left( \\frac{1.28 \\cos(2\\pi x + 0.5)}{0.08\\pi} \\right)$.\nSince $u(x, 0) = 1.28 \\sin(2\\pi x + 0.5)$, we can write $\\phi(x, 0\n\nAnswer: 0.51"
+   },
+   "has_answer_line": {
+    "baseline": true
+   },
+   "forced": {
+    "baseline": true
+   },
+   "baseline": {
+    "pred": 0.51,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.13,
+    "u": 0.3283
+   },
+   "text": {
+    "baseline": ":\n$u(x, t) = \\frac{\\int \\frac{1}{2\\nu} \\exp(\\frac{1}{2\\nu} \\int^x u(y, 0) dy) \\cdot \\exp(\\frac{1}{2\\nu} \\int^x u(x_0, 0) \\dots)}{\\dots}$\nMore simply, for $u(x, 0) = A \\sin(kx + \\phi_0)$,\n\nAnswer: 0.51"
+   },
+   "has_answer_line": {
+    "baseline": true
+   },
+   "forced": {
+    "baseline": true
+   },
+   "baseline": {
+    "pred": 0.51,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.79,
+    "u": -0.2048
+   },
+   "text": {
+    "baseline": "{16}{\\pi} \\cos(2\\pi x + 0.5)}$, we can use the Fourier series.\nLet $A = \\frac{16}{\\pi}$. The Fourier coefficients of $\\phi(x, 0)$ are:\n$\\phi(x, 0) = \\sum_{k=-\\infty}^{\\infty} c_k e^{i 2\\\n\nAnswer: 0.41"
+   },
+   "has_answer_line": {
+    "baseline": true
+   },
+   "forced": {
+    "baseline": true
+   },
+   "baseline": {
+    "pred": 0.41,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.31,
+    "u": 0.581
+   },
+   "text": {
+    "baseline": "phi} + 2\\nu \\frac{\\phi_x \\phi_{xx}}{\\phi^2} + 2\\nu \\frac{\\phi_x \\phi_{xx}}{\\phi^2} - 2\\nu \\frac{\\phi_x^3}{\\phi^3} + 4\\nu \\frac{\\phi_x^2 \\phi_{xx}}{\\phi^3} - 4\\nu \\frac{\\phi_x^3 \\phi_x}{\\\n\nAnswer: 0.51"
+   },
+   "has_answer_line": {
+    "baseline": true
+   },
+   "forced": {
+    "baseline": true
+   },
+   "baseline": {
+    "pred": 0.51,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.79,
+    "u": -0.2048
+   },
+   "text": {
+    "baseline": "{16}{\\pi} \\cos(2\\pi x + 0.5)}$, we can use the Fourier series.\nLet $A = \\frac{16}{\\pi}$. The Fourier coefficients of $\\phi(x, 0)$ are:\n$\\phi(x, 0) = \\sum_{k=-\\infty}^{\\infty} c_k e^{i 2\\\n\nAnswer: 0.41"
+   },
+   "has_answer_line": {
+    "baseline": true
+   },
+   "forced": {
+    "baseline": true
+   },
+   "baseline": {
+    "pred": 0.41,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.84,
+    "u": -0.1264
+   },
+   "text": {
+    "baseline": "pi x + 0.5)}$.\nThe solution to the heat equation is:\n$\\phi(x, t) = \\sum_{n=-\\infty}^{\\infty} I_n(A) e^{i n (2\\pi x + 0.5)} e^{-\\frac{\\nu}{2} (2\\pi)^2 \\frac{n^2}{1^2} t}$\nWait, the period\n\nAnswer: 0.41"
+   },
+   "has_answer_line": {
+    "baseline": true
+   },
+   "forced": {
+    "baseline": true
+   },
+   "baseline": {
+    "pred": 0.41,
+    "ok": false
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  }
+ ]
+}

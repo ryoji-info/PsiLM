@@ -1,8 +1,12 @@
 {
  "backbone": "mlx-community/gemma-4-12B-it-4bit",
  "hf_tokenizer": "mlx-community/gemma-4-12B-it-4bit",
+ "task": "1d",
  "loader": "psilm.mlx.gemma_loader.load_backbone_any (gemma4_unified -> text tower)",
- "physics": "results/stage2/fno.pt (1D Burgers FNO, 70K params)",
+ "physics": {
+  "file": "physics/fno_burgers_singlemode.safetensors",
+  "source": "results/stage2/fno.pt (1D Burgers FNO, 70K params)"
+ },
  "bridges_class": "psilm.mlx.bridges.PsiBridgesMLX",
  "construct": {
   "d_model": 3840,
@@ -22,9 +26,11 @@
   "phase_A_readout_only": 2000,
   "coupled_steps": 4000,
   "no_harm_steps": 1500,
+  "no_harm_resumed_from": 5500,
   "batch": 4,
   "lr": "3e-4 (warm-up, coupled), 1e-4 (no-harm phase, from the step-5500 checkpoint)",
-  "no_harm_arm": "1046 non-physics prompts (GSM8K train, MMLU validation; with/without the Answer nudge) paired with the backbone's own greedy continuation; gate-only updates + mean-gate penalty"
+  "no_harm_arm": "1046 non-physics prompts (GSM8K train, MMLU validation; with/without the Answer nudge) paired with the backbone's own greedy continuation; gate-only updates + mean-gate penalty",
+  "note": "phase lengths sum to 7,500 against a 7,000 step counter: the no-harm phase resumed from the step-5,500 checkpoint, so 500 coupled steps were replayed"
  },
  "held_out_n48_per_chunk": {
   "coupled": [

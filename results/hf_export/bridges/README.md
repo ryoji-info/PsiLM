@@ -64,7 +64,8 @@ Sources: `results/bench/gemma12b_guardrail_summary.json` (accuracy, gate σ and 
 
 - **Best result on a large backbone with a selective gate:** `gemma-4-12b-4bit-mlx-1d-value-selective` or `qwen3-8b-4bit-mlx-1d-value-selective` (MLX, Apple Silicon).
 - **Smallest working system (PyTorch or MLX, runs on a laptop in minutes):** `qwen2.5-0.5b-1d` or `qwen2.5-0.5b-4bit-mlx-1d`.
-- **2D physics with a pretrained physics foundation model:** `qwen2.5-0.5b-2d-dpot`.
+- **2D physics with a pretrained physics foundation model:** `gemma-4-12b-4bit-mlx-2d-dpot` (100% held-out) or the smaller `qwen2.5-0.5b-2d-dpot` (95.0%).
+- **Multi-mode initial conditions:** `gemma-4-12b-4bit-mlx-multimode` (100% in-distribution) — but read its generalization rows first.
 - **Generalization / loop-coupling studies:** `qwen2.5-0.5b-multimode`, `qwen2.5-0.5b-loop2` (and the refuted `-v2` kept for the record).
 - **The Bicameral-Model reproduction (twin LLMs + calculator, no physics):** `qwen2.5-0.5b-bicameral`.
 
@@ -86,7 +87,7 @@ Held-out accuracy is within ±0.05 of the ground truth unless the row says other
 | `gemma-4-12b-4bit-mlx-multimode` | Gemma 4 12B-it-4bit (MLX) | 1D multi-mode + generalization study (run tag `stage2b_gemma12b_2b`) | 25.5M | **iid 100%** @±0.05, MAE 0.009 (n=48; backbone 20.8%, oracle 100%); held-out mode combination 25.0%, amplitude extrapolation 52.1% |
 | `gemma-4-12b-4bit-mlx-2d-dpot` | Gemma 4 12B-it-4bit (MLX) | 2D Fisher–KPP with fine-tuned DPOT-Tiny (run tag `stage2d_gemma12b_2d`) | 13.8M | **100%** @±0.05, MAE 0.0096 (n=60; backbone 10.0%, oracle 96.7% — PsiLM above the text ceiling) |
 
-Which physics model each directory needs: the `-1d` / `-value` directories use `fno_burgers_singlemode`, the `-multimode`, `-v2-refuted` and `-loop2` directories use `fno_burgers_multimode`, and `-2d-dpot` uses `dpot_tiny_fisher2d_finetuned`, all from `ryoji-info/PsiLM-physics`. The bicameral interface uses no physics model. The backbones are the public checkpoints named in the table (`mlx-community/*` for MLX rows); the two 8B directories and the Gemma directory carry a `config.json` with the exact backbone id, coupling layers and training recipe.
+Which physics model each directory needs: the `-1d` / `-value` directories use `fno_burgers_singlemode`, the `-multimode`, `-v2-refuted` and `-loop2` directories use `fno_burgers_multimode`, and `-2d-dpot` uses `dpot_tiny_fisher2d_finetuned`, all from `ryoji-info/PsiLM-physics`. The bicameral interface uses no physics model. The backbones are the public checkpoints named in the table (`mlx-community/*` for MLX rows); the two 8B directories and the three Gemma directories carry a `config.json` with the exact backbone id, coupling layers and training recipe.
 
 ## Loading
 

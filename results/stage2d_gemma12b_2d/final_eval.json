@@ -1,0 +1,2254 @@
+{
+ "summary": {
+  "n": 60,
+  "step": 7500,
+  "model": "mlx-community/gemma-4-12B-it-4bit",
+  "tolerance": 0.05,
+  "couple": [
+   20,
+   30,
+   48
+  ],
+  "baseline": {
+   "acc": 0.1,
+   "mae": 0.2896,
+   "answer_line_rate": 1.0
+  },
+  "oracle": {
+   "acc": 0.9667,
+   "mae": 0.021,
+   "answer_line_rate": 1.0
+  },
+  "psilm": {
+   "acc": 1.0,
+   "mae": 0.0096,
+   "answer_line_rate": 0.0
+  },
+  "zero": {
+   "acc": 0.0167,
+   "mae": 0.6727
+  }
+ },
+ "rows": [
+  {
+   "item": {
+    "a": 0.8,
+    "cx": 0.1,
+    "cy": 0.51,
+    "w": 0.08,
+    "x0": 0.08,
+    "y0": 0.53,
+    "u": 0.9559
+   },
+   "text": {
+    "baseline": "e initial value at $(0.08, 0.53)$ is:\n$u(0.08, 0.53, 0) = 0.8 \\exp\\left( -\\frac{(0.08-0.1)^2 + (0.53-0.51)^2}{2(0.04^2)} \\right)$\n$= 0.8 \\exp\\left( -\\frac{0.0004 + 0.0004}{0.0032} \\right\n\nAnswer: 0.80",
+    "oracle": "(1-u)$ significantly increases the concentration toward the carrying capacity. \n\nThe trusted solver provides the result for the evolution of this specific system:\n$u(0.08, 0.53) = 0.96$.\n\nAnswer: 0.96",
+    "psilm": "u at (0.08, 0.53) equals 0.96.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.8,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.96,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.96,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.8,
+    "cx": 0.1,
+    "cy": 0.51,
+    "w": 0.08,
+    "x0": 0.14,
+    "y0": 0.56,
+    "u": 0.9209
+   },
+   "text": {
+    "baseline": "the steady state $u \\approx 1$ in the region where the initial concentration is significant.\nThe point $(0.14, 0.56)$ is very close to the center $(0.1, 0.51)$.\nDistance $d = \\sqrt{(0.14\n\nAnswer: 0.82",
+    "oracle": " and the time elapsed is $t=0.4$, the concentration at a point near the center of a high-growth region will approach the carrying capacity.\n\nThe trusted solver provides the value for the\n\nAnswer: 0.92",
+    "psilm": "u at (0.14, 0.56) equals 0.91.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.82,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.92,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.91,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.8,
+    "cx": 0.1,
+    "cy": 0.51,
+    "w": 0.08,
+    "x0": 0.06,
+    "y0": 0.55,
+    "u": 0.9309
+   },
+   "text": {
+    "baseline": "\nThe Fisher-KPP equation describes a reaction-diffusion process. The reaction term $r u(1-u)$ is significant here ($r=6$). However, the diffusion coefficient $D=0.001$ is very small.\nThe\n\nAnswer: 0.62",
+    "oracle": "prompt provides the result of a trusted solver directly:\n$u(0.06, 0.55) = 0.93$.\n\nSince the question asks for the value based on the provided information and the trusted solver's report:\n\nAnswer: 0.93",
+    "psilm": "u at (0.06, 0.55) equals 0.92.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.62,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.93,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.92,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.8,
+    "cx": 0.1,
+    "cy": 0.51,
+    "w": 0.08,
+    "x0": 0.23,
+    "y0": 0.66,
+    "u": 0.3304
+   },
+   "text": {
+    "baseline": "= 6$ is quite high. The concentration $u$ will increase rapidly.\nThe initial value at $(0.23, 0.66)$ is:\n$u(0.23, 0.66, 0) = 0.8 \\exp\\left( -\\frac{(0.23-0.1)^2 + (0.66-0.51)^2}{2(0.08)^2\n\nAnswer: 0.48",
+    "oracle": "rovides the result of the numerical integration of this specific partial differential equation.\n\nBased on the provided information and the trusted solver's result:\n$u(0.23, 0.66) = 0.33$\n\nAnswer: 0.33",
+    "psilm": "u at (0.23, 0.66) equals 0.31.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.48,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.33,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.31,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.49,
+    "cx": 0.52,
+    "cy": 0.57,
+    "w": 0.07,
+    "x0": 0.52,
+    "y0": 0.66,
+    "u": 0.7241
+   },
+   "text": {
+    "baseline": "spreads. However, the diffusion coefficient $D = 0.001$ is very small, and the growth rate $r = 6$ is relatively high.\nThe time $t = 0.4$ is significant. The \"speed\" of the front is $v \\\n\nAnswer: 0.48",
+    "oracle": "increase significantly over time. The trusted solver provides the result of the numerical integration of this specific PDE setup.\n\nAccording to the trusted solver:\n$u(0.52, 0.66) = 0.72$\n\nAnswer: 0.72",
+    "psilm": "u at (0.52, 0.66) equals 0.71.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.48,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.72,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.71,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.49,
+    "cx": 0.52,
+    "cy": 0.57,
+    "w": 0.07,
+    "x0": 0.62,
+    "y0": 0.52,
+    "u": 0.6204
+   },
+   "text": {
+    "baseline": "ies \\text{Distance} = \\sqrt{0.1^2 + 0.05^2} \\approx 0.1118$.\n\n**4. Evolution:**\nBecause $D$ is very small, the profile remains localized. The Fisher-KPP equation with $r=6$ and $D=0.001$\n\nAnswer: 0.48",
+    "oracle": "tion and the trusted solver's report:\nThe value is reported as $u(0.62, 0.52) = 0.62$.\n\nSince the prompt asks for the value based on the provided context and the trusted solver's result:\n\nAnswer: 0.62",
+    "psilm": "u at (0.62, 0.52) equals 0.60.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.48,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.62,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.6,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.49,
+    "cx": 0.52,
+    "cy": 0.57,
+    "w": 0.07,
+    "x0": 0.66,
+    "y0": 0.59,
+    "u": 0.4415
+   },
+   "text": {
+    "baseline": "ld. For a localized bump, the growth is constrained by the spatial spread.\n\n**3. Calculation:**\nThe point $(0.66, 0.59)$ is at a distance from the center $(0.52, 0.57)$:\n$\\Delta x = 0.66\n\nAnswer: 0.48",
+    "oracle": " interest is $(0.66, 0.59)$) evolves towards the carrying capacity.\n\nBased on the provided information and the trusted solver's report:\nThe value of $u(0.66, 0.59)$ at $t = 0.4$ is 0.44.\n\nAnswer: 0.44",
+    "psilm": "u at (0.66, 0.59) equals 0.45.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.48,
+    "ok": true
+   },
+   "oracle": {
+    "pred": 0.44,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.45,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.49,
+    "cx": 0.52,
+    "cy": 0.57,
+    "w": 0.07,
+    "x0": 0.43,
+    "y0": 0.67,
+    "u": 0.4859
+   },
+   "text": {
+    "baseline": "ng ($r=6$) compared to the diffusion $D=0.001$.\nThe speed of the front in a Fisher-KPP equation is approximately $v \\approx 2\\sqrt{D \\cdot r}$.\n$v = 2\\sqrt{0.001 \\times 6} = 2\\sqrt{0.006\n\nAnswer: 0.08",
+    "oracle": " value at a specific point and provides a trusted solver result. Given the prompt structure, the value provided by the trusted solver is the intended answer.\n\nThe value provided is 0.49.\n\nAnswer: 0.49",
+    "psilm": "u at (0.43, 0.67) equals 0.48.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.08,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.49,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.48,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.54,
+    "cx": 0.54,
+    "cy": 0.2,
+    "w": 0.06,
+    "x0": 0.64,
+    "y0": 0.25,
+    "u": 0.5365
+   },
+   "text": {
+    "baseline": "the time $t=0.4$, the reaction term $r u(1-u)$ dominates the diffusion $D \\Delta u$. The concentration $u$ will tend toward 1 rapidly.\nSince the initial bump is centered at $(0.54, 0.2)$\n\nAnswer: 0.54",
+    "oracle": "to its initial peak or follow the growth dynamics. \n\nHowever, since a trusted solver is provided as a reference for the specific result of the calculation:\nThe value is reported as 0.54.\n\nAnswer: 0.54",
+    "psilm": "u at (0.64, 0.25) equals 0.53.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.54,
+    "ok": true
+   },
+   "oracle": {
+    "pred": 0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.53,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.54,
+    "cx": 0.54,
+    "cy": 0.2,
+    "w": 0.06,
+    "x0": 0.52,
+    "y0": 0.07,
+    "u": 0.3927
+   },
+   "text": {
+    "baseline": "is $\\frac{0.0173}{2(0.06^2)} = \\frac{0.0173}{0.0072} \\approx 2.402$.\n$u(0.52, 0.07, 0) = 0.54 \\cdot e^{-2.402} \\approx 0.54 \\cdot 0.0905 \\approx 0.049$.\n\n**2. Evolution:**\nThe Fisher-KPP\n\nAnswer: 0.05",
+    "oracle": "rowth rate is significant and the diffusion is low), the concentration evolves and spreads. \n\nThe trusted solver provides the result for the specific calculation:\n$u(0.52, 0.07) = 0.39$.\n\nAnswer: 0.39",
+    "psilm": "u at (0.52, 0.07) equals 0.38.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.05,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.39,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.38,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.54,
+    "cx": 0.54,
+    "cy": 0.2,
+    "w": 0.06,
+    "x0": 0.61,
+    "y0": 0.15,
+    "u": 0.6955
+   },
+   "text": {
+    "baseline": " + \\frac{u_0}{1-u_0}(e^{rt} - 1)}$\nHowever, the initial value $u_0$ at $(0.61, 0.15)$ is:\n$u_0 = 0.54 \\exp\\left( -\\frac{(0.61-0.54)^2 + (0.15-0.2)^2}{2(0.06)^2} \\right)$\n$u_0 = 0.54 \\exp\n\nAnswer: 0.31",
+    "oracle": "0.4$. According to the provided information, the value of $u$ at this point is $0.70$.\n\nSince the prompt asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.70",
+    "psilm": "u at (0.61, 0.15) equals 0.68.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.31,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.7,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.68,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.54,
+    "cx": 0.54,
+    "cy": 0.2,
+    "w": 0.06,
+    "x0": 0.56,
+    "y0": 0.08,
+    "u": 0.4654
+   },
+   "text": {
+    "baseline": " \nBecause $D$ is very small (0.001), the diffusion is slow, and the shape of the bump remains relatively localized while the intensity increases.\n\n**4. Calculation:**\nThe point $(0.56, 0\n\nAnswer: 0.54",
+    "oracle": "he diffusion is low), the value at the specified coordinate is reported as 0.47.\n\nSince the prompt provides the result of a trusted solver for the specific query:\n$u(0.56, 0.08) = 0.47$.\n\nAnswer: 0.47",
+    "psilm": "u at (0.56, 0.08) equals 0.43.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.54,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.47,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.43,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.57,
+    "cx": 0.2,
+    "cy": 0.93,
+    "w": 0.07,
+    "x0": 0.15,
+    "y0": 0.01,
+    "u": 0.7417
+   },
+   "text": {
+    "baseline": "0.01)^2} = \\sqrt{0.05^2 + 0.92^2} \\approx 0.921$.\n\n**3. Evaluation:**\nThe initial concentration $u$ at $(0.15, 0.01)$ is extremely low because the point is far from the Gaussian bump.\n$u\n\nAnswer: 0.00",
+    "oracle": "$(0.2, 0.93)$\n\nThe question asks for the value at $(0.15, 0.01)$ at $t = 0.4$. Based on the provided information and the result from the trusted solver:\n\nThe value is reported as $0.74$.\n\nAnswer: 0.74",
+    "psilm": "u at (0.15, 0.01) equals 0.75.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.74,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.75,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.57,
+    "cx": 0.2,
+    "cy": 0.93,
+    "w": 0.07,
+    "x0": 0.16,
+    "y0": 0.1,
+    "u": 0.2634
+   },
+   "text": {
+    "baseline": "eaction rate $r = 6$ is relatively high.\nThe speed of the front in a Fisher-KPP equation is $v = 2\\sqrt{rD}$.\n$v = 2\\sqrt{6 \\times 0.001} = 2\\sqrt{0.006} \\approx 2 \\times 0.07746 \\approx\n\nAnswer: 0.00",
+    "oracle": " solver provides the result for the specific calculation:\n$u(0.16, 0.1) = 0.26$.\n\nSince the question asks for the value based on the provided information and the trusted solver's result:\n\nAnswer: 0.26",
+    "psilm": "u at (0.16, 0.1) equals 0.26.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.26,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.26,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.57,
+    "cx": 0.2,
+    "cy": 0.93,
+    "w": 0.07,
+    "x0": 0.18,
+    "y0": 0.99,
+    "u": 0.8431
+   },
+   "text": {
+    "baseline": " 2\\sqrt{0.001 \\times 6} = 2\\sqrt{0.006} \\approx 0.155$.\nThe time scale for growth is $1/r = 1/6 \\approx 0.167$.\nSince $t = 0.4$ is larger than the growth time, the concentration $u$ will\n\nAnswer: 0.57",
+    "oracle": " will increase significantly toward the steady state of 1.0. The trusted solver provides the specific value for the evolution of this system.\n\nBased on the provided information:\n$u(0.18,\n\nAnswer: 0.84",
+    "psilm": "u at (0.18, 0.99) equals 0.85.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.57,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.84,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.85,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.57,
+    "cx": 0.2,
+    "cy": 0.93,
+    "w": 0.07,
+    "x0": 0.2,
+    "y0": 0.9,
+    "u": 0.8977
+   },
+   "text": {
+    "baseline": "n be approximated by the linearized growth (since $u$ is relatively small and $r$ is large) or by the Fisher-KPP dynamics.\nThe growth factor is approximately $e^{rt}$. However, because $\n\nAnswer: 0.52",
+    "oracle": "1.0) in the region where the initial concentration is significant. The solver's result of $0.90$ is consistent with the expected behavior of the Fisher-KPP equation under these parameters.\n\nAnswer: 0.",
+    "psilm": "u at (0.2, 0.9) equals 0.89.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.52,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.89,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.56,
+    "cx": 0.08,
+    "cy": 0.02,
+    "w": 0.05,
+    "x0": 0.07,
+    "y0": 0.02,
+    "u": 0.8827
+   },
+   "text": {
+    "baseline": "u$ at a point $(x, y)$ close to the center of the initial bump will grow towards the carrying capacity (1.0).\n\nGiven the time $t = 0.4$ and $r = 6$:\nThe growth factor is $e^{rt} = e^{6 \\\n\nAnswer: 0.56",
+    "oracle": " this specific field under the given parameters. Based on the provided information and the behavior of the Fisher-KPP equation under these specific conditions:\n\nThe value at $(0.07, 0.02\n\nAnswer: 0.88",
+    "psilm": "u at (0.07, 0.02) equals 0.87.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.56,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.88,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.87,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.56,
+    "cx": 0.08,
+    "cy": 0.02,
+    "w": 0.05,
+    "x0": 0.09,
+    "y0": 0.02,
+    "u": 0.8823
+   },
+   "text": {
+    "baseline": "\\cdot \\sigma^2}{\\sigma^2 + 4Dt \\cdot \\frac{1}{1 - \\frac{r \\cdot 4Dt}{1 \\dots \\text{ (complex growth term)}}}}$\n\nHowever, since $r$ is large ($r=6$) and $D$ is small ($0.001$), the growth\n\nAnswer: 0.56",
+    "oracle": "olver provided:\n$u(0.09, 0.02) = 0.88$ at $t = 0.4$.\n\nSince the question asks for the value based on the provided information and the trusted solver's result is explicitly given as 0.88.\n\nAnswer: 0.88",
+    "psilm": "u at (0.09, 0.02) equals 0.87.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.56,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.88,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.87,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.56,
+    "cx": 0.08,
+    "cy": 0.02,
+    "w": 0.05,
+    "x0": 0.19,
+    "y0": 0.14,
+    "u": 0.0744
+   },
+   "text": {
+    "baseline": "her-KPP equation, the solution $u$ remains very small until the front reaches a point. Since the distance $d \\approx 0.1628$ is greater than the expected expansion of the front (which is\n\nAnswer: 0.00",
+    "oracle": "0.19, 0.14) = 0.07$.\n\nSince the prompt asks for the value based on the provided information and the trusted solver's result is explicitly stated as $0.07$, we follow the provided result.\n\nAnswer: 0.07",
+    "psilm": "u at (0.19, 0.14) equals 0.06.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.07,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.06,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.56,
+    "cx": 0.08,
+    "cy": 0.02,
+    "w": 0.05,
+    "x0": 0.17,
+    "y0": 0.9,
+    "u": 0.1264
+   },
+   "text": {
+    "baseline": "\\sqrt{0.09^2 + 0.88^2} = \\sqrt{0.0081 + 0.7744} = \\sqrt{0.7825} \\approx 0.8846$.\n\n**4. Diffusion and Reaction:**\nThe time required for the concentration to reach a significant level at a\n\nAnswer: 0.00",
+    "oracle": "trusted solver provides the result for the specific evolution of this system:\n$u(0.17, 0.9) = 0.13$.\n\nSince the question asks for the value based on the provided trusted solver's result:\n\nAnswer: 0.13",
+    "psilm": "u at (0.17, 0.9) equals 0.11.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.13,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.11,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.64,
+    "cx": 0.6,
+    "cy": 0.3,
+    "w": 0.1,
+    "x0": 0.55,
+    "y0": 0.32,
+    "u": 0.9202
+   },
+   "text": {
+    "baseline": "$\n$y - y_0 = 0.32 - 0.3 = 0.02$\nDistance squared: $(-0.05)^2 + (0.02)^2 = 0.0025 + 0.0004 = 0.0029$.\nThe Gaussian bump at $(0.55, 0.32)$ is $u_0 = 0.64 \\cdot e^{-\\frac{0.0029}{0.1^2}} = \n\nAnswer: 0.51",
+    "oracle": "gration of this specific system:\n$u(0.55, 0.32) = 0.92$.\n\nSince the prompt provides the result from a trusted solver for this specific mathematical problem, we accept the reported value.\n\nAnswer: 0.92",
+    "psilm": "u at (0.55, 0.32) equals 0.91.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.51,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.92,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.91,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.64,
+    "cx": 0.6,
+    "cy": 0.3,
+    "w": 0.1,
+    "x0": 0.47,
+    "y0": 0.16,
+    "u": 0.5594
+   },
+   "text": {
+    "baseline": " the question asks for the value at a specific point $(0.47, 0.16)$ at $t=0.4$.\nDistance from center $(0.6, 0.3)$ to $(0.47, 0.16)$:\n$d^2 = (0.6 - 0.47)^2 + (0.3 - 0.16)^2 = 0.13^2 + 0.1\n\nAnswer: 0.16",
+    "oracle": "initial concentration, the values of $u$ will increase significantly over time.\n\nThe trusted solver provides the result for the specific evolution of this system:\n$u(0.47, 0.16) = 0.56$.\n\nAnswer: 0.56",
+    "psilm": "u at (0.47, 0.16) equals 0.53.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.16,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.56,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.53,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.64,
+    "cx": 0.6,
+    "cy": 0.3,
+    "w": 0.1,
+    "x0": 0.6,
+    "y0": 0.41,
+    "u": 0.8418
+   },
+   "text": {
+    "baseline": "owth:\n$u(t) = \\frac{1}{1 + \\frac{1-u_0}{u_0} e^{-rt}}$\n\n**3. Calculation:**\nHowever, the question asks for the value at a specific point. Because $D$ is very small, the diffusion is slow\n\nAnswer: 0.35",
+    "oracle": "center is at $(0.6, 0.3)$ and the point of interest is $(0.6, 0.41)$). \n\nThe trusted solver provides the result of the numerical integration of this specific system:\n$u(0.6, 0.41) = 0.84\n\nAnswer: 0.84",
+    "psilm": "u at (0.6, 0.41) equals 0.83.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.35,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.84,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.83,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.64,
+    "cx": 0.6,
+    "cy": 0.3,
+    "w": 0.1,
+    "x0": 0.6,
+    "y0": 0.29,
+    "u": 0.9402
+   },
+   "text": {
+    "baseline": "r than the reaction time scale, the concentration $u$ will approach the stable equilibrium $u = 1$.\n\nHowever, we must check if the diffusion is significant. The diffusion coefficient $D=\n\nAnswer: 0.91",
+    "oracle": "9) = 0.94$\n\nSince the question asks for the value based on the provided information and the trusted solver's result is explicitly stated as the correct output for the scenario described:\n\nAnswer: 0.94",
+    "psilm": "u at (0.6, 0.29) equals 0.94.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.91,
+    "ok": true
+   },
+   "oracle": {
+    "pred": 0.94,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.94,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.76,
+    "cx": 0.76,
+    "cy": 0.69,
+    "w": 0.07,
+    "x0": 0.73,
+    "y0": 0.71,
+    "u": 0.935
+   },
+   "text": {
+    "baseline": "as a saturation factor. Since the initial height is $0.76$, the growth is limited.\n\n**4. Calculation at the Point:**\nThe point $(0.73, 0.71)$ is very close to the center $(0.76, 0.69)$.\n\n\nAnswer: 0.84",
+    "oracle": "on $u$ will rapidly approach the stable equilibrium of the Fisher-KPP equation, which is $u = 1$.\n\nThe trusted solver provides the value for the concentration at the specified point and time.\n\nAnswer:",
+    "psilm": "u at (0.73, 0.71) equals 0.93.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.84,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.71,
+    "ok": false
+   },
+   "psilm": {
+    "pred": 0.93,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.76,
+    "cx": 0.76,
+    "cy": 0.69,
+    "w": 0.07,
+    "x0": 0.62,
+    "y0": 0.77,
+    "u": 0.4141
+   },
+   "text": {
+    "baseline": "1-u)$ is very strong ($r=6$) compared to the diffusion term ($D=0.001$).\nThe speed of the front in a Fisher-KPP equation is approximately $v \\approx 2\\sqrt{Dr}$.\n$v = 2\\sqrt{0.001 \\times\n\nAnswer: 0.05",
+    "oracle": "interval. The solver indicates that the value of $u$ at the point $(0.62, 0.77)$ at $t = 0.4$ is $0.41$.\n\nGiven the instruction to provide the value based on the trusted solver's report:\n\nAnswer: 0.41",
+    "psilm": "u at (0.62, 0.77) equals 0.43.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.05,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.41,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.43,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.76,
+    "cx": 0.76,
+    "cy": 0.69,
+    "w": 0.07,
+    "x0": 0.63,
+    "y0": 0.54,
+    "u": 0.1789
+   },
+   "text": {
+    "baseline": "olution:**\nThe initial point $(0.63, 0.54)$ is at a distance from the center $(0.76, 0.69)$:\n$\\Delta x = 0.76 - 0.63 = 0.13$\n$\\Delta y = 0.69 - 0.54 = 0.15$\nDistance $d = \\sqrt{0.13^2 + \n\nAnswer: 0.58",
+    "oracle": "0.4$. According to the provided information, the value of $u$ at this point is $0.18$.\n\nSince the prompt asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.18",
+    "psilm": "u at (0.63, 0.54) equals 0.18.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.58,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.18,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.18,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.76,
+    "cx": 0.76,
+    "cy": 0.69,
+    "w": 0.07,
+    "x0": 0.68,
+    "y0": 0.56,
+    "u": 0.4752
+   },
+   "text": {
+    "baseline": " the regions where the initial concentration is significant.\n\n**4. Calculation at the Point:**\nThe point $(0.68, 0.56)$ is very close to the center $(0.76, 0.69)$.\nDistance $d = \\sqrt{(0\n\nAnswer: 0.82",
+    "oracle": "ntration over time $t=0.4$ as the reaction term $ru(1-u)$ is large.\n\nBased on the provided information and the trusted solver's report:\nThe value of $u(0.68, 0.56)$ at $t = 0.4$ is 0.48.\n\nAnswer: 0.48",
+    "psilm": "u at (0.68, 0.56) equals 0.46.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.82,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.48,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.46,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.32,
+    "cx": 0.94,
+    "cy": 0.3,
+    "w": 0.08,
+    "x0": 0.98,
+    "y0": 0.27,
+    "u": 0.7715
+   },
+   "text": {
+    "baseline": " the growth is dominated by the reaction term. However, the question asks for a specific value at a point near the center of a small bump.\nIn a Fisher-KPP equation, the concentration $u$\n\nAnswer: 0.31",
+    "oracle": "oint $(0.98, 0.27)$ is well within the high-concentration region of the initial Gaussian.\n\nThe trusted solver provides the result for the evolution of this specific system:\n$u(0.98, 0.27\n\nAnswer: 0.77",
+    "psilm": "u at (0.98, 0.27) equals 0.76.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.31,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.77,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.76,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.32,
+    "cx": 0.94,
+    "cy": 0.3,
+    "w": 0.08,
+    "x0": 0.93,
+    "y0": 0.31,
+    "u": 0.81
+   },
+   "text": {
+    "baseline": "u$ is small ($0.32$ at the peak), and the diffusion is very slow, the growth is dominated by the linear part of the Fisher-KPP equation (since $u(1-u) \\approx u$ for small $u$):\n$\\frac{\\\n\nAnswer: 0.32",
+    "oracle": " growth rate is high, the value of $u$ will increase significantly over time $t=0.4$.\n\nThe trusted solver provides the result for the value of $u$ at $(0.93, 0.31)$ at $t=0.4$ as $0.81$.\n\nAnswer: 0.81",
+    "psilm": "u at (0.93, 0.31) equals 0.82.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.32,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.81,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.82,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.32,
+    "cx": 0.94,
+    "cy": 0.3,
+    "w": 0.08,
+    "x0": 0.99,
+    "y0": 0.15,
+    "u": 0.3556
+   },
+   "text": {
+    "baseline": "{-0.025}{2(0.08^2)} = \\frac{-0.025}{0.0128} \\approx -1.95$.\n$u(0.99, 0.15, 0) = 0.32 \\cdot e^{-1.95} \\approx 0.32 \\cdot 0.1426 \\approx 0.0456$.\n\n**2. Evolution:**\nThe Fisher-KPP equation\n\nAnswer: 0.05",
+    "oracle": "olver result for the specific state of the system at the requested coordinates and time. According to the provided information, the value of $u$ at $(0.99, 0.15)$ at $t = 0.4$ is $0.36$.\n\nAnswer: 0.36",
+    "psilm": "u at (0.99, 0.15) equals 0.35.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.05,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.36,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.35,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.32,
+    "cx": 0.94,
+    "cy": 0.3,
+    "w": 0.08,
+    "x0": 0.03,
+    "y0": 0.26,
+    "u": 0.6399
+   },
+   "text": {
+    "baseline": "enter of the bump is at $(0.94, 0.3)$.\nThe target point is $(0.03, 0.26)$.\nThe distance between the center and the target point is:\n$d = \\sqrt{(0.94 - 0.03)^2 + (0.3 - 0.26)^2} = \\sqrt{0\n\nAnswer: 0.00",
+    "oracle": "The solver indicates that the concentration at the specified coordinates after the given time is $0.64$.\n\nBased on the provided information:\nValue at $(0.03, 0.26)$ at $t=0.4$ is $0.64$.\n\nAnswer: 0.64",
+    "psilm": "u at (0.03, 0.26) equals 0.63.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.64,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.63,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.84,
+    "cx": 0.54,
+    "cy": 0.63,
+    "w": 0.08,
+    "x0": 0.59,
+    "y0": 0.59,
+    "u": 0.9278
+   },
+   "text": {
+    "baseline": " high, the solution tends toward the stable steady state $u = 1$ very quickly.\nThe initial value at $(0.59, 0.59)$ is:\n$u(0.59, 0.59, 0) = 0.84 \\exp\\left( -\\frac{(0.59-0.54)^2 + (0.59-0.\n\nAnswer: 1.00",
+    "oracle": "16}{0.0128} \\right) = 0.84 \\exp(-0.32) \\approx 0.84 \\times 0.726 \\approx 0.608$.\n\nHowever, the question provides a trusted solver result for the final state. The Fisher-KPP equation with\n\nAnswer: 0.93",
+    "psilm": "u at (0.59, 0.59) equals 0.93.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 1.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.93,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.93,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.84,
+    "cx": 0.54,
+    "cy": 0.63,
+    "w": 0.08,
+    "x0": 0.41,
+    "y0": 0.48,
+    "u": 0.3411
+   },
+   "text": {
+    "baseline": ":**\nThe initial value at $(0.41, 0.48)$ is:\n$u(0.41, 0.48, 0) = 0.84 \\exp\\left( -\\frac{(0.41-0.54)^2 + (0.48-0.63)^2}{2(0.04^2)} \\right)$\n$u(0.41, 0.48, 0) = 0.84 \\exp\\left( -\\frac{0.016\n\nAnswer: 0.82",
+    "oracle": ". According to the provided information, the value of $u$ at this point is $0.34$.\n\nSince the prompt asks for the value based on the provided information and the trusted solver's report:\n\nAnswer: 0.34",
+    "psilm": "u at (0.41, 0.48) equals 0.36.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.82,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.34,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.36,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.84,
+    "cx": 0.54,
+    "cy": 0.63,
+    "w": 0.08,
+    "x0": 0.58,
+    "y0": 0.59,
+    "u": 0.9377
+   },
+   "text": {
+    "baseline": "sion is slow, and the shape of the bump remains relatively localized while the values within the \"occupied\" region (where $u > 0$) quickly approach the stable steady state $u = 1$.\n\n**4.\n\nAnswer: 0.84",
+    "oracle": " $u=1$. Because the initial concentration is already high and the growth rate is significant, the value will increase towards 1.0.\n\nThe trusted solver provides the value $u(0.58, 0.59) =\n\nAnswer: 0.94",
+    "psilm": "u at (0.58, 0.59) equals 0.94.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.84,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.94,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.94,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.84,
+    "cx": 0.54,
+    "cy": 0.63,
+    "w": 0.08,
+    "x0": 0.52,
+    "y0": 0.67,
+    "u": 0.9501
+   },
+   "text": {
+    "baseline": "ared: $\\Delta x^2 + \\Delta y^2 = (0.52-0.54)^2 + (0.67-0.63)^2 = 0.02^2 + 0.04^2 = 0.0004 + 0.0016 = 0.002$.\nThe initial value at this point:\n$u(0.52, 0.67, 0) = 0.84 \\exp\\left( -\\frac{0\n\nAnswer: 0.85",
+    "oracle": "gh, the concentration $u$ will increase towards the carrying capacity of $1.0$.\n\nThe trusted solver provides the result for the evolution of this specific system:\n$u(0.52, 0.67) = 0.95$.\n\nAnswer: 0.95",
+    "psilm": "u at (0.52, 0.67) equals 0.95.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.85,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.95,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.95,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.62,
+    "cx": 0.05,
+    "cy": 0.3,
+    "w": 0.05,
+    "x0": 0.16,
+    "y0": 0.26,
+    "u": 0.3706
+   },
+   "text": {
+    "baseline": "s the spread of a population. The reaction term $r u (1-u)$ is very strong ($r=6$). The diffusion coefficient $D=0.001$ is small.\nThe speed of the front in a Fisher-KPP equation is $v = \n\nAnswer: 0.01",
+    "oracle": "According to the provided information, the value of $u$ at this point is $0.37$.\n\nSince the question asks for the value based on the provided information and the trusted solver's report:\n\nAnswer: 0.37",
+    "psilm": "u at (0.16, 0.26) equals 0.36.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.01,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.37,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.36,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.62,
+    "cx": 0.05,
+    "cy": 0.3,
+    "w": 0.05,
+    "x0": 0.05,
+    "y0": 0.29,
+    "u": 0.8995
+   },
+   "text": {
+    "baseline": "diffusion $D=0.001$.\nThe growth rate is $\\frac{\\partial u}{\\partial t} \\approx 6u(1-u)$.\nThe solution to the logistic part $\\frac{du}{dt} = r u(1-u)$ is:\n$u(t) = \\frac{1}{1 + \\frac{1-u_0\n\nAnswer: 0.61",
+    "oracle": "e for the concentration at the specified point and time:\n$u(0.05, 0.29) = 0.90$.\n\nSince the question asks for the value based on the provided information and the trusted solver's result:\n\nAnswer: 0.90",
+    "psilm": "u at (0.05, 0.29) equals 0.90.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.9,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.9,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.62,
+    "cx": 0.05,
+    "cy": 0.3,
+    "w": 0.05,
+    "x0": 0.21,
+    "y0": 0.26,
+    "u": 0.0738
+   },
+   "text": {
+    "baseline": "t $(0.21, 0.26)$ is located at a distance from the center $(0.05, 0.3)$:\n$\\Delta x = 0.21 - 0.05 = 0.16$\n$\\Delta y = 0.26 - 0.3 = -0.04$\nDistance $d = \\sqrt{0.16^2 + (-0.04)^2} = \\sqrt{0\n\nAnswer: 0.00",
+    "oracle": "significantly far from the center of the initial bump $(0.05, 0.3)$ and the diffusion is low), the concentration at that point remains low.\n\nThe trusted solver reports the value as 0.07.\n\nAnswer: 0.07",
+    "psilm": "u at (0.21, 0.26) equals 0.06.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.07,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.06,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.62,
+    "cx": 0.05,
+    "cy": 0.3,
+    "w": 0.05,
+    "x0": 0.03,
+    "y0": 0.3,
+    "u": 0.89
+   },
+   "text": {
+    "baseline": "itial value $u_0$ at $(0.03, 0.3)$.\nThe center is $(0.05, 0.3)$. The distance from the center is $\\sqrt{(0.03-0.05)^2 + (0.3-0.3)^2} = 0.02$.\nThe width is 0.05. In a Gaussian $e^{-x^2/2\\\n\nAnswer: 0.61",
+    "oracle": "ters provided, the concentration field evolves and spreads. Based on the provided trusted solver result for the specific configuration:\n\nThe value of $u(0.03, 0.3)$ at $t = 0.4$ is 0.89.\n\nAnswer: 0.89",
+    "psilm": "u at (0.03, 0.3) equals 0.89.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.89,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.89,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "cx": 0.05,
+    "cy": 0.82,
+    "w": 0.09,
+    "x0": 0.02,
+    "y0": 0.71,
+    "u": 0.8622
+   },
+   "text": {
+    "baseline": " term $r u(1-u)$ dominates. The solution $u$ will tend toward 1 rapidly in regions where $u > 0$.\nThe initial value at $(0.02, 0.71)$ is:\n$u(0.02, 0.71, 0) = 0.88 \\exp\\left( -\\frac{(0.02\n\nAnswer: 0.88",
+    "oracle": "The question asks for the value of $u$ at a specific point $(0.02, 0.71)$ at $t=0.4$. Based on the provided information and the trusted solver's report:\n\nThe value is reported as $0.86$.\n\nAnswer: 0.86",
+    "psilm": "u at (0.02, 0.71) equals 0.85.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.88,
+    "ok": true
+   },
+   "oracle": {
+    "pred": 0.86,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.85,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "cx": 0.05,
+    "cy": 0.82,
+    "w": 0.09,
+    "x0": 0.03,
+    "y0": 0.84,
+    "u": 0.9718
+   },
+   "text": {
+    "baseline": "PP equation describes a reaction-diffusion process. The reaction term $r u (1-u)$ is quite strong ($r=6$). However, the diffusion coefficient $D=0.001$ is very small.\nThe time frame is $\n\nAnswer: 0.84",
+    "oracle": " concentration is already high and the growth rate is significant, the value will increase towards 1.0.\n\nThe trusted solver provides the result for the specific evolution of this system.\n\nAnswer: 0.97",
+    "psilm": "u at (0.03, 0.84) equals 0.97.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.84,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.97,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.97,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "cx": 0.05,
+    "cy": 0.82,
+    "w": 0.09,
+    "x0": 0.08,
+    "y0": 0.75,
+    "u": 0.9329
+   },
+   "text": {
+    "baseline": "on of the Gaussian shape $e^{-x^2/2\\sigma^2}$, the value is $0.88 \\cdot e^{-0.0058 / (2 \\cdot 0.09^2)} \\approx 0.88 \\cdot e^{-0.36} \\approx 0.88 \\cdot 0.69 \\approx 0.60$.\n\n**2. Evolution\n\nAnswer: 0.61",
+    "oracle": "nates and drives the concentration toward the carrying capacity), the value at the specified point is reported by the trusted solver.\n\nThe trusted solver reports: $u(0.08, 0.75) = 0.93$.\n\nAnswer: 0.93",
+    "psilm": "u at (0.08, 0.75) equals 0.95.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.93,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.95,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "cx": 0.05,
+    "cy": 0.82,
+    "w": 0.09,
+    "x0": 0.98,
+    "y0": 0.83,
+    "u": 0.9395
+   },
+   "text": {
+    "baseline": "$r$ is the growth rate and $D$ is the diffusion coefficient. The speed of the traveling wave front is $v = 2\\sqrt{rD}$.\n$v = 2\\sqrt{6 \\times 0.001} = 2\\sqrt{0.006} \\approx 2 \\times 0.077\n\nAnswer: 0.00",
+    "oracle": "ty. Given the parameters and the specific point provided, the solver's result is the definitive value for the evolution of the field.\n\nThe trusted solver reports: $u(0.98, 0.83) = 0.94$.\n\nAnswer: 0.94",
+    "psilm": "u at (0.98, 0.83) equals 0.95.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.94,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.95,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.74,
+    "cx": 0.52,
+    "cy": 0.18,
+    "w": 0.06,
+    "x0": 0.55,
+    "y0": 0.12,
+    "u": 0.8437
+   },
+   "text": {
+    "baseline": "s very strong ($r=6$). The diffusion coefficient $D=0.001$ is small.\nThe characteristic speed of the front is $v \\approx 2\\sqrt{D \\cdot r} = 2\\sqrt{0.001 \\cdot 6} = 2\\sqrt{0.006} \\approx\n\nAnswer: 0.41",
+    "oracle": "pacity. The problem provides a trusted solver result for the specific state of the system at the requested coordinates and time.\n\nAccording to the trusted solver:\n$u(0.55, 0.12) = 0.84$.\n\nAnswer: 0.84",
+    "psilm": "u at (0.55, 0.12) equals 0.86.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.41,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.84,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.86,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.74,
+    "cx": 0.52,
+    "cy": 0.18,
+    "w": 0.06,
+    "x0": 0.42,
+    "y0": 0.21,
+    "u": 0.6645
+   },
+   "text": {
+    "baseline": ".\n\n**2. Evolution:**\nThe Fisher-KPP equation describes the spread of a population. The reaction term $r u (1-u)$ is significant. Since $r=6$ is large and $D=0.001$ is small, the equation\n\nAnswer: 0.55",
+    "oracle": "e of the Gaussian bump. However, the high growth rate $r=6$ causes the concentration to increase rapidly. Given the dynamics of the Fisher-KPP equation, the concentration $u$ will evolve\n\nAnswer: 0.66",
+    "psilm": "u at (0.42, 0.21) equals 0.66.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.55,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.66,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.66,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.74,
+    "cx": 0.52,
+    "cy": 0.18,
+    "w": 0.06,
+    "x0": 0.54,
+    "y0": 0.19,
+    "u": 0.9323
+   },
+   "text": {
+    "baseline": "n-linear saturation. Since $D$ is very small, the spatial spread is minimal.\nThe growth term $r u (1-u)$ is significant. However, the question asks for the value at a point very close to\n\nAnswer: 0.74",
+    "oracle": "he Fisher-KPP equation (which is 1). The trusted solver provides the result of the numerical integration of this specific system.\n\nAccording to the trusted solver:\n$u(0.54, 0.19) = 0.93$\n\nAnswer: 0.93",
+    "psilm": "u at (0.54, 0.19) equals 0.93.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.74,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.93,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.93,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.74,
+    "cx": 0.52,
+    "cy": 0.18,
+    "w": 0.06,
+    "x0": 0.66,
+    "y0": 0.25,
+    "u": 0.2776
+   },
+   "text": {
+    "baseline": "ation. The solution is:\n$u(t) = \\frac{u_0 e^{rt}}{1 + \\frac{u_0}{1-u_0}(e^{rt} - 1)}$\nHowever, the concentration is not uniform. The initial value at $(0.66, 0.25)$ is:\n$u(0.66, 0.25, 0)\n\nAnswer: 0.00",
+    "oracle": ". According to the provided information, the value of $u$ at this point is $0.28$.\n\nSince the prompt asks for the value based on the provided information and the trusted solver's report:\n\nAnswer: 0.28",
+    "psilm": "u at (0.66, 0.25) equals 0.28.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.28,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.28,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.72,
+    "cx": 0.9,
+    "cy": 0.1,
+    "w": 0.1,
+    "x0": 0.9,
+    "y0": 0.1,
+    "u": 0.9562
+   },
+   "text": {
+    "baseline": " = \\frac{-2 \\cdot \\text{dimension}}{\\sigma^2} u$.\nHowever, in the Fisher-KPP equation, the growth is very rapid. Let's look at the magnitude of the terms:\n$r = 6$\n$D = 0.001$\nTime $t = 0\n\nAnswer: 0.95",
+    "oracle": "frac{u_0 e^{rt}}{1 + \\frac{u_0}{1-u_0}(e^{rt} - 1)} \\text{? No.}$$\nLet's re-derive: $\\frac{du}{u(1-u)} = r dt \\implies \\int \\frac{1}{u} + \\frac{1}{1-u} du = \\int r dt \\implies \\ln(\\frac{\n\nAnswer: 0.96",
+    "psilm": "u at (0.9, 0.1) equals 0.95.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.95,
+    "ok": true
+   },
+   "oracle": {
+    "pred": 0.96,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.95,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.72,
+    "cx": 0.9,
+    "cy": 0.1,
+    "w": 0.1,
+    "x0": 0.82,
+    "y0": 0.07,
+    "u": 0.9047
+   },
+   "text": {
+    "baseline": "te large ($r=6$). The diffusion coefficient $D=0.001$ is small.\nThe equation can be approximated by the heat equation for small $t$ if $u$ is small, but here $u$ is significant. However,\n\nAnswer: 0.54",
+    "oracle": "inates the diffusion. The solution $u$ will approach the stable steady state of the Fisher-KPP equation, which is $u = 1$. \n\nThe trusted solver provides the value $u(0.82, 0.07) = 0.90$.\n\nAnswer: 0.90",
+    "psilm": "u at (0.82, 0.07) equals 0.90.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.54,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.9,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.9,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.72,
+    "cx": 0.9,
+    "cy": 0.1,
+    "w": 0.1,
+    "x0": 0.9,
+    "y0": 0.11,
+    "u": 0.9556
+   },
+   "text": {
+    "baseline": "t the Point:**\nThe point $(0.9, 0.11)$ is extremely close to the center $(0.9, 0.1)$.\nAt the center $(0.9, 0.1)$, the initial value is $u_0 = 0.72$.\nThe growth factor over $t=0.4$ with $\n\nAnswer: 0.85",
+    "oracle": " the reaction term dominates. The equation $\\frac{\\partial u}{\\partial t} \\approx r u(1-u)$ describes logistic growth.\nThe solution to $\\frac{du}{dt} = r u(1-u)$ is $u(t) = \\frac{u_0 e^{\n\nAnswer: 0.96",
+    "psilm": "u at (0.9, 0.11) equals 0.96.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.85,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.96,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.96,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.72,
+    "cx": 0.9,
+    "cy": 0.1,
+    "w": 0.1,
+    "x0": 0.91,
+    "y0": 0.91,
+    "u": 0.5942
+   },
+   "text": {
+    "baseline": "of the front.\n\n**3. Distance Calculation:**\nThe distance from the center $(0.9, 0.1)$ to the point $(0.91, 0.91)$ is:\n$d = \\sqrt{(0.91 - 0.9)^2 + (0.91 - 0.1)^2} = \\sqrt{0.01^2 + 0.81^2}\n\nAnswer: 0.00",
+    "oracle": "59$. Since the request asks for the value based on the provided information and the trusted solver's report is given as a fact within the prompt's context, we follow the provided result.\n\nAnswer: 0.59",
+    "psilm": "u at (0.91, 0.91) equals 0.58.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.59,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.58,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.84,
+    "cx": 0.71,
+    "cy": 0.07,
+    "w": 0.05,
+    "x0": 0.58,
+    "y0": 0.05,
+    "u": 0.3116
+   },
+   "text": {
+    "baseline": " diffusion coefficient.\nThe characteristic speed of the Fisher-KPP front is $v = 2\\sqrt{Dr} = 2\\sqrt{0.001 \\times 6} = 2\\sqrt{0.006} \\approx 0.155$.\nThe time $t=0.4$ is relatively short.\n\nAnswer: 0.14",
+    "oracle": "prompt provides the result of a trusted solver directly:\n$u(0.58, 0.05) = 0.31$.\n\nSince the question asks for the value based on the provided information and the trusted solver's report:\n\nAnswer: 0.31",
+    "psilm": "u at (0.58, 0.05) equals 0.31.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.14,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.31,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.31,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.84,
+    "cx": 0.71,
+    "cy": 0.07,
+    "w": 0.05,
+    "x0": 0.87,
+    "y0": 0.97,
+    "u": 0.0302
+   },
+   "text": {
+    "baseline": "and $D=0.001$ is a very low diffusion coefficient.\nThe speed of the Fisher-KPP front is $v = 2\\sqrt{Dr} = 2\\sqrt{0.001 \\times 6} = 2\\sqrt{0.006} \\approx 0.155$.\nThe time for the front to\n\nAnswer: 0.00",
+    "oracle": "ovides the result for the specific evolution of this system:\n$u(0.87, 0.97) = 0.03$.\n\nSince the question asks for the value based on the provided context and the trusted solver's report:\n\nAnswer: 0.03",
+    "psilm": "u at (0.87, 0.97) equals 0.02.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": true
+   },
+   "oracle": {
+    "pred": 0.03,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.02,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": true
+   }
+  },
+  {
+   "item": {
+    "a": 0.84,
+    "cx": 0.71,
+    "cy": 0.07,
+    "w": 0.05,
+    "x0": 0.62,
+    "y0": 0.04,
+    "u": 0.6292
+   },
+   "text": {
+    "baseline": "stic speed of the front is $v \\approx 2\\sqrt{D \\cdot r} = 2\\sqrt{0.001 \\cdot 6} = 2\\sqrt{0.006} \\approx 2 \\times 0.077 = 0.154$.\nThe time scale for the reaction is $1/r = 1/6 \\approx 0.1\n\nAnswer: 0.84",
+    "oracle": "081 + 0.0009}{0.00125} \\right) = 0.84 \\exp(-7.2) \\approx 0.0013$\n2. The growth rate $r=6$ is very high. The Fisher-KPP equation leads to a traveling wave front. The speed of the front is\n\nAnswer: 0.63",
+    "psilm": "u at (0.62, 0.04) equals 0.61.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.84,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.63,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.61,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.84,
+    "cx": 0.71,
+    "cy": 0.07,
+    "w": 0.05,
+    "x0": 0.64,
+    "y0": 0.12,
+    "u": 0.6946
+   },
+   "text": {
+    "baseline": "ger than the reaction time scale, the concentration $u$ will tend to grow towards the carrying capacity (which is 1.0 in the standard Fisher-KPP equation $\\frac{\\partial u}{\\partial t} =\n\nAnswer: 0.82",
+    "oracle": " tends to move towards the carrying capacity (1.0) while spreading.\n\nBased on the provided information and the trusted solver's report:\nThe value of $u(0.64, 0.12)$ at $t = 0.4$ is 0.69.\n\nAnswer: 0.69",
+    "psilm": "u at (0.64, 0.12) equals 0.68.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.82,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.69,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.68,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.42,
+    "cx": 0.63,
+    "cy": 0.02,
+    "w": 0.1,
+    "x0": 0.57,
+    "y0": 0.04,
+    "u": 0.8376
+   },
+   "text": {
+    "baseline": "ignificantly increase the concentration.\nHowever, the question asks for the value at a specific point. In a Fisher-KPP model, the \"front\" moves at a speed $v \\approx 2\\sqrt{rD}$.\n$v = 2\\\n\nAnswer: 0.34",
+    "oracle": "The question provides a trusted solver result for the specific evolution of this system. According to the provided information, the value of $u$ at $(0.57, 0.04)$ at $t = 0.4$ is $0.84$.\n\nAnswer: 0.84",
+    "psilm": "u at (0.57, 0.04) equals 0.84.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.34,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.84,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.84,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.42,
+    "cx": 0.63,
+    "cy": 0.02,
+    "w": 0.1,
+    "x0": 0.64,
+    "y0": 0.98,
+    "u": 0.8594
+   },
+   "text": {
+    "baseline": " $d = \\sqrt{0.01^2 + 0.96^2} \\approx 0.96$.\n\n**4. Evaluation:**\nThe time elapsed is $t = 0.4$.\nThe distance the \"front\" would travel is $v \\times t \\approx 0.1549 \\times 0.4 \\approx 0.06\n\nAnswer: 0.00",
+    "oracle": "016} = \\sqrt{0.0017} \\approx 0.0412$.\n\nSince the width of the Gaussian is $0.1$, the point $(0.64, 0.98)$ is well within the high-concentration zone of the initial bump. Under the Fisher\n\nAnswer: 0.86",
+    "psilm": "u at (0.64, 0.98) equals 0.86.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.86,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.86,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.42,
+    "cx": 0.63,
+    "cy": 0.02,
+    "w": 0.1,
+    "x0": 0.65,
+    "y0": 0.07,
+    "u": 0.8482
+   },
+   "text": {
+    "baseline": "-u)$.\nThe solution to the logistic part $\\frac{du}{dt} = r u (1-u)$ is:\n$u(t) = \\frac{u_0 e^{rt}}{1 + \\frac{u_0}{1-u_0}(e^{rt} - 1)}$\nHowever, since the diffusion is very small ($D=0.001\n\nAnswer: 0.37",
+    "oracle": ".65, 0.07)$. The solver indicates that the value of $u$ at this point is $0.85$.\n\nSince the question asks for the value based on the provided information and the trusted solver's report:\n\nAnswer: 0.85",
+    "psilm": "u at (0.65, 0.07) equals 0.85.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.37,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.85,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.85,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.42,
+    "cx": 0.63,
+    "cy": 0.02,
+    "w": 0.1,
+    "x0": 0.63,
+    "y0": 0.01,
+    "u": 0.8738
+   },
+   "text": {
+    "baseline": "*\nThe solution to $\\frac{du}{dt} = r u (1 - u)$ is:\n$u(t) = \\frac{u_0 e^{rt}}{1 + \\frac{u_0}{1-u_0}(e^{rt} - 1)}$\nHowever, the standard form is $u(t) = \\frac{K \\frac{u_0}{K + (1-u_0/K)(1\n\nAnswer: 0.41",
+    "oracle": "wth Fisher-KPP reaction will approach the carrying capacity. The trusted solver provides the specific value for this evolution.\n\nBased on the provided information:\n$u(0.63, 0.01) = 0.87$\n\nAnswer: 0.87",
+    "psilm": "u at (0.63, 0.01) equals 0.88.<eos>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "baseline": {
+    "pred": 0.41,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.87,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.88,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  }
+ ]
+}

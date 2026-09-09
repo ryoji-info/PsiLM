@@ -21,12 +21,17 @@
 # (results/bench/gemma12b_guardrail_summary.json, no_parity_check true). Greedy
 # output is unaffected, and the KL compares two runs through the same staged
 # decoder, so the offset cancels.
+# The task cache this consumes is built by the first sweep and is git-ignored;
+# build it before running this script standalone:
+#   python eval/bench_guardrail.py --tag cachebuild --n 100 --tasks-cache $CACHE \
+#       --build-cache <the same --model/--datasets/--max-new-* flags as below>
 cd /Users/rxiii/Documents/GitHub/PsiLM
 PY=.venv/bin/python
 G=mlx-community/gemma-4-12B-it-4bit
 LOG=results/bench/leaky_sweep.log
 CACHE=results/bench/tasks_gemma_n100.json
 export HF_HUB_DISABLE_XET=1 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+[ -d /Users/rxiii/Documents/huggingface/hub ] && export HF_HOME=/Users/rxiii/Documents/huggingface
 echo "LEAKY-GEMMA START $(date +%H:%M)" >> $LOG
 
 COMMON="--tasks-cache $CACHE --model $G --hf-tokenizer $G \

@@ -12,8 +12,9 @@ channel* returns the looked-up value as soft tokens injected into a later layer
 of the language model. No text crosses the interface. The framing is the
 brain's two hemispheres cooperating across the corpus callosum: two
 specialists, one output. Why it matters: the physics model's answer arrives
-*inside* the language model's reasoning — a 12B model that scores 0% on the
-field-value question below answers it at 96.7% with the same weights — and a trained
+*inside* the language model's reasoning — a 12B model that scores 6.7% on the
+field-value question below — and 0% if it is not forced to commit to an answer —
+answers it at 96.7% with the same weights — and a trained
 gate keeps the channel shut when physics is irrelevant, so on everything else
 the coupled model matches its backbone to within a question or two (GSM8K 89% either way, MMLU 61% against 60%).
 
@@ -51,8 +52,9 @@ prompts (the guard-rail below).
 
 **Guard-rail** (n = 100 per dataset, `results/bench/*_summary.json`): with the
 selective gate the coupled model equals its backbone on GSM8K (Qwen3-8B 89% →
-89%, Gemma 84% → 84%) and MMLU (60% → 61%, 53% → 55%), with the gate open on
-0% of non-physics prompts and 100% of physics prompts; before selectivity
+89%, Gemma 84% → 84%), MMLU (60% → 61%, 53% → 55%) and BoolQ (88% → 88%,
+90% → 89%), with the gate open on 0% of non-physics prompts and 100% of physics
+prompts; before selectivity
 training the 8B's gate was open everywhere and GSM8K fell from 89% to 34%
 (`v8_8b_guardrail_summary.json`).[^mae]
 
@@ -85,8 +87,9 @@ in-distribution 100% (MAE 0.009), the held-out mode combination 25.0% (MAE
 every family (MAE 0.0008), so the two generalization gaps are the readout's:
 19 of 48 combination answers match a *single*-mode field value, and on
 extrapolation the implied amplitude is below the true one for 71% of items
-(median ratio 0.68, inside mode 1's training range). A second run with a span
-readout and mode-shared heads is training; the row will be updated with it.
+(median ratio 0.68, inside mode 1's training range). A span readout with mode-shared heads was validated at 0.5B for exactly this
+(combination 0.61 → 0.99 in a teacher-forced probe, `results/readout_transfer/`);
+the 12B run has not been started.
 
 [^mae]: The same files carry MAE: PsiLM 0.014 / 0.022 / 0.021 / 0.017 for the
 four backbones, oracle 0.003 / 0.021 / 0.003 / 0.007. Full tables, per-arm
@@ -135,9 +138,9 @@ do not transfer between backbones).
 - **[`ryoji-info/PsiLM-bridges`](https://huggingface.co/ryoji-info/PsiLM-bridges)** — bridge checkpoints (safetensors + `config.json`) for every backbone/task pair in the table above, plus the Stage-1 Bicameral reproduction.
 - **[`ryoji-info/PsiLM-physics`](https://huggingface.co/ryoji-info/PsiLM-physics)** — the frozen physics hemispheres: `fno_burgers_singlemode`, `fno_burgers_multimode` (70K-param FNOs) and `dpot_tiny_fisher2d_finetuned` (DPOT-Tiny, 7.5M, from [hzk17/DPOT](https://huggingface.co/hzk17/DPOT)).
 - **[`ryoji-info/Gemma-4-12B-PsiLM`](https://huggingface.co/ryoji-info/Gemma-4-12B-PsiLM)** — the standalone release: Gemma 4 12B-4bit bridges, the FNO and a one-file inference script, for running the coupled model without this repository.
-- **Paper** — [`paper/psilm.pdf`](paper/psilm.pdf) (19 pages; Section 9 covers scaling, the guard-rail and Gemma).
+- **Paper** — [`paper/psilm.pdf`](paper/psilm.pdf) (23 pages; Section 9 covers scaling, the guard-rail, Gemma, and the leaky-gate sweep with its content control).
 
-The three repos are being made public by the maintainer; until then they are private.
+All three repositories are public.
 
 ## Quickstart
 
@@ -155,11 +158,13 @@ Tested with mlx 0.32.2, mlx-lm 0.31.3, transformers 5.16.1 and torch 2.13.0;
 the Gemma 4 loader goes through mlx-lm internals, so pin `mlx-lm==0.31.3` if a
 newer release breaks it.
 
-**Run inference** with the standalone Gemma-4-12B-PsiLM release (built under
-`release/gemma-4-12b-psilm/` here, mirrored to the Hugging Face repo above;
-the backbone downloads on first use):
+**Run inference** with the standalone Gemma-4-12B-PsiLM release. Bridge weights
+are not in this repository — nothing large is (see [License](#license) and the
+blanket rule in `.gitignore`) — so fetch them from the Hugging Face repo first;
+the backbone itself downloads on first use:
 
 ```bash
+hf download ryoji-info/Gemma-4-12B-PsiLM --local-dir release/gemma-4-12b-psilm
 cd release/gemma-4-12b-psilm
 python psilm_infer.py --a 1.28 --phi 0.5 --x0 0.76
 ```
@@ -168,8 +173,10 @@ It prints three results: the PsiLM answer, the backbone-alone answer, and the
 physics model's own value of u(x0), so you can see the coupled model verbalize
 what the operator computed. The `pip install -e` above makes the `psilm`
 package importable; without it, set `PSILM_REPO=/path/to/PsiLM`. The same
-checkpoint (`results/stage2_gemma12b/bridges.npz`) evaluates on the 60
-held-out questions from the repository root with
+checkpoint evaluates on the 60 held-out questions from the repository root —
+this one reads `results/stage2_gemma12b/bridges.npz`, which is likewise not in
+the repository, so either train it with the recipe below or place the
+downloaded `bridges.safetensors` there converted to `.npz`:
 
 ```bash
 python eval/mlx_stage2_eval.py --model mlx-community/gemma-4-12B-it-4bit \
@@ -193,8 +200,9 @@ python eval/mlx_stage2_train.py --model mlx-community/gemma-4-12B-it-4bit \
 Repeat without `--fresh` until step 5,500 (11 chunks of 500 in all: 2,000
 readout-only steps, then 3,500 coupled), then three chunks at `--lr 1e-4` with `--noharm-data
 data/noharm_gemma_all.json --noharm-every 2 --noharm-gate-only 1 --lam-gate 1.0`
-for the selective gate (step 7,000 is the committed checkpoint). The exact
-scripts are `results/gemma12b/run_recipe.sh` and `noharm_recipe.sh`;
+for the selective gate (step 7,000 is the committed checkpoint). The scripts that produced the released checkpoint are
+`results/gemma12b/resume_recipe.sh` (the coupled chunks, after `run_recipe.sh`
+opened the run) and `noharm_recipe.sh` (the selective gate);
 the Qwen and 0.5B commands are in the [technical notes](docs/technical-notes.md).
 
 ## How it works
@@ -270,7 +278,7 @@ and §9.7 of the paper.
 
 ## Read more
 
-- [docs/technical-notes.md](docs/technical-notes.md) — Stage 0 → 2d narratives, the multi-mode generalization and loop-coupling studies, the 2D DPOT result, the eight-run 8B failure analysis, the Gemma calibration fix, the full guard-rail tables, and every reproduce command.
+- [docs/technical-notes.md](docs/technical-notes.md) — Stage 0 → 2d narratives, the multi-mode generalization and loop-coupling studies, the 2D DPOT result, the eight-run 8B failure analysis, the Gemma calibration fix, the full guard-rail tables, the leaky-gate ε sweep on both backbones with its shuffled-value content control, and every reproduce command.
 - [paper/psilm.pdf](paper/psilm.pdf) — *PsiLM: Coupling Frozen Language and Physics Models through Trainable Latent Bridges.*
 - Nearest prior work: the Bicameral Model ([arXiv:2605.11167](https://arxiv.org/abs/2605.11167)), the Global Latent Workspace line ([shimmer](https://github.com/ruflab/shimmer)), CALM ([arXiv:2401.02412](https://arxiv.org/abs/2401.02412)).
 
@@ -315,7 +323,7 @@ guard-rail table, not a return.
 | 5b | Gemma 4 12B on the multi-mode task (in-distribution 100%; generalization families open) | done |
 | 5c | Span readout with mode-shared heads, for the two generalization families | validated at 0.5B, 12B run not started |
 | 5d | Leaky-gate ε sweep on both backbones, and the shuffled-value content control | done |
-| 6 | 27B inference-only on this machine; loop coupling at 8B; Mac app | planned |
+| 6 | Loop coupling at 8B; Mac app (27B feasibility measured: inference-only at 24 GB, 39 GB training peak) | planned |
 
 ## Support
 

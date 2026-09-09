@@ -104,7 +104,7 @@ def arm_spec(arm: str):
 class Prompt:
     ids: List[int]
     text: str
-    protocol: str                 # number | letter | physics_trained | physics_nudge
+    protocol: str          # number | letter | yesno | physics_trained | physics_nudge                 # number | letter | physics_trained | physics_nudge
     max_new: int
     x0_span: Optional[Tuple[int, int]] = None
     span_fallback: bool = False   # QABuilder.x0_span hit its whole-prompt fallback
@@ -484,8 +484,9 @@ class StagedDecoder:
     l_fwd (read the prompt into the physics model) and l_rev (inject).
 
     Layer split mirrors PsiLMMLX: l_fwd = round(n*10/24), l_rev = round(n*15/24)
-    unless given. NOTE: the 8B v5 run used --l-rev 27 (36 layers); the
-    checkpoint meta does not record it, so pass it explicitly.
+    unless given. v6+ checkpoints record l_fwd/l_rev in their .meta and
+    resolve_coupling() prefers those; only the 8B v5 run predates that and needs
+    --l-rev 27 passed explicitly.
     """
 
     def __init__(self, model, hf_tok, fno=None, bridges=None, l_fwd=None, l_rev=None,
@@ -731,7 +732,11 @@ def aggregate_arm(rows: List[Dict[str, Any]], open_thresh: float) -> Dict[str, A
                         "gen_mean": (round(float(np.mean(gens)), 5) if gens else None),
                         "mean_of_max": round(float(np.mean(pmax)), 5),
                         "open_rate": round(float(np.mean([m > open_thresh for m in means])), 4),
-                        "open_thresh": open_thresh}
+                        "open_thresh": open_thresh,
+                        # open_rate thresholds the PRE-floor gate, so for a leaky<eps>/
+                        # shuffled<eps> arm it reports what the gate decided, not what was
+                        # applied: the effective gate is at least eps everywhere by construction
+                        "pre_floor": True}
     kls = [r["kl"]["mean"] for r in rows if r.get("kl") and r["kl"].get("mean") is not None]
     if kls:
         out["kl_to_base"] = {"mean": round(float(np.mean(kls)), 6),

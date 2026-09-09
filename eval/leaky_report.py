@@ -27,8 +27,13 @@ def eps_of(arm):
 
 
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("path")
+    ap = argparse.ArgumentParser(
+        description="Dose-response table for the leaky-gate sweep: accuracy per floor with "
+                    "paired McNemar tests, per-token KL to the base model, and the pre-floor "
+                    "gate. Pass --rows to recompute pairing across merged runs.")
+    ap.add_argument("path", help="a guard-rail report, e.g. results/bench/leaky_8b_guardrail.json "
+                                 "(written by eval/bench_guardrail.py; the *_summary.json files "
+                                 "are the same object without the per-question rows)")
     ap.add_argument("--ref", default="psilm", help="arm the McNemar tests compare against")
     ap.add_argument("--rows", nargs="*", default=[],
                     help="rows.jsonl files of the same runs. The per-run summaries carry paired "
@@ -45,8 +50,14 @@ def main():
     summary, arms = doc["summary"], doc["arms"]
     for path in args.merge:
         other = json.loads(Path(path).read_text())
-        if other.get("model") != doc.get("model") or other.get("ckpt_step") != doc.get("ckpt_step"):
-            raise SystemExit(f"refusing to merge {path}: different backbone or bridges checkpoint")
+        for key in ("model", "ckpt_step"):
+            if other.get(key) != doc.get(key):
+                raise SystemExit(f"refusing to merge {path}: {key} differs")
+        for key in ("seed", "n", "datasets", "tasks_cache", "mmlu_subjects"):
+            a, b = doc.get("config", {}).get(key), other.get("config", {}).get(key)
+            if a != b:
+                raise SystemExit(f"refusing to merge {path}: {key} differs ({a!r} vs {b!r}) -- "
+                                 "the runs did not see the same questions")
         for ds, blk in other["summary"].items():
             if ds not in summary:
                 continue

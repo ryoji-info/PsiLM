@@ -13,11 +13,21 @@
 # already recorded and deterministic; --base-gen-from reuses the base arm's own
 # continuations so the KL reference is identical rather than merely comparable.
 # eval/leaky_report.py --merge stitches the two runs into one dose-response table.
+# NOTE for a fresh clone: the wait below keys on a log this repository does not
+# ship (results/**/*.log is git-ignored), so it blocks indefinitely if the run it
+# waits for has not happened here. Delete the wait, or touch the marker, when
+# re-running these sweeps from scratch.
+# The task cache this consumes is built by the first sweep and is git-ignored;
+# build it before running this script standalone:
+#   python eval/bench_guardrail.py --tag cachebuild --n 100 --tasks-cache $CACHE \
+#       --build-cache <the same --model/--datasets/--max-new-* flags as below>
 cd /Users/rxiii/Documents/GitHub/PsiLM
 PY=.venv/bin/python
 LOG=results/bench/leaky_sweep.log
 FIRST=results/bench/leaky_8b_guardrail.rows.jsonl
 export HF_HUB_DISABLE_XET=1
+[ -d /Users/rxiii/Documents/huggingface/hub ] && export HF_HOME=/Users/rxiii/Documents/huggingface
+
 until grep -q "LEAKY SWEEP COMPLETE" $LOG 2>/dev/null; do sleep 120; done
 echo "LEAKY-HI START $(date +%H:%M)" >> $LOG
 

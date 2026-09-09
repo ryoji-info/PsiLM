@@ -174,8 +174,12 @@ class GatedCrossAttentionMLX(nn.Module):
         self.inj_cap = inj_cap
         # gate_floor: leaky gate, sigma_eff = floor + (1 - floor) * sigma. None
         # (the trained behaviour) is a plain sigmoid gate. Set at inference by
-        # the guard-rail's leaky<eps> arms; the sigma returned is always the
-        # PRE-floor value, so the gate's own decision stays observable.
+        # the guard-rail's leaky<eps> arms and by their shuffled<eps> content
+        # controls, which take the same path and differ only in the value handed
+        # to the value encoder -- that pairing is what separates what the channel
+        # does by its presence from what it does by its content. The sigma
+        # returned is always the PRE-floor value, so the gate's own decision
+        # stays observable.
         self.gate_floor = None
         self.to_q = nn.Linear(d_model, d_attn)
         self.to_k = nn.Linear(d_model, d_attn)

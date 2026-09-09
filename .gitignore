@@ -44,3 +44,13 @@ results/**/supervisor.log
 results/**/*.log
 *.safetensors
 *.gguf
+
+# guard-rail artefacts: summaries and per-question rows are the record, the
+# multi-megabyte raw reports and the task caches are reproducible from them
+results/bench/*_guardrail.json
+!results/bench/*_guardrail_summary.json
+results/bench/tasks_*.json
+results/bench/*_dryrun.json
+build.log
+# staging copies of the banner tracked once in assets/
+results/hf_export/**/psilm-banner.png

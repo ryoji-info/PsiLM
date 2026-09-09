@@ -524,13 +524,18 @@ averaged over continuation positions.
 
 | eps | physics | MMLU | GSM8K | BoolQ | physics MAE |
 |---|---:|---:|---:|---:|---:|
-| backbone | 2% | 60% (87t) | 89% (147t) | 88% | 2.239 |
+| backbone¹ | 2% | 60% (87t) | 89% (147t) | 88% | 2.239 |
 | trained gate | 95% | 61% (83t) | 89% (145t) | 88% | 0.0215 |
 | 0.1 | 96% | 66% (67t) | 89% | 88% | 0.0204 |
-| 0.2 | 98% | 66% (62t) | 88% (137t) | 87% | **0.0182** |
+| 0.2 | 98% | 66% (62t) | 88% (137t) | 87% | **0.0182**² |
 | 0.5 | 94% | 70% (24t) | **81%** p=.039 (108t) | 84% | 0.0202 |
 | 0.7 | 90% | 69% (10t) | **50%** p<.001 (74t) | 77% p=.003 | 0.0219 |
 | 1.0 | 89% | 69% (7t) | **8%** p<.001 (24t) | 59% p<.001 | 0.0236 |
+
+¹ The backbone's physics number is not comparable with the guard-rail tables
+above (5% for Qwen, 0% for Gemma): this sweep gives its nudge protocol a
+160-token budget, at which nearly every reply truncates, rather than 768. The
+coupled arms are unaffected — they answer in ~17 tokens.
 
 Nothing off-task **degrades** until eps=0.5 (against the backbone: 9 lost, 1
 gained, p=0.022; against the trained gate 10 and 2, p=0.039). MMLU rises earlier
@@ -547,6 +552,16 @@ so run 8 had partially **adapted** to its own channel, and the no-harm arm's
 job was closing the gate rather than repairing damage. MMLU replicates run 8
 exactly: 69% at 7 tokens in both.
 
+² The only significant on-task effect in the sweep, and it is in the
+continuous measure rather than the thresholded one: per item eps=0.2 is nearer
+the truth than the trained gate on 30 questions and farther on 12 (58 tied;
+two-sided sign test p=0.008), which the ±0.05 tolerance almost entirely hides
+(accuracy moves 3 items, p=0.25). The readout is identical in every arm, so this
+is the frozen model rendering the value it was handed more faithfully when the
+channel pushes harder — not better physics. It does **not** replicate on Gemma,
+whose physics MAE is flat through its safe range (0.0173 / 0.0163 / 0.0174) and
+then explodes (0.0228, 0.594, 4.100).
+
 ### The MMLU rise is a token budget, not reasoning
 
 It is the one off-task column that rises, and it rises with three others:
@@ -556,10 +571,20 @@ items the backbone leaves unparsed, eps=0.2 parses 13 and loses 1 — all 13 in
 college physics and mathematics, the two subjects carrying the whole movement —
 and 7 are right (54%), against the 75% the backbone scores on items it already
 parses in those subjects. **Items scored, not items solved.** On the 71
-questions every arm answered, accuracy is 83.1% in all six arms including the
-backbone (60 of those 71 are subjects where nothing truncates, so the control
+questions every arm answered, accuracy is 83.1% in all six arms of the first
+sweep including the backbone . Across all fourteen arms of the family the
+common set is still 71 questions, and there the backbone is the *best* arm at
+83.1% while the coupled arms run 80.3-83.1% — so on the questions everyone
+answers, the floor never helps and costs up to two items (60 of those 71 are subjects where nothing truncates, so the control
 shows the floor changes nothing where length was never binding, and does not
 settle the items where it was).
+
+**BoolQ rules out truncation as the damage mechanism.** Its replies are four
+tokens in every arm of every sweep — there is no length for the floor to change —
+and it still falls from the backbone's 88% to 87 / 84 / 77 / 67 / 59% across
+eps 0.2 / 0.5 / 0.7 / 0.9 / 1.0 (p<0.001 from eps=0.7). So the channel degrades capability directly, not only by
+truncating reasoning. That is the cleanest separation in the sweep between the
+budget artifact (MMLU) and real damage (BoolQ, GSM8K).
 
 ### The safe range belongs to the backbone, not to epsilon
 
@@ -568,7 +593,7 @@ Gemma 4 12B, same protocol, floors around *its* operating point
 
 | eps | physics | MMLU | GSM8K | BoolQ |
 |---|---:|---:|---:|---:|
-| backbone | 10% | 53% | 84% | 90% |
+| backbone¹ | 10% | 53% | 84% | 90% |
 | trained gate | 97% | 55% | 84% | 89% |
 | 0.05 | 97% | 56% | 84% | 87% |
 | 0.1 | 91% p=.031 | 54% | 71% p=.004 | 86% |
@@ -615,6 +640,12 @@ python eval/bench_guardrail.py --tag leaky_8b_shuf --n 100 --arms shuffled0.2,sh
     --shuffle-values-from results/bench/leaky_8b_guardrail.rows.jsonl \
     --base-gen-from results/bench/leaky_8b_guardrail.rows.jsonl --kl ...
 ```
+
+KL here is per-token KL(base‖arm) over the full vocabulary, teacher-forced on
+the base arm's own greedy continuation and averaged over continuation positions,
+so every arm is scored on the same tokens. Off-task both arms share the prompt;
+on physics the base arm uses the nudge protocol, so there it is a common-token
+comparison rather than a same-prompt one.
 
 **Off-task the swap changes nothing** (eps=0.2): MMLU 0.66 vs 0.66 (61 vs 62
 tokens), GSM8K 0.88 vs 0.88 (136 vs 137), BoolQ 0.87 vs 0.87, every paired test
@@ -684,6 +715,7 @@ eval/                  training, evaluation and benchmark scripts
   copy_probe.py, readout_probe.py, readout_variance_probe.py  the diagnostic probes of the 8B/Gemma campaigns
   mlx_8b_setup.py, mlx_27b_setup.py, mlx_gemma_setup.py       parity/memory smoke tests per backbone
   export_bridges.py                                           checkpoint -> HF layout (safetensors + config.json)
+  leaky_report.py, assess_baseline.py, summarize_probes.py    dose-response, baseline and probe tables
 data/                  QA datasets (single-mode, multi-mode families, 2D) and the no-harm negatives
 results/               logs, evaluations, benchmark summaries, HF export staging (weights are git-ignored)
 paper/                 the manuscript (psilm.tex, psilm.pdf, figures)

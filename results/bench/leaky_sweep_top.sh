@@ -11,14 +11,25 @@
 # eps = 1.0. The eps = 0.5 arm already lost 8 points (89 -> 81, McNemar p =
 # 0.039 vs the trained gate), so the curve is already bending.
 #
+# OUTCOME: confirmed, and past the target. GSM8K reached 8% at eps = 1.0 (0.50
+# at 0.7, 0.19 at 0.9), against run 8's 34%. Forcing the gate open is more
+# destructive than training it open, so run 8 had partially adapted to its own
+# channel. MMLU landed on run 8's number exactly: 69% at 7 generated tokens.
+#
 # Same task cache, same seed, greedy; base and psilm arms are not rerun and
 # --base-gen-from reuses the first sweep's base continuations as the KL
 # reference. eval/leaky_report.py --merge stitches all three sweeps.
+# The task cache this consumes is built by the first sweep and is git-ignored;
+# build it before running this script standalone:
+#   python eval/bench_guardrail.py --tag cachebuild --n 100 --tasks-cache $CACHE \
+#       --build-cache <the same --model/--datasets/--max-new-* flags as below>
 cd /Users/rxiii/Documents/GitHub/PsiLM
 PY=.venv/bin/python
 LOG=results/bench/leaky_sweep.log
 FIRST=results/bench/leaky_8b_guardrail.rows.jsonl
 export HF_HUB_DISABLE_XET=1
+[ -d /Users/rxiii/Documents/huggingface/hub ] && export HF_HOME=/Users/rxiii/Documents/huggingface
+
 echo "LEAKY-TOP START $(date +%H:%M)" >> $LOG
 
 CACHE=results/bench/tasks_leaky_n100.json
