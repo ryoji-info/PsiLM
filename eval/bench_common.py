@@ -73,18 +73,27 @@ NUDGE_YESNO = "\nAnswer with only yes or no, in the form \"Answer: <yes/no>\"."
 
 
 def arm_spec(arm: str):
-    """(mode, gate_floor) of an arm name. 'leaky0.05' is the psilm arm with the
-    gate floored at 0.05 (sigma_eff = 0.05 + 0.95 * sigma); the floor is applied
-    at inference only, on the trained selective bridges, so a sweep over eps is
-    a dose-response curve for the channel on prompts where it carries nothing."""
+    """(mode, gate_floor, shuffled) of an arm name.
+
+    'leaky0.05' is the psilm arm with the gate floored at 0.05 (sigma_eff =
+    0.05 + 0.95 * sigma), applied at inference only on the trained selective
+    bridges, so a sweep over eps is a dose-response curve for the channel on
+    prompts where it carries nothing.
+
+    'shuffled0.05' is the content control for that sweep: same floor, same
+    channel, same magnitude distribution, but the value fed to the value
+    encoder comes from a DIFFERENT question of the same dataset. If the
+    channel's effects survive the swap they belong to the perturbation; if they
+    vanish they belong to what the physics model computed."""
     if arm in ARMS:
-        return arm, None
-    if arm.startswith("leaky"):
-        eps = float(arm[len("leaky"):])
-        if not 0.0 < eps <= 1.0:
-            raise ValueError(f"{arm}: the floor must be in (0, 1]")
-        return "psilm", eps
-    raise ValueError(f"unknown arm {arm!r} (base, psilm, zeroed, leaky<eps>)")
+        return arm, None, False
+    for prefix, shuffled in (("leaky", False), ("shuffled", True)):
+        if arm.startswith(prefix):
+            eps = float(arm[len(prefix):])
+            if not 0.0 < eps <= 1.0:
+                raise ValueError(f"{arm}: the floor must be in (0, 1]")
+            return "psilm", eps, shuffled
+    raise ValueError(f"unknown arm {arm!r} (base, psilm, zeroed, leaky<eps>, shuffled<eps>)")
 
 
 # ----------------------------------------------------------------------------
@@ -509,7 +518,7 @@ class StagedDecoder:
         post = getattr(self.model, "logit_postprocess", None)     # Gemma's tanh soft-cap
         return post(logits) if post is not None else logits
 
-    def _physics_tokens(self, h_prompt, x0_span):
+    def _physics_tokens(self, h_prompt, x0_span, sub_value=None):
         import mlx.core as mx
         from psilm.mlx.bridges import build_ic_mlx
         L = h_prompt.shape[1]
@@ -520,12 +529,19 @@ class StagedDecoder:
         feats = self.fno.features(ic)
         u_field = self.fno.proj(feats).squeeze(-1)
         tokens, u_hat = self.phi.rev(feats, u_field, x0_hat)
+        injected = u_hat
+        if sub_value is not None:                 # content control: another question's value
+            injected = mx.array([float(sub_value)], dtype=u_hat.dtype)
         if getattr(self.phi, "channel", "field") == "value":
-            tokens = self.phi.val(u_hat)          # mirrors PsiLMMLX._couple
+            tokens = self.phi.val(injected)       # mirrors PsiLMMLX._couple
+        elif sub_value is not None:
+            raise ValueError("the shuffled control needs the value channel")
         mx.eval(tokens, u_hat, params_hat, x0_hat)
         diag = {"x0_hat": round(float(x0_hat[0].item()), 4),
                 "u_hat": round(float(u_hat[0].item()), 4),
                 "params_hat": [round(float(v), 4) for v in params_hat[0].tolist()]}
+        if sub_value is not None:                 # audit trail: what actually went in
+            diag["u_injected"] = round(float(injected[0].item()), 4)
         return tokens, diag
 
     def _inject(self, h, tokens, mode, floor=None):
@@ -548,7 +564,7 @@ class StagedDecoder:
         post = getattr(self.model, "logit_postprocess", None)
         return post(logits) if post is not None else logits
 
-    def _hidden_full(self, ids, mode, x0_span=None, floor=None):
+    def _hidden_full(self, ids, mode, x0_span=None, floor=None, sub_value=None):
         """Final hidden state of the whole sequence in one causal pass. The
         injection is position-wise (each position attends to the physics tokens
         only) and every layer after it is causal, so this equals the token-by-
@@ -561,7 +577,7 @@ class StagedDecoder:
             h = self._layers(h, 0, self.n_layers, "causal", cache)
         else:
             h = self._layers(h, 0, self.l_fwd, "causal", cache)
-            tokens, _ = self._physics_tokens(h, x0_span)
+            tokens, _ = self._physics_tokens(h, x0_span, sub_value)
             h = self._layers(h, self.l_fwd, self.l_rev, "causal", cache)
             h, _ = self._inject(h, tokens, mode, floor)
             h = self._layers(h, self.l_rev, self.n_layers, "causal", cache)
@@ -569,7 +585,7 @@ class StagedDecoder:
         return h
 
     def kl_to_base(self, prompt_ids, gen_ids, mode, x0_span=None, floor=None,
-                   chunk: int = 32) -> Dict[str, Any]:
+                   chunk: int = 32, sub_value=None) -> Dict[str, Any]:
         """Per-token KL(base || arm) over the full vocabulary, teacher-forced on
         the BASE arm's own greedy continuation gen_ids (so every arm is measured
         on the same tokens). Returns mean / p95 / max over the continuation."""
@@ -579,7 +595,7 @@ class StagedDecoder:
             return {"n": 0, "mean": None, "p95": None, "max": None}
         lo, hi = len(prompt_ids) - 1, len(ids) - 1     # positions predicting gen_ids
         h_b = self._hidden_full(ids, "base")
-        h_a = self._hidden_full(ids, mode, x0_span, floor)
+        h_a = self._hidden_full(ids, mode, x0_span, floor, sub_value)
         kls = []
         for a in range(lo, hi, chunk):
             b = min(hi, a + chunk)
@@ -598,7 +614,7 @@ class StagedDecoder:
                 "p95": round(float(np.percentile(arr, 95)), 6), "max": round(float(arr.max()), 6)}
 
     # -- public ---------------------------------------------------------------
-    def prefill_logits(self, prompt_ids, mode="base", x0_span=None, floor=None):
+    def prefill_logits(self, prompt_ids, mode="base", x0_span=None, floor=None, sub_value=None):
         """Last-position logits after a prefill (used by the parity check and
         the self-test); returns (logits, cache, tokens, sigma_prompt, diag)."""
         import mlx.core as mx
@@ -612,7 +628,7 @@ class StagedDecoder:
         else:
             assert self.phi is not None and self.fno is not None, "bridges/fno required"
             h = self._layers(h, 0, self.l_fwd, mask, cache)
-            tokens, diag = self._physics_tokens(h, x0_span)
+            tokens, diag = self._physics_tokens(h, x0_span, sub_value)
             h = self._layers(h, self.l_fwd, self.l_rev, mask, cache)
             h, sig = self._inject(h, tokens, mode, floor)
             h = self._layers(h, self.l_rev, self.n_layers, mask, cache)
@@ -620,11 +636,13 @@ class StagedDecoder:
         logits = self._logits_last(h)
         return logits, cache, tokens, sig_p, diag
 
-    def generate(self, prompt_ids, mode="base", max_new=64, x0_span=None) -> GenResult:
+    def generate(self, prompt_ids, mode="base", max_new=64, x0_span=None,
+                 sub_value=None) -> GenResult:
         import mlx.core as mx
-        mode, floor = arm_spec(mode)
+        mode, floor, _ = arm_spec(mode)
         t0 = time.perf_counter()
-        logits, cache, tokens, sig_p, diag = self.prefill_logits(prompt_ids, mode, x0_span, floor)
+        logits, cache, tokens, sig_p, diag = self.prefill_logits(prompt_ids, mode, x0_span,
+                                                                 floor, sub_value)
         y = mx.argmax(logits, axis=-1)
         mx.eval(y)
         if sig_p is not None:

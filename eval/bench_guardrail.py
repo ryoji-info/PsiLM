@@ -78,6 +78,12 @@ def parse_args():
                          "(which makes an 8B MLX load die with SIGKILL on this machine)")
     ap.add_argument("--build-cache", action="store_true",
                     help="build --tasks-cache and exit, without loading any weights")
+    ap.add_argument("--shuffle-values-from", default=None,
+                    help="rows.jsonl of an earlier run: its recorded diag.u_hat per question "
+                         "supplies the shuffled<eps> arms with ANOTHER question's value from "
+                         "the same dataset (a deterministic one-step rotation of the qids in "
+                         "sorted order, so no question keeps its own). Same channel, same "
+                         "floor, same magnitude distribution, wrong content")
     ap.add_argument("--base-gen-from", default=None,
                     help="rows.jsonl of an earlier run whose base arm was recorded with --kl: "
                          "its greedy continuations become this run's KL reference, so a "
@@ -326,6 +332,25 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
         if rel > 1e-2 or not same:
             raise SystemExit("parity failed: staged base arm is not the stock model")
 
+    shuffled_value = {}
+    if args.shuffle_values_from:
+        prior = read_jsonl(Path(args.shuffle_values_from))
+        # the readout is deterministic and identical in every coupled arm, so any
+        # of them supplies the same per-question value
+        u = {}
+        for r in prior:
+            if r["arm"] != "base" and r.get("diag", {}).get("u_hat") is not None:
+                u.setdefault((r["dataset"], r["qid"]), r["diag"]["u_hat"])
+        for ds in {k[0] for k in u}:
+            qids = sorted(q for d, q in u if d == ds)
+            for i, q in enumerate(qids):                    # rotate by one: a derangement
+                shuffled_value[(ds, q)] = u[(ds, qids[(i + 1) % len(qids)])]
+        fixed = sum(1 for k in shuffled_value if shuffled_value[k] == u[k])
+        if not shuffled_value:
+            raise SystemExit(f"{args.shuffle_values_from}: no coupled rows with diag.u_hat")
+        print(f"[shuffle] {len(shuffled_value)} substitute values loaded "
+              f"({fixed} coincidentally unchanged)", flush=True)
+
     base_gen = {r["qid"]: r["gen_ids"] for r in rows if r["arm"] == "base" and "gen_ids" in r}
     if args.base_gen_from:
         prior = read_jsonl(Path(args.base_gen_from))
@@ -347,7 +372,12 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
                 continue
             p = t.prompt_for(arm)
             span = p.x0_span if arm != "base" else None
-            res = dec.generate(p.ids, mode=arm, max_new=p.max_new, x0_span=span)
+            _, _, shuffled = arm_spec(arm)
+            sub = shuffled_value.get((t.dataset, t.qid)) if shuffled else None
+            if shuffled and sub is None:
+                raise SystemExit(f"{arm}: no substitute value for {t.qid} "
+                                 "-- did --shuffle-values-from cover this dataset?")
+            res = dec.generate(p.ids, mode=arm, max_new=p.max_new, x0_span=span, sub_value=sub)
             pred, ok = score(p.protocol, res.text, t.gold)
             row = make_row(t, arm, p, res, pred, ok, args)
             if args.kl:
@@ -357,8 +387,9 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
                 elif t.qid in base_gen:
                     # the KL is measured on the arm's OWN prompt (the physics base
                     # arm uses a different prompt, so there it is the trained one)
-                    mode, floor = arm_spec(arm)
-                    row["kl"] = dec.kl_to_base(p.ids, base_gen[t.qid], mode, span, floor)
+                    mode, floor, _ = arm_spec(arm)
+                    row["kl"] = dec.kl_to_base(p.ids, base_gen[t.qid], mode, span, floor,
+                                               sub_value=sub)
             append_jsonl(rows_path, row)
             rows.append(row)
             done.add(key)
