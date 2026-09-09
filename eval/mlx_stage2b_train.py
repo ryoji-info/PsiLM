@@ -192,6 +192,12 @@ def main():
     ckpt.parent.mkdir(parents=True, exist_ok=True)
 
     model, stock, tok = load_backbone_any(args.model)     # tower for the staged forward
+    if getattr(model, "needs_train_mode_for_grad", False):
+        # backbones whose gradient path crosses a custom Metal kernel need training
+        # mode to select a differentiable fallback (see psilm/mlx/qwen35_loader.py)
+        model.train()
+        print("[backbone] training mode: differentiable SSM scan selected", flush=True)
+
     hf_tok = AutoTokenizer.from_pretrained(args.hf_tokenizer)
     fno = convert_from_torch(FNO_PATH)
     span_readout = args.readout == "span"

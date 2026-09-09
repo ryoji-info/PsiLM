@@ -203,5 +203,11 @@ def load_backbone_any(repo_id):
     if cfg.get("model_type") in GEMMA4_MODEL_TYPES:
         stock, tok, _ = load_stock_gemma(repo_id)
         return GemmaTower(stock), stock, tok
+    from .qwen35_loader import QWEN35_MODEL_TYPES, Qwen35Tower
+    if cfg.get("model_type") in QWEN35_MODEL_TYPES:
+        # hybrid linear/full attention behind a vision-language wrapper: the
+        # tower picks the mask each layer kind expects (see qwen35_loader)
+        stock, tok = mlx_lm.load(repo_id)
+        return Qwen35Tower(stock), stock, tok
     model, tok = mlx_lm.load(repo_id)
     return model, model, tok
