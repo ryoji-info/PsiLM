@@ -483,21 +483,42 @@ sigma_eff = eps + (1 - eps) * sigma          # psilm/mlx/bridges.py, gate_floor
 
 Monotone in sigma and it leaves the open end alone — `max(eps, sigma)` would
 flatten the gate's decision below the floor and has a dead zone with no
-gradient. The logged sigma stays **pre-floor** (it moves by ≤5e-4 in any
-column), so the gate's own decision remains observable: that column is the
-instrument check.
+gradient. The logged sigma stays **pre-floor**, so the gate's own decision remains
+observable — that column is the instrument check. At prompt positions it is
+identical across arms to five decimals (drift 0.0e0). The all-position mean also
+covers generated tokens, which differ between arms, and drifts up to 1.3e-3 on
+Qwen. On Gemma at eps=1.0 it is not invariant at all (physics 0.144 → 0.117):
+the gate is computed from the residual stream it sits in, so a large enough
+injection changes what the gate reads. That feedback is exactly what the
+pre-floor column exists to expose.
 
 ```bash
 python eval/bench_guardrail.py --tag leaky_8b --n 100 \
     --arms base,psilm,leaky0.01,leaky0.05,leaky0.1,leaky0.2 \
     --datasets physics,mmlu,gsm8k,boolq --kl --tasks-cache results/bench/tasks_leaky_n100.json
 python eval/leaky_report.py results/bench/leaky_8b_guardrail.json \
-    --merge results/bench/leaky_8b_hi_guardrail.json
+    --merge results/bench/leaky_8b_hi_guardrail.json \
+            results/bench/leaky_8b_top_guardrail.json \
+            results/bench/leaky_8b_shuf_guardrail.json
 ```
 
 Five runs, all seed 0, greedy, n=100 per dataset, sharing a task cache per
-backbone: `leaky_8b` (eps ≤ 0.2), `leaky_8b_hi` (0.3–0.5), `leaky_8b_top`
-(0.7–1.0), `leaky_8b_shuf` (the content control), `leaky_gemma`.
+backbone. Each has its committed launcher, recording the arms, the waits and the
+retry-with-resume harness:
+
+| run | arms | launcher |
+|---|---|---|
+| `leaky_8b` | eps 0.01–0.2 | `results/bench/leaky_sweep.sh` |
+| `leaky_8b_hi` | 0.3, 0.4, 0.5 | `results/bench/leaky_sweep_hi.sh` |
+| `leaky_8b_top` | 0.7, 0.9, 1.0 | `results/bench/leaky_sweep_top.sh` |
+| `leaky_8b_shuf` | shuffled 0.2, 1.0 | `results/bench/leaky_sweep_shuffled.sh` |
+| `leaky_gemma` | 0.02–0.2, 1.0 | `results/bench/leaky_sweep_gemma.sh` |
+
+The follow-ups reuse the first run's task cache and base continuations
+(`--tasks-cache`, `--base-gen-from`), so questions, prompts and the KL reference
+are identical rather than merely comparable. KL is per-token KL(base‖arm) over
+the full vocabulary, teacher-forced on the base arm's own greedy continuation,
+averaged over continuation positions.
 
 ### The dose-response curve (Qwen3-8B)
 
@@ -511,7 +532,10 @@ backbone: `leaky_8b` (eps ≤ 0.2), `leaky_8b_hi` (0.3–0.5), `leaky_8b_top`
 | 0.7 | 90% | 69% (10t) | **50%** p<.001 (74t) | 77% p=.003 | 0.0219 |
 | 1.0 | 89% | 69% (7t) | **8%** p<.001 (24t) | 59% p<.001 | 0.0236 |
 
-Nothing off-task moves until eps=0.5. At eps=1.0 — sigma_eff identically 1.0,
+Nothing off-task **degrades** until eps=0.5 (against the backbone: 9 lost, 1
+gained, p=0.022; against the trained gate 10 and 2, p=0.039). MMLU rises earlier
+and significantly — from eps=0.3, p=0.012 against the backbone — for the reason
+in the next section. At eps=1.0 — sigma_eff identically 1.0,
 which is run 8's operating point reached by force rather than by training —
 GSM8K collapses to 8%. So **the open gate alone is sufficient**; open-gate
 training is not required to produce run 8's failure.
@@ -567,10 +591,15 @@ Eight-fold apart in eps, ~1.4-fold apart in this ratio. **Not a law** — closin
 the rest needs the realized injection-to-stream ratio, which `return_ratio` in
 `psilm/mlx/bridges.py` can log and these sweeps did not. Log it next time.
 
-**One finding does not survive the backbone change.** On Gemma the floor makes
-replies *longer* and parsing *worse* (MMLU 139 → 163 tokens, parse 0.67 → 0.00;
-GSM8K 253 → 329), the opposite of Qwen. Generation is perturbed on both; the
-sign is backbone-specific. Do not state the brevity direction as general.
+**The MMLU budget effect does not replicate on Gemma — because of the width of
+the window, not the sign of the effect.** Inside Gemma's safe range the floor
+barely moves reply length (MMLU 134.0 / 134.1 tokens at eps 0.02 / 0.05, against
+the trained gate's 134.4), so there is no regime where it shortens replies
+without destroying the model; Gemma's MMLU accuracy never exceeds 56%. The
+lengthening at larger floors (158.6 tokens at eps=0.2, 162.5 at 1.0) belongs to
+arms already collapsed to 37% and 0%, and is not monotone — GSM8K falls back to
+194 tokens at eps=1.0. That is derailment, not brevity with the opposite sign.
+State the usable window as backbone-specific, not the direction.
 
 ### The content control: presence vs content
 

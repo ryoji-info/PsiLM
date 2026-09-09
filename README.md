@@ -15,7 +15,7 @@ specialists, one output. Why it matters: the physics model's answer arrives
 *inside* the language model's reasoning — a 12B model that scores 0% on the
 field-value question below answers it at 96.7% with the same weights — and a trained
 gate keeps the channel shut when physics is irrelevant, so on everything else
-the coupled model is the backbone, byte for byte.
+the coupled model matches its backbone to within a question or two (GSM8K 89% either way, MMLU 61% against 60%).
 
 ```mermaid
 flowchart LR
@@ -265,7 +265,7 @@ The same control run on non-physics prompts changes *nothing* (GSM8K 0.88 both
 ways, MMLU 0.66 both ways, p = 1.00), which separates the two things the channel
 does: off-task its effects come from its **presence**, on-task from its
 **content**. Details and the full ε sweep behind it are in
-[docs/technical-notes.md](docs/technical-notes.md#leaky-gate-and-what-the-channel-actually-carries-2026-0910)
+[docs/technical-notes.md](docs/technical-notes.md)
 and §9.7 of the paper.
 
 ## Read more
