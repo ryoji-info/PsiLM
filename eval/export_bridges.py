@@ -62,6 +62,20 @@ DROP = ("fwd.x0_query", "fwd.x0_key.weight", "fwd.x0_key.bias")
 D_MODEL_KEYS = ("fwd.key.weight", "fwd.h1.0.weight", "fwd.a_h1.weight", "fwd.x0_h1.weight")
 
 
+def n_layers_from_config(model: str):
+    """Layer count from a locally converted backbone's own config.json.
+
+    N_LAYERS is keyed by Hugging Face repo id, which a model assembled on disk
+    (Ollama -> mlx, say) never has. VLM checkpoints keep the decoder's depth
+    under text_config.
+    """
+    cfg = Path(model) / "config.json"
+    if not cfg.is_file():
+        return None
+    c = json.loads(cfg.read_text())
+    return c.get("num_hidden_layers") or c.get("text_config", {}).get("num_hidden_layers")
+
+
 def infer_d_model(z):
     for k in D_MODEL_KEYS:
         if k in z.files:
@@ -78,7 +92,11 @@ def phase_steps(run: Path):
     the phases are told apart by the ``_noharm`` suffix, not by step order.
     """
     noharm = list(run.glob("bridges_step*_noharm.npz"))
-    coupled = [p for p in run.glob("bridges_step*.npz") if "_noharm" not in p.name]
+    # only bare bridges_step<N>.npz are coupled chunks: a snapshot kept under
+    # another suffix (bridges_step2000_phaseA.npz, the readout-only checkpoint)
+    # is neither phase
+    coupled = [p for p in run.glob("bridges_step*.npz")
+               if re.fullmatch(r"bridges_step\d+\.npz", p.name)]
     last = max((int(re.search(r"step(\d+)", p.name).group(1)) for p in coupled),
                default=0)
     return len(noharm), last
@@ -109,6 +127,11 @@ def main():
     ap.add_argument("--out", required=True, help="export directory")
     ap.add_argument("--ckpt", default="bridges.npz", help="checkpoint inside --run")
     ap.add_argument("--n-layers", type=int, default=None)
+    ap.add_argument("--backbone-name", default=None, metavar="ID",
+                    help="what to record as the backbone (and tokenizer) the bridge attaches "
+                         "to. Needed when training ran against a locally assembled directory: "
+                         "the absolute path in the checkpoint means nothing to anyone who "
+                         "downloads this, so name something they can actually obtain")
     ap.add_argument("--keep-unused", action="store_true",
                     help="keep the retired learned-pointer tensors")
     ap.add_argument("--license", default="apache-2.0")
@@ -124,9 +147,16 @@ def main():
     a = meta.get("args", {})
     model = meta["model"]
     task = TASKS[meta.get("task", "stage2")]
-    n_layers = args.n_layers or N_LAYERS.get(model)
+    n_layers = args.n_layers or N_LAYERS.get(model) or n_layers_from_config(model)
     if n_layers is None:
         raise SystemExit(f"unknown layer count for {model}; pass --n-layers")
+    if args.backbone_name:
+        # training ran against a directory on this machine; record the name a
+        # downloader can resolve instead of a path only this machine has
+        if a.get("hf_tokenizer") in (None, model):
+            a = {**a, "hf_tokenizer": args.backbone_name}
+        model = args.backbone_name
+
     d_model = infer_d_model(z)
     readout_norm = a.get("readout_norm", "rms")
     n_noharm, last_coupled = phase_steps(run)
@@ -180,10 +210,16 @@ def main():
                 "backbone's own greedy continuation; gate-only updates + "
                 "mean-gate penalty" if a.get("noharm_data") else "not run"),
         },
+        # the key keeps the form the published configs already carry; the n in
+        # it is the FINAL chunk's --eval-n, and a run that changed it mid-way
+        # (Qwen3.5's first coupled chunk scored 48 rollouts, the rest 16) says
+        # so in the field below rather than in a key nobody would look for
         f"held_out_n{a.get('eval_n', 48)}_per_chunk": {
             "coupled": coupled,
             "no_harm_phase": noharm,
         },
+        "held_out_n_source": ("--eval-n of the final chunk; earlier chunks may have used "
+                              "another n -- the run's coupled.log records it per chunk"),
         "license": args.license,
     }
     if args.note:

@@ -448,7 +448,9 @@ def load_backbone(model_id: str = DEFAULT_MODEL, hf_tok_id: str = DEFAULT_HF_TOK
         # subclass whose __setattr__ files a Module into the parameter tree, so a
         # plain assignment makes the model a child of itself. freeze() then walks
         # that cycle until the OS kills the process -- SIGKILL, no traceback, no
-        # OOM record. For Qwen towers stock IS model, so there is nothing to alias.
+        # OOM record. For Qwen3 towers stock IS model, so there is nothing to
+        # alias; the Qwen3.5 tower carries its own _model, which the hasattr
+        # guard respects.
         object.__setattr__(model, "_model", stock)
     model.freeze()
     hf_tok = AutoTokenizer.from_pretrained(hf_tok_id)

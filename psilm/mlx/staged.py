@@ -23,6 +23,15 @@ def padded_causal_mask(attn, dtype):
 
 
 class MlxStream:
+    #: layer index at and above which to recompute rather than tape (None: tape
+    #: everything, the default). Only worth setting on backbones whose backward
+    #: pass is memory-bound -- Qwen3.5, whose GatedDeltaNet layers fall back to a
+    #: pure-ops scan that keeps its whole recurrence alive. Checkpointing is
+    #: w.r.t. the layer's input, which is all that is needed here: the backbone
+    #: is frozen, so the only gradient crossing a layer is the residual-stream
+    #: one heading back to the bridges.
+    checkpoint_from = None
+
     def __init__(self, model, input_ids, attn=None):
         self.model = model
         inner = model.model
@@ -33,8 +42,14 @@ class MlxStream:
         self.mask = padded_causal_mask(attn, self.hidden.dtype)
 
     def run(self, lo: int, hi: int):
-        for layer in self.inner.layers[lo:hi]:
-            self.hidden = layer(self.hidden, mask=self.mask, cache=None)
+        cp = self.checkpoint_from
+        for i, layer in enumerate(self.inner.layers[lo:hi], start=lo):
+            if cp is None or i < cp:
+                self.hidden = layer(self.hidden, mask=self.mask, cache=None)
+            else:
+                mask = self.mask          # captured as a constant; no gradient wanted
+                self.hidden = mx.checkpoint(
+                    lambda h, _l=layer: _l(h, mask=mask, cache=None))(self.hidden)
         return self.hidden
 
     def finish(self):

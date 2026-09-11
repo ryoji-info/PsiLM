@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 """Reassemble an Ollama MLX model into a directory mlx-lm can load.
 
-Ollama stores an `-mlx` model as one single-tensor safetensors file per weight,
-addressed by digest through a manifest, plus the tokenizer and config as
-separate JSON blobs. mlx-lm wants a normal Hugging Face-style directory. This
+Ollama stores an `-mlx` model as one safetensors file per weight, addressed by
+digest through a manifest -- a quantized weight travels with its block scales
+in the same blob -- plus the tokenizer and config as separate JSON blobs. mlx-lm wants a normal Hugging Face-style directory. This
 walks the manifest and writes one.
 
 Three things it has to fix along the way:
 
   * naming. Ollama writes the nvfp4 block scales as `<name>.weight.scale`;
     mlx.nn.QuantizedLinear expects `<name>.scales`.
-  * the quantization stanza. The config Ollama ships has `quantization: null`
-    even though the tensors carry `{"group_size": "16", "quant_type": "nvfp4"}`
-    in their own metadata, so mlx-lm would build dense layers and fail to load
-    the packed weights. We read the metadata and write the stanza.
+  * the quantization stanza. The config Ollama ships has no `quantization` key
+    at all, even though the tensors carry `{"group_size": "16", "quant_type":
+    "nvfp4"}` in their own metadata, so mlx-lm would build dense layers and fail
+    to load the packed weights. We read the metadata and write the stanza.
   * the vision tower. PsiLM drives the text decoder only, and `--text-only`
     (the default) drops `vision_tower.*`, which is most of what is not needed.
 
@@ -50,14 +50,17 @@ def load_blob(digest: str, tmp: Path):
     return mx.load(str(link))
 
 
-def read_one_tensor(path: Path):
-    """(header dict, metadata dict, raw payload) of a single-tensor safetensors blob."""
+def read_header(path: Path):
+    """(header dict, metadata dict) of a safetensors blob, from its header alone.
+
+    The payload is never needed here -- mx.load reads it once, through the
+    symlink -- so this stops after the JSON header rather than pulling each
+    blob's tensor bytes into Python a second time."""
     with open(path, "rb") as f:
         n = struct.unpack("<Q", f.read(8))[0]
         header = json.loads(f.read(n))
-        payload = f.read()
     meta = header.pop("__metadata__", {})
-    return header, meta, payload
+    return header, meta
 
 
 def main():
@@ -85,6 +88,10 @@ def main():
         if name and name.endswith(".json"):
             shutil.copyfile(blob(layer["digest"]), out / name)
             print(f"  {name}")
+        elif layer["mediaType"].endswith(".license"):
+            # the licence rides along in the manifest; keep it beside the weights
+            shutil.copyfile(blob(layer["digest"]), out / "LICENSE")
+            print("  LICENSE")
 
     import mlx.core as mx
 
@@ -96,7 +103,7 @@ def main():
             dropped += 1
             continue
         arrays = load_blob(layer["digest"], tmp)
-        _, meta, _ = read_one_tensor(blob(layer["digest"]))
+        _, meta = read_header(blob(layer["digest"]))
         if meta.get("quant_type"):
             quant = quant or {"group_size": int(meta["group_size"]), "bits": 4,
                               "mode": meta["quant_type"]}

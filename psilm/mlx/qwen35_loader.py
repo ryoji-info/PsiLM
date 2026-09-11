@@ -38,10 +38,16 @@ class _LayerShim:
         self.is_linear = bool(getattr(layer, "is_linear", False))
 
     def __call__(self, x, mask=None, cache=None):
-        if self.is_linear and mask is not None and mask.ndim == 4:
-            # additive (B,1,L,L) -> boolean (B,L): the last row is causal-open
-            # everywhere, so it is the key-validity vector on its own
-            mask = mask[:, 0, -1, :] == 0
+        if self.is_linear:
+            if mask is None or isinstance(mask, str):
+                # the KV-cached decoder passes "causal" (or None for a single
+                # token); a recurrence has no causal mask to apply and, with
+                # no padding, nothing to mask
+                mask = None
+            elif mask.ndim == 4:
+                # additive (B,1,L,L) -> boolean (B,L): the last row is
+                # causal-open everywhere, so it is the key-validity vector
+                mask = mask[:, 0, -1, :] == 0
         return self.layer(x, mask, cache)
 
     def __getattr__(self, name):
@@ -105,6 +111,16 @@ class Qwen35Tower:
     def make_cache(self):
         return self._lm.make_cache() if hasattr(self._lm, "make_cache") else self._model.make_cache()
 
+    def freeze(self, *a, **kw):
+        self._model.freeze(*a, **kw)
+        return self
+
+    def parameters(self):
+        return self._model.parameters()
+
+    # eval()/train() on the stock model would reset every layer's mode and with
+    # it the grad window, so the next backward would hit the kernel's missing
+    # VJP. Remember the window and re-apply it after either call.
     def set_grad_window(self, lo: int):
         """Differentiable SSM scan only from layer ``lo`` up.
 
@@ -114,15 +130,22 @@ class Qwen35Tower:
         all 32 layers costs 25.2 GB at batch 2 against 12.9 GB when only the
         top twelve use it.
         """
+        self._grad_lo = lo
         for i, shim in enumerate(self.model.layers):
             shim.layer.train(i >= lo)
         return self
 
-    def freeze(self, *a, **kw):
-        return self._model.freeze(*a, **kw)
+    def eval(self):
+        self._model.eval()
+        if getattr(self, "_grad_lo", None) is not None:
+            self.set_grad_window(self._grad_lo)
+        return self
 
-    def parameters(self):
-        return self._model.parameters()
+    def train(self, mode: bool = True):
+        self._model.train(mode)
+        if getattr(self, "_grad_lo", None) is not None:
+            self.set_grad_window(self._grad_lo)
+        return self
 
     def __getattr__(self, name):
         if name in ("_model", "_lm"):

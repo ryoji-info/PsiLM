@@ -116,6 +116,11 @@ def main():
     ap.add_argument("--thinking", action="store_true",
                     help="let a thinking backbone (Qwen3) reason before answering; the "
                          "default protocol runs both arms with thinking off, as PsiLM does")
+    ap.add_argument("--ops-path", action="store_true",
+                    help="score PsiLM on the numerics it was trained with: on a backbone whose "
+                         "recurrent scan has a differentiable (pure-ops) fallback, switch the "
+                         "layers above the injection onto it, as the trainer does. Default: the "
+                         "kernel path, the deployment numerics")
     args = ap.parse_args()
     arms = args.arms.split(",")
 
@@ -130,10 +135,20 @@ def main():
                             inj_cap=margs.get("inj_cap"), channel=margs.get("channel", "field"),
                             readout_norm=margs.get("readout_norm", "rms"))
     load_bridge_weights(bridges, ckpt)
-    psi = PsiLMMLX(model, tok, fno, bridges, l_rev=args.l_rev)
+    # the depth the bridges were trained at is in the checkpoint's meta; a bare
+    # PsiLMMLX would fall back to the Stage-2 fraction, which is wrong for any
+    # backbone that injected elsewhere (Qwen3.5 trained at 26/32, the rule says 20)
+    l_rev = args.l_rev if args.l_rev is not None else meta.get("l_rev")
+    psi = PsiLMMLX(model, tok, fno, bridges, l_rev=l_rev)
+    scan_path = "kernel"
+    if args.ops_path:
+        if not hasattr(model, "set_grad_window"):
+            raise SystemExit("--ops-path: this backbone has no ops/kernel scan switch")
+        model.set_grad_window(psi.l_rev)
+        scan_path = f"ops from layer {psi.l_rev}"
     builder = QABuilder(hf_tok)
-    print(f"{args.model} | bridges step {meta['step']} | couple {psi.l_fwd}/{psi.l_rev} of {psi.n_layers}",
-          flush=True)
+    print(f"{args.model} | bridges step {meta['step']} | couple {psi.l_fwd}/{psi.l_rev} of {psi.n_layers} "
+          f"| scan path: {scan_path}", flush=True)
 
     items = json.loads(Path("data/stage2_qa_val.json").read_text())[: args.n]
     shots = few_shot(json.loads(Path("data/stage2_qa_train.json").read_text()),
@@ -178,6 +193,7 @@ def main():
     n = len(items)
     summary = {"n": n, "step": meta["step"], "model": args.model, "tolerance": TOL,
                "couple": [psi.l_fwd, psi.l_rev, psi.n_layers],
+               "scan_path": scan_path,
                "protocol": {"max_new": args.max_new, "force_answer": not args.no_force_answer,
                             "shots": args.shots, "thinking": args.thinking}}
     for k, (c, errs) in agg.items():

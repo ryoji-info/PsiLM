@@ -131,6 +131,11 @@ def main():
     ap.add_argument("--reinit-channel", action="store_true",
                     help="on resume: keep the trained readouts/lookup, re-initialize the reverse "
                          "token heads and the gated injection (fresh optimizer)")
+    ap.add_argument("--checkpoint-from", type=int, default=None, metavar="L",
+                    help="recompute layers >= L in the backward pass instead of taping them "
+                         "(-1: use l_rev). Trades one extra forward per layer for the memory "
+                         "the tape would hold; only worth it where the backward pass is "
+                         "memory-bound, i.e. Qwen3.5's pure-ops SSM scan")
     ap.add_argument("--clip", default="global", choices=["global", "module"],
                     help="module: clip each bridge (fwd/rev/inject) at 1.0 separately, "
                          "so a large injection gradient cannot starve the readouts "
@@ -194,6 +199,13 @@ def main():
         model.set_grad_window(psi.l_rev)
         print(f"[backbone] differentiable SSM scan from layer {psi.l_rev} up; "
               f"kernel below", flush=True)
+
+    if args.checkpoint_from is not None:
+        # class attribute, so it reaches every MlxStream the model and the
+        # rollout evaluator construct without threading it through each one
+        MlxStream.checkpoint_from = psi.l_rev if args.checkpoint_from < 0 else args.checkpoint_from
+        print(f"[backbone] recomputing layers >= {MlxStream.checkpoint_from} in the "
+              f"backward pass", flush=True)
     if args.readout_norm == "dim" and (args.fresh or not ckpt.exists()):
         # calibration: per-dimension statistics of the readout layer on a prompt batch
         cb = QABuilder(hf_tok)
@@ -287,7 +299,17 @@ def main():
         acc, mae = None, None       # still in phase A: no channel to evaluate
     else:
         psi.readout_only = False
+        # score on the deployment numerics: a backbone with a differentiable
+        # fallback scan (Qwen3.5) trains on it, but the held-out evaluation and
+        # the guard-rail run the kernel, so the per-chunk rollouts should too.
+        # (The Qwen3.5 campaign of 2026-09-10/11 predates this and scored its
+        # rollouts on the fallback path; its held-out set is reported on both.)
+        # The kernel is also several times faster here, having no tape to keep.
+        if getattr(model, "needs_train_mode_for_grad", False):
+            model.set_grad_window(psi.n_layers)
         acc, mae = rollout_eval(psi, builder, val_items, n=args.eval_n)
+        if getattr(model, "needs_train_mode_for_grad", False):
+            model.set_grad_window(psi.l_rev)
     bridges.save_weights(str(ckpt))
     mx.savez(str(opt_path), **dict(tree_flatten(opt.state)))
     Path(str(ckpt) + ".meta").write_text(json.dumps({
@@ -295,7 +317,10 @@ def main():
         "args": vars(args)}))
     with log.open("a") as f:
         f.write(json.dumps({"step": global_step, "eval_acc": acc, "eval_mae": mae}) + "\n")
-    print(f"CHUNK DONE step={global_step} acc@0.05={acc if acc is None else round(acc, 3)} mae={mae}")
+    # MLX allocates through Metal, which ps does not account for: this is the
+    # only honest read on how close a coupling depth runs to the 24 GB ceiling
+    print(f"CHUNK DONE step={global_step} acc@0.05={acc if acc is None else round(acc, 3)} "
+          f"mae={mae} peak={mx.get_peak_memory() / 2**30:.1f}GB")
 
 
 if __name__ == "__main__":
