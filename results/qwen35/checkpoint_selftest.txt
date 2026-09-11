@@ -1,0 +1,6 @@
+checkpoint_from=None: loss -14.10129547  |grad| 1.613481e+00
+checkpoint_from=  12: loss -14.10129547  |grad| 1.613481e+00
+checkpoint_from=   0: loss -14.10129547  |grad| 1.613481e+00
+vs taped, checkpoint_from=12: |dloss| 0.000e+00  relative grad diff 0.000e+00
+vs taped, checkpoint_from=0: |dloss| 0.000e+00  relative grad diff 0.000e+00
+mlx-community/Qwen2.5-0.5B-Instruct-4bit: 24 layers, injection at 12; worst relative gradient difference 0.000e+00

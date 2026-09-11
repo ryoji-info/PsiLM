@@ -1,0 +1,2324 @@
+{
+ "summary": {
+  "n": 60,
+  "step": 11500,
+  "model": "/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx",
+  "tolerance": 0.05,
+  "couple": [
+   13,
+   26,
+   32
+  ],
+  "scan_path": "kernel",
+  "protocol": {
+   "max_new": 768,
+   "force_answer": true,
+   "shots": 0,
+   "thinking": false
+  },
+  "baseline": {
+   "acc": 0.0333,
+   "mae": 0.5698,
+   "answer_line_rate": 1.0,
+   "forced_rate": 1.0
+  },
+  "oracle": {
+   "acc": 0.9833,
+   "mae": 0.1,
+   "answer_line_rate": 1.0,
+   "forced_rate": 1.0
+  },
+  "psilm": {
+   "acc": 1.0,
+   "mae": 0.0147,
+   "answer_line_rate": 0.0,
+   "forced_rate": 0.0
+  },
+  "zero": {
+   "acc": 0.0167,
+   "mae": 0.308
+  }
+ },
+ "rows": [
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.86,
+    "u": -0.095
+   },
+   "text": {
+    "baseline": "u_{xx}$. For a wave of wavelength $\\lambda = 1$, $u_{xx} \\sim - (2\\pi)^2 u$.\n$\\frac{\\partial u}{\\partial t} \\approx -u u_x + \\nu (-4\\pi^2 u)$.\nThe diffusive term is roughly $0.02 \\times 4\n\nAnswer:1.28",
+    "oracle": ".28 \\sin(2\\pi x + 0.5)$.\nLet $\\psi(x,0) = \\exp\\left( -\\frac{1}{2\\nu} \\int u(x,0) dx \\right)$.\n$\\int 1.28 \\sin(2\\pi x + 0.5) dx = -\\frac{1.28}{2\\pi} \\cos(2\\pi x + 0.5)$.\nLet $C = \\frac{1.\n\nAnswer:-0.10",
+    "psilm": "u at x = 0.86 equals -0.10.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.28,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.1,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.1,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.57,
+    "u": -0.5394
+   },
+   "text": {
+    "baseline": "sity, the solution might remain close to the initial shape but smoothed, OR if the time is long enough, it might approach a steady state or a specific profile.\n\nLet's do a quick numerical\n\nAnswer:0.00",
+    "oracle": " \\approx 1.28 \\times (-0.79) \\approx -1.01$.\n\nThe maximum negative velocity is $-1.28$.\nThe maximum positive velocity is $+1.28$.\nSince the maximum velocity magnitude $U_{max} = 1.28$ is\n\nAnswer:-0.54",
+    "psilm": "u at x = 0.57 equals -0.55.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.55,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.49,
+    "u": -0.5634
+   },
+   "text": {
+    "baseline": "x_0 + 0.64 \\sin(2\\pi x_0 + 0.5) - 0.49 = 0$.\nWe need to solve for $x_0$ in the interval $[0, 1)$.\n\nLet's test values.\nThe term $0.64 \\sin(2\\pi x_0 + 0.5)$ oscillates between $-0.64$ and $\n\nAnswer:0.49",
+    "oracle": "tial data $u_0(x) = A \\sin(kx)$ is:\n$$ u(x,t) = \\frac{A e^{-\\nu k^2 t} \\sin(kx)}{1 + \\frac{A}{2\\nu k} e^{-\\nu k^2 t} (1 - \\cos(kx))} $$\nWait, let's re-verify the standard result.\nIf $u_0\n\nAnswer:-0.53",
+    "psilm": "u at x = 0.49 equals -0.55.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.49,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.53,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.55,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.13,
+    "u": 0.3283
+   },
+   "text": {
+    "baseline": "he viscous term $\\nu u_{xx}$ is also zero.\nThus, $\\frac{d}{dt} \\int_0^1 u^2 dx = 0$. The $L^2$ norm is conserved.\n\nLet's calculate the $L^2$ norm of the initial condition:\n$$ \\int_0^1 u_0\n\nAnswer:0.00",
+    "oracle": "on conserves the integral of $u$ (no source term), $\\int_0^1 u(x,t) dx = 0$ for all $t$.\n\nLet's look at the specific value $x = 0.13$.\nInitial phase at $x=0.13$: $\\theta_0 = 2\\pi(0.13) + \n\nAnswer:0.33",
+    "psilm": "u at x = 0.13 equals 0.32.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.33,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.32,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.79,
+    "u": -0.2048
+   },
+   "text": {
+    "baseline": "formation occurs where $\\frac{\\partial u}{\\partial x} < 0$, i.e., $\\cos(\\theta) < 0$.\nThis happens when $\\frac{\\pi}{2} < \\theta < \\frac{3\\pi}{2}$.\n$$ \\frac{\\pi}{2} < 2\\pi x + 0.5 < \\frac{\n\nAnswer:0.00",
+    "oracle": "xx}$ with periodic BCs and zero mean is a single step function smoothed by viscosity.\nThe maximum value is $u_{max} = 1.28$ (from the initial peak) and the minimum is $u_{min} = -1.28$ (\n\nAnswer:-0.20",
+    "psilm": "u at x = 0.79 equals -0.21.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.2,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.21,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.31,
+    "u": 0.581
+   },
+   "text": {
+    "baseline": "\\sin(2\\pi y + 0.5) dy = -\\frac{1.28}{2\\pi} \\cos(2\\pi y + 0.5) + C $$\nLet $C$ be chosen such that the average is zero or simply absorbed. The term inside the exponential is:\n$$ -\\frac{1}{2\n\nAnswer:0.00",
+    "oracle": "in(2.448) \\approx \\sin(140^\\circ) \\approx 0.64$.\nSo, the initial value at $x=0.31$ is $u_0(0.31) = 1.28 \\times 0.64 \\approx 0.82$.\n\nNow consider the evolution.\nThe characteristic speed is\n\nAnswer:0.58",
+    "psilm": "u at x = 0.31 equals 0.55.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.58,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.55,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.79,
+    "u": -0.2048
+   },
+   "text": {
+    "baseline": "formation occurs where $\\frac{\\partial u}{\\partial x} < 0$, i.e., $\\cos(\\theta) < 0$.\nThis happens when $\\frac{\\pi}{2} < \\theta < \\frac{3\\pi}{2}$.\n$$ \\frac{\\pi}{2} < 2\\pi x + 0.5 < \\frac{\n\nAnswer:0.00",
+    "oracle": "xx}$ with periodic BCs and zero mean is a single step function smoothed by viscosity.\nThe maximum value is $u_{max} = 1.28$ (from the initial peak) and the minimum is $u_{min} = -1.28$ (\n\nAnswer:-0.20",
+    "psilm": "u at x = 0.79 equals -0.21.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.2,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.21,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.84,
+    "u": -0.1264
+   },
+   "text": {
+    "baseline": "ve profile.\n\nLet's do a quick check on the magnitude of diffusion.\nDiffusion term $\\nu u_{xx}$. For a wave of length $L \\sim 1/k = 1/(2\\pi) \\approx 0.16$, the diffusion rate is $\\nu / L^2\n\nAnswer:0.95",
+    "oracle": "n, or we can compute it numerically.\n\nLet's try to calculate the inviscid characteristic mapping first to see where the point $x=0.84$ comes from.\nIn the inviscid case ($u_t + u u_x = 0$\n\nAnswer:-0.13",
+    "psilm": "u at x = 0.84 equals -0.12.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.95,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.13,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.12,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.19,
+    "u": 0.2206
+   },
+   "text": {
+    "baseline": ", let's test values near $0.19$.\n\nLet $\\theta_0 = 2\\pi x_0 + 6.24$.\nEquation: $x_0 = 0.19 - 0.3 \\sin(\\theta_0)$.\nSince $x_0 \\approx 0.19$, $\\theta_0 \\approx 2\\pi(0.19) + 6.24 = 1.1938 + 6\n\nAnswer:0.19",
+    "oracle": "$.\n$\\nu k^2 t = 0.02 \\times (2\\pi)^2 \\times 0.5 = 0.01 \\times 4\\pi^2 \\approx 0.01 \\times 39.48 \\approx 0.395$.\n$e^{-0.395} \\approx 0.67$.\nSo the amplitude should be roughly $0.6 \\times 0.\n\nAnswer:0.22",
+    "psilm": "u at x = 0.19 equals 0.22.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.19,
+    "ok": true
+   },
+   "oracle": {
+    "pred": 0.22,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.22,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.26,
+    "u": 0.297
+   },
+   "text": {
+    "baseline": "initial condition $\\phi(x, 0) = f(x)$ is given by the convolution with the heat kernel, or equivalently, by expanding $f(x)$ in a Fourier series.\n$$ \\phi(x, t) = \\sum_{n=-\\infty}^{\\infty}\n\nAnswer:0.60",
+    "oracle": "k = 2\\pi$, $\\nu = 0.02$.\n$\\alpha = \\frac{0.6}{2 \\cdot 0.02 \\cdot 2\\pi} = \\frac{0.6}{0.08\\pi} = \\frac{7.5}{\\pi} \\approx 2.387$.\nSince $\\alpha > 1$, the function $\\psi(x,0)$ has significant\n\nAnswer:0.30",
+    "psilm": "u at x = 0.26 equals 0.30.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.6,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.3,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.3,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.57,
+    "u": -0.2894
+   },
+   "text": {
+    "baseline": "th $u(x,0) = U_0 \\sin(kx)$ is:\n$$ u(x,t) = \\frac{U_0 e^{-\\nu k^2 t} \\sin(kx)}{1 + \\frac{U_0}{2\\nu k} (1 - e^{-\\nu k^2 t}) \\cos(kx)} $$\nActually, let's re-derive or check the specific case\n\nAnswer:0.30",
+    "oracle": "ude of diffusion.\nThe characteristic speed is $u$. Over time $t=0.5$, a feature travels distance $\\approx u \\times t \\approx 0.6 \\times 0.5 = 0.3$.\nThe initial phase at $x=0.57$:\n$\\theta\n\nAnswer:-0.29",
+    "psilm": "u at x = 0.57 equals -0.29.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.3,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.29,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.29,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.7,
+    "u": -0.3461
+   },
+   "text": {
+    "baseline": "02$ and initial max gradient $\\approx 3.77$, the viscous term $\\nu v_{xx}$ will dominate the nonlinear steepening term $u v_x$ before a shock forms. Specifically, the \"viscous time scale\"\n\nAnswer:0.30",
+    "oracle": "sity. We must solve the heat equation for $\\psi$.\n\n**Calculation via Heat Equation:**\nInitial velocity: $u_0(x) = A \\sin(kx + \\phi)$ with $A=0.6, k=2\\pi, \\phi=6.24$.\nPotential $\\Phi(x) =\n\nAnswer:-0.35",
+    "psilm": "u at x = 0.7 equals -0.38.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.3,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.35,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.38,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.25,
+    "u": 0.2867
+   },
+   "text": {
+    "baseline": " 6.24)$.\nWe need a function $\\theta(x,0)$ such that $-2\\nu \\frac{\\theta_x}{\\theta} = 0.6 \\sin(2\\pi x + 6.24)$.\n$-0.04 \\frac{\\theta_x}{\\theta} = 0.6 \\sin(2\\pi x + 6.24)$\n$\\frac{\\theta_x}{\\\n\nAnswer:0.00",
+    "oracle": "term $Ak = 0.6 \\times 2\\pi \\approx 3.77$.\nThe Reynolds number based parameter is $Ak/\\nu \\approx 3.77 / 0.02 = 188.5$. This is large, so shocks might form if $\\nu$ were smaller, but $\\nu=\n\nAnswer:0.29",
+    "psilm": "u at x = 0.25 equals 0.30.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.29,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.3,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.87,
+    "u": -0.1666
+   },
+   "text": {
+    "baseline": "dicity, or rather, the resulting $\\psi$ must be periodic).\n$$ \\psi(x,0) = \\exp\\left( \\frac{0.6}{2\\pi} \\cos(2\\pi x + 6.24) \\right) $$\nLet $B = \\frac{0.6}{2\\pi} \\approx 0.0955$.\n$$ \\psi(x,0\n\nAnswer:0.60",
+    "oracle": "specific $\\phi_0$, we can solve the heat equation for $\\phi$.\nHowever, there is a simpler approximation often used when the Reynolds number is high or viscosity is low, but here $\\nu=0.0\n\nAnswer:-0.17",
+    "psilm": "u at x = 0.87 equals -0.15.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.6,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.17,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.15,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.98,
+    "u": -0.0331
+   },
+   "text": {
+    "baseline": "= A \\sin(kx)$ can be found via the Cole-Hopf transformation $u = -2\\nu \\frac{\\partial}{\\partial x} \\ln \\theta$, where $\\theta$ satisfies the heat equation.\n$\\theta(x, t) = \\int_{-\\infty}^\n\nAnswer:0.00",
+    "oracle": "5752 + 6.24 = 12.39752$.\n$12.39752 / (2\\pi) \\approx 1.973$.\n$12.39752 - 2(2\\pi) = 12.39752 - 12.56637 = -0.16885$.\n$\\sin(-0.16885) \\approx -0.168$.\n$u_0(0.98) \\approx 0.6 \\times (-0.168)\n\nAnswer:-0.03",
+    "psilm": "u at x = 0.98 equals -0.07.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": true
+   },
+   "oracle": {
+    "pred": -0.03,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.07,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": true
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.22,
+    "u": 0.2544
+   },
+   "text": {
+    "baseline": "ller $x_0$ to reduce the displacement.\n\nLet's try to solve $x_0 + 0.3 \\sin(2\\pi x_0 + 6.24) = 0.22$.\nLet $f(x_0) = x_0 + 0.3 \\sin(2\\pi x_0 + 6.24) - 0.22 = 0$.\n\nTry $x_0 = 0.1$:\n$\\theta =\n\nAnswer:0.10",
+    "oracle": "ill be smoothed into a rarefaction-like transition (a steep gradient but continuous).\n\n**Step 3: Calculate the inviscid characteristic mapping.**\nLet $y = x - u_0(x)t$. We need to find $x\n\nAnswer:0.25",
+    "psilm": "u at x = 0.22 equals 0.28.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.1,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.25,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.28,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.02,
+    "u": 0.1445
+   },
+   "text": {
+    "baseline": " the inviscid solution away from the shock, or we need to solve numerically.\n\nHowever, let's re-evaluate the \"single sine wave\" property.\nDoes a single sine wave remain a single sine wave\n\nAnswer:0.00",
+    "oracle": "u} = \\int_0^1 1.13 \\sin(2\\pi x + 0.47) dx = 0 $$\nSince the mean is zero, the solution will evolve towards a state where the velocity is small everywhere (dissipation of kinetic energy) or\n\nAnswer:0.14",
+    "psilm": "u at x = 0.02 equals 0.15.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.14,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.15,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.2,
+    "u": 0.4147
+   },
+   "text": {
+    "baseline": "epened into a shock structure. In the periodic domain, the solution to Burgers' equation with sinusoidal initial data evolves into a \"sawtooth\" wave where the slope is very steep near the\n\nAnswer:0.47",
+    "oracle": "er, with $\\nu=0.02$, the shocks are not infinitely sharp.\nLet's consider the conservation of mass (integral of $u$).\n$\\int_0^1 u(x,0) dx = 0$ because it's a sine wave.\nThe integral of $u$\n\nAnswer:0.41",
+    "psilm": "u at x = 0.2 equals 0.43.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.47,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.41,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.43,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.96,
+    "u": 0.0531
+   },
+   "text": {
+    "baseline": " not infinitely thin. The solution will consist of a series of steep gradients (shocks) separated by smooth regions where the inviscid solution holds.\n\nHowever, let's look at the specific\n\nAnswer:0.00",
+    "oracle": "x = 0.96$.\nThe initial phase is $\\theta_0 = 2\\pi x + 0.47$.\nAt $x=0.96$:\n$\\theta_0 = 2\\pi(0.96) + 0.47 = 1.92\\pi + 0.47 \\approx 6.03 + 0.47 = 6.50$ radians.\n$6.50$ radians is in the range\n\nAnswer:0.05",
+    "psilm": "u at x = 0.96 equals 0.04.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.05,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.04,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.5,
+    "u": -0.5408
+   },
+   "text": {
+    "baseline": "in smooth but highly distorted. The wave will have steepened significantly, but the periodic boundary conditions and viscosity ensure a single-valued smooth function.\n\nHowever, let's re-e\n\nAnswer:0.00",
+    "oracle": "f such systems.\nThe Cole-Hopf transformation maps Burgers' equation to the heat equation:\n$$ u(x,t) = 2\\nu \\frac{\\partial}{\\partial x} \\ln \\left( \\int_{-\\infty}^{\\infty} e^{-\\frac{(x-y)^\n\nAnswer:-0.54",
+    "psilm": "u at x = 0.5 equals -0.55.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.55,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.18,
+    "u": 0.3853
+   },
+   "text": {
+    "baseline": "rac{1}{k A} $$\nHere, $k = 2\\pi \\approx 6.28$ and $A = 1.13$.\n$$ t_{shock} \\approx \\frac{1}{6.28 \\times 1.13} \\approx \\frac{1}{7.1} \\approx 0.14 $$\nSince $t = 0.5$ is much larger than $t_{\n\nAnswer:0.00",
+    "oracle": " analytical approximation?\nFor small viscosity and short times, $u \\approx u_0(x - u_0 t)$. But here $t$ is large enough for shock formation.\nActually, for Burgers' equation with periodic\n\nAnswer:0.39",
+    "psilm": "u at x = 0.18 equals 0.42.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.39,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.42,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.67,
+    "u": -0.3858
+   },
+   "text": {
+    "baseline": "n(u_x)$.\nHere $\\min(u_x) = -A k = -1.13 \\times 2\\pi \\approx -7.096$.\n$t_b = 1 / 7.096 \\approx 0.141$.\nAt $t=0.5$, the solution is in the \"post-shock\" regime. The wave has steepened.\n\nWait\n\nAnswer:0.00",
+    "oracle": "= 1.34\\pi + 0.47 \\approx 4.21 + 0.47 = 4.68$ radians.\n$4.68$ rad is in the 3rd quadrant ($\\pi < 4.68 < 1.5\\pi$).\n$\\sin(4.68) \\approx \\sin(4.68 - 2\\pi) = \\sin(2.48) \\approx 0.61$.\nWait, $\n\nAnswer:-0.39",
+    "psilm": "u at x = 0.67 equals -0.43.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.39,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.43,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.16,
+    "u": 0.3556
+   },
+   "text": {
+    "baseline": " of the nonlinearity vs diffusion.\n\nThe Reynolds number based on the initial amplitude and domain length is roughly $Re \\sim \\frac{U L}{\\nu} \\approx \\frac{1.13 \\times 1}{0.02} \\approx 56.\n\nAnswer:0.00",
+    "oracle": " correction for viscosity, or simply check the magnitude.\nThe initial wave is $u(x,0) = 1.13 \\sin(2\\pi x + 0.47)$.\nAt $x=0.16$:\nArgument $\\theta = 2\\pi(0.16) + 0.47 = 1.0053 + 0.47 = 1.47\n\nAnswer:0.36",
+    "psilm": "u at x = 0.16 equals 0.35.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.36,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.35,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.88,
+    "u": -0.0689
+   },
+   "text": {
+    "baseline": "ic times. Let's calculate the parameters:\n$A = 1.13$\n$k = 2\\pi \\approx 6.283$\n$\\nu = 0.02$\n$t = 0.5$\n\nCalculate the diffusion term exponent: $\\nu k^2 t$.\n$k^2 = (2\\pi)^2 = 4\\pi^2 \\approx \n\nAnswer:1.13",
+    "oracle": "e initial wave is $u(x,0) = 1.13 \\sin(2\\pi x + 0.47)$.\nLet's calculate the initial value at $x=0.88$:\n$$ u(0.88, 0) = 1.13 \\sin(2\\pi(0.88) + 0.47) $$\n$$ 2\\pi(0.88) = 1.76\\pi \\approx 5.52\n\nAnswer:-0.07",
+    "psilm": "u at x = 0.88 equals -0.07.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.13,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.07,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.07,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.46,
+    "u": 0.5351
+   },
+   "text": {
+    "baseline": "e.\nHowever, let's look at the magnitude.\nMax slope $S_{max} \\approx 6.6$.\nViscosity $\\nu = 0.02$.\nThe \"diffusive length scale\" over time $t=0.5$ is $\\sqrt{2\\nu t} = \\sqrt{0.02} \\approx 0.\n\nAnswer:0.00",
+    "oracle": "in(u) \\ge \\min(u_0) = -1.05$.\n\nHowever, we need the specific value at $x=0.46$.\nLet's evaluate the phase at $x=0.46$:\n$\\theta = 2\\pi(0.46) + 5.8 = 0.92\\pi + 5.8 \\approx 2.890 + 5.8 = 8.69\n\nAnswer:0.54",
+    "psilm": "u at x = 0.46 equals 0.53.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.53,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.69,
+    "u": -0.5371
+   },
+   "text": {
+    "baseline": " \\sim \\frac{A k}{\\nu} \\approx \\frac{6.6}{0.02} = 330$. This is moderately high, suggesting some steepening might occur, but let's check the specific time $t=0.5$.\n\nWait, let's re-evaluate\n\nAnswer:0.00",
+    "oracle": "{2\\nu k} \\cos(kx) + C$.\nSo $\\phi(x,0) = C_0 \\exp\\left( \\frac{A}{2\\nu k} \\cos(kx + \\delta) \\right)$.\n\nLet's verify:\n$\\phi(x,0) = \\exp\\left( \\frac{1.05}{2(0.02)(2\\pi)} \\cos(2\\pi x + 5.8) \\\n\nAnswer:-0.54",
+    "psilm": "u at x = 0.69 equals -0.53.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.53,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.74,
+    "u": -0.4896
+   },
+   "text": {
+    "baseline": "' equation with small viscosity can be approximated by the inviscid solution smoothed by a kernel, or simply by solving the ODE along characteristics if no shock forms.\nHowever, with $t=0\n\nAnswer:0.00",
+    "oracle": "the parameters. However, let's look at the specific value requested.\n\nLet's calculate the argument of the sine function at $x=0.74$:\n$\\theta = 2\\pi(0.74) + 5.8 = 1.48\\pi + 5.8$.\n$1.48\\pi\n\nAnswer:-0.49",
+    "psilm": "u at x = 0.74 equals -0.51.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.49,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.51,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.13,
+    "u": 0.0794
+   },
+   "text": {
+    "baseline": "im \\frac{1^2}{0.02} = 50 $$\nSince the simulation time $t=0.5$ is much smaller than the diffusion time scale ($0.5 \\ll 50$), the viscous term is relatively small compared to the convective\n\nAnswer:0.00",
+    "oracle": "s equation or a well-developed traveling wave.\nHowever, let's look at the specific value requested: $x = 0.13$.\nThe phase is $\\theta = 2\\pi(0.13) + 5.8 = 0.26\\pi + 5.8 \\approx 0.8168 + 5.\n\nAnswer:0.08",
+    "psilm": "u at x = 0.13 equals 0.06.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.08,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.06,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.65,
+    "u": -0.5165
+   },
+   "text": {
+    "baseline": "til viscosity dominates.\nHowever, with $\\nu = 0.02$, the diffusion term is significant.\nLet's estimate the maximum possible velocity change.\nThe maximum gradient initially is $\\approx 6.6\n\nAnswer:0.00",
+    "oracle": "s $u$. The wave travels.\nLet's consider the value at $x=0.65$.\nInitial phase at $x=0.65$: $\\theta_0 = 2\\pi(0.65) + 5.8 = 1.3\\pi + 5.8 \\approx 4.08 + 5.8 = 9.88$ radians.\n$9.88 \\text{ rad\n\nAnswer:-0.52",
+    "psilm": "u at x = 0.65 equals -0.51.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.52,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.51,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.46,
+    "u": 0.5351
+   },
+   "text": {
+    "baseline": "e.\nHowever, let's look at the magnitude.\nMax slope $S_{max} \\approx 6.6$.\nViscosity $\\nu = 0.02$.\nThe \"diffusive length scale\" over time $t=0.5$ is $\\sqrt{2\\nu t} = \\sqrt{0.02} \\approx 0.\n\nAnswer:0.00",
+    "oracle": "in(u) \\ge \\min(u_0) = -1.05$.\n\nHowever, we need the specific value at $x=0.46$.\nLet's evaluate the phase at $x=0.46$:\n$\\theta = 2\\pi(0.46) + 5.8 = 0.92\\pi + 5.8 \\approx 2.890 + 5.8 = 8.69\n\nAnswer:0.54",
+    "psilm": "u at x = 0.46 equals 0.53.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.53,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.74,
+    "u": -0.4896
+   },
+   "text": {
+    "baseline": "' equation with small viscosity can be approximated by the inviscid solution smoothed by a kernel, or simply by solving the ODE along characteristics if no shock forms.\nHowever, with $t=0\n\nAnswer:0.00",
+    "oracle": "the parameters. However, let's look at the specific value requested.\n\nLet's calculate the argument of the sine function at $x=0.74$:\n$\\theta = 2\\pi(0.74) + 5.8 = 1.48\\pi + 5.8$.\n$1.48\\pi\n\nAnswer:-0.49",
+    "psilm": "u at x = 0.74 equals -0.51.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.49,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.51,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.24,
+    "u": 0.243
+   },
+   "text": {
+    "baseline": "for $\\psi$ is derived from $u_0 = -2\\nu \\frac{\\psi_x}{\\psi}$.\n$$ \\frac{\\psi_x}{\\psi} = -\\frac{u_0}{2\\nu} = -\\frac{1.05 \\sin(2\\pi x + 5.8)}{0.04} = -26.25 \\sin(2\\pi x + 5.8) $$\nIntegrating\n\nAnswer:0.00",
+    "oracle": "whether the maximum gradient becomes infinite.\nThe solution to Burgers' equation with small viscosity can be approximated by the method of characteristics until the shock forms, or by the\n\nAnswer:0.24",
+    "psilm": "u at x = 0.24 equals 0.25.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.24,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.25,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.23,
+    "u": 0.0889
+   },
+   "text": {
+    "baseline": "e, shocks may form. Let's look closer at the specific parameters.\n$A = 0.61$, $k = 2\\pi$.\nThe equation is $u_t + u u_x = \\nu u_{xx}$.\nIf we assume the solution remains a traveling wave or\n\nAnswer:0.61",
+    "oracle": ") $$\nIntegrating with respect to $x$:\n$$ \\ln \\theta(x,0) = \\int -15.25 \\sin(2\\pi x + 5.29) dx = \\frac{15.25}{2\\pi} \\cos(2\\pi x + 5.29) + C $$\n$$ \\theta(x,0) = C' \\exp\\left( \\frac{15.25}{2\n\nAnswer:0.09",
+    "psilm": "u at x = 0.23 equals 0.07.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.09,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.07,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.79,
+    "u": -0.3786
+   },
+   "text": {
+    "baseline": "{-\\infty}^{\\infty} G(x-y, t) u_0(y) dy $$\nHowever, a simpler heuristic check is often used: if $A^2 k^2 \\ll \\nu$ or similar criteria, the wave shape is preserved. But here $A k \\approx 3.\n\nAnswer:0.61",
+    "oracle": "ial condition $\\psi(x,0) = \\exp\\left(-\\frac{1}{2\\nu} \\int^x u_0(y) dy\\right)$.\n\nLet's compute the integral of the initial condition:\n$$ \\int u_0(y) dy = \\int A \\sin(2\\pi y + \\phi) dy = -\n\nAnswer:-0.38",
+    "psilm": "u at x = 0.79 equals -0.38.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.38,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.38,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.27,
+    "u": 0.1378
+   },
+   "text": {
+    "baseline": "sion.\nA known result for $u(x,0) = A \\sin(kx)$ is that a shock forms if $A k > 2\\nu$? No, that's not quite right.\nLet's look at the maximum gradient.\n\nAnswer:0.61\n\nWait, let's re-calculate carefully.\n",
+    "oracle": "27$:\n$\\theta_0 = 2\\pi(0.27) + 5.29 = 1.696 + 5.29 = 6.986$ radians.\n$u(0.27, 0) = 0.61 \\sin(6.986)$.\n$6.986 \\text{ rad} \\approx 400^\\circ$.\n$\\sin(6.986) \\approx \\sin(6.986 - 2\\pi) = \\sin(\n\nAnswer:0.14",
+    "psilm": "u at x = 0.27 equals 0.14.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.14,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.14,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.5,
+    "u": 0.3722
+   },
+   "text": {
+    "baseline": "m. The solution will consist of a smooth wave that drops sharply across the shock.\n\nHowever, we need to determine the specific value at $x=0.5$.\nLet's look at the phase $\\phi = 5.29$.\n$2\\\n\nAnswer:0.61",
+    "oracle": " \\approx 2.15$ rad (since $2\\pi \\approx 6.28$).\nActually, let's compute directly: $8.4316 / \\pi \\approx 2.68$.\n$8.4316 = 2\\pi + (\\pi + 0.15) \\approx 2\\pi + 3.29$.\nWait, $5.29$ is close to\n\nAnswer:0.37",
+    "psilm": "u at x = 0.5 equals 0.37.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.37,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.37,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.04,
+    "u": -0.1452
+   },
+   "text": {
+    "baseline": ") = \\int_{-\\infty}^{\\infty} G(x-y, t) u_0(y) dy $$\nHowever, a simpler heuristic check is often used: if $A^2 k^2 \\ll \\nu$ or similar criteria, the wave shape is preserved. But here $A k \\\n\nAnswer:0.61",
+    "oracle": "ation to the heat equation via the Cole-Hopf transformation.\n\n**Cole-Hopf Transformation:**\nLet $u = -2\\nu \\frac{\\partial}{\\partial x} \\ln(\\theta) = -2\\nu \\frac{\\theta_x}{\\theta}$.\nIf $u\n\nAnswer:-0.15",
+    "psilm": "u at x = 0.04 equals -0.15.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.61,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.15,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.15,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.77,
+    "u": -0.3734
+   },
+   "text": {
+    "baseline": "4.8$.\nSince this ratio is $> 1$, the nonlinear effects are stronger than the viscous smoothing initially. This suggests that a shock (discontinuity) will form before $t=0.5$.\n\n### Step 3:\n\nAnswer:0.00",
+    "oracle": "minimum values.\nLet's calculate the argument of the sine function at $x=0.77$.\n$\\theta = 2\\pi(0.77) + 5.29 = 1.54\\pi + 5.29$.\n$1.54\\pi \\approx 4.838$.\n$\\theta \\approx 4.838 + 5.29 = 10.1\n\nAnswer:-0.37",
+    "psilm": "u at x = 0.77 equals -0.38.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.37,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.38,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.45,
+    "u": 0.3371
+   },
+   "text": {
+    "baseline": "pressed using the Cole-Hopf transformation:\n$$ u(x,t) = 2\\nu \\frac{\\partial}{\\partial x} \\ln \\left( \\sum_{n} c_n e^{-i k_n x - \\nu k_n^2 t} \\right) $$\nFor a single mode $u_0 = A \\sin(kx +\n\nAnswer:0.00",
+    "oracle": "tential if we transform variables, but let's stick to the standard property:\n$u(x,t) = \\frac{\\int_{-\\infty}^{\\infty} \\frac{u_0(y)}{1 + \\frac{t}{\\nu} \\int_y^x u_0(z) dz} ... }$? No, that's\n\nAnswer:0.34",
+    "psilm": "u at x = 0.45 equals 0.31.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.34,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.31,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.11,
+    "u": -0.0595
+   },
+   "text": {
+    "baseline": "ength decays over time due to viscosity. The width of the shock layer is proportional to $\\nu / \\Delta u$.\nMore importantly, we need to determine the value at a specific point $x=0.11$.\n\n\n\nAnswer:0.00",
+    "oracle": "ually, the $L^\\infty$ norm is non-increasing for viscous Burgers).\nSince the initial maximum amplitude is $0.61$, the value at any point cannot exceed $0.61$ in magnitude.\nThe value $-0.\n\nAnswer:-0.06",
+    "psilm": "u at x = 0.11 equals -0.07.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.06,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.07,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.17,
+    "u": -0.4436
+   },
+   "text": {
+    "baseline": "\\nu k^2 t} + C e^{-ikx - \\nu k^2 t}$? No.\nFor $u(x,0) = A \\sin(kx)$, the corresponding $\\psi_0$ is $1 + i \\frac{A}{2} e^{ikx}$?\nLet's try: $\\psi(x,0) = 1 + i \\frac{A}{2} e^{ikx}$.\nThen $\\\n\nAnswer:0.00",
+    "oracle": "x = \\pi - 3.47 + 2\\pi n \\approx 3.14 - 3.47 = -0.33$.\n$x \\approx -0.33 / 2\\pi \\approx -0.052 \\equiv 0.948$ (mod 1).\nOr next period: $2\\pi x = \\pi - 3.47 + 2\\pi = 3.14 - 3.47 + 6.28 = 5.9\n\nAnswer:-0.44",
+    "psilm": "u at x = 0.17 equals -0.46.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.44,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.46,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.23,
+    "u": -0.3487
+   },
+   "text": {
+    "baseline": "s is hard to integrate directly for a sine function on a finite domain.\n\nHowever, for a single Fourier mode $u(x,0) = A \\sin(kx + \\phi)$, the solution to the viscous Burgers equation is:\n\n\nAnswer:0.00",
+    "oracle": "(2\\pi x + 3.47) dx = \\frac{35.25}{2\\pi} \\cos(2\\pi x + 3.47) + C$.\nLet $B = \\frac{35.25}{2\\pi} \\approx 5.61$.\nSo, $\\psi(x,0) = C_0 e^{B \\cos(2\\pi x + 3.47)}$.\nThis is a periodic function.\n\nAnswer:-0.35",
+    "psilm": "u at x = 0.23 equals -0.35.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.35,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.35,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.79,
+    "u": 0.542
+   },
+   "text": {
+    "baseline": "t} \\sin(kx + \\phi + \\nu k^2 t)}{1 + \\frac{A}{2} e^{-\\nu k^2 t} \\dots} $$\nNo, that's for the inviscid case or specific limits.\n\nLet's use the explicit formula for the evolution of a single\n\nAnswer:0.00",
+    "oracle": "kx+\\phi)$, the solution to Burgers' equation is:\n$$ u(x,t) = \\frac{A \\sin(kx + \\phi + \\frac{A}{2\\nu}t)}{\\cosh\\left(\\frac{A}{2\\nu}t\\right) + \\cos\\left(kx + \\phi + \\frac{A}{2\\nu}t\\right)} \\\n\nAnswer:0.54",
+    "psilm": "u at x = 0.79 equals 0.58.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.58,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.21,
+    "u": -0.3804
+   },
+   "text": {
+    "baseline": " equation $\\phi_t = \\nu \\phi_{xx}$ with this initial condition. Since the domain is periodic $[0, 1)$, we expand $\\phi(x, 0)$ in a Fourier series.\nThe function is of the form $g(x) = \\exp\n\nAnswer:0.00",
+    "oracle": "ht still be somewhat sinusoidal but distorted, or it might have evolved significantly.\n\nLet's re-evaluate the magnitude.\nViscosity $\\nu = 0.02$.\nInitial max gradient magnitude $\\approx 1\n\nAnswer:-0.38",
+    "psilm": "u at x = 0.21 equals -0.41.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.38,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.41,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.51,
+    "u": 0.1
+   },
+   "text": {
+    "baseline": "rgers' equation transforms into the linear heat equation:\n$$ \\frac{\\partial \\psi}{\\partial t} = \\nu \\frac{\\partial^2 \\psi}{\\partial x^2} $$\n\nThe initial condition for $u$ is $u(x,0) = A \\\n\nAnswer:0.00",
+    "oracle": "evolves, the shock propagates. The shock speed is $u_s = \\frac{u_L + u_R}{2}$.\nInitially, the shock connects a high value region to a low value region.\nLet's look at the specific point $x\n\nAnswer:0.10",
+    "psilm": "u at x = 0.51 equals 0.06.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.1,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.06,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.28,
+    "u": -0.269
+   },
+   "text": {
+    "baseline": "he solution stays a single sine wave only if the nonlinearity balances the diffusion in a specific way, but generally, higher harmonics are generated.\n\nLet's check the parameters:\n$A = 1.\n\nAnswer:0.00",
+    "oracle": "7 = 5.229$ radians.\n$5.229$ rad is in the 4th quadrant ($3\\pi/2 \\approx 4.71 < 5.229 < 2\\pi \\approx 6.28$).\n$\\sin(5.229) \\approx \\sin(5.229 - 2\\pi) = \\sin(-1.054) \\approx -0.87$.\nSo $u(0\n\nAnswer:-0.27",
+    "psilm": "u at x = 0.28 equals -0.29.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.27,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.29,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.24,
+    "u": -0.3328
+   },
+   "text": {
+    "baseline": " So the solution is smooth.\n\nLet's verify this formula.\nIf $t=0$, $u = \\frac{A \\sin}{1 - A/2 \\cos}$. This is NOT $A \\sin$.\nThe formula $u = \\frac{A e^{-\\nu k^2 t} \\sin(kx)}{1 - \\frac{A}{2\n\nAnswer:1.41",
+    "oracle": " 0.24$:\n$\\theta = 2\\pi(0.24) + 3.47 = 0.48\\pi + 3.47 \\approx 1.507 + 3.47 = 4.977$ radians.\n$4.977$ radians is in the third quadrant ($\\pi < 4.977 < 1.5\\pi$? No, $1.5\\pi \\approx 4.71$).\n\n\nAnswer:-0.33",
+    "psilm": "u at x = 0.24 equals -0.35.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.41,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.33,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.35,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.58,
+    "u": 0.2122
+   },
+   "text": {
+    "baseline": "on is:\n$$ u(x, t) = \\frac{A e^{-\\nu k^2 t} \\sin(kx)}{1 - \\frac{A}{2} e^{-\\nu k^2 t} \\sin(kx) \\cdot \\dots} $$\nActually, there is a simpler form.\nConsider the transformation $u = 2\\nu \\frac\n\nAnswer:0.00",
+    "oracle": " initial phase is $\\phi = 3.47$ radians.\n$3.47$ rad is approximately $198.8^\\circ$.\nThe argument is $\\theta = 2\\pi x + 3.47$.\nAt $x=0.58$:\n$\\theta = 2\\pi(0.58) + 3.47 \\approx 3.644 + 3.47\n\nAnswer:0.21",
+    "psilm": "u at x = 0.58 equals 0.21.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.21,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.21,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.98,
+    "u": -0.2024
+   },
+   "text": {
+    "baseline": "rox 8.54$.\nViscosity $\\nu = 0.02$.\n\nThe characteristic time scale for diffusion to smooth a gradient of size $G$ is roughly $t \\sim G / (2\\nu k^2)$? No, let's use the standard criterion.\n\n\nAnswer:1.36",
+    "oracle": " 0.02 \\times 2\\pi} = \\frac{1.36}{0.08\\pi} = \\frac{17}{\\pi} \\approx 5.411 $$\nSo, $\\psi(x,0) = \\exp\\left( -B \\cos(2\\pi x + 5.61) \\right)$.\n\nAnswer:\nThe solution to the heat equation $\\psi_t = \\nu \\psi_{",
+    "psilm": "u at x = 0.98 equals -0.21.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.36,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 5.61,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.21,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.04,
+    "u": -0.107
+   },
+   "text": {
+    "baseline": " check the parameters:\n$A = 1.36$\n$k = 2\\pi \\approx 6.283$\n$\\nu = 0.02$\n$t = 0.5$\n\nFirst, calculate the Reynolds number-like parameter or the decay factor.\nThe term $\\nu k^2 t$ determines\n\nAnswer:1.36",
+    "oracle": ". The \"shock\" region will have a very steep drop.\nHowever, without running a numerical simulation, we rely on the provided trusted solver result which states $u(0.04) = -0.11$.\nGiven the\n\nAnswer:-0.11",
+    "psilm": "u at x = 0.04 equals -0.06.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.36,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.11,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.06,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.52,
+    "u": 0.5978
+   },
+   "text": {
+    "baseline": "e:\n$$ u(x,t) = A_0 e^{-\\nu k^2 t} \\sin(kx + \\phi - \\frac{1}{2} k A_0 t) $$\nWait, let's re-verify the phase shift term.\nConsider the inviscid case ($\\nu=0$). The characteristic speed is $u\n\nAnswer:0.00",
+    "oracle": "n. The solution to Burgers' equation with small viscosity can be approximated by the inviscid solution away from shocks, but smoothed near them.\nThe inviscid solution is $u(x,t) = u_0(x -\n\nAnswer:0.60",
+    "psilm": "u at x = 0.52 equals 0.58.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.6,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.58,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.76,
+    "u": -0.544
+   },
+   "text": {
+    "baseline": "ndeed $u(x,t) = \\frac{\\sin(x)}{1 + 2\\nu t \\sin^2(x/2)}$? No, that's not right.\n\nLet's re-evaluate the exact solution for $u(x,0) = \\sin(x)$.\nActually, the exact solution for $u(x,0) = A \\\n\nAnswer:1.36",
+    "oracle": "periodic heat kernel.\n$u(x,t) = -2\\nu \\frac{\\partial}{\\partial x} \\ln \\left( \\sum_{n=-\\infty}^{\\infty} \\int_0^1 \\frac{1}{\\sqrt{4\\pi\\nu t}} e^{-\\frac{(x-y+n)^2}{4\\nu t}} f(y) dy \\right)$.\n\nAnswer:-0.54",
+    "psilm": "u at x = 0.76 equals -0.55.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.36,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.55,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.56,
+    "u": 0.4944
+   },
+   "text": {
+    "baseline": "9.4 \\times 1.36 \\approx 1.07$.\nThe nonlinear term scales with $A^2 k \\approx 1.36^2 \\times 6.28 \\approx 11.6$.\nThe ratio is roughly $11.6 / 1.07 \\approx 10$. This suggests significant non\n\nAnswer:1.36",
+    "oracle": "scous Burgers' equation on a periodic domain with zero mean dissipates all gradients, and the solution converges to the constant state equal to the mean.\n$$ u(x, t \\to \\infty) = \\bar{u} =\n\nAnswer:0.49",
+    "psilm": "u at x = 0.56 equals 0.48.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.36,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.49,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.48,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.85,
+    "u": -0.4077
+   },
+   "text": {
+    "baseline": "in(kx)}{1 + \\frac{A}{2\\nu k} (1 - e^{-\\nu k^2 t}) \\cos(kx) + \\dots} $$\nThis looks complicated. Let's look for a simpler exact solution form.\nActually, if $u(x,0) = A \\sin(kx + \\phi)$, the\n\nAnswer:0.00",
+    "oracle": "^2/(4\\nu t)}$ is the heat kernel.\n\nAlternatively, we can look at the specific properties of the solution.\nThe initial condition is a single sine wave. As time evolves, the high-frequency\n\nAnswer:-0.41",
+    "psilm": "u at x = 0.85 equals -0.43.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.41,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.43,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.97,
+    "u": -0.2183
+   },
+   "text": {
+    "baseline": " $u_0(x) = A \\sin(kx)$ is:\n$$ u(x,t) = \\frac{A \\sin(kx + \\nu k^2 t)}{1 + \\frac{A}{2} \\nu k^2 t \\dots} $$\nLet's look at the parameters.\n$k = 2\\pi \\approx 6.283$.\n$\\nu = 0.02$.\n$\\nu k^2 = 0\n\nAnswer:1.36",
+    "oracle": "+ 5.61 = 11.736$ radians.\n$11.736 \\pmod{2\\pi} \\approx 11.736 - 3(2\\pi) = 11.736 - 18.85$ ... wait, $2\\pi \\approx 6.28$.\n$11.736 / 6.28 \\approx 1.86$.\n$1.86 \\times 2\\pi \\approx 11.68$.\n$1\n\nAnswer:-0.22",
+    "psilm": "u at x = 0.97 equals -0.21.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.36,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.22,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.21,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.06,
+    "u": -0.0751
+   },
+   "text": {
+    "baseline": "n(kx+\\phi_0)$, we need to find $\\phi(x,0)$ such that $-2\\nu \\frac{\\phi_x}{\\phi} = A \\sin(kx+\\phi_0)$.\nThis implies $\\frac{\\phi_x}{\\phi} = -\\frac{A}{2\\nu} \\sin(kx+\\phi_0)$.\nIntegrating: $\\\n\nAnswer:1.36",
+    "oracle": "06$:\n$\\theta_0 = 2\\pi(0.06) + 5.61 = 0.12\\pi + 5.61 \\approx 0.377 + 5.61 = 5.987$ radians.\n$5.987$ rad is in the 4th quadrant ($3\\pi/2 \\approx 4.71$, $2\\pi \\approx 6.28$).\n$\\sin(5.987) \\\n\nAnswer:-0.08",
+    "psilm": "u at x = 0.06 equals -0.04.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.36,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.08,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.04,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.76,
+    "u": 0.0998
+   },
+   "text": {
+    "baseline": "n $u = -2\\nu \\frac{\\partial}{\\partial x} \\ln \\theta$.\nIf $u(x,0) = A \\sin(kx + \\phi)$, this corresponds to a specific ratio of Fourier modes in $\\theta$.\nSpecifically, if $u(x,0) = A \\sin\n\nAnswer:0.88",
+    "oracle": "85^\\circ \\equiv 25^\\circ$.\nWait, let's re-calculate precisely.\n$2\\pi \\approx 6.28318$.\n$2\\pi \\times 0.76 = 4.7752$.\n$\\theta = 4.7752 + 1.95 = 6.7252$.\n$6.7252 - 2\\pi = 6.7252 - 6.2832 = 0\n\nAnswer:0.10",
+    "psilm": "u at x = 0.76 equals 0.11.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.88,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.1,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.11,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.05,
+    "u": 0.4776
+   },
+   "text": {
+    "baseline": ".04 \\cdot 9.8696 = 0.39478 $$\n\nThe complex amplitude term in the denominator becomes:\n$$ \\frac{A_0}{2k} e^{-\\alpha} = \\frac{0.88}{4\\pi} e^{-0.39478} $$\n$$ \\frac{0.88}{12.56637} \\approx 0.\n\nAnswer:0.88",
+    "oracle": "arly, the minimum value is bounded by the minimum of the initial data:\n$$ \\min_{x} u(x,t) \\ge \\min_{x} u(x,0) = -0.88 $$\n\nThe question asks for $u(0.05, 0.5)$.\nLet's check the phase at $x\n\nAnswer:0.48",
+    "psilm": "u at x = 0.05 equals 0.47.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.88,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.48,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.47,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.61,
+    "u": -0.1129
+   },
+   "text": {
+    "baseline": "ing $f(x)$ in a Fourier series.\n$$ \\phi(x, t) = \\sum_{n=-\\infty}^{\\infty} \\hat{f}_n e^{i 2\\pi n x} e^{-\\nu (2\\pi n)^2 t} $$\nThe initial function is $f(x) = \\exp(K \\cos(2\\pi x + \\phi_0))$.\n\nAnswer:0.00",
+    "oracle": "2\\pi - 0.51$).\n$$ \\cos(5.77) \\approx \\cos(2\\pi - 0.51) = \\cos(0.51) \\approx 0.87 $$\n$$ \\sin(5.77) \\approx \\sin(2\\pi - 0.51) = -\\sin(0.51) \\approx -0.49 $$\nInitial velocity: $u_0(0.61) = \n\nAnswer:-0.11",
+    "psilm": "u at x = 0.61 equals -0.13.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.11,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.13,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.91,
+    "u": 0.3089
+   },
+   "text": {
+    "baseline": "} = A \\sin(kx + \\phi) $$\n$$ \\frac{\\theta_x}{\\theta} = -\\frac{A}{2\\nu} \\sin(kx + \\phi) $$\nIntegrating:\n$$ \\ln \\theta = \\frac{A}{2\\nu} \\cos(kx + \\phi) + C $$\n$$ \\theta(x,0) = C_0 e^{\\frac{A\n\nAnswer:0.88",
+    "oracle": "2\\pi \\approx 6.283$.\n$2\\pi \\times 0.91 \\approx 5.717$.\n$\\theta \\approx 5.717 + 1.95 = 7.667$ radians.\nSubtract $2\\pi$ ($6.283$) to get the principal angle: $7.667 - 6.283 = 1.384$ radians\n\nAnswer:0.31",
+    "psilm": "u at x = 0.91 equals 0.32.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.88,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.31,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.32,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  }
+ ]
+}

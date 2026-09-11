@@ -37,10 +37,14 @@ for i in $(seq 1 4); do          # 4 x 500 = the 2,000 readout-only steps
     || { echo "PHASE-A FAILED chunk $i $(date +%H:%M)" >> $LOG; exit 1; }
   FLAG=""
   S=$($PY -c "import json;print(json.load(open('$D/bridges.npz.meta'))['step'])")
+  # the last TRAINING record: train_log.jsonl interleaves eval records carrying
+  # only {step, eval_acc, eval_mae}, so [-1:] lands on the wrong kind at every
+  # chunk boundary and prints -1.000 for the whole line
   echo "PHASE-A CHUNK $i step=$S $($PY -c "
 import json
-rows=[json.loads(l) for l in open('$D/train_log.jsonl')][-1:]
-r=rows[0] if rows else {}
-print('x0_ce=%.3f x0_exact=%.3f x0_err=%.4f loss=%.3f' % (r.get('loss_x0',-1), r.get('x0_exact',-1), r.get('x0_err',-1), r.get('loss',-1)))")" >> $LOG
+rows=[json.loads(l) for l in open('$D/train_log.jsonl')]
+tr=[r for r in rows if 'loss_x0' in r]
+r=tr[-1] if tr else {}
+print('x0_ce=%.3f x0_exact=%.3f x0_err=%.4f loss_u=%.4f' % (r.get('loss_x0',-1), r.get('x0_exact',-1), r.get('x0_err',-1), r.get('loss_u',-1)))")" >> $LOG
 done
 echo "PHASE-A COMPLETE $(date +%H:%M)" >> $LOG

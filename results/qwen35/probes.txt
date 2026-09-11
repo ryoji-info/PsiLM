@@ -1,0 +1,36 @@
+# Qwen3.5 9B coupling-depth cost probes (M2, 24 GB unified), 2026-09-10
+# Trainer: eval/mlx_stage2_train.py, --channel value --inj-cap 0.2 --readout-norm dim --clip module --detach-x0,
+# --readout-only 0 (coupled from step 0), 26 steps unless noted; sec_per_step is the trainer's own figure at
+# step 25, peak is mx.get_peak_memory() at chunk end. l_fwd 13 throughout. Raw outputs copied from the
+# session's task files; the probe scripts were scratch and are not kept.
+
+## batch 4, earlier probe (session task bu6nkj58c; 12 steps; peak from that probe's own sampler.
+## Whether set_grad_window was active is not recorded -- treat these rows as upper bounds only)
+l_fwd/l_rev 13/20 batch 4: 101.7 s/step | peak  41.9 GB
+l_fwd/l_rev 13/24 batch 4:  52.1 s/step | peak  31.6 GB
+l_fwd/l_rev 13/28 batch 4:  17.3 s/step | peak  22.2 GB
+
+## batch 2, timing only. The 'peak' on these two rows is process RSS from a ps sampler, which
+## does not see Metal allocations (it reads ~8 GB, the weights); the true peaks are in the next block
+l_rev 24 batch 2: 11.16 s/step | peak 8.2 GB
+l_rev 28 batch 2: 4.17 s/step | peak 8.2 GB
+
+## batch 2/3/4 with mx.get_peak_memory (4-step runs report peak only)
+l_rev 24 batch 2: 10.03 s/step | peak=19.1GB | wall 302s / 26 steps
+l_rev 26 batch 3: 14.19 s/step | peak=20.0GB | wall 413s / 26 steps
+l_rev 22 batch 2: n/a s/step | peak=20.7GB | wall 117s / 4 steps
+l_rev 20 batch 2: n/a s/step | peak=23.5GB | wall 165s / 4 steps
+l_rev 26 batch 2: 4.69 s/step | peak=16.0GB | wall 155s for 26 steps
+l_rev 24 batch 4: n/a s/step | peak=29.5GB | wall 250s for 4 steps
+l_rev 26 batch 4: n/a s/step | peak=23.2GB | wall 166s for 4 steps
+l_rev 28 batch 4: 16.33 s/step | peak=20.7GB | wall 468s for 26 steps
+
+## layer kinds (config.json layer_types): L = GatedDeltaNet (linear attention), F = full attention
+LLLFLLLFLLLFLLLFLLLFLLLFLLLFLLLF
+l_rev 20 -> 12 layers above, 9 linear; 22 -> 10/7; 24 -> 8/6; 26 -> 6/4; 28 -> 4/3
+
+## generation smoke test, stock model via mlx_lm.generate through the VLM wrapper
+GEN OK 3.1s/32tok: 'Natalia sold clips to 48 friends in April.\nIn May, she sold half as many as in April: $48 / 2'
+
+## discrepancy to resolve: commit 46d2c25 says 'at batch 2 ... 8.2 s at l_rev=24 and 4.2 s at l_rev=28';
+## today's runs measure 10.03-11.16 s at l_rev 24 and 4.17 s at l_rev 28 (same trainer, same flags).
