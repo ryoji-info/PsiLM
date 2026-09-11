@@ -8,6 +8,8 @@ tags:
   - pde
   - qwen
   - gemma
+  - qwen3.5
+  - nvfp4
   - mlx
   - safetensors
   - research
@@ -86,14 +88,15 @@ Held-out accuracy is within ±0.05 of the ground truth unless the row says other
 | `gemma-4-12b-4bit-mlx-1d-value-selective` | Gemma 4 12B-it-4bit (MLX) | 1D Burgers field QA; calibrated per-dimension readout (`readout_norm: dim`, buffers included), value-token channel, inject @ layer 30/48, cap 0.2, gate-selectivity training | 25.5M | **96.7% @±0.05, MAE 0.017** (n=60; oracle 98.3%); GSM8K 84% = backbone, MMLU 55% vs 53%; gate 0.14 on physics, 0.004–0.008 elsewhere |
 | `gemma-4-12b-4bit-mlx-multimode` | Gemma 4 12B-it-4bit (MLX) | 1D multi-mode + generalization study (run tag `stage2b_gemma12b_2b`) | 25.5M | **iid 100%** @±0.05, MAE 0.009 (n=48; backbone 20.8%, oracle 100%); held-out mode combination 25.0%, amplitude extrapolation 52.1% |
 | `gemma-4-12b-4bit-mlx-2d-dpot` | Gemma 4 12B-it-4bit (MLX) | 2D Fisher–KPP with fine-tuned DPOT-Tiny (run tag `stage2d_gemma12b_2d`) | 13.8M | **100%** @±0.05, MAE 0.0096 (n=60; backbone 10.0%, oracle 96.7% — PsiLM above the text ceiling) |
+| `qwen3.5-9b-nvfp4-mlx-1d-value-selective` | Qwen3.5 9B text tower, NVFP4 (MLX; at the root of `ryoji-info/Qwen3.5-9B-PsiLM` — 24 of 32 layers Gated DeltaNet) | 1D Burgers field QA; calibrated per-dimension readout, value-token channel, inject @ layer 26/32, cap 0.2, gate-selectivity training (run tag `stage2_qwen35`) | 28.4M | **100%** @±0.05, MAE 0.0147 (n=60; backbone 3.3% forced, oracle 98.3% — PsiLM above the text ceiling); guard-rail physics 99%, **GSM8K 83% = backbone item for item**, MMLU 66% vs 64%, BoolQ 89% vs 90%; gate 0.81 on physics, 0.004–0.014 elsewhere |
 
-Which physics model each directory needs: the `-1d` / `-value` directories use `fno_burgers_singlemode`, the `-multimode`, `-v2-refuted` and `-loop2` directories use `fno_burgers_multimode`, and `-2d-dpot` uses `dpot_tiny_fisher2d_finetuned`, all from `ryoji-info/PsiLM-physics`. The bicameral interface uses no physics model. The backbones are the public checkpoints named in the table (`mlx-community/*` for MLX rows); the two 8B directories and the three Gemma directories carry a `config.json` with the exact backbone id, coupling layers and training recipe.
+Which physics model each directory needs: the `-1d` / `-value` directories use `fno_burgers_singlemode`, the `-multimode`, `-v2-refuted` and `-loop2` directories use `fno_burgers_multimode`, and `-2d-dpot` uses `dpot_tiny_fisher2d_finetuned`, all from `ryoji-info/PsiLM-physics`. The bicameral interface uses no physics model. The backbones are the public checkpoints named in the table (`mlx-community/*` for the Qwen3 and Gemma MLX rows; the Qwen3.5 row's backbone is Ollama's `qwen3.5:9b-mlx` release reassembled for `mlx-lm` and republished at the root of `ryoji-info/Qwen3.5-9B-PsiLM`, since no Hub quantization is bit-compatible with it); the two 8B directories, the three Gemma directories and the Qwen3.5 directory carry a `config.json` with the exact backbone id, coupling layers and training recipe.
 
 ## Loading
 
 Clone the GitHub repository and `pip install -e .` first; the loaders live in the `psilm` package. Fetch one directory with `huggingface_hub.snapshot_download("ryoji-info/PsiLM-bridges", allow_patterns="<directory>/*")`.
 
-### Loading the Qwen3-8B / Gemma 4 bridges (any of the three directories; Gemma loads through `psilm.mlx.gemma_loader.load_backbone_any`)
+### Loading the Qwen3-8B / Gemma 4 / Qwen3.5 bridges (any of the four directories; `psilm.mlx.gemma_loader.load_backbone_any` dispatches on the backbone's config — Gemma and Qwen3.5 through their own towers)
 
 ```python
 import json, mlx.core as mx
@@ -130,10 +133,10 @@ MMLU 0.66 both ways, p = 1.00), which separates what the channel does by its
 ## Limitations
 
 - **Narrow task.** Every bridge was trained and evaluated on one synthetic field-value question family (1D Burgers or 2D Fisher–KPP) with exact solver ground truth, in-distribution test sets, and greedy decoding. Held-out families in the multi-mode study drop to 31–50%.
-- **Pointer supplied by the task at 8B and 12B.** The large-backbone readouts pool over the question builder's `x0` token span; the learned attention pointer did not train at 4096 dimensions (paper, Section 9). Prompts must follow the builder's template.
+- **Pointer supplied by the task at 8B, 9B and 12B.** The large-backbone readouts pool over the question builder's `x0` token span; the learned attention pointer did not train at 4096 dimensions (paper, Section 9). Prompts must follow the builder's template.
 - **Backbone-specific.** Bridges are sized from the backbone config and do not transfer across backbones or quantizations.
 - **Guard-rail is measured, not guaranteed.** Selectivity was checked on n=100 GSM8K / MMLU slices and the physics set; gate behaviour on other prompt types is untested. The non-selective `qwen3-8b-4bit-mlx-1d-value` directory loses 55 GSM8K points (89% → 34%) and is kept for the record.
-- **Hardware.** MLX directories need Apple Silicon; the 8B and 12B rows were trained and evaluated on a 24 GB M2.
+- **Hardware.** MLX directories need Apple Silicon; the 8B, 9B and 12B rows were trained and evaluated on a 24 GB M2. The Qwen3.5 row needs `mlx>=0.32.2` (native NVFP4) and `mlx-lm==0.31.3`.
 
 ## Beyond physics
 

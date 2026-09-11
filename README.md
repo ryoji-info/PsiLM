@@ -49,12 +49,14 @@ prompts (the guard-rail below).
 | Gemma 4 12B-4bit (MLX) | 6.7%[^gemma0] | **96.7%** | 98.3% | **yes** | `results/stage2_gemma12b/final_eval.json` |
 | Gemma 4 12B-4bit, multi-mode ICs | 20.8% | **100%** in-distribution[^mm] | 100% | **yes** | `results/stage2b_gemma12b_2b/final_eval.json` |
 | Gemma 4 12B-4bit, 2D Fisher-KPP (DPOT-Tiny) | 10.0% | **100%** | 96.7%[^oracle2d] | **yes** | `results/stage2d_gemma12b_2d/final_eval.json` |
+| Qwen3.5 9B-NVFP4 (MLX; 24 of 32 layers recurrent) | 3.3%[^qwen35] | **100%** | 98.3%[^qwen35] | **yes** | `results/stage2_qwen35/final_eval.json` |
 
 **Guard-rail** (n = 100 per dataset, `results/bench/*_summary.json`): with the
 selective gate the coupled model equals its backbone on GSM8K (Qwen3-8B 89% →
-89%, Gemma 84% → 84%), MMLU (60% → 61%, 53% → 55%) and BoolQ (88% → 88%,
-90% → 89%), with the gate open on 0% of non-physics prompts and 100% of physics
-prompts; before selectivity
+89%, Gemma 84% → 84%, Qwen3.5 83% → 83% item for item), MMLU (60% → 61%,
+53% → 55%, 64% → 66%) and BoolQ (88% → 88%, 90% → 89%, 90% → 89%), with the
+gate open on 0% of non-physics prompts and 100% of physics prompts
+(`guardrail_qwen35_guardrail_summary.json` for the Qwen3.5 row); before selectivity
 training the 8B's gate was open everywhere and GSM8K fell from 89% to 34%
 (`v8_8b_guardrail_summary.json`).[^mae]
 
@@ -91,8 +93,16 @@ extrapolation the implied amplitude is below the true one for 71% of items
 (combination 0.61 → 0.99 in a teacher-forced probe, `results/readout_transfer/`);
 the 12B run has not been started.
 
-[^mae]: The same files carry MAE: PsiLM 0.014 / 0.022 / 0.021 / 0.017 for the
-four backbones, oracle 0.003 / 0.021 / 0.003 / 0.007. Full tables, per-arm
+[^mae]: The same files carry MAE: PsiLM 0.014 / 0.022 / 0.021 / 0.017 / 0.015 for the
+five backbones, oracle 0.003 / 0.021 / 0.003 / 0.007 / 0.100.
+
+[^qwen35]: Both text arms were forced to answer after deriving for the whole
+768-token budget on every item. The oracle's one miss is a forced reply whose
+parser took the phase out of the derivation (5.61 for a true −0.202), which is
+also why its MAE is 0.100; PsiLM's largest error on the sixty items is 0.047.
+Scored on the training numerics (the differentiable recurrent scan rather than
+the Metal kernel) PsiLM is again 100%, with 58 of the 60 answers identical
+(`final_eval_ops.json`). Full tables, per-arm
 protocols and the earlier 0.5B results (multi-mode generalization, loop
 coupling, 2D with DPOT-Tiny at 95.0%) are in
 [docs/technical-notes.md](docs/technical-notes.md).
@@ -138,9 +148,10 @@ do not transfer between backbones).
 - **[`ryoji-info/PsiLM-bridges`](https://huggingface.co/ryoji-info/PsiLM-bridges)** — bridge checkpoints (safetensors + `config.json`) for every backbone/task pair in the table above, plus the Stage-1 Bicameral reproduction.
 - **[`ryoji-info/PsiLM-physics`](https://huggingface.co/ryoji-info/PsiLM-physics)** — the frozen physics hemispheres: `fno_burgers_singlemode`, `fno_burgers_multimode` (70K-param FNOs) and `dpot_tiny_fisher2d_finetuned` (DPOT-Tiny, 7.5M, from [hzk17/DPOT](https://huggingface.co/hzk17/DPOT)).
 - **[`ryoji-info/Gemma-4-12B-PsiLM`](https://huggingface.co/ryoji-info/Gemma-4-12B-PsiLM)** — the standalone release: Gemma 4 12B-4bit bridges, the FNO and a one-file inference script, for running the coupled model without this repository.
-- **Paper** — [`paper/psilm.pdf`](paper/psilm.pdf) (23 pages; Section 9 covers scaling, the guard-rail, Gemma, and the leaky-gate sweep with its content control).
+- **[`ryoji-info/Qwen3.5-9B-PsiLM`](https://huggingface.co/ryoji-info/Qwen3.5-9B-PsiLM)** — the same for Qwen3.5 9B, and the only place its backbone lives: the NVFP4 text tower rebuilt from Ollama sits at the repo's root, the bridges, the FNO and the script beside it.
+- **Paper** — [`paper/psilm.pdf`](paper/psilm.pdf) (27 pages; Section 9 covers scaling, the guard-rail, Gemma, the leaky-gate sweep with its content control, and the Qwen3.5 9B campaign).
 
-All three repositories are public.
+The first three repositories are public; the Qwen3.5 release is private until its maintainer flips it.
 
 ## Quickstart
 
@@ -155,8 +166,28 @@ pip install datasets huggingface_hub  # GSM8K/MMLU guard-rail benchmarks and Hub
 ```
 
 Tested with mlx 0.32.2, mlx-lm 0.31.3, transformers 5.16.1 and torch 2.13.0;
-the Gemma 4 loader goes through mlx-lm internals, so pin `mlx-lm==0.31.3` if a
-newer release breaks it.
+the Gemma 4 and Qwen3.5 loaders go through mlx-lm internals (`qwen3_5.py`
+shipped in 0.31.3, and MLX 0.32 is the first release that reads NVFP4 natively),
+so pin `mlx-lm==0.31.3` if a newer release breaks either.
+
+**The Qwen3.5 backbone is not a Hugging Face download.** It is Ollama's
+`qwen3.5:9b-mlx` release (NVFP4, Apache-2.0) reassembled into a directory
+mlx-lm loads — every wide projection stays in NVFP4 at group size 16, the
+vision tower is dropped:
+
+```bash
+ollama pull qwen3.5:9b-mlx
+python eval/ollama_to_mlx.py qwen3.5:9b-mlx --out ~/Documents/huggingface/qwen3.5-9b-mlx
+```
+
+Pass that directory as both `--model` and `--hf-tokenizer` wherever the
+commands below name a backbone. No Hub checkpoint is bit-compatible with it
+(the Hub's NVFP4 builds also quantize the embeddings, the output head and the
+recurrence's gate projections, which this one keeps in bf16), so bridges trained
+against it expect exactly this conversion — which is why the same weights are
+republished at the root of
+[`ryoji-info/Qwen3.5-9B-PsiLM`](https://huggingface.co/ryoji-info/Qwen3.5-9B-PsiLM),
+next to the bridges; that repo id loads through `mlx-lm` like any other.
 
 **Run inference** with the standalone Gemma-4-12B-PsiLM release. Bridge weights
 are not in this repository — nothing large is (see [License](#license) and the
@@ -203,7 +234,10 @@ data/noharm_gemma_all.json --noharm-every 2 --noharm-gate-only 1 --lam-gate 1.0`
 for the selective gate (step 7,000 is the committed checkpoint). The scripts that produced the released checkpoint are
 `results/gemma12b/resume_recipe.sh` (the coupled chunks, after `run_recipe.sh`
 opened the run) and `noharm_recipe.sh` (the selective gate);
-the Qwen and 0.5B commands are in the [technical notes](docs/technical-notes.md).
+the Qwen3-8B and 0.5B commands are in the [technical notes](docs/technical-notes.md),
+and the Qwen3.5 9B campaign is `results/qwen35/phaseA_recipe.sh` (readout warm-up)
+followed by `results/qwen35/coupled_recipe.sh` (negatives, coupled phase, selective
+gate), with its coupling-depth probes in `results/qwen35/probes.txt`.
 
 ## How it works
 
@@ -213,9 +247,14 @@ hidden states and a small head regresses (a, sin φ, cos φ) from the pooled
 vector; the queried position x0 is read separately, by averaging the hidden
 states over x0's token span — the span is supplied by the QA builder, not
 learned — and turning that vector into a value with a 100-bin classifier
-(softmax expectation). On Gemma the hidden states are first standardized per
+(softmax expectation). On Gemma and Qwen3.5 the hidden states are first standardized per
 dimension with statistics from a 32-prompt calibration pass, because Gemma's
-massive-activation dimensions otherwise swamp the digit signal.
+massive-activation dimensions otherwise swamp the digit signal (Qwen3.5 simply
+keeps the option on). The staged forward drives the backbone's own decoder
+layers one at a time, whatever their kind: on Qwen3.5, 24 of the 32 layers are
+Gated DeltaNet linear attention carrying a recurrent state rather than a
+KV cache, and the bridges neither know nor care — they pool a residual stream
+and add to one.
 
 **Physics model.** A 70K-parameter Fourier neural operator, pretrained to solve
 1D viscous Burgers to 0.28% relative error and then frozen, maps the
@@ -248,8 +287,9 @@ a correlate from the prompt, and the channel is decoration. Two controls answer
 that, and the second one is decisive.
 
 **Zero the injection** and run everything else — readout, FNO, value tokens,
-gate — and the physics result disappears (0% for Qwen3-8B, 10% for Gemma, which
-is what the reply template alone recovers). So the injection is load-bearing.
+gate — and the physics result disappears (0% for Qwen3-8B, 10% for Gemma and 10%
+for Qwen3.5, which is what the reply template alone recovers). So the injection
+is load-bearing.
 
 **Corrupt only the number.** Feed the value encoder another question's answer,
 at matched magnitude, leaving the prompt, the readout, the gate, reply length
@@ -278,7 +318,7 @@ and §9.7 of the paper.
 
 ## Read more
 
-- [docs/technical-notes.md](docs/technical-notes.md) — Stage 0 → 2d narratives, the multi-mode generalization and loop-coupling studies, the 2D DPOT result, the eight-run 8B failure analysis, the Gemma calibration fix, the full guard-rail tables, the leaky-gate ε sweep on both backbones with its shuffled-value content control, and every reproduce command.
+- [docs/technical-notes.md](docs/technical-notes.md) — Stage 0 → 2d narratives, the multi-mode generalization and loop-coupling studies, the 2D DPOT result, the eight-run 8B failure analysis, the Gemma calibration fix, the full guard-rail tables, the leaky-gate ε sweep on both backbones with its shuffled-value content control, the Qwen3.5 9B integration (Ollama conversion, the two adapter accommodations, the coupling-depth cliff), and every reproduce command.
 - [paper/psilm.pdf](paper/psilm.pdf) — *PsiLM: Coupling Frozen Language and Physics Models through Trainable Latent Bridges.*
 - Nearest prior work: the Bicameral Model ([arXiv:2605.11167](https://arxiv.org/abs/2605.11167)), the Global Latent Workspace line ([shimmer](https://github.com/ruflab/shimmer)), CALM ([arXiv:2401.02412](https://arxiv.org/abs/2401.02412)).
 
@@ -323,6 +363,7 @@ guard-rail table, not a return.
 | 5b | Gemma 4 12B on the multi-mode task (in-distribution 100%; generalization families open) | done |
 | 5c | Span readout with mode-shared heads, for the two generalization families | validated at 0.5B, 12B run not started |
 | 5d | Leaky-gate ε sweep on both backbones, and the shuffled-value content control | done |
+| 5e | Third family, Qwen3.5 9B: a mostly recurrent (Gated DeltaNet) decoder, NVFP4, rebuilt from an Ollama release; readout warm-up the best of any backbone (CE 0.45, 91% exact bins, on twice the warm-up samples) | done — **100%** held-out (oracle 98.3%); guard-rail: physics 99%, GSM8K 83% = backbone item for item, MMLU 66% vs 64%, BoolQ 89% vs 90% |
 | 6 | Loop coupling at 8B; Mac app (27B feasibility measured: inference-only at 24 GB, 39 GB training peak) | planned |
 
 ## Support

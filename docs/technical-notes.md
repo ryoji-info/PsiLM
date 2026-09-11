@@ -340,7 +340,7 @@ oracle copies a number out of the prompt and sometimes mis-rounds it, while the
 bridge reads the field exactly and the answer never passes through text. Per
 chunk, coupled 0.50 → 0.94, then no-harm 0.979 / 0.958 / 1.00.
 
-Hybrid-stack gotcha worth knowing: MLX and torch share one unified GPU memory
+MLX-plus-torch gotcha worth knowing (the 2D stack runs both): MLX and torch share one unified GPU memory
 and MLX's cached buffers are invisible to torch's MPS allocator. The no-harm
 arm died asking for 256 bytes with 42 GiB in "other allocations";
 `mx.clear_cache()` at the boundary was not enough, so DPOT-Tiny runs on the CPU
@@ -349,15 +349,17 @@ arm died asking for 256 bytes with 42 GiB in "other allocations";
 ## Scaling the language hemisphere — MLX, 1.7B, 8B
 
 The bridges are parameterized by the backbone's config alone (coupling depths
-as fractions of depth, widths from the hidden size), and `psilm/mlx/` ports
-the staged forward, the FNO and the bridges to MLX so 4-bit backbones train
-on 24 GB. Same physics model, same task, same 60 held-out questions:
+as fractions of depth — except Qwen3.5, whose injection depth was set by a
+measured memory cliff, below — widths from the hidden size), and `psilm/mlx/`
+ports the staged forward, the FNO and the bridges to MLX so 4-bit and NVFP4
+backbones train on 24 GB. Same physics model, same task, same 60 held-out questions:
 
 | backbone | LLM alone | **PsiLM** | oracle (answer in text) | bridges |
 |---|---:|---:|---:|---:|
 | Qwen2.5-0.5B (fp16, torch) | 8.3% / 0.682 | **100%** / 0.014 | 100% / 0.003 | 3.5M |
 | Qwen3-1.7B (fp16, torch) | 1.7% / 2.57 | **93.3%** / 0.022 | 96.7% / 0.021 | 12.6M |
 | Qwen3-8B-4bit (MLX) | 6.7% / 0.706 (forced: 0% / 0.89; strengthened: 3.3%) | **98.3%** / 0.0135 | 100% / 0.0026 | 28.4M |
+| Qwen3.5 9B-NVFP4 (MLX; mostly recurrent) | 3.3% / 0.570 (forced) | **100%** / 0.0147 | 98.3% / 0.100 (one forced item parsed wrongly) | 28.4M |
 
 The 8B took eight runs, and the paper's Section 9 reports them as a
 scale-dependent failure analysis. Two things broke at 4096 dimensions, and
@@ -415,7 +417,9 @@ pooled x₀-span vector has 26× less across-item variance than on Qwen.
 `--readout-norm dim` standardizes each dimension with statistics from a
 32-prompt calibration pass (two frozen vectors saved with the bridges),
 restores the signal to twice Qwen's, and the warm-up then ends with the
-sharpest pointer of any backbone (CE 1.24, 69% exact bins).
+sharpest pointer of any backbone to that point (CE 1.24, 69% exact bins, the
+mean of the last hundred steps; Qwen3.5's warm-up later reached CE 0.45 and
+91% on the same statistic, on twice the warm-up samples — below).
 
 **Guard-rail on Gemma** (n=100 per dataset; `results/bench/gemma12b_*`):
 physics 0 / 97 / 10% (backbone / PsiLM / zeroed; gate 0.14, open on 100%),
@@ -423,7 +427,108 @@ GSM8K 84 / 84 / 84% (gate 0.004, open on 0%), MMLU@256 53 / 55 / 53%
 (79.1 / 79.1% on the 67 items both arms answer), GSM8K without the "Answer:"
 line 83 / 83 / 83%. In the training logs Gemma's gate sits near 0.15–0.19
 on physics batches with the injection at 3–4% of the stream, a much gentler
-operating point than Qwen's saturated gate at the 20% cap; both are selective.
+operating point than the Qwen3 8B's saturated gate at the 20% cap; both are
+selective.
+
+## A third family: Qwen3.5 9B (2026-09-10/11)
+
+The two families above are attention stacks; Qwen3.5 9B is mostly not. It
+alternates three Gated DeltaNet layers (linear attention with a recurrent
+state instead of a KV cache) with one full-attention layer — 24 recurrent
+layers of 32, hidden 4096, a 248k untied vocabulary — and it is a
+vision–language checkpoint of which only the text tower is driven. The copy
+is Ollama's `qwen3.5:9b-mlx` release, NVFP4 at group size 16 on every wide
+projection (embeddings, output head, norms and the recurrence's small
+parameters stay bf16), reassembled by `eval/ollama_to_mlx.py`: 760 tensor
+blobs in the manifest, 333 vision ones dropped, 627 kept, 8.0 GB, licence
+copied alongside. MLX 0.32.2 reads NVFP4 natively; mlx-lm 0.31.3 ships
+`qwen3_5.py`.
+
+**Two adapter accommodations** (`psilm/mlx/qwen35_loader.py`), neither in
+the bridges. (1) Masks: full attention takes the staged forward's additive
+causal-and-padding mask; a Gated DeltaNet layer wants a boolean key-validity
+mask (`where(mask, qkv, 0)`) and would zero every real token if handed the
+additive one. The boolean mask is the additive mask's last row `== 0`, so the
+shim derives it per layer kind. mlx-lm's own forward does not mask padding
+without a cache, so the two agree only at batch 1 — which is where parity is
+checked: staged vs stock is exact (max |diff| 0.0, kernel path), and a
+right-padded row matches its unpadded forward at every real position
+(`results/qwen35/setup_summary.txt`, from `eval/mlx_qwen35_setup.py`). (2) The
+recurrent scan is a Metal kernel with no VJP; mlx-lm's training-mode fallback
+is a pure-MLX scan that agrees with the kernel to 1.4e-2 in maximum relative
+logit difference on the setup prompt (7.2e-3 on the commit-time prompt), with
+the same argmax and top-5 at every position. `set_grad_window(l_rev)` puts only the layers the backward
+pass reaches on that path. The bridges are trained and the per-chunk rollouts
+scored on the ops path; the held-out evaluation and the guard-rail run the
+kernel (`eval/mlx_stage2_eval.py --ops-path` scores on the training numerics
+for comparison).
+
+**The coupling depth was set by a measured cliff** (`results/qwen35/probes.txt`,
+batch 2): inject at 28 → 4.17 s/step; 26 → 4.69 s at 16.0 GB; 24 → 10.03 s at
+19.1 GB; 22 → 20.7 GB; 20 (the Stage-2 fraction, matching the 8B's and
+Gemma's 61–62%) → 23.5 GB on a 24 GB machine. From 26 to 24 the recurrent work
+above the injection grows by half and the time doubles — past ~16 GB the step
+stops tracking the layer count (buffers spilling past what the GPU keeps
+resident, unconfirmed). Coupling is 13/26 of 32: six layers above the
+injection, four recurrent, against 18/48 (Gemma) and 14/36 (8B). A
+gradient-checkpointed staged forward (`--checkpoint-from`,
+`eval/checkpoint_selftest.py`: bit-identical gradients on the 0.5B) exists
+and was not needed.
+
+**Readout warm-up** (batch 8, 3.44 s/step, 2,000 steps in 1 h 56 min,
+`--readout-norm dim` on): pointer CE 4.08 → 0.42 over 250-step windows,
+exact bins 6% → 95%, position error 0.081 → 0.005. On the last-hundred-steps
+statistic: CE 0.45, error 0.004, 91% exact — the best warm-up pointer here
+(Gemma 1.24 / 0.009 / 69%, 8B 1.76 / 0.019 / 53%), with the caveat that this
+warm-up saw 16,000 samples where theirs saw 8,000; at the matched 8,000 (step
+1,000) it stood at CE 1.60 / 0.016 / 50%, between the two. The warm-up ran
+with the injection depth set to 24; the coupled resume moved it to 26 (phase A
+never injects; the trainer logs the change).
+
+**Coupled phase** (batch 2, 8,000 steps = Gemma's 16,000 samples;
+`results/qwen35/coupled_recipe.sh`). Negatives for the no-harm arm were built
+first from this backbone's own continuations: 1,194 items over 597 distinct
+prompts (400 GSM8K, 197 MMLU), each with and without the GSM8K nudge line —
+the stripper is keyed to that line, so the 197 MMLU prompts appear twice
+unchanged. Per-chunk rollouts (n=16; n=48 for the first) at steps
+2,500–9,500: 12.5, 68.8, 62.5, 75.0, 68.8, 93.8, 87.5, 68.8, 81.3, 100, 93.8,
+87.5, 81.3, 87.5, 87.5% at MAE 0.345 → 0.019; Gemma's eight coupled chunks
+at n=48: 62.5, 66.7, 62.5, 87.5, 87.5, 62.5, 79.2, 54.2%. The pointer held at
+97% exact bins over the coupled records, 100% at every chunk end. Gate 1.0
+with the injection at the 0.2 cap throughout — the 8B's run-8 operating
+point, not Gemma's 0.15–0.19 — so the 8B is the precedent for the pending
+selective-gate phase. Step time 4.6–5.1 s over the first five chunks and
+4.9–8.5 s after, at a flat 16.0–16.1 GB peak.
+
+**Selective gate and result.** The no-harm phase (1,500 steps at lr 1e-4,
+negatives every second step, gate-only updates) closed the gate on the
+negatives within its first chunk — 0.001 at their answer positions by step
+10,500 against 0.94 on physics prompts — and kept it shut (0.0003 at the end),
+while the physics rollouts went 93.8 / 100 / 100% at MAE 0.022 / 0.013 / 0.013.
+Those chunks peaked at 35–38 GB (the negatives are long sequences and the
+recurrent scan's tape scales with length), so they ran through swap at
+7.7 s/step. Held-out, n=60 (`results/stage2_qwen35/final_eval.json`, kernel
+path): **PsiLM 100% / MAE 0.0147** (largest error 0.047), oracle 98.3% / 0.100
+(its one miss is a forced reply whose parser took the phase 5.61 out of the
+derivation, true −0.202; PsiLM said −0.21), backbone alone 3.3% / 0.570
+(forced on every item), always-zero 1.7%. On the training numerics
+(`--ops-path`, `final_eval_ops.json`) PsiLM is again 100% / 0.015, 58 of the
+60 answers identical to two decimals and the other two within 0.01. Parity
+and the scan comparison are in `results/qwen35/setup_summary.txt`. Twenty-two hours
+of Apple-silicon time end to end (2 warm-up, 1 negatives, 16 coupled, 3.5
+selective gate).
+
+**Guard-rail on Qwen3.5** (n=100 per dataset; `results/bench/guardrail_qwen35_guardrail_summary.json`,
+from `results/bench/guardrail_qwen35.sh`): physics 1 / 99 / 10% (backbone under
+the 160-token nudge protocol / PsiLM / zeroed; gate 0.81, open on 100%; PsiLM
+MAE 0.016, 16.9 tokens and 2.35 s per question against the backbone's 160 tokens
+and 13.5 s), GSM8K@384 83 / 83 / 83% — item-identical across the three arms
+(gate 0.004, open on 0%, KL to base 1.2e-4 per token), MMLU@256 64 / 66 / 64%
+(two items gained, none lost, p = 0.5, from a parse rate of 0.86 against 0.82;
+gate 0.014), BoolQ 90 / 89 / 90% (one item lost, p = 1; gate 0.008). The
+bench's parity check on its KV-cached prefill passes at 5.8e-4 relative,
+argmax unchanged. The zeroed arm's 10% on physics is the reply-template floor,
+the same as Gemma's.
 
 ## Guard-rail: does the coupled model still do everything else?
 
@@ -469,6 +574,9 @@ results/stage2_mlx8b9/bridges.npz --n 100 --max-new-mmlu 256
 gsm8k --gsm8k-nudge 0`.
 
 ## Leaky gate, and what the channel actually carries (2026-09-09/10)
+
+("Qwen" in this section means the Qwen3-8B bridges throughout; the sweep
+predates the Qwen3.5 campaign, which has not been swept.)
 
 A gate that is shut off-task carries nothing there. The question was whether a
 weak always-on signal would act as a regularizer or improve general reasoning.
@@ -705,7 +813,8 @@ psilm/                 core package (pip install -e .)
     multimode.py         multi-mode task on the same stack
     bridges2d.py, model2d.py, physics2d.py   2D task (language in MLX, DPOT-Tiny in torch)
     fno.py               FNO in MLX (+ loaders from .pt and safetensors)
-    gemma_loader.py      Gemma 4 text tower in the MlxStream layout; load_backbone_any()
+    gemma_loader.py      Gemma 4 text tower in the MlxStream layout; load_backbone_any() dispatches Qwen3, Gemma 4 and Qwen3.5
+    qwen35_loader.py     Qwen3.5 (GatedDeltaNet + attention) text tower: per-layer-kind masks, windowed differentiable scan
     vlm_loader.py        Qwen3.8-27B language tower (inference-feasible only on 24 GB)
     moe_patch.py         autograd patch for MoE routing indices
 eval/                  training, evaluation and benchmark scripts
@@ -713,7 +822,9 @@ eval/                  training, evaluation and benchmark scripts
   stage1_*, stage2_*, stage2b_*, stage2d_*                    torch counterparts
   bench_guardrail.py, bench_common.py, build_noharm.py        gate-selectivity benchmark and its negatives
   copy_probe.py, readout_probe.py, readout_variance_probe.py  the diagnostic probes of the 8B/Gemma campaigns
-  mlx_8b_setup.py, mlx_27b_setup.py, mlx_gemma_setup.py       parity/memory smoke tests per backbone
+  mlx_8b_setup.py, mlx_27b_setup.py, mlx_gemma_setup.py, mlx_qwen35_setup.py   parity/memory smoke tests per backbone
+  ollama_to_mlx.py                                            rebuild an Ollama -mlx release into an mlx-lm directory (Qwen3.5)
+  checkpoint_selftest.py                                      gradient-checkpointed vs taped staged forward (bit-identical on the 0.5B)
   export_bridges.py                                           checkpoint -> HF layout (safetensors + config.json)
   leaky_report.py, assess_baseline.py, summarize_probes.py    dose-response, baseline and probe tables
 data/                  QA datasets (single-mode, multi-mode families, 2D) and the no-harm negatives
@@ -746,3 +857,12 @@ resumed from an earlier step does not steal a coupled chunk's score.
 
 Weights never enter git (see `.gitignore`); `results/hf_export/` is only the
 staging area from which the Hugging Face repositories are uploaded.
+
+A backbone that was assembled locally rather than downloaded (Qwen3.5, from
+Ollama) has no Hub id to record: `config.json` would otherwise carry a path
+that exists only on the training machine. `--backbone-name` sets what is
+recorded, and it must be something a downloader can actually load — either a
+Hub repo holding the identical conversion, or a note that names the Ollama
+tag and the converter. For Qwen3.5 the choice was to republish the conversion
+itself at the root of `ryoji-info/Qwen3.5-9B-PsiLM`, beside the bridges, so
+that id is what the exported `config.json` records.
