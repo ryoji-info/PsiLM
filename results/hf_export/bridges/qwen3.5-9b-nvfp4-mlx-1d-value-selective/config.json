@@ -1,0 +1,61 @@
+{
+ "backbone": "ryoji-info/Qwen3.5-9B-PsiLM",
+ "hf_tokenizer": "ryoji-info/Qwen3.5-9B-PsiLM",
+ "task": "1d",
+ "loader": "psilm.mlx.gemma_loader.load_backbone_any",
+ "physics": {
+  "file": "physics/fno_burgers_singlemode.safetensors",
+  "source": "results/stage2/fno.pt (1D Burgers FNO, 70K params)"
+ },
+ "bridges_class": "psilm.mlx.bridges.PsiBridgesMLX",
+ "construct": {
+  "d_model": 4096,
+  "channel": "value",
+  "inj_cap": 0.2,
+  "gate_bias": 0.0,
+  "readout_norm": "dim"
+ },
+ "coupling": {
+  "l_fwd": 13,
+  "l_rev": 26,
+  "n_layers": 32
+ },
+ "pointer": "deterministic span pooling with calibrated per-dimension standardization (fwd.dim_mu/dim_sigma included; fwd.x0_query/x0_key omitted: unused)",
+ "training": {
+  "steps_total": 11500,
+  "phase_A_readout_only": 2000,
+  "coupled_steps": 8000,
+  "no_harm_steps": 1500,
+  "no_harm_resumed_from": 10000,
+  "batch": 2,
+  "lr": "3e-4 (warm-up, coupled), 1e-4 (no-harm phase)",
+  "no_harm_arm": "non-physics prompts (data/noharm_qwen35_all.json) paired with the backbone's own greedy continuation; gate-only updates + mean-gate penalty"
+ },
+ "held_out_n16_per_chunk": {
+  "coupled": [
+   0.125,
+   0.688,
+   0.625,
+   0.75,
+   0.688,
+   0.938,
+   0.875,
+   0.688,
+   0.812,
+   1.0,
+   0.938,
+   0.875,
+   0.812,
+   0.875,
+   0.875,
+   0.75
+  ],
+  "no_harm_phase": [
+   0.938,
+   1.0,
+   1.0
+  ]
+ },
+ "held_out_n_source": "--eval-n of the final chunk; earlier chunks may have used another n -- the run's coupled.log records it per chunk",
+ "license": "apache-2.0"
+}
