@@ -11,13 +11,13 @@ it sits in as the backbone when `config.json` is beside it, else the Hub id.
 
 | path in the HF repo | source in the GitHub checkout | size | sha256 |
 |---|---|---:|---|
-| `README.md` | written for this release (the HF model card, YAML front matter) | 20,940 B | `27d9b04f583747f8a663e94bd56da65c05926bd2eda2ad969793dad97d0bdc2e` |
-| `psilm_infer.py` | `release/gemma-4-12b-psilm/psilm_infer.py` with the default backbone and the 1d bridges directory changed (docstring, `DEFAULT_BACKBONE`, `TASKS["1d"]`); the multimode/2d code paths are untouched and unused here | 42,702 B | `a38d7eb040b8b107c3d6534d5e20bf780cd1c0e21ae8e7a7414de5ccfeb11118` |
+| `README.md` | written for this release (the HF model card, YAML front matter) | 23,569 B | `a619d59a6dac0645caed60c40b15300422e0a30a6641f906fedf1d8e6099816d` |
+| `psilm_infer.py` | `release/gemma-4-12b-psilm/psilm_infer.py` with the default backbone and the 1d bridges directory changed (docstring, `DEFAULT_BACKBONE`, `TASKS["1d"]`); the multimode/2d code paths are untouched and unused here | 43,401 B | `d9e047e2e460ffb73aa298ca26763827511072f2b28e1723bd2da3a94e72e161` |
 | `requirements.txt` | written for this release (`mlx>=0.32.2` for native NVFP4; `mlx-lm==0.31.3` for `qwen3_5.py`) | 1,011 B | `9f14b111f7058a42724181601f38d2e04d96073d23786297148a98085d118266` |
 | `MANIFEST.md` | this file (harmless to upload; drop it if you prefer) | — | — |
 | `psilm-banner.png` | `assets/psilm-banner.png` (1600 px wide) | 1,352,073 B | `4cd65f32fe4aab5b49b66681a841b0128628e8d94c75494ae84f941b49c48089` |
 | `bridges/qwen3.5-9b-nvfp4-mlx-1d-value-selective/bridges.safetensors` | `results/hf_export/bridges/qwen3.5-9b-nvfp4-mlx-1d-value-selective/bridges.safetensors` (= `results/stage2_qwen35/bridges.npz`, step 11,500 — the end of the no-harm phase; learned-pointer tensors dropped; 28.39M params in 41 fp32 tensors) | 113,579,339 B | `a45e3b4aa1bebff75c672d64fbd665668802e4774d1d59777df89386e4c80762` |
-| `bridges/qwen3.5-9b-nvfp4-mlx-1d-value-selective/config.json` | `results/hf_export/bridges/qwen3.5-9b-nvfp4-mlx-1d-value-selective/config.json` (`eval/export_bridges.py --backbone-name ryoji-info/Qwen3.5-9B-PsiLM`; coupling 13/26 of 32; per-chunk held-out scores, n=16 except the first coupled chunk at n=48) | 1,522 B | `bd3176aa668a2f94efb6e9e61c2344b057314662c0ecac2445dc8bed531dd17b` |
+| `bridges/qwen3.5-9b-nvfp4-mlx-1d-value-selective/config.json` | `results/hf_export/bridges/qwen3.5-9b-nvfp4-mlx-1d-value-selective/config.json` (`eval/export_bridges.py --backbone-name ryoji-info/Qwen3.5-9B-PsiLM`; coupling 13/26 of 32; per-chunk held-out scores, n=16 except the first coupled chunk at n=48) | 1,514 B | `e0cd84435be1465295141c276c1d1da27ed06fc5a5e8c9c8ee7e380a698ce1ae` |
 | `physics/fno_burgers_singlemode.safetensors` | `results/hf_export/physics/fno_burgers_singlemode.safetensors` (= `results/stage2/fno.pt`; identical to the file in the Gemma release) | 552,076 B | `7bb0076c85cdcf2505a9079c05964e3eb77ac4a776eccf34216953f3c37bfcdd` |
 
 | `config.json` | `/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx/config.json` (the converted backbone; not in the GitHub checkout — weights never enter git) | 2,189 B | `31426fc674d7e58150cac520a4e4cb320fc051d697e3bafb82640801b43ddb30` |
