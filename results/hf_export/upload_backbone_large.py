@@ -5,7 +5,10 @@ same private-first policy as upload_backbone.py; use this when a plain
 upload_folder of the 8 GB file drops mid-way.
 
   python results/hf_export/upload_backbone_large.py \
-      --dir /Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx --repo ryoji-info/Qwen3.5-9B-nvfp4-mlx
+      --dir /Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx --repo ryoji-info/Qwen3.5-9B-PsiLM
+
+(The separate `ryoji-info/Qwen3.5-9B-nvfp4-mlx` id was never filled and is deleted;
+the backbone lives at the root of the release repo.)
 """
 import argparse
 import os

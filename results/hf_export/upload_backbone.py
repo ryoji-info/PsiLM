@@ -7,8 +7,13 @@ public by hand once the card reads right live. Uses the ambient
 
   python results/hf_export/upload_backbone.py \
       --dir /Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx \
-      --repo ryoji-info/Qwen3.5-9B-nvfp4-mlx \
+      --repo ryoji-info/Qwen3.5-9B-PsiLM \
       --card results/hf_export/backbones/qwen3.5-9b-nvfp4-mlx/README.md
+
+The backbone lives at the ROOT of the PsiLM release repo rather than in a repo of
+its own: `ryoji-info/Qwen3.5-9B-nvfp4-mlx` was created for it, never filled, and
+deleted, so that id is dead. One repo means `mlx_lm.load("ryoji-info/Qwen3.5-9B-PsiLM")`
+gives the plain backbone while `bridges/` and `physics/` sit alongside it.
 """
 import argparse
 import os
