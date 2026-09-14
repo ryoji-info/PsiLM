@@ -1,0 +1,10 @@
+{
+ "smoke_data.json|4|mlx-community/Qwen2.5-0.5B-Instruct-4bit": {
+  "n": 4,
+  "ce": 0.5232,
+  "agree": 1.0,
+  "gate_prompt": null,
+  "gate_cont": null,
+  "ratio_cont": null
+ }
+}

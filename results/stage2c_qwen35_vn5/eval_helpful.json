@@ -1,0 +1,189 @@
+{
+ "ckpt": "results/stage2c_qwen35_vn5/bridges.npz",
+ "model": "/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx",
+ "const_model": "results/constitution_model/qwen2.5-0.5b-constitution",
+ "data": "data/constitution_helpful_test_qwen35.json",
+ "n": 50,
+ "max_new": 24,
+ "arms": {
+  "base": {
+   "n": 50,
+   "ce": 0.413,
+   "agree": 0.8921,
+   "refusal": 0.02,
+   "n_gen": 24.0,
+   "eos_rate": 0.0,
+   "gate_prompt": null,
+   "gate_gen": null,
+   "gate_all": null,
+   "ratio_gen": null,
+   "open_rate": null,
+   "sec_per_q": 14.29
+  },
+  "psilm": {
+   "n": 50,
+   "ce": 0.3877,
+   "agree": 0.8883,
+   "refusal": 0.02,
+   "n_gen": 24.0,
+   "eos_rate": 0.0,
+   "gate_prompt": 0.0247,
+   "gate_gen": 0.47561,
+   "gate_all": 0.20083,
+   "ratio_gen": 0.09512,
+   "open_rate": 0.0,
+   "sec_per_q": 14.95
+  },
+  "zeroed": {
+   "n": 50,
+   "ce": 0.413,
+   "agree": 0.8921,
+   "refusal": 0.02,
+   "n_gen": 24.0,
+   "eos_rate": 0.0,
+   "gate_prompt": 0.0247,
+   "gate_gen": 0.47524,
+   "gate_all": 0.20076,
+   "ratio_gen": 0.09505,
+   "open_rate": 0.0,
+   "sec_per_q": 14.85
+  },
+  "teacher_stored": {
+   "n": 50,
+   "ce": null,
+   "agree": null,
+   "refusal": 0.1,
+   "n_gen": 125.4,
+   "eos_rate": null,
+   "gate_prompt": null,
+   "gate_gen": null,
+   "gate_all": null,
+   "ratio_gen": null,
+   "open_rate": null,
+   "sec_per_q": null
+  },
+  "base_stored": {
+   "n": 50,
+   "ce": null,
+   "agree": null,
+   "refusal": 0.02,
+   "n_gen": 126.3,
+   "eos_rate": null,
+   "gate_prompt": null,
+   "gate_gen": null,
+   "gate_all": null,
+   "ratio_gen": null,
+   "open_rate": null,
+   "sec_per_q": null
+  }
+ },
+ "paired": {
+  "base->psilm": {
+   "n": 50,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 49,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "base->zeroed": {
+   "n": 50,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 49,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "base->teacher_stored": {
+   "n": 50,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 4,
+   "neither": 45,
+   "delta_refusal": 0.08,
+   "mcnemar_p": 0.125
+  },
+  "base->base_stored": {
+   "n": 50,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 49,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "psilm->zeroed": {
+   "n": 50,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 49,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "psilm->teacher_stored": {
+   "n": 50,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 4,
+   "neither": 45,
+   "delta_refusal": 0.08,
+   "mcnemar_p": 0.125
+  },
+  "psilm->base_stored": {
+   "n": 50,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 49,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "zeroed->teacher_stored": {
+   "n": 50,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 4,
+   "neither": 45,
+   "delta_refusal": 0.08,
+   "mcnemar_p": 0.125
+  },
+  "zeroed->base_stored": {
+   "n": 50,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 49,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "teacher_stored->base_stored": {
+   "n": 50,
+   "both": 1,
+   "a_only": 4,
+   "b_only": 0,
+   "neither": 45,
+   "delta_refusal": -0.08,
+   "mcnemar_p": 0.125
+  }
+ },
+ "open_thresh": 0.5,
+ "rows": "results/stage2c_qwen35_vn5/eval_helpful.jsonl",
+ "checkpoint": {
+  "step": 1000,
+  "l_fwd": 13,
+  "l_rev": 24,
+  "k_fwd": 8,
+  "m_tokens": 8,
+  "gate_bias": 0.0,
+  "inj_cap": 0.2,
+  "readout_norm": "dim",
+  "write_dims_spec": "results/value_neurons/qwen35/layer24.json:top5pct",
+  "read_dims_spec": "all"
+ },
+ "n_write_dims": 205,
+ "n_read_dims": null,
+ "table": "            arm    n       ce   agree  refusal   n_gen  eos_rate  gate_prompt  gate_gen  open_rate  ratio_gen\n-------------------------------------------------------------------------------------------------------------\n           base   50   0.4130  0.8921   0.0200    24.0     0.000            -         -          -          -\n          psilm   50   0.3877  0.8883   0.0200    24.0     0.000       0.0247    0.4756     0.0000     0.0951\n         zeroed   50   0.4130  0.8921   0.0200    24.0     0.000       0.0247    0.4752     0.0000     0.0950\n teacher_stored   50        -       -   0.1000   125.4         -            -         -          -          -\n    base_stored   50        -       -   0.0200   126.3         -            -         -          -          -"
+}

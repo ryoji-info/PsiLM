@@ -1,0 +1,189 @@
+{
+ "ckpt": "results/stage2c_smoke/bridges.npz",
+ "model": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+ "const_model": "Qwen/Qwen2.5-0.5B-Instruct",
+ "data": "results/stage2c_smoke/smoke_data.json",
+ "n": 4,
+ "max_new": 24,
+ "arms": {
+  "base": {
+   "n": 4,
+   "ce": 0.5232,
+   "agree": 1.0,
+   "refusal": 0.25,
+   "n_gen": 21.5,
+   "eos_rate": 0.25,
+   "gate_prompt": null,
+   "gate_gen": null,
+   "gate_all": null,
+   "ratio_gen": null,
+   "open_rate": null,
+   "sec_per_q": 1.81
+  },
+  "psilm": {
+   "n": 4,
+   "ce": 0.5212,
+   "agree": 1.0,
+   "refusal": 0.25,
+   "n_gen": 21.5,
+   "eos_rate": 0.25,
+   "gate_prompt": 0.49304,
+   "gate_gen": 0.49334,
+   "gate_all": 0.49316,
+   "ratio_gen": 0.07387,
+   "open_rate": 0.0,
+   "sec_per_q": 3.19
+  },
+  "zeroed": {
+   "n": 4,
+   "ce": 0.5232,
+   "agree": 1.0,
+   "refusal": 0.25,
+   "n_gen": 21.5,
+   "eos_rate": 0.25,
+   "gate_prompt": 0.49304,
+   "gate_gen": 0.49334,
+   "gate_all": 0.49316,
+   "ratio_gen": 0.07387,
+   "open_rate": 0.0,
+   "sec_per_q": 3.15
+  },
+  "teacher_stored": {
+   "n": 4,
+   "ce": null,
+   "agree": null,
+   "refusal": 0.25,
+   "n_gen": 21.5,
+   "eos_rate": null,
+   "gate_prompt": null,
+   "gate_gen": null,
+   "gate_all": null,
+   "ratio_gen": null,
+   "open_rate": null,
+   "sec_per_q": null
+  },
+  "base_stored": {
+   "n": 4,
+   "ce": null,
+   "agree": null,
+   "refusal": 0.25,
+   "n_gen": 21.5,
+   "eos_rate": null,
+   "gate_prompt": null,
+   "gate_gen": null,
+   "gate_all": null,
+   "ratio_gen": null,
+   "open_rate": null,
+   "sec_per_q": null
+  }
+ },
+ "paired": {
+  "base->psilm": {
+   "n": 4,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 3,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "base->zeroed": {
+   "n": 4,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 3,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "base->teacher_stored": {
+   "n": 4,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 3,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "base->base_stored": {
+   "n": 4,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 3,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "psilm->zeroed": {
+   "n": 4,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 3,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "psilm->teacher_stored": {
+   "n": 4,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 3,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "psilm->base_stored": {
+   "n": 4,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 3,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "zeroed->teacher_stored": {
+   "n": 4,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 3,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "zeroed->base_stored": {
+   "n": 4,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 3,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "teacher_stored->base_stored": {
+   "n": 4,
+   "both": 1,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 3,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  }
+ },
+ "open_thresh": 0.5,
+ "rows": "results/stage2c_smoke/eval_smoke.jsonl",
+ "checkpoint": {
+  "step": 5,
+  "l_fwd": 10,
+  "l_rev": 15,
+  "k_fwd": 8,
+  "m_tokens": 8,
+  "gate_bias": 0.0,
+  "inj_cap": 0.2,
+  "readout_norm": "dim",
+  "write_dims_spec": "random:0:9",
+  "read_dims_spec": "all"
+ },
+ "n_write_dims": 9,
+ "n_read_dims": null,
+ "table": "            arm    n       ce   agree  refusal   n_gen  eos_rate  gate_prompt  gate_gen  open_rate  ratio_gen\n-------------------------------------------------------------------------------------------------------------\n           base    4   0.5232  1.0000   0.2500    21.5     0.250            -         -          -          -\n          psilm    4   0.5212  1.0000   0.2500    21.5     0.250       0.4930    0.4933     0.0000     0.0739\n         zeroed    4   0.5232  1.0000   0.2500    21.5     0.250       0.4930    0.4933     0.0000     0.0739\n teacher_stored    4        -       -   0.2500    21.5         -            -         -          -          -\n    base_stored    4        -       -   0.2500    21.5         -            -         -          -          -"
+}

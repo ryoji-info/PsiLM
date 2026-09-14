@@ -1,0 +1,189 @@
+{
+ "ckpt": "results/stage2c_qwen0.5b_vn/bridges.npz",
+ "model": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+ "const_model": "results/constitution_model/qwen2.5-0.5b-constitution",
+ "data": "data/constitution_test_qwen0.5b.json",
+ "n": 100,
+ "max_new": 32,
+ "arms": {
+  "base": {
+   "n": 100,
+   "ce": 0.9431,
+   "agree": 0.7804,
+   "refusal": 0.34,
+   "n_gen": 30.9,
+   "eos_rate": 0.1,
+   "gate_prompt": null,
+   "gate_gen": null,
+   "gate_all": null,
+   "ratio_gen": null,
+   "open_rate": null,
+   "sec_per_q": 1.01
+  },
+  "psilm": {
+   "n": 100,
+   "ce": 0.9249,
+   "agree": 0.783,
+   "refusal": 0.35,
+   "n_gen": 31.1,
+   "eos_rate": 0.08,
+   "gate_prompt": 0.03276,
+   "gate_gen": 0.50262,
+   "gate_all": 0.2536,
+   "ratio_gen": 0.10052,
+   "open_rate": 0.0,
+   "sec_per_q": 1.81
+  },
+  "zeroed": {
+   "n": 100,
+   "ce": 0.9431,
+   "agree": 0.7804,
+   "refusal": 0.34,
+   "n_gen": 30.9,
+   "eos_rate": 0.1,
+   "gate_prompt": 0.03276,
+   "gate_gen": 0.50365,
+   "gate_all": 0.25296,
+   "ratio_gen": 0.10073,
+   "open_rate": 0.0,
+   "sec_per_q": 1.74
+  },
+  "teacher_stored": {
+   "n": 100,
+   "ce": null,
+   "agree": null,
+   "refusal": 0.41,
+   "n_gen": 57.2,
+   "eos_rate": null,
+   "gate_prompt": null,
+   "gate_gen": null,
+   "gate_all": null,
+   "ratio_gen": null,
+   "open_rate": null,
+   "sec_per_q": null
+  },
+  "base_stored": {
+   "n": 100,
+   "ce": null,
+   "agree": null,
+   "refusal": 0.38,
+   "n_gen": 112.0,
+   "eos_rate": null,
+   "gate_prompt": null,
+   "gate_gen": null,
+   "gate_all": null,
+   "ratio_gen": null,
+   "open_rate": null,
+   "sec_per_q": null
+  }
+ },
+ "paired": {
+  "base->psilm": {
+   "n": 100,
+   "both": 33,
+   "a_only": 1,
+   "b_only": 2,
+   "neither": 64,
+   "delta_refusal": 0.01,
+   "mcnemar_p": 1.0
+  },
+  "base->zeroed": {
+   "n": 100,
+   "both": 34,
+   "a_only": 0,
+   "b_only": 0,
+   "neither": 66,
+   "delta_refusal": 0.0,
+   "mcnemar_p": 1.0
+  },
+  "base->teacher_stored": {
+   "n": 100,
+   "both": 21,
+   "a_only": 13,
+   "b_only": 20,
+   "neither": 46,
+   "delta_refusal": 0.07,
+   "mcnemar_p": 0.2962
+  },
+  "base->base_stored": {
+   "n": 100,
+   "both": 33,
+   "a_only": 1,
+   "b_only": 5,
+   "neither": 61,
+   "delta_refusal": 0.04,
+   "mcnemar_p": 0.2188
+  },
+  "psilm->zeroed": {
+   "n": 100,
+   "both": 33,
+   "a_only": 2,
+   "b_only": 1,
+   "neither": 64,
+   "delta_refusal": -0.01,
+   "mcnemar_p": 1.0
+  },
+  "psilm->teacher_stored": {
+   "n": 100,
+   "both": 22,
+   "a_only": 13,
+   "b_only": 19,
+   "neither": 46,
+   "delta_refusal": 0.06,
+   "mcnemar_p": 0.3771
+  },
+  "psilm->base_stored": {
+   "n": 100,
+   "both": 33,
+   "a_only": 2,
+   "b_only": 5,
+   "neither": 60,
+   "delta_refusal": 0.03,
+   "mcnemar_p": 0.4531
+  },
+  "zeroed->teacher_stored": {
+   "n": 100,
+   "both": 21,
+   "a_only": 13,
+   "b_only": 20,
+   "neither": 46,
+   "delta_refusal": 0.07,
+   "mcnemar_p": 0.2962
+  },
+  "zeroed->base_stored": {
+   "n": 100,
+   "both": 33,
+   "a_only": 1,
+   "b_only": 5,
+   "neither": 61,
+   "delta_refusal": 0.04,
+   "mcnemar_p": 0.2188
+  },
+  "teacher_stored->base_stored": {
+   "n": 100,
+   "both": 24,
+   "a_only": 17,
+   "b_only": 14,
+   "neither": 45,
+   "delta_refusal": -0.03,
+   "mcnemar_p": 0.7201
+  }
+ },
+ "open_thresh": 0.5,
+ "rows": "results/stage2c_qwen0.5b_vn/eval_test.jsonl",
+ "checkpoint": {
+  "step": 2000,
+  "l_fwd": 10,
+  "l_rev": 16,
+  "k_fwd": 8,
+  "m_tokens": 8,
+  "gate_bias": 0.0,
+  "inj_cap": 0.2,
+  "readout_norm": "dim",
+  "write_dims_spec": "results/value_neurons/qwen0.5b/layer16.json",
+  "read_dims_spec": "all"
+ },
+ "n_write_dims": 9,
+ "n_read_dims": null,
+ "table": "            arm    n       ce   agree  refusal   n_gen  eos_rate  gate_prompt  gate_gen  open_rate  ratio_gen\n-------------------------------------------------------------------------------------------------------------\n           base  100   0.9431  0.7804   0.3400    30.9     0.100            -         -          -          -\n          psilm  100   0.9249  0.7830   0.3500    31.1     0.080       0.0328    0.5026     0.0000     0.1005\n         zeroed  100   0.9431  0.7804   0.3400    30.9     0.100       0.0328    0.5037     0.0000     0.1007\n teacher_stored  100        -       -   0.4100    57.2         -            -         -          -          -\n    base_stored  100        -       -   0.3800   112.0         -            -         -          -          -"
+}
