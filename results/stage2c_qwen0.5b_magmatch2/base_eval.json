@@ -1,0 +1,10 @@
+{
+ "constitution_val_qwen0.5b.json|48|mlx-community/Qwen2.5-0.5B-Instruct-4bit": {
+  "n": 48,
+  "ce": 0.9772,
+  "agree": 0.7747,
+  "gate_prompt": null,
+  "gate_cont": null,
+  "ratio_cont": null
+ }
+}

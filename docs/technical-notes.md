@@ -1023,18 +1023,41 @@ RMS, it reaches 0.929 on the same held-out hundred against the value neurons'
 | value neurons vs magnitude-matched | −0.0045 | [−0.0072, −0.0016] |
 | magnitude-matched vs nine random | −0.0112 | [−0.0130, −0.0095] |
 
-So activation magnitude accounts for about three quarters of what the
-value-neuron write buys, dimension identity for the remaining quarter, and that
-last quarter is not noise: the interval excludes zero and 71 of the 100 items
-move toward the teacher under the value-neuron write. The honest reading of the
-whole design, then, is that coupling into the value neurons works partly for the
-reason the paper suggests and mostly because those coordinates are the ones the
-stream actually carries weight in — and that the original random-dimension
-control, which the physics campaigns would have accepted, was far too weak to
-show it. One caveat stands: this bridge-level comparison rests on a single
-matched draw where the ablation used three, and the ablation's draws spread from
-6% to 26%. Two further matched draws are queued behind the 9B stage
-(`results/constitution/magmatch_more_qwen0.5b.sh`). Third, the value-neuron write is *narrow* at this width:
+That single draw put magnitude at about three quarters of what the value-neuron
+write buys and dimension identity at the remaining quarter. **Two further matched
+draws, run on 2026-09-15, revise that split** — and the caveat was worth having,
+because the first draw turned out to be the one most favourable to the magnitude
+explanation:
+
+| held-out test CE, n = 100 | CE | Δ vs base | share of the value-neuron gain |
+|---|---:|---:|---:|
+| base | 0.9431 | — | — |
+| nine value neurons | 0.9249 | −0.0182 | 100% |
+| magnitude-matched draw 0 | 0.9294 | −0.0137 | 75.3% |
+| magnitude-matched draw 1 | 0.9312 | −0.0119 | 65.4% |
+| magnitude-matched draw 2 | 0.9344 | −0.0087 | 47.8% |
+| **matched mean** | **0.9317** | **−0.0114** | **62.8%** |
+| nine random dims | 0.9406 | −0.0025 | 13.7% |
+
+(draw 0 from `results/constitution/magmatch_qwen0.5b.sh`, draws 1 and 2 from
+`results/constitution/magmatch_more_qwen0.5b.sh`; all three are the same recipe
+on `magmatch{0,1,2}_layer16.json`, differing only in which nine RMS-matched
+coordinates they write into.)
+
+So across three draws activation magnitude accounts for about **63%** of the gain
+and dimension identity for about **37%**, not the 75/25 one draw suggested; the
+across-draw standard deviation is 0.0025, comparable to the identity term itself.
+What the extra draws strengthen is the *sign*: all three matched draws are worse
+than the value neurons, by 0.0045, 0.0063 and 0.0095, so identity contributes
+reliably even though its size is only known to within a factor of about two.
+Paired bootstrap intervals were computed for draw 0 only (the table above), and
+71 of its 100 items move toward the teacher under the value-neuron write.
+
+The honest reading of the whole design, then, is that coupling into the value
+neurons works partly for the reason the paper suggests and substantially because
+those coordinates are the ones the stream actually carries weight in — and that
+the original random-dimension control, which the physics campaigns would have
+accepted, was far too weak to show either. Third, the value-neuron write is *narrow* at this width:
 training CE on the teacher tokens equals held-out CE in every variant (no
 overfitting), so the plateau at 0.96 is capacity — nine coordinates of 896
 cannot hold what the constitution model has to say about a prompt, and the
