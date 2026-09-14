@@ -1,0 +1,46 @@
+{
+ "tag": "smoke",
+ "n_trajectories": 4,
+ "layers": {
+  "8": {
+   "auc_full": null,
+   "auc_99": null,
+   "random99_mean": null,
+   "sec_per_epoch": 0.009,
+   "sec_layer": 0.2
+  },
+  "15": {
+   "auc_full": null,
+   "auc_99": null,
+   "random99_mean": null,
+   "sec_per_epoch": 0.009,
+   "sec_layer": 0.2
+  }
+ },
+ "args": {
+  "tag": "smoke",
+  "out_root": "results/value_neurons",
+  "layers": "8,15",
+  "candidate_rev": "15",
+  "epochs": 2,
+  "batch": 4,
+  "lr": 0.0001,
+  "wd": 0.01,
+  "gamma": 0.99999,
+  "seed": 0,
+  "ratios": "0,0.5,0.8,0.9,0.95,0.98,0.99",
+  "random_seeds": 3,
+  "td_grad": "semi",
+  "standardize": "zscore",
+  "max_n": 0,
+  "verbose": false,
+  "self_test": false,
+  "self_test_n": 240,
+  "self_test_scaled": false
+ },
+ "candidate_rev": [
+  15
+ ],
+ "chosen_layer": null,
+ "chosen_auc_99": null
+}

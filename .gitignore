@@ -54,3 +54,14 @@ results/bench/*_dryrun.json
 build.log
 # staging copies of the banner tracked once in assets/
 results/hf_export/**/psilm-banner.png
+
+# the constitution partner model: a full fine-tune of Qwen2.5-0.5B-Instruct,
+# reproducible from data/constitution/ + eval/build_constitution_corpus.py. Its
+# weights are already covered by *.safetensors, but the directory also carries an
+# 11 MB copy of Qwen's tokenizer, and no model directory has ever been tracked.
+results/constitution_model/
+
+# build_constitution_data.py's resumable work files, one JSON line per prompt.
+# The record is data/constitution_{train,val,test,helpful_test}_<tag>.json, which
+# holds the same items; these exist only so an interrupted build can resume.
+results/constitution/*.jsonl

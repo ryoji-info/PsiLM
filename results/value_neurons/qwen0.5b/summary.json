@@ -1,0 +1,108 @@
+{
+ "tag": "qwen0.5b",
+ "n_trajectories": 1000,
+ "layers": {
+  "4": {
+   "auc_full": 0.6331623931623932,
+   "auc_99": 0.6364672364672365,
+   "random99_mean": 0.5108,
+   "sec_per_epoch": 0.722,
+   "sec_layer": 95.3
+  },
+  "6": {
+   "auc_full": 0.6329344729344729,
+   "auc_99": 0.5667236467236467,
+   "random99_mean": 0.4387,
+   "sec_per_epoch": 0.713,
+   "sec_layer": 95.7
+  },
+  "8": {
+   "auc_full": 0.6323646723646724,
+   "auc_99": 0.476011396011396,
+   "random99_mean": 0.5245,
+   "sec_per_epoch": 0.716,
+   "sec_layer": 95.1
+  },
+  "10": {
+   "auc_full": 0.612991452991453,
+   "auc_99": 0.6317948717948718,
+   "random99_mean": 0.5073,
+   "sec_per_epoch": 0.719,
+   "sec_layer": 95.2
+  },
+  "12": {
+   "auc_full": 0.6629059829059829,
+   "auc_99": 0.569002849002849,
+   "random99_mean": 0.5332,
+   "sec_per_epoch": 0.714,
+   "sec_layer": 95.0
+  },
+  "14": {
+   "auc_full": 0.70005698005698,
+   "auc_99": 0.5261538461538462,
+   "random99_mean": 0.4299,
+   "sec_per_epoch": 0.712,
+   "sec_layer": 94.9
+  },
+  "15": {
+   "auc_full": 0.6705413105413105,
+   "auc_99": 0.5931623931623932,
+   "random99_mean": 0.5208,
+   "sec_per_epoch": 0.711,
+   "sec_layer": 94.9
+  },
+  "16": {
+   "auc_full": 0.6736182336182336,
+   "auc_99": 0.6276923076923077,
+   "random99_mean": 0.5169,
+   "sec_per_epoch": 0.714,
+   "sec_layer": 97.2
+  },
+  "18": {
+   "auc_full": 0.6898005698005698,
+   "auc_99": 0.6134472934472934,
+   "random99_mean": 0.5428,
+   "sec_per_epoch": 0.71,
+   "sec_layer": 95.0
+  },
+  "20": {
+   "auc_full": 0.6651851851851852,
+   "auc_99": 0.5693447293447294,
+   "random99_mean": 0.5616,
+   "sec_per_epoch": 0.747,
+   "sec_layer": 96.0
+  }
+ },
+ "args": {
+  "tag": "qwen0.5b",
+  "out_root": "results/value_neurons",
+  "layers": "4,6,8,10,12,14,15,16,18,20",
+  "candidate_rev": "14,15,16,18,20",
+  "epochs": 30,
+  "batch": 4,
+  "lr": 0.0001,
+  "wd": 0.01,
+  "gamma": 0.99999,
+  "seed": 0,
+  "ratios": "0,0.5,0.8,0.9,0.95,0.98,0.99",
+  "random_seeds": 3,
+  "td_grad": "semi",
+  "target": "mc",
+  "resume": true,
+  "standardize": "zscore",
+  "max_n": 0,
+  "verbose": false,
+  "self_test": false,
+  "self_test_n": 240,
+  "self_test_scaled": false
+ },
+ "candidate_rev": [
+  14,
+  15,
+  16,
+  18,
+  20
+ ],
+ "chosen_layer": 16,
+ "chosen_auc_99": 0.6276923076923077
+}

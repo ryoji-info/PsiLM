@@ -1,0 +1,85 @@
+{
+ "tag": "qwen35",
+ "n_trajectories": 800,
+ "layers": {
+  "13": {
+   "auc_full": 0.7933817594834544,
+   "auc_99": 0.7621065375302664,
+   "random99_mean": 0.6127,
+   "sec_per_epoch": 2.295,
+   "sec_layer": 176.0
+  },
+  "20": {
+   "auc_full": 0.8373688458434221,
+   "auc_99": 0.7661420500403551,
+   "random99_mean": 0.6583,
+   "sec_per_epoch": 2.272,
+   "sec_layer": 175.1
+  },
+  "22": {
+   "auc_full": 0.8204196933010492,
+   "auc_99": 0.7764326069410815,
+   "random99_mean": 0.7571,
+   "sec_per_epoch": 2.264,
+   "sec_layer": 174.7
+  },
+  "24": {
+   "auc_full": 0.8206214689265536,
+   "auc_99": 0.7879338175948345,
+   "random99_mean": 0.7115,
+   "sec_per_epoch": 2.265,
+   "sec_layer": 174.7
+  },
+  "26": {
+   "auc_full": 0.83272800645682,
+   "auc_99": 0.7437449556093624,
+   "random99_mean": 0.7383,
+   "sec_per_epoch": 2.263,
+   "sec_layer": 174.8
+  },
+  "28": {
+   "auc_full": 0.8184019370460048,
+   "auc_99": 0.7493946731234867,
+   "random99_mean": 0.7351,
+   "sec_per_epoch": 2.26,
+   "sec_layer": 174.7
+  },
+  "30": {
+   "auc_full": 0.8323244552058111,
+   "auc_99": 0.738498789346247,
+   "random99_mean": 0.7397,
+   "sec_per_epoch": 2.247,
+   "sec_layer": 174.3
+  }
+ },
+ "args": {
+  "tag": "qwen35",
+  "out_root": "results/value_neurons",
+  "layers": "13,20,22,24,26,28,30",
+  "candidate_rev": "24,26,28",
+  "epochs": 30,
+  "batch": 4,
+  "lr": 0.0001,
+  "wd": 0.01,
+  "gamma": 0.99999,
+  "seed": 0,
+  "ratios": "0,0.5,0.8,0.9,0.95,0.98,0.99",
+  "random_seeds": 3,
+  "td_grad": "semi",
+  "target": "mc",
+  "resume": true,
+  "standardize": "zscore",
+  "max_n": 0,
+  "verbose": false,
+  "self_test": false,
+  "self_test_n": 240,
+  "self_test_scaled": false
+ },
+ "candidate_rev": [
+  24,
+  26,
+  28
+ ],
+ "chosen_layer": 24,
+ "chosen_auc_99": 0.7879338175948345
+}
