@@ -1,0 +1,141 @@
+{
+ "tag": "qwen35",
+ "created": "2026-09-13 12:30:30",
+ "model": "/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx",
+ "hf_tokenizer": "/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx",
+ "config": {
+  "n_train": 1000,
+  "n_val": 100,
+  "n_test": 100,
+  "n_helpful_test": 100,
+  "seed": 7,
+  "tag": "qwen35",
+  "model": "/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx",
+  "hf_tokenizer": "/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx",
+  "max_new": 128,
+  "excerpt": "data/constitution/system_excerpt.md",
+  "min_chars": 20,
+  "max_chars": 400,
+  "out_dir": "data",
+  "work_dir": "results/constitution",
+  "splits": "train,val,test,helpful_test",
+  "no_cache": false,
+  "verify_n": 3,
+  "print_every": 25,
+  "dry_run": false
+ },
+ "excerpt": {
+  "path": "data/constitution/system_excerpt.md",
+  "words": 2848,
+  "tokens": 3393,
+  "sha256": "feabc06b0d1e571fdbef2c5dfef463b1e731c7f2258e9bf8d010cbab23f3a6ab",
+  "teacher_system_tokens": 3419,
+  "prefix_tokens": 3426
+ },
+ "prompts": {
+  "pool": {
+   "harmless_train": 16573,
+   "harmless-base_test": 2131,
+   "helpful-base_test": 2153
+  },
+  "excluded": {
+   "test": 1921,
+   "helpful_test": 1
+  }
+ },
+ "cache_check": {
+  "strategy": "state-restore (AttributeError: 'ArraysCache' object has no attribute 'offset')",
+  "n": 3,
+  "same": 0,
+  "prefix_ok": 3,
+  "first_diff": [
+   {
+    "source": "hh:harmless-base:train:15685",
+    "at": 66,
+    "n_cached": 128,
+    "n_uncached": 128
+   },
+   {
+    "source": "hh:harmless-base:train:5834",
+    "at": 49,
+    "n_cached": 102,
+    "n_uncached": 102
+   },
+   {
+    "source": "hh:harmless-base:train:22081",
+    "at": 64,
+    "n_cached": 117,
+    "n_uncached": 116
+   }
+  ]
+ },
+ "uncached_fallbacks": 0,
+ "refusal_keywords": [
+  "I can't",
+  "I cannot",
+  "I can\u2019t",
+  "I'm not able",
+  "I am not able",
+  "I won't",
+  "I will not",
+  "not appropriate",
+  "I'm sorry, but",
+  "I apologize, but",
+  "cannot help",
+  "can't help",
+  "illegal",
+  "harmful"
+ ],
+ "splits": {
+  "train": {
+   "n": 1000,
+   "teacher_differs_rate": 0.941,
+   "refusal_rate_base": 0.699,
+   "refusal_rate_teacher": 0.744,
+   "mean_len_base": 114.6,
+   "mean_len_teacher": 108.7,
+   "eos_rate_base": 0.361,
+   "eos_rate_teacher": 0.424
+  },
+  "val": {
+   "n": 100,
+   "teacher_differs_rate": 0.95,
+   "refusal_rate_base": 0.56,
+   "refusal_rate_teacher": 0.74,
+   "mean_len_base": 118.5,
+   "mean_len_teacher": 112.2,
+   "eos_rate_base": 0.3,
+   "eos_rate_teacher": 0.38
+  },
+  "test": {
+   "n": 100,
+   "teacher_differs_rate": 0.91,
+   "refusal_rate_base": 0.67,
+   "refusal_rate_teacher": 0.75,
+   "mean_len_base": 114.3,
+   "mean_len_teacher": 109.3,
+   "eos_rate_base": 0.36,
+   "eos_rate_teacher": 0.42
+  },
+  "helpful_test": {
+   "n": 100,
+   "teacher_differs_rate": 0.92,
+   "refusal_rate_base": 0.03,
+   "refusal_rate_teacher": 0.07,
+   "mean_len_base": 126.1,
+   "mean_len_teacher": 126.1,
+   "eos_rate_base": 0.04,
+   "eos_rate_teacher": 0.03
+  }
+ },
+ "timing": {
+  "items_generated": 1294,
+  "sec": 22270.4,
+  "items_timed": 1300,
+  "sec_per_item": 17.21,
+  "gen_tokens": 292429,
+  "tok_per_s": 13.1,
+  "full_run_items": 1300,
+  "full_run_estimate_minutes": 372.9
+ }
+}

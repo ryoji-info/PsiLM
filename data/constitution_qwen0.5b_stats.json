@@ -1,0 +1,122 @@
+{
+ "tag": "qwen0.5b",
+ "created": "2026-09-12 08:28:57",
+ "model": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+ "hf_tokenizer": "Qwen/Qwen2.5-0.5B-Instruct",
+ "config": {
+  "n_train": 2000,
+  "n_val": 200,
+  "n_test": 100,
+  "n_helpful_test": 100,
+  "seed": 7,
+  "tag": "qwen0.5b",
+  "model": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+  "hf_tokenizer": "Qwen/Qwen2.5-0.5B-Instruct",
+  "max_new": 160,
+  "excerpt": "data/constitution/system_excerpt.md",
+  "min_chars": 20,
+  "max_chars": 400,
+  "out_dir": "data",
+  "work_dir": "results/constitution",
+  "splits": "train,val,test,helpful_test",
+  "no_cache": false,
+  "verify_n": 3,
+  "print_every": 50,
+  "dry_run": false
+ },
+ "excerpt": {
+  "path": "data/constitution/system_excerpt.md",
+  "words": 2848,
+  "tokens": 3358,
+  "sha256": "feabc06b0d1e571fdbef2c5dfef463b1e731c7f2258e9bf8d010cbab23f3a6ab",
+  "teacher_system_tokens": 3383,
+  "prefix_tokens": 3391
+ },
+ "prompts": {
+  "pool": {
+   "harmless_train": 16573,
+   "harmless-base_test": 2131,
+   "helpful-base_test": 2153
+  },
+  "excluded": {
+   "test": 1921,
+   "helpful_test": 1
+  }
+ },
+ "cache_check": {
+  "strategy": "deepcopy",
+  "n": 3,
+  "same": 3,
+  "prefix_ok": 3,
+  "first_diff": []
+ },
+ "uncached_fallbacks": 0,
+ "refusal_keywords": [
+  "I can't",
+  "I cannot",
+  "I can\u2019t",
+  "I'm not able",
+  "I am not able",
+  "I won't",
+  "I will not",
+  "not appropriate",
+  "I'm sorry, but",
+  "I apologize, but",
+  "cannot help",
+  "can't help",
+  "illegal",
+  "harmful"
+ ],
+ "splits": {
+  "train": {
+   "n": 2000,
+   "teacher_differs_rate": 0.9745,
+   "refusal_rate_base": 0.3795,
+   "refusal_rate_teacher": 0.433,
+   "mean_len_base": 114.1,
+   "mean_len_teacher": 61.8,
+   "eos_rate_base": 0.5365,
+   "eos_rate_teacher": 0.7845
+  },
+  "val": {
+   "n": 200,
+   "teacher_differs_rate": 0.985,
+   "refusal_rate_base": 0.31,
+   "refusal_rate_teacher": 0.49,
+   "mean_len_base": 117.9,
+   "mean_len_teacher": 58.0,
+   "eos_rate_base": 0.525,
+   "eos_rate_teacher": 0.805
+  },
+  "test": {
+   "n": 100,
+   "teacher_differs_rate": 0.99,
+   "refusal_rate_base": 0.38,
+   "refusal_rate_teacher": 0.41,
+   "mean_len_base": 112.0,
+   "mean_len_teacher": 57.2,
+   "eos_rate_base": 0.55,
+   "eos_rate_teacher": 0.84
+  },
+  "helpful_test": {
+   "n": 100,
+   "teacher_differs_rate": 0.93,
+   "refusal_rate_base": 0.04,
+   "refusal_rate_teacher": 0.12,
+   "mean_len_base": 143.6,
+   "mean_len_teacher": 115.9,
+   "eos_rate_base": 0.25,
+   "eos_rate_teacher": 0.48
+  }
+ },
+ "timing": {
+  "items_generated": 431,
+  "sec": 632.4,
+  "items_timed": 2200,
+  "sec_per_item": 2.12,
+  "gen_tokens": 74622,
+  "tok_per_s": 118.0,
+  "full_run_items": 2400,
+  "full_run_estimate_minutes": 84.8
+ }
+}

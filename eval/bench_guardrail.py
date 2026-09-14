@@ -24,6 +24,15 @@ Datasets (one report, one table):
     mmlu     cais/mmlu, fixed 5-subject slice, N total  "Answer: <letter>"
     physics  data/stage2_qa_val.json, first N           trained reply (acc@0.05)
              (base arm uses the stage2_eval nudge protocol by default)
+    redteam  data/constitution_test_<tag>.json, first N  free-form, no gold
+             (refusal-keyword rate + KL to base; acc is 0 by construction)
+
+--bridge-kind selects what hangs off the two pause points. 'physics' is the
+original: forward bridge -> FNO -> reverse bridge, the arm names and every
+number unchanged. 'constitution' loads psilm/mlx/constitution.py's coupler
+instead (a frozen constitution model, writing into value neurons) and takes
+l_fwd/l_rev from its checkpoint meta; it cannot run the physics dataset, which
+needs x0 spans and an FNO.
 
 Usage
   # prompts only, no model weights (safe while the GPU is busy):
@@ -32,6 +41,10 @@ Usage
   python eval/bench_guardrail.py --tag x --self-test
   # real run (loads the 4-bit backbone; resumable):
   python eval/bench_guardrail.py --tag v5_8b --l-rev 27 [--resume]
+  # the constitution bridges on the red-team prompts:
+  python eval/bench_guardrail.py --tag const_0.5b --bridge-kind constitution \
+      --ckpt results/constitution/bridges.npz --const-model <path> \
+      --datasets redteam --redteam-data data/constitution_test_qwen0.5b.json
 
 Outputs
   results/bench/<tag>_guardrail.json          summary + gate table + rows
@@ -48,9 +61,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from eval.bench_common import (  # noqa: E402
     ARMS, load_boolq, arm_spec, tasks_to_json, tasks_from_json, DEFAULT_CKPT, DEFAULT_FNO, DEFAULT_HF_TOKENIZER, DEFAULT_MODEL, MMLU_SUBJECTS,
-    PHYSICS_DATA, StagedDecoder, Task, append_jsonl, build_tasks, eos_id_set, estimate_budget,
-    format_table, load_backbone, load_gsm8k, load_mmlu, load_physics, load_physics_stack,
-    parse_letter, parse_number, read_jsonl, score, sigma_stats, summarize, task_manifest,
+    PHYSICS_DATA, REDTEAM_DATA, StagedDecoder, Task, append_jsonl, build_tasks, eos_id_set, estimate_budget,
+    format_table, is_refusal, load_backbone, load_gsm8k, load_mmlu, load_physics, load_physics_stack,
+    load_redteam, parse_letter, parse_number, read_jsonl, score, sigma_stats, summarize,
+    task_manifest,
 )
 
 
@@ -61,6 +75,12 @@ def parse_args():
     ap.add_argument("--hf-tokenizer", default=DEFAULT_HF_TOKENIZER)
     ap.add_argument("--ckpt", default=DEFAULT_CKPT, help="bridges .npz (with .meta beside it)")
     ap.add_argument("--fno", default=DEFAULT_FNO)
+    ap.add_argument("--bridge-kind", default="physics", choices=["physics", "constitution"],
+                    help="what sits between the two pause points: the physics pair "
+                         "(FNO + physics bridges, the original) or the constitution coupler")
+    ap.add_argument("--const-model", default=None,
+                    help="--bridge-kind constitution: path of the frozen constitution model; "
+                         "None lets load_constitution_stack use the one its checkpoint records")
     ap.add_argument("--l-fwd", type=int, default=None)
     ap.add_argument("--l-rev", type=int, default=None,
                     help="MUST match training (8B v5 used 27); default = PsiLMMLX rule")
@@ -72,6 +92,9 @@ def parse_args():
     ap.add_argument("--arms", default=",".join(ARMS))
     ap.add_argument("--mmlu-subjects", default=",".join(MMLU_SUBJECTS))
     ap.add_argument("--physics-data", default=PHYSICS_DATA)
+    ap.add_argument("--redteam-data", default=REDTEAM_DATA,
+                    help="held-out split written by eval/build_constitution_data.py; only its "
+                         "prompts are read (the recorded continuations are training material)")
     ap.add_argument("--physics-base-protocol", default="nudge", choices=["nudge", "trained"],
                     help="base arm on physics: stage2_eval nudge (+160 tok budget) or the trained prompt")
     ap.add_argument("--nonphys-span", default="whole", choices=["whole", "learned"],
@@ -80,6 +103,7 @@ def parse_args():
     ap.add_argument("--max-new-gsm8k", type=int, default=384)
     ap.add_argument("--max-new-mmlu", type=int, default=24)
     ap.add_argument("--max-new-boolq", type=int, default=16)
+    ap.add_argument("--max-new-redteam", type=int, default=128)
     ap.add_argument("--tasks-cache", default=None,
                     help="build the task set once into this JSON and restore it on later runs, "
                          "so the process that loads the backbone never imports `datasets` "
@@ -148,13 +172,20 @@ def build_all(args, hf_tok):
 
 
 def cache_key(args) -> str:
-    """Everything that changes the prompts (not the arms or the decoding)."""
-    return "|".join(str(v) for v in [args.datasets, args.n, args.seed, args.mmlu_subjects,
-                                     args.physics_data, args.physics_base_protocol,
-                                     args.nonphys_span, args.gsm8k_nudge, args.max_new_gsm8k,
-                                     args.max_new_mmlu, args.max_new_physics,
-                                     args.max_new_boolq, args.max_new_physics_base,
-                                     args.hf_tokenizer])
+    """Everything that changes the prompts (not the arms or the decoding).
+
+    The redteam fields are appended only when that dataset is in the run, so the
+    key of every earlier run -- and the caches already on disk under
+    results/bench/tasks_*.json -- is byte-identical to what it was."""
+    fields = [args.datasets, args.n, args.seed, args.mmlu_subjects,
+              args.physics_data, args.physics_base_protocol,
+              args.nonphys_span, args.gsm8k_nudge, args.max_new_gsm8k,
+              args.max_new_mmlu, args.max_new_physics,
+              args.max_new_boolq, args.max_new_physics_base,
+              args.hf_tokenizer]
+    if "redteam" in args.datasets.split(","):
+        fields += [args.redteam_data, args.max_new_redteam]
+    return "|".join(str(v) for v in fields)
 
 
 def build_all_fresh(args, hf_tok):
@@ -175,6 +206,10 @@ def build_all_fresh(args, hf_tok):
         elif ds == "boolq":
             recs = load_boolq(args.n, args.seed)
             tasks += build_tasks("boolq", recs, hf_tok, args.max_new_boolq,
+                                 nonphys_span=args.nonphys_span)
+        elif ds == "redteam":
+            recs = load_redteam(args.n, args.redteam_data)
+            tasks += build_tasks("redteam", recs, hf_tok, args.max_new_redteam,
                                  nonphys_span=args.nonphys_span)
         elif ds == "physics":
             recs = load_physics(args.n, args.physics_data)
@@ -248,6 +283,11 @@ def make_row(t: Task, arm: str, prompt, res, pred, ok, args):
            "text": res.text[-args.text_chars:], "text_truncated": len(res.text) > args.text_chars,
            "sigma": sigma_stats(res.sigma_prompt, res.sigma_gen) if arm != "base" else None,
            "diag": res.diag, "meta": {k: v for k, v in t.meta.items() if k != "item"}}
+    if prompt.protocol == "freeform":
+        # no gold to score: what this row reports is whether the reply carries
+        # refusal language (bench_common.is_refusal, the same heuristic the data
+        # build applied to the teacher and base continuations)
+        row["meta"]["refusal"] = bool(is_refusal(res.text))
     if t.dataset == "physics":
         row["meta"]["item"] = t.meta["item"]
         row["x0_span"] = prompt.x0_span
@@ -279,6 +319,13 @@ def coupling_from_log(ckpt: str):
         return None
     hits = re.findall(r"coupling (\d+)/(\d+) of (\d+)", log.read_text())
     return tuple(int(v) for v in hits[-1]) if hits else None
+
+
+def no_physics_message() -> str:
+    return ("--bridge-kind constitution cannot run the physics dataset: those prompts carry "
+            "an x0 span and are scored against an FNO solution, neither of which the "
+            "constitution coupler has. Drop 'physics' from --datasets (redteam, gsm8k, mmlu, "
+            "boolq all work), or run the physics guard-rail with --bridge-kind physics.")
 
 
 def resolve_coupling(args, n_layers: int):
@@ -314,14 +361,31 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
     if rows:
         print(f"[resume] {len(rows)} rows already done", flush=True)
 
+    if args.bridge_kind == "constitution" and "physics" in datasets:
+        raise SystemExit(no_physics_message())
     t0 = time.time()
     model, tok, _ = load_backbone(args.model, args.hf_tokenizer)
     d_model = model.args.hidden_size
-    fno, bridges, meta = load_physics_stack(args.ckpt, d_model, args.gate_bias, args.fno)
-    l_fwd, l_rev = resolve_coupling(args, len(model.model.layers))
-    dec = StagedDecoder(model, hf_tok, fno, bridges, l_fwd, l_rev,
-                        eos_ids=eos_id_set(hf_tok, tok))
-    info = {"model": args.model, "ckpt": args.ckpt, "ckpt_step": meta.get("step"),
+    if args.bridge_kind == "constitution":
+        # imported here, not at module scope: the physics path must keep working
+        # while psilm/mlx/constitution.py is still being written
+        from psilm.mlx.constitution import ConstitutionCoupler, load_constitution_stack
+        bridges, const_model, meta = load_constitution_stack(args.ckpt, args.const_model)
+        coupler = ConstitutionCoupler(bridges, const_model)
+        l_fwd = args.l_fwd if args.l_fwd is not None else int(meta["l_fwd"])
+        l_rev = args.l_rev if args.l_rev is not None else int(meta["l_rev"])
+        print(f"[couple] constitution bridges, l_fwd={l_fwd} l_rev={l_rev} "
+              f"n_layers={len(model.model.layers)} (meta {meta.get('l_fwd')}/{meta.get('l_rev')})",
+              flush=True)
+        dec = StagedDecoder(model, hf_tok, None, None, l_fwd, l_rev,
+                            eos_ids=eos_id_set(hf_tok, tok), coupler=coupler)
+    else:
+        fno, bridges, meta = load_physics_stack(args.ckpt, d_model, args.gate_bias, args.fno)
+        l_fwd, l_rev = resolve_coupling(args, len(model.model.layers))
+        dec = StagedDecoder(model, hf_tok, fno, bridges, l_fwd, l_rev,
+                            eos_ids=eos_id_set(hf_tok, tok))
+    info = {"model": args.model, "bridge_kind": args.bridge_kind,
+            "ckpt": args.ckpt, "ckpt_step": meta.get("step"),
             "ckpt_model": meta.get("model"), "couple": [dec.l_fwd, dec.l_rev, dec.n_layers],
             "d_model": d_model, "eos_ids": sorted(dec.eos_ids), "load_sec": round(time.time() - t0, 1),
             "selection": {ds: [t.qid for t in tasks if t.dataset == ds] for ds in datasets},
@@ -525,6 +589,83 @@ def self_test():
     assert score("number", "Answer: 18.00", 18.0) == (18.0, True)
     assert score("letter", "The answer is option C.", "C") == ("C", True)
     print("[self-test] parsers OK")
+
+    # 5. the optional coupler at the same two pause points.
+    #    _PassThrough delegates to the physics methods, so a coupled decoder has
+    #    to reproduce the physics decoder bit for bit: that isolates the dispatch
+    #    from the partner. _FakeCoupler then stands in for
+    #    psilm.mlx.constitution.ConstitutionCoupler -- its own tokens, no FNO and
+    #    no x0 -- which is the shape the real coupler has to satisfy.
+    class _PassThrough:
+        def __init__(self, d):
+            self.d, self.calls = d, {"tokens": 0, "inject": 0}
+
+        def tokens(self, h_prompt, x0_span=None, sub_value=None):
+            self.calls["tokens"] += 1
+            return self.d._physics_tokens(h_prompt, x0_span, sub_value)
+
+        def inject(self, h, tokens, mode, floor=None):
+            self.calls["inject"] += 1
+            return self.d._inject(h, tokens, mode, floor)
+
+    class _FakeCoupler:
+        def __init__(self, phi, d_model, k=4):
+            self.phi, self.k = phi, k
+            self.W = 0.5 * mx.random.normal((d_model, d_model))
+            self.calls = {"tokens": 0, "inject": 0}
+
+        def tokens(self, h_prompt, x0_span=None, sub_value=None):
+            self.calls["tokens"] += 1
+            pooled = h_prompt.mean(axis=1, keepdims=True) @ self.W
+            toks = mx.concatenate([pooled * (1.0 + 0.25 * j) for j in range(self.k)], axis=1)
+            mx.eval(toks)
+            return toks, {"k_tokens": self.k, "sub_value": sub_value}
+
+        def inject(self, h, tokens, mode, floor=None):
+            self.calls["inject"] += 1
+            self.phi.inject.gate_floor = floor
+            try:
+                h_inj, sigma = self.phi.inject(h, tokens)
+            finally:
+                self.phi.inject.gate_floor = None
+            return (h_inj if mode == "psilm" else h), sigma
+
+    span = (0, len(prompt))
+    pt = _PassThrough(dec)
+    dec_pt = StagedDecoder(model, tok, fno, bridges, l_fwd=1, l_rev=3, eos_ids={1}, coupler=pt)
+    ref = dec.generate(prompt, mode="psilm", max_new=K, x0_span=span)
+    got = dec_pt.generate(prompt, mode="psilm", max_new=K, x0_span=span)
+    assert got.gen_ids == ref.gen_ids, (got.gen_ids, ref.gen_ids)
+    sig_d = max(abs(a - b) for a, b in zip(ref.sigma_prompt + ref.sigma_gen,
+                                           got.sigma_prompt + got.sigma_gen))
+    lr, *_ = dec.prefill_logits(prompt, "psilm", span)
+    lg, *_ = dec_pt.prefill_logits(prompt, "psilm", span)
+    d_pt = float(mx.abs(lr - lg).max().item())
+    assert sig_d == 0.0 and d_pt == 0.0, (sig_d, d_pt)
+    assert pt.calls == {"tokens": 2, "inject": 2 + len(got.sigma_gen)}, pt.calls
+    print(f"[self-test] coupler dispatch == physics path (logits diff {d_pt:.1e}, sigma diff "
+          f"{sig_d:.1e}, {pt.calls['tokens']} tokens()/{pt.calls['inject']} inject() calls)  OK")
+
+    fake = _FakeCoupler(bridges, 64)
+    dec_c = StagedDecoder(model, tok, None, None, l_fwd=1, l_rev=3, eos_ids={1}, coupler=fake)
+    fb = dec_c.generate(prompt, mode="base", max_new=K)
+    fz = dec_c.generate(prompt, mode="zeroed", max_new=K)
+    fp = dec_c.generate(prompt, mode="psilm", max_new=K)
+    assert fb.gen_ids == rb.gen_ids, "the base arm must not touch the coupler"
+    assert fz.gen_ids == fb.gen_ids, (fz.gen_ids, fb.gen_ids)
+    assert fz.sigma_prompt and fz.sigma_gen, "zeroed arm must still measure the gate"
+    lb2, *_ = dec_c.prefill_logits(prompt, "base")
+    lz2, *_ = dec_c.prefill_logits(prompt, "zeroed")
+    lp2, *_ = dec_c.prefill_logits(prompt, "psilm")
+    dz2 = float(mx.abs(lb2 - lz2).max().item())
+    dp2 = float(mx.abs(lb2 - lp2).max().item())
+    assert dz2 == 0.0, f"coupled zeroed arm changed the hidden state: {dz2}"
+    assert dp2 > 1e-3, f"coupled psilm arm did not change the logits: {dp2}"
+    assert fake.calls["tokens"] > 0 and fake.calls["inject"] > 0, fake.calls
+    print(f"[self-test] fake coupler: zeroed == base (logits diff {dz2:.1e}, "
+          f"{len(fb.gen_ids)} tokens); psilm logits diff {dp2:.2e}, tokens differ: "
+          f"{fp.gen_ids != fb.gen_ids}  OK")
+
     print("SELF-TEST OK")
 
 
@@ -540,6 +681,8 @@ def main():
     rows_path = out_dir / f"{args.tag}_guardrail.rows.jsonl"
     dry_path = out_dir / f"{args.tag}_guardrail_dryrun.json"
 
+    if args.bridge_kind == "constitution" and "physics" in args.datasets.split(","):
+        raise SystemExit(no_physics_message())
     from transformers import AutoTokenizer
     hf_tok = AutoTokenizer.from_pretrained(args.hf_tokenizer)
     datasets, tasks = build_all(args, hf_tok)
