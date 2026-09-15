@@ -75,7 +75,15 @@ def parse_args():
     ap.add_argument("--hf-tokenizer", default=DEFAULT_HF_TOKENIZER)
     ap.add_argument("--ckpt", default=DEFAULT_CKPT, help="bridges .npz (with .meta beside it)")
     ap.add_argument("--fno", default=DEFAULT_FNO)
-    ap.add_argument("--bridge-kind", default="physics", choices=["physics", "constitution"],
+    ap.add_argument("--phys-ckpt", default=None,
+                    help="--bridge-kind dual: the physics bridges; --ckpt is then the "
+                         "constitution bridges")
+    ap.add_argument("--dual-channels", default="both",
+                    choices=["both", "physics", "constitution"],
+                    help="--bridge-kind dual: which channels WRITE. The other is still "
+                         "run and its gate measured, so it stays observable.")
+    ap.add_argument("--bridge-kind", default="physics",
+                    choices=["physics", "constitution", "dual"],
                     help="what sits between the two pause points: the physics pair "
                          "(FNO + physics bridges, the original) or the constitution coupler")
     ap.add_argument("--const-model", default=None,
@@ -363,10 +371,27 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
 
     if args.bridge_kind == "constitution" and "physics" in datasets:
         raise SystemExit(no_physics_message())
+    if args.bridge_kind == "dual" and not args.phys_ckpt:
+        raise SystemExit("--bridge-kind dual needs --phys-ckpt (the physics bridges); "
+                         "--ckpt is the constitution bridges")
     t0 = time.time()
     model, tok, _ = load_backbone(args.model, args.hf_tokenizer)
     d_model = model.args.hidden_size
-    if args.bridge_kind == "constitution":
+    if args.bridge_kind == "dual":
+        # psilm2 lives in the PsiLM-2 checkout; imported here so the physics and
+        # constitution paths do not depend on it being present
+        from psilm2.bench import build_dual_coupler
+        coupler, l_fwd, l_rev, meta = build_dual_coupler(
+            args.phys_ckpt, args.ckpt, d_model, args.fno, args.const_model,
+            args.gate_bias, args.dual_channels)
+        l_fwd = args.l_fwd if args.l_fwd is not None else l_fwd
+        l_rev = args.l_rev if args.l_rev is not None else l_rev
+        print(f"[couple] DUAL: constitution writes at {l_rev}, physics at "
+              f"{coupler.l_rev2}, both read at {l_fwd}, of "
+              f"{len(model.model.layers)} | channels={args.dual_channels}", flush=True)
+        dec = StagedDecoder(model, hf_tok, None, None, l_fwd, l_rev,
+                            eos_ids=eos_id_set(hf_tok, tok), coupler=coupler)
+    elif args.bridge_kind == "constitution":
         # imported here, not at module scope: the physics path must keep working
         # while psilm/mlx/constitution.py is still being written
         from psilm.mlx.constitution import ConstitutionCoupler, load_constitution_stack

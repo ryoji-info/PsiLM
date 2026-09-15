@@ -639,6 +639,24 @@ class StagedDecoder:
             return self.coupler.inject(h, tokens, mode, floor)
         return self._inject(h, tokens, mode, floor)
 
+    def _run_top(self, h, tokens, mode, floor, mask, cache):
+        """From l_rev to the top, applying a SECOND injection on the way if the
+        coupler declares one.
+
+        A dual stack writes at two depths -- ΨLM-2 puts the constitution channel at
+        24 and the physics channel at 26 -- and this decoder has one write point. A
+        coupler that exposes `l_rev2` and `inject2` gets the extra one; anything
+        else (every physics run, every single-channel constitution run) takes the
+        identical single call it always took, so the default path is unchanged.
+        """
+        d2 = getattr(self.coupler, "l_rev2", None)
+        if d2 is None:
+            return self._layers(h, self.l_rev, self.n_layers, mask, cache)
+        assert self.l_rev <= d2 <= self.n_layers, (self.l_rev, d2, self.n_layers)
+        h = self._layers(h, self.l_rev, d2, mask, cache)
+        h, _ = self.coupler.inject2(h, tokens, mode, floor)
+        return self._layers(h, d2, self.n_layers, mask, cache)
+
     def _logits_range(self, h, lo, hi):
         """Logits at positions [lo, hi) of a full-sequence hidden state."""
         hh = self.inner.norm(h[:, lo:hi, :])
@@ -665,7 +683,7 @@ class StagedDecoder:
             tokens, _ = self._couple_tokens(h, x0_span, sub_value)
             h = self._layers(h, self.l_fwd, self.l_rev, "causal", cache)
             h, _ = self._couple_inject(h, tokens, mode, floor)
-            h = self._layers(h, self.l_rev, self.n_layers, "causal", cache)
+            h = self._run_top(h, tokens, mode, floor, "causal", cache)
         del cache
         return h
 
@@ -717,7 +735,7 @@ class StagedDecoder:
             tokens, diag = self._couple_tokens(h, x0_span, sub_value)
             h = self._layers(h, self.l_fwd, self.l_rev, mask, cache)
             h, sig = self._couple_inject(h, tokens, mode, floor)
-            h = self._layers(h, self.l_rev, self.n_layers, mask, cache)
+            h = self._run_top(h, tokens, mode, floor, mask, cache)
             sig_p = sig[0, :, 0].astype(mx.float32)
         logits = self._logits_last(h)
         return logits, cache, tokens, sig_p, diag
@@ -749,7 +767,7 @@ class StagedDecoder:
             else:
                 h = self._layers(h, 0, self.l_rev, None, cache)
                 h, sig = self._couple_inject(h, tokens, mode, floor)
-                h = self._layers(h, self.l_rev, self.n_layers, None, cache)
+                h = self._run_top(h, tokens, mode, floor, None, cache)
                 sigma_gen.append(float(sig[0, 0, 0].item()))
             y = mx.argmax(self._logits_last(h), axis=-1)
             mx.eval(y)

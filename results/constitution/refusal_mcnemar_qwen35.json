@@ -1,0 +1,122 @@
+{
+ "const_qwen35_vn": {
+  "n_rows": 300,
+  "texts_truncated": 0,
+  "ckpt_step": 1000,
+  "pairs": {
+   "base:psilm": {
+    "n": 100,
+    "both": 65,
+    "a_only": 1,
+    "b_only": 1,
+    "neither": 33,
+    "rate_a": 0.66,
+    "rate_b": 0.66,
+    "delta": 0.0,
+    "mcnemar_p": 1.0
+   },
+   "base:zeroed": {
+    "n": 100,
+    "both": 66,
+    "a_only": 0,
+    "b_only": 0,
+    "neither": 34,
+    "rate_a": 0.66,
+    "rate_b": 0.66,
+    "delta": 0.0,
+    "mcnemar_p": 1.0
+   },
+   "zeroed:psilm": {
+    "n": 100,
+    "both": 65,
+    "a_only": 1,
+    "b_only": 1,
+    "neither": 33,
+    "rate_a": 0.66,
+    "rate_b": 0.66,
+    "delta": 0.0,
+    "mcnemar_p": 1.0
+   }
+  }
+ },
+ "const_qwen35_vn5": {
+  "n_rows": 300,
+  "texts_truncated": 0,
+  "ckpt_step": 1000,
+  "pairs": {
+   "base:psilm": {
+    "n": 100,
+    "both": 63,
+    "a_only": 3,
+    "b_only": 2,
+    "neither": 32,
+    "rate_a": 0.66,
+    "rate_b": 0.65,
+    "delta": -0.01,
+    "mcnemar_p": 1.0
+   },
+   "base:zeroed": {
+    "n": 100,
+    "both": 66,
+    "a_only": 0,
+    "b_only": 0,
+    "neither": 34,
+    "rate_a": 0.66,
+    "rate_b": 0.66,
+    "delta": 0.0,
+    "mcnemar_p": 1.0
+   },
+   "zeroed:psilm": {
+    "n": 100,
+    "both": 63,
+    "a_only": 3,
+    "b_only": 2,
+    "neither": 32,
+    "rate_a": 0.66,
+    "rate_b": 0.65,
+    "delta": -0.01,
+    "mcnemar_p": 1.0
+   }
+  }
+ },
+ "const_qwen35_all": {
+  "n_rows": 300,
+  "texts_truncated": 0,
+  "ckpt_step": 1000,
+  "pairs": {
+   "base:psilm": {
+    "n": 100,
+    "both": 66,
+    "a_only": 0,
+    "b_only": 6,
+    "neither": 28,
+    "rate_a": 0.66,
+    "rate_b": 0.72,
+    "delta": 0.06,
+    "mcnemar_p": 0.03125
+   },
+   "base:zeroed": {
+    "n": 100,
+    "both": 66,
+    "a_only": 0,
+    "b_only": 0,
+    "neither": 34,
+    "rate_a": 0.66,
+    "rate_b": 0.66,
+    "delta": 0.0,
+    "mcnemar_p": 1.0
+   },
+   "zeroed:psilm": {
+    "n": 100,
+    "both": 66,
+    "a_only": 0,
+    "b_only": 6,
+    "neither": 28,
+    "rate_a": 0.66,
+    "rate_b": 0.72,
+    "delta": 0.06,
+    "mcnemar_p": 0.03125
+   }
+  }
+ }
+}
