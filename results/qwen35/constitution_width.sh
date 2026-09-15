@@ -53,8 +53,14 @@
 # sat at KL <= 4.5e-3. A narrow bridge that transmits by damaging the backbone
 # is not tight alignment, and the guard-rail arms are what say which it is.
 #
-# Waits for any MLX job (the dual guard-rail holds the GPU until ~00:50).
-# Ends with "QWEN35-WIDTH COMPLETE".
+# Waits for any MLX job. Ends with "QWEN35-WIDTH COMPLETE".
+#
+# LAUNCH A COPY, NOT THIS FILE. bash reads a script lazily by byte offset, so
+# editing it while it runs makes the running shell resume at a shifted offset:
+# a one-line fix to this header on 2026-09-15 made the first launch skip the
+# block that sets L and call the trainer with an empty --l-rev. Use
+#   cp results/qwen35/constitution_width.sh /tmp/width.sh && nohup bash /tmp/width.sh &
+# so the repository copy stays editable while a chain is in flight.
 cd /Users/rxiii/Documents/GitHub/PsiLM
 PY=.venv/bin/python
 M=/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx

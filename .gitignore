@@ -65,3 +65,5 @@ results/constitution_model/
 # The record is data/constitution_{train,val,test,helpful_test}_<tag>.json, which
 # holds the same items; these exist only so an interrupted build can resume.
 results/constitution/*.jsonl
+# per-item generation dumps, same data as the ignored raw guard-rail JSON
+results/bench/*.rows.jsonl

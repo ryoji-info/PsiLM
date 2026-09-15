@@ -41,7 +41,16 @@ def main():
     ap.add_argument("--tag", default="qwen0.5b")
     ap.add_argument("--variants", default="vn,vn5,all,rand,plainpartner")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--track-tags", default=None,
+                    help="comma-separated guard-rail tags to write tracked summaries for "
+                         "and then exit, e.g. dual_qwen35_both -- for runs whose tag is not "
+                         "const_<tag>_<variant>")
     a = ap.parse_args()
+    if a.track_tags:
+        for tg in [x for x in a.track_tags.split(",") if x]:
+            if track(Path(f"results/bench/{tg}_guardrail.json")) is None:
+                print(f"{tg}: no results/bench/{tg}_guardrail.json")
+        return
     table = {}
     for v in a.variants.split(","):
         d = Path(f"results/stage2c_{a.tag}_{v}")
@@ -85,17 +94,22 @@ def main():
 
 
 
-def write_tracked_summaries(tag: str, variants):
-    """results/bench/const_<tag>_<v>_guardrail.json minus its rows -> the
+def track(p: Path):
+    """One results/bench/<tag>_guardrail.json minus its rows -> the
     *_guardrail_summary.json the repo tracks (raw guard-rail JSONs are ignored)."""
+    if not p.exists():
+        return None
+    s = json.loads(p.read_text())
+    s.pop("rows", None)
+    q = p.with_name(p.name.replace("_guardrail.json", "_guardrail_summary.json"))
+    q.write_text(json.dumps(s, indent=1))
+    print(f"tracked summary -> {q}")
+    return q
+
+
+def write_tracked_summaries(tag: str, variants):
     for v in variants:
-        p = Path(f"results/bench/const_{tag}_{v}_guardrail.json")
-        if p.exists():
-            s = json.loads(p.read_text())
-            s.pop("rows", None)
-            q = p.with_name(p.name.replace("_guardrail.json", "_guardrail_summary.json"))
-            q.write_text(json.dumps(s, indent=1))
-            print(f"tracked summary -> {q}")
+        track(Path(f"results/bench/const_{tag}_{v}_guardrail.json"))
 
 
 if __name__ == "__main__":

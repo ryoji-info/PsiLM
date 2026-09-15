@@ -72,12 +72,19 @@ def main() -> int:
         for r in rows:
             by.setdefault(r["arm"], {})[r["qid"]] = is_refusal(r["text"])
         rec = {"n_rows": len(rows), "texts_truncated": trunc,
-               "ckpt_step": d.get("ckpt_step"), "pairs": {}}
+               "ckpt_step": d.get("ckpt_step"), "pairs": {},
+               # The run file these flags come from is gitignored (it carries the
+               # generations), so the flags themselves are recorded here: that is
+               # all the paired tests below consume, and it makes them checkable
+               # from the repository without publishing red-team completions.
+               "flags": {}}
         for spec in a.pairs.split(","):
             x, y = spec.split(":")
             if x in by and y in by:
                 qids = sorted(set(by[x]) & set(by[y]))
                 rec["pairs"][spec] = pair(by, x, y, qids)
+        rec["flags"] = {arm: {q: bool(v) for q, v in sorted(f.items())}
+                        for arm, f in sorted(by.items())}
         out[tag] = rec
 
     hdr = f"{'tag':22s} {'pair':16s} {'rate_a':>7s} {'rate_b':>7s} {'a_only':>7s} {'b_only':>7s} {'delta':>7s} {'p':>8s}"
