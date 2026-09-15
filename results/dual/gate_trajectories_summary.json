@@ -1,0 +1,974 @@
+{
+ "lam_cross=1.0": {
+  "dir": "results/dual_qwen35",
+  "rows": [
+   {
+    "step": 25,
+    "chunk_local": 25,
+    "logged_sec_per_step": 22.85,
+    "physics": {
+     "loss": 0.2017,
+     "gate_physics": 0.7156,
+     "gate_constitution": 0.0004
+    },
+    "constitution": {
+     "loss": 0.3429,
+     "gate_physics": 0.0065,
+     "gate_constitution": 0.3211
+    },
+    "noharm": {
+     "loss": 0.138,
+     "gate_physics": 0.007,
+     "gate_constitution": 0.0043
+    }
+   },
+   {
+    "step": 50,
+    "chunk_local": 50,
+    "logged_sec_per_step": 22.56,
+    "physics": {
+     "loss": 0.2107,
+     "gate_physics": 0.765,
+     "gate_constitution": 0.0014
+    },
+    "constitution": {
+     "loss": 0.3863,
+     "gate_physics": 0.0063,
+     "gate_constitution": 0.317
+    },
+    "noharm": {
+     "loss": 0.0336,
+     "gate_physics": 0.0091,
+     "gate_constitution": 0.0069
+    }
+   },
+   {
+    "step": 75,
+    "chunk_local": 75,
+    "logged_sec_per_step": 21.93,
+    "physics": {
+     "loss": 0.2378,
+     "gate_physics": 0.7551,
+     "gate_constitution": 0.0008
+    },
+    "constitution": {
+     "loss": 0.5752,
+     "gate_physics": 0.0059,
+     "gate_constitution": 0.3922
+    },
+    "noharm": {
+     "loss": 0.0722,
+     "gate_physics": 0.0082,
+     "gate_constitution": 0.0029
+    }
+   },
+   {
+    "step": 100,
+    "chunk_local": 100,
+    "logged_sec_per_step": 22.79,
+    "physics": {
+     "loss": 0.167,
+     "gate_physics": 0.759,
+     "gate_constitution": 0.0003
+    },
+    "constitution": {
+     "loss": 0.3041,
+     "gate_physics": 0.007,
+     "gate_constitution": 0.3873
+    },
+    "noharm": {
+     "loss": 0.0815,
+     "gate_physics": 0.0069,
+     "gate_constitution": 0.0111
+    }
+   },
+   {
+    "step": 125,
+    "chunk_local": 125,
+    "logged_sec_per_step": 23.54,
+    "physics": {
+     "loss": 0.2128,
+     "gate_physics": 0.7428,
+     "gate_constitution": 0.0001
+    },
+    "constitution": {
+     "loss": 0.3672,
+     "gate_physics": 0.0081,
+     "gate_constitution": 0.3628
+    },
+    "noharm": {
+     "loss": 0.0809,
+     "gate_physics": 0.008,
+     "gate_constitution": 0.0032
+    }
+   },
+   {
+    "step": 150,
+    "chunk_local": 150,
+    "logged_sec_per_step": 23.9,
+    "physics": {
+     "loss": 0.203,
+     "gate_physics": 0.7486,
+     "gate_constitution": 0.0002
+    },
+    "constitution": {
+     "loss": 0.2945,
+     "gate_physics": 0.0101,
+     "gate_constitution": 0.3295
+    },
+    "noharm": {
+     "loss": 0.0926,
+     "gate_physics": 0.0075,
+     "gate_constitution": 0.0003
+    }
+   },
+   {
+    "step": 175,
+    "chunk_local": 175,
+    "logged_sec_per_step": 23.74,
+    "physics": {
+     "loss": 0.1649,
+     "gate_physics": 0.7646,
+     "gate_constitution": 0.0001
+    },
+    "constitution": {
+     "loss": 0.3583,
+     "gate_physics": 0.0063,
+     "gate_constitution": 0.3738
+    },
+    "noharm": {
+     "loss": 0.0456,
+     "gate_physics": 0.0077,
+     "gate_constitution": 0.0018
+    }
+   },
+   {
+    "step": 200,
+    "chunk_local": 200,
+    "logged_sec_per_step": 23.08,
+    "physics": {
+     "loss": 0.1922,
+     "gate_physics": 0.7786,
+     "gate_constitution": 0.0002
+    },
+    "constitution": {
+     "loss": 0.2759,
+     "gate_physics": 0.011,
+     "gate_constitution": 0.3306
+    },
+    "noharm": {
+     "loss": 0.0115,
+     "gate_physics": 0.0113,
+     "gate_constitution": 0.0015
+    }
+   },
+   {
+    "step": 225,
+    "chunk_local": 25,
+    "logged_sec_per_step": 2.41,
+    "physics": {
+     "loss": 0.3401,
+     "gate_physics": 0.7939,
+     "gate_constitution": 0.0042
+    },
+    "constitution": {
+     "loss": 0.3312,
+     "gate_physics": 0.0004,
+     "gate_constitution": 0.3467
+    },
+    "noharm": {
+     "loss": 0.136,
+     "gate_physics": 0.0082,
+     "gate_constitution": 0.0032
+    }
+   },
+   {
+    "step": 250,
+    "chunk_local": 50,
+    "logged_sec_per_step": 4.5,
+    "physics": {
+     "loss": 0.2616,
+     "gate_physics": 0.7703,
+     "gate_constitution": 0.0004
+    },
+    "constitution": {
+     "loss": 0.3801,
+     "gate_physics": 0.0007,
+     "gate_constitution": 0.2975
+    },
+    "noharm": {
+     "loss": 0.0254,
+     "gate_physics": 0.0004,
+     "gate_constitution": 0.0012
+    }
+   },
+   {
+    "step": 275,
+    "chunk_local": 75,
+    "logged_sec_per_step": 6.01,
+    "physics": {
+     "loss": 0.3977,
+     "gate_physics": 0.7893,
+     "gate_constitution": 0.0038
+    },
+    "constitution": {
+     "loss": 0.581,
+     "gate_physics": 0.0001,
+     "gate_constitution": 0.4823
+    },
+    "noharm": {
+     "loss": 0.0645,
+     "gate_physics": 0.0002,
+     "gate_constitution": 0.0039
+    }
+   },
+   {
+    "step": 300,
+    "chunk_local": 100,
+    "logged_sec_per_step": 7.63,
+    "physics": {
+     "loss": 0.2699,
+     "gate_physics": 0.7931,
+     "gate_constitution": 0.0048
+    },
+    "constitution": {
+     "loss": 0.2893,
+     "gate_physics": 0.0003,
+     "gate_constitution": 0.4487
+    },
+    "noharm": {
+     "loss": 0.0754,
+     "gate_physics": 0.0016,
+     "gate_constitution": 0.0108
+    }
+   },
+   {
+    "step": 325,
+    "chunk_local": 125,
+    "logged_sec_per_step": 9.16,
+    "physics": {
+     "loss": 0.3885,
+     "gate_physics": 0.7933,
+     "gate_constitution": 0.0046
+    },
+    "constitution": {
+     "loss": 0.3688,
+     "gate_physics": 0.0066,
+     "gate_constitution": 0.4311
+    },
+    "noharm": {
+     "loss": 0.0809,
+     "gate_physics": 0.0041,
+     "gate_constitution": 0.0054
+    }
+   },
+   {
+    "step": 350,
+    "chunk_local": 150,
+    "logged_sec_per_step": 10.35,
+    "physics": {
+     "loss": 0.1983,
+     "gate_physics": 0.7953,
+     "gate_constitution": 0.0007
+    },
+    "constitution": {
+     "loss": 0.2836,
+     "gate_physics": 0.0175,
+     "gate_constitution": 0.3985
+    },
+    "noharm": {
+     "loss": 0.0922,
+     "gate_physics": 0.0082,
+     "gate_constitution": 0.0005
+    }
+   },
+   {
+    "step": 375,
+    "chunk_local": 175,
+    "logged_sec_per_step": 11.16,
+    "physics": {
+     "loss": 0.1643,
+     "gate_physics": 0.799,
+     "gate_constitution": 0.0002
+    },
+    "constitution": {
+     "loss": 0.3479,
+     "gate_physics": 0.0081,
+     "gate_constitution": 0.4183
+    },
+    "noharm": {
+     "loss": 0.0453,
+     "gate_physics": 0.0124,
+     "gate_constitution": 0.0019
+    }
+   },
+   {
+    "step": 400,
+    "chunk_local": 200,
+    "logged_sec_per_step": 11.63,
+    "physics": {
+     "loss": 0.1958,
+     "gate_physics": 0.7867,
+     "gate_constitution": 0.0003
+    },
+    "constitution": {
+     "loss": 0.2653,
+     "gate_physics": 0.0127,
+     "gate_constitution": 0.421
+    },
+    "noharm": {
+     "loss": 0.0114,
+     "gate_physics": 0.0182,
+     "gate_constitution": 0.0012
+    }
+   },
+   {
+    "step": 425,
+    "chunk_local": 25,
+    "logged_sec_per_step": 1.36,
+    "physics": {
+     "loss": 0.1924,
+     "gate_physics": 0.7017,
+     "gate_constitution": 0.0003
+    },
+    "constitution": {
+     "loss": 0.3188,
+     "gate_physics": 0.0162,
+     "gate_constitution": 0.3444
+    },
+    "noharm": {
+     "loss": 0.1339,
+     "gate_physics": 0.0513,
+     "gate_constitution": 0.0011
+    }
+   },
+   {
+    "step": 450,
+    "chunk_local": 50,
+    "logged_sec_per_step": 2.58,
+    "physics": {
+     "loss": 0.209,
+     "gate_physics": 0.7202,
+     "gate_constitution": 0.0007
+    },
+    "constitution": {
+     "loss": 0.3823,
+     "gate_physics": 0.0314,
+     "gate_constitution": 0.3243
+    },
+    "noharm": {
+     "loss": 0.0345,
+     "gate_physics": 0.0193,
+     "gate_constitution": 0.0023
+    }
+   },
+   {
+    "step": 475,
+    "chunk_local": 75,
+    "logged_sec_per_step": 3.55,
+    "physics": {
+     "loss": 0.2378,
+     "gate_physics": 0.7476,
+     "gate_constitution": 0.0005
+    },
+    "constitution": {
+     "loss": 0.5824,
+     "gate_physics": 0.0084,
+     "gate_constitution": 0.5319
+    },
+    "noharm": {
+     "loss": 0.0722,
+     "gate_physics": 0.0114,
+     "gate_constitution": 0.003
+    }
+   },
+   {
+    "step": 500,
+    "chunk_local": 100,
+    "logged_sec_per_step": 4.63,
+    "physics": {
+     "loss": 0.1675,
+     "gate_physics": 0.7879,
+     "gate_constitution": 0.0002
+    },
+    "constitution": {
+     "loss": 0.2933,
+     "gate_physics": 0.0146,
+     "gate_constitution": 0.4853
+    },
+    "noharm": {
+     "loss": 0.0806,
+     "gate_physics": 0.0296,
+     "gate_constitution": 0.0029
+    }
+   },
+   {
+    "step": 525,
+    "chunk_local": 125,
+    "logged_sec_per_step": 5.71,
+    "physics": {
+     "loss": 0.2056,
+     "gate_physics": 0.7944,
+     "gate_constitution": 0.0002
+    },
+    "constitution": {
+     "loss": 0.3533,
+     "gate_physics": 0.0133,
+     "gate_constitution": 0.4816
+    },
+    "noharm": {
+     "loss": 0.0876,
+     "gate_physics": 0.0514,
+     "gate_constitution": 0.003
+    }
+   },
+   {
+    "step": 550,
+    "chunk_local": 150,
+    "logged_sec_per_step": 6.57,
+    "physics": {
+     "loss": 0.2026,
+     "gate_physics": 0.7966,
+     "gate_constitution": 0.0003
+    },
+    "constitution": {
+     "loss": 0.2798,
+     "gate_physics": 0.0255,
+     "gate_constitution": 0.4228
+    },
+    "noharm": {
+     "loss": 0.0909,
+     "gate_physics": 0.0086,
+     "gate_constitution": 0.0017
+    }
+   },
+   {
+    "step": 575,
+    "chunk_local": 175,
+    "logged_sec_per_step": 7.3,
+    "physics": {
+     "loss": 0.1644,
+     "gate_physics": 0.7877,
+     "gate_constitution": 0.0002
+    },
+    "constitution": {
+     "loss": 0.3403,
+     "gate_physics": 0.0106,
+     "gate_constitution": 0.4172
+    },
+    "noharm": {
+     "loss": 0.0391,
+     "gate_physics": 0.0173,
+     "gate_constitution": 0.0032
+    }
+   },
+   {
+    "step": 600,
+    "chunk_local": 200,
+    "logged_sec_per_step": 7.79,
+    "physics": {
+     "loss": 0.1959,
+     "gate_physics": 0.7736,
+     "gate_constitution": 0.0002
+    },
+    "constitution": {
+     "loss": 0.2629,
+     "gate_physics": 0.0161,
+     "gate_constitution": 0.4417
+    },
+    "noharm": {
+     "loss": 0.0115,
+     "gate_physics": 0.0292,
+     "gate_constitution": 0.001
+    }
+   }
+  ],
+  "note": "logged_sec_per_step is the value the trainer printed and is WRONG for chunks after the first: it divided this chunk's elapsed time by the cumulative step, so chunk 2 reads 2x fast and chunk 3 3x fast. The corrected per-chunk rates are in the paper and in PsiLM-2 docs/schedule.md. Fixed in psilm2/train_dual.py after these runs."
+ },
+ "lam_cross=0.0": {
+  "dir": "results/dual_qwen35_nocross",
+  "rows": [
+   {
+    "step": 25,
+    "chunk_local": 25,
+    "logged_sec_per_step": 22.65,
+    "physics": {
+     "loss": 0.1959,
+     "gate_physics": 0.6812,
+     "gate_constitution": 0.0046
+    },
+    "constitution": {
+     "loss": 0.3375,
+     "gate_physics": 0.0263,
+     "gate_constitution": 0.2964
+    },
+    "noharm": {
+     "loss": 0.1331,
+     "gate_physics": 0.0086,
+     "gate_constitution": 0.0053
+    }
+   },
+   {
+    "step": 50,
+    "chunk_local": 50,
+    "logged_sec_per_step": 23.05,
+    "physics": {
+     "loss": 0.2082,
+     "gate_physics": 0.7341,
+     "gate_constitution": 0.0062
+    },
+    "constitution": {
+     "loss": 0.3828,
+     "gate_physics": 0.0065,
+     "gate_constitution": 0.3079
+    },
+    "noharm": {
+     "loss": 0.0347,
+     "gate_physics": 0.0088,
+     "gate_constitution": 0.0094
+    }
+   },
+   {
+    "step": 75,
+    "chunk_local": 75,
+    "logged_sec_per_step": 22.35,
+    "physics": {
+     "loss": 0.2429,
+     "gate_physics": 0.7712,
+     "gate_constitution": 0.0058
+    },
+    "constitution": {
+     "loss": 0.5669,
+     "gate_physics": 0.0061,
+     "gate_constitution": 0.3859
+    },
+    "noharm": {
+     "loss": 0.0736,
+     "gate_physics": 0.0078,
+     "gate_constitution": 0.0092
+    }
+   },
+   {
+    "step": 100,
+    "chunk_local": 100,
+    "logged_sec_per_step": 23.18,
+    "physics": {
+     "loss": 0.1686,
+     "gate_physics": 0.7284,
+     "gate_constitution": 0.0062
+    },
+    "constitution": {
+     "loss": 0.2923,
+     "gate_physics": 0.0228,
+     "gate_constitution": 0.3933
+    },
+    "noharm": {
+     "loss": 0.0839,
+     "gate_physics": 0.0045,
+     "gate_constitution": 0.029
+    }
+   },
+   {
+    "step": 125,
+    "chunk_local": 125,
+    "logged_sec_per_step": 24.09,
+    "physics": {
+     "loss": 0.2113,
+     "gate_physics": 0.7118,
+     "gate_constitution": 0.0042
+    },
+    "constitution": {
+     "loss": 0.3669,
+     "gate_physics": 0.0194,
+     "gate_constitution": 0.3622
+    },
+    "noharm": {
+     "loss": 0.0875,
+     "gate_physics": 0.005,
+     "gate_constitution": 0.0163
+    }
+   },
+   {
+    "step": 150,
+    "chunk_local": 150,
+    "logged_sec_per_step": 24.43,
+    "physics": {
+     "loss": 0.1989,
+     "gate_physics": 0.6888,
+     "gate_constitution": 0.0049
+    },
+    "constitution": {
+     "loss": 0.2816,
+     "gate_physics": 0.0094,
+     "gate_constitution": 0.3433
+    },
+    "noharm": {
+     "loss": 0.0934,
+     "gate_physics": 0.0073,
+     "gate_constitution": 0.0039
+    }
+   },
+   {
+    "step": 175,
+    "chunk_local": 175,
+    "logged_sec_per_step": 24.19,
+    "physics": {
+     "loss": 0.16,
+     "gate_physics": 0.713,
+     "gate_constitution": 0.0033
+    },
+    "constitution": {
+     "loss": 0.3514,
+     "gate_physics": 0.0062,
+     "gate_constitution": 0.3726
+    },
+    "noharm": {
+     "loss": 0.042,
+     "gate_physics": 0.0067,
+     "gate_constitution": 0.0073
+    }
+   },
+   {
+    "step": 200,
+    "chunk_local": 200,
+    "logged_sec_per_step": 23.55,
+    "physics": {
+     "loss": 0.196,
+     "gate_physics": 0.7108,
+     "gate_constitution": 0.0061
+    },
+    "constitution": {
+     "loss": 0.2609,
+     "gate_physics": 0.0123,
+     "gate_constitution": 0.3446
+    },
+    "noharm": {
+     "loss": 0.0127,
+     "gate_physics": 0.0094,
+     "gate_constitution": 0.0052
+    }
+   },
+   {
+    "step": 225,
+    "chunk_local": 25,
+    "logged_sec_per_step": 2.52,
+    "physics": {
+     "loss": 0.1947,
+     "gate_physics": 0.8217,
+     "gate_constitution": 0.0046
+    },
+    "constitution": {
+     "loss": 0.3378,
+     "gate_physics": 0.0133,
+     "gate_constitution": 0.3239
+    },
+    "noharm": {
+     "loss": 0.1453,
+     "gate_physics": 0.0109,
+     "gate_constitution": 0.0031
+    }
+   },
+   {
+    "step": 250,
+    "chunk_local": 50,
+    "logged_sec_per_step": 4.59,
+    "physics": {
+     "loss": 0.207,
+     "gate_physics": 0.7851,
+     "gate_constitution": 0.0065
+    },
+    "constitution": {
+     "loss": 0.3819,
+     "gate_physics": 0.0106,
+     "gate_constitution": 0.3019
+    },
+    "noharm": {
+     "loss": 0.0437,
+     "gate_physics": 0.0172,
+     "gate_constitution": 0.0063
+    }
+   },
+   {
+    "step": 275,
+    "chunk_local": 75,
+    "logged_sec_per_step": 6.1,
+    "physics": {
+     "loss": 0.2372,
+     "gate_physics": 0.7752,
+     "gate_constitution": 0.0062
+    },
+    "constitution": {
+     "loss": 0.5856,
+     "gate_physics": 0.0129,
+     "gate_constitution": 0.4952
+    },
+    "noharm": {
+     "loss": 0.0814,
+     "gate_physics": 0.0154,
+     "gate_constitution": 0.0037
+    }
+   },
+   {
+    "step": 300,
+    "chunk_local": 100,
+    "logged_sec_per_step": 7.66,
+    "physics": {
+     "loss": 0.1698,
+     "gate_physics": 0.7055,
+     "gate_constitution": 0.002
+    },
+    "constitution": {
+     "loss": 0.2889,
+     "gate_physics": 0.0135,
+     "gate_constitution": 0.4607
+    },
+    "noharm": {
+     "loss": 0.0859,
+     "gate_physics": 0.0061,
+     "gate_constitution": 0.0171
+    }
+   },
+   {
+    "step": 325,
+    "chunk_local": 125,
+    "logged_sec_per_step": 9.12,
+    "physics": {
+     "loss": 0.2078,
+     "gate_physics": 0.7565,
+     "gate_constitution": 0.0033
+    },
+    "constitution": {
+     "loss": 0.3527,
+     "gate_physics": 0.0152,
+     "gate_constitution": 0.445
+    },
+    "noharm": {
+     "loss": 0.0901,
+     "gate_physics": 0.0069,
+     "gate_constitution": 0.016
+    }
+   },
+   {
+    "step": 350,
+    "chunk_local": 150,
+    "logged_sec_per_step": 10.27,
+    "physics": {
+     "loss": 0.1964,
+     "gate_physics": 0.7302,
+     "gate_constitution": 0.0037
+    },
+    "constitution": {
+     "loss": 0.2705,
+     "gate_physics": 0.0254,
+     "gate_constitution": 0.4362
+    },
+    "noharm": {
+     "loss": 0.1007,
+     "gate_physics": 0.0146,
+     "gate_constitution": 0.0031
+    }
+   },
+   {
+    "step": 375,
+    "chunk_local": 175,
+    "logged_sec_per_step": 11.13,
+    "physics": {
+     "loss": 0.1598,
+     "gate_physics": 0.7122,
+     "gate_constitution": 0.0026
+    },
+    "constitution": {
+     "loss": 0.3416,
+     "gate_physics": 0.0112,
+     "gate_constitution": 0.4243
+    },
+    "noharm": {
+     "loss": 0.0469,
+     "gate_physics": 0.0119,
+     "gate_constitution": 0.011
+    }
+   },
+   {
+    "step": 400,
+    "chunk_local": 200,
+    "logged_sec_per_step": 11.6,
+    "physics": {
+     "loss": 0.1983,
+     "gate_physics": 0.7083,
+     "gate_constitution": 0.0042
+    },
+    "constitution": {
+     "loss": 0.2639,
+     "gate_physics": 0.0207,
+     "gate_constitution": 0.4552
+    },
+    "noharm": {
+     "loss": 0.0208,
+     "gate_physics": 0.0163,
+     "gate_constitution": 0.0103
+    }
+   },
+   {
+    "step": 425,
+    "chunk_local": 25,
+    "logged_sec_per_step": 1.35,
+    "physics": {
+     "loss": 0.1926,
+     "gate_physics": 0.77,
+     "gate_constitution": 0.0083
+    },
+    "constitution": {
+     "loss": 0.3046,
+     "gate_physics": 0.012,
+     "gate_constitution": 0.4258
+    },
+    "noharm": {
+     "loss": 0.1424,
+     "gate_physics": 0.0094,
+     "gate_constitution": 0.0134
+    }
+   },
+   {
+    "step": 450,
+    "chunk_local": 50,
+    "logged_sec_per_step": 2.6,
+    "physics": {
+     "loss": 0.2105,
+     "gate_physics": 0.7554,
+     "gate_constitution": 0.0087
+    },
+    "constitution": {
+     "loss": 0.3774,
+     "gate_physics": 0.0425,
+     "gate_constitution": 0.3613
+    },
+    "noharm": {
+     "loss": 0.0437,
+     "gate_physics": 0.0193,
+     "gate_constitution": 0.0134
+    }
+   },
+   {
+    "step": 475,
+    "chunk_local": 75,
+    "logged_sec_per_step": 3.6,
+    "physics": {
+     "loss": 0.2299,
+     "gate_physics": 0.6597,
+     "gate_constitution": 0.009
+    },
+    "constitution": {
+     "loss": 0.5747,
+     "gate_physics": 0.0113,
+     "gate_constitution": 0.5363
+    },
+    "noharm": {
+     "loss": 0.0829,
+     "gate_physics": 0.0151,
+     "gate_constitution": 0.0094
+    }
+   },
+   {
+    "step": 500,
+    "chunk_local": 100,
+    "logged_sec_per_step": 4.69,
+    "physics": {
+     "loss": 0.1695,
+     "gate_physics": 0.675,
+     "gate_constitution": 0.0076
+    },
+    "constitution": {
+     "loss": 0.283,
+     "gate_physics": 0.0138,
+     "gate_constitution": 0.5121
+    },
+    "noharm": {
+     "loss": 0.0853,
+     "gate_physics": 0.0061,
+     "gate_constitution": 0.0243
+    }
+   },
+   {
+    "step": 525,
+    "chunk_local": 125,
+    "logged_sec_per_step": 5.84,
+    "physics": {
+     "loss": 0.2123,
+     "gate_physics": 0.7157,
+     "gate_constitution": 0.0085
+    },
+    "constitution": {
+     "loss": 0.3437,
+     "gate_physics": 0.0253,
+     "gate_constitution": 0.4975
+    },
+    "noharm": {
+     "loss": 0.0909,
+     "gate_physics": 0.0074,
+     "gate_constitution": 0.0294
+    }
+   },
+   {
+    "step": 550,
+    "chunk_local": 150,
+    "logged_sec_per_step": 6.78,
+    "physics": {
+     "loss": 0.192,
+     "gate_physics": 0.7324,
+     "gate_constitution": 0.0084
+    },
+    "constitution": {
+     "loss": 0.2666,
+     "gate_physics": 0.0167,
+     "gate_constitution": 0.4531
+    },
+    "noharm": {
+     "loss": 0.1014,
+     "gate_physics": 0.0145,
+     "gate_constitution": 0.0029
+    }
+   },
+   {
+    "step": 575,
+    "chunk_local": 175,
+    "logged_sec_per_step": 7.54,
+    "physics": {
+     "loss": 0.1636,
+     "gate_physics": 0.7348,
+     "gate_constitution": 0.007
+    },
+    "constitution": {
+     "loss": 0.3309,
+     "gate_physics": 0.0111,
+     "gate_constitution": 0.4536
+    },
+    "noharm": {
+     "loss": 0.0487,
+     "gate_physics": 0.0115,
+     "gate_constitution": 0.0108
+    }
+   },
+   {
+    "step": 600,
+    "chunk_local": 200,
+    "logged_sec_per_step": 8.14,
+    "physics": {
+     "loss": 0.1994,
+     "gate_physics": 0.7352,
+     "gate_constitution": 0.0086
+    },
+    "constitution": {
+     "loss": 0.2556,
+     "gate_physics": 0.0205,
+     "gate_constitution": 0.4568
+    },
+    "noharm": {
+     "loss": 0.0211,
+     "gate_physics": 0.0155,
+     "gate_constitution": 0.0135
+    }
+   }
+  ],
+  "note": "logged_sec_per_step is the value the trainer printed and is WRONG for chunks after the first: it divided this chunk's elapsed time by the cumulative step, so chunk 2 reads 2x fast and chunk 3 3x fast. The corrected per-chunk rates are in the paper and in PsiLM-2 docs/schedule.md. Fixed in psilm2/train_dual.py after these runs."
+ }
+}

@@ -16,15 +16,27 @@ step() { echo "$1 $(date '+%F %H:%M')" >> $LOG; }
 
 # never two MLX jobs on one GPU
 while pgrep -f 'bash results/(constitution|qwen35)/' > /dev/null; do sleep 60; done
-step "COEXIST START"
-for i in 1 2 3; do
+# Target-driven, not chunk-count driven: the cumulative step lives in the
+# checkpoint's meta, so this cannot overshoot 600 or count a chunk twice, and it
+# picks up correctly after a kill regardless of how far the last chunk got.
+TARGET=600
+done_steps() { $PY -c "
+import json,sys
+try: print(json.load(open('$OUT/bridges.safetensors.meta'))['step'])
+except Exception: print(0)"; }
+step "COEXIST START (target $TARGET, at $(done_steps))"
+i=0
+while [ "$(done_steps)" -lt $TARGET ]; do
+  i=$((i + 1))
+  REMAIN=$(( TARGET - $(done_steps) ))
+  CHUNK=$(( REMAIN < 200 ? REMAIN : 200 ))
   for j in 1 2 3; do
-    $PY -c "import sys; sys.path.insert(0,'$P2')" 2>/dev/null
-    PYTHONPATH=$P2 $PY -m psilm2.train_dual --phase coexist --steps 200 \
+    PYTHONPATH=$P2 $PY -m psilm2.train_dual --phase coexist --steps $CHUNK \
         --out $OUT --log-every 25 --save-every 50 >> $OUT/chunk.log 2>&1 && break
     step "CHUNK $i attempt $j exited $?; resuming"; sleep 30
     [ $j = 3 ] && { step "CHUNK $i FAILED"; exit 1; }
   done
-  step "CHUNK $i: $(grep -h '^\[coexist\] step 200/200' $OUT/chunk.log | tail -1)"
+  step "CHUNK $i -> step $(done_steps): $(grep -h '^\[coexist\] step' $OUT/chunk.log | tail -1)"
+  [ $i -ge 8 ] && { step "COEXIST GAVE UP after $i chunks"; exit 1; }
 done
-step "COEXIST COMPLETE"
+step "COEXIST COMPLETE at step $(done_steps)"
