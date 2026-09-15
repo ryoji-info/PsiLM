@@ -15,8 +15,9 @@
 # (magnitudes: results/value_neurons/qwen35/rms_layer24_full.json; the ratio is
 # sigma * per-dim injection RMS, so ratio/gate recovers the cap.)
 #
-# Full width was therefore handed 26x the perturbation energy of the top-5%
-# mask, and the widths were never compared at equal strength. Per unit of
+# Full width was therefore handed 26x the perturbation energy of the value-neuron
+# mask and 9.8x that of the top-5%, and the widths were never compared at equal
+# strength. Per unit of
 # energy actually spent, the narrow masks did MORE: CE gain per unit relative
 # energy 0.334 (41 dims) and 0.271 (205) against 0.094 for full width, at lower
 # total KL. The value-neuron write is the efficient one; it was starved.
