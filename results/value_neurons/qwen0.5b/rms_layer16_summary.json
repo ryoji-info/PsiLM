@@ -1,0 +1,402 @@
+{
+ "tag": "qwen0.5b",
+ "layer": 16,
+ "d_model": 896,
+ "n_trajectories": 1000,
+ "n_states": 233794,
+ "convention": "per-dimension RMS over rows prompt_len-1.. of every trajectory at this layer, which is exactly the slice eval/vn_probe.py trains on; ranks are 1-indexed by descending RMS",
+ "rms_median": 0.3878,
+ "rms_max": {
+  "dim": 490,
+  "rms": 9.8143
+ },
+ "top20_by_rms": [
+  {
+   "dim": 490,
+   "rms": 9.8143
+  },
+  {
+   "dim": 337,
+   "rms": 3.2445
+  },
+  {
+   "dim": 570,
+   "rms": 3.1832
+  },
+  {
+   "dim": 208,
+   "rms": 3.0906
+  },
+  {
+   "dim": 450,
+   "rms": 2.6745
+  },
+  {
+   "dim": 53,
+   "rms": 2.611
+  },
+  {
+   "dim": 591,
+   "rms": 2.5786
+  },
+  {
+   "dim": 173,
+   "rms": 2.4552
+  },
+  {
+   "dim": 800,
+   "rms": 2.3645
+  },
+  {
+   "dim": 56,
+   "rms": 2.024
+  },
+  {
+   "dim": 757,
+   "rms": 1.5851
+  },
+  {
+   "dim": 648,
+   "rms": 1.4636
+  },
+  {
+   "dim": 709,
+   "rms": 1.4524
+  },
+  {
+   "dim": 386,
+   "rms": 1.4335
+  },
+  {
+   "dim": 646,
+   "rms": 1.4077
+  },
+  {
+   "dim": 494,
+   "rms": 1.3904
+  },
+  {
+   "dim": 559,
+   "rms": 1.3856
+  },
+  {
+   "dim": 276,
+   "rms": 1.3854
+  },
+  {
+   "dim": 70,
+   "rms": 1.3537
+  },
+  {
+   "dim": 263,
+   "rms": 1.3526
+  }
+ ],
+ "sink_at_pos0": {
+  "max_dim": 62,
+  "max_abs": 1550.9,
+  "that_dim_rms_elsewhere": 0.7014
+ },
+ "sets": {
+  "value_neurons_top1pct": {
+   "n": 9,
+   "summed_rms": 13.6071,
+   "ranks": [
+    2,
+    9,
+    10,
+    16,
+    30,
+    35,
+    43,
+    46,
+    106
+   ],
+   "largest_member": {
+    "dim": 337,
+    "rms": 3.2445
+   }
+  },
+  "top5pct": {
+   "n": 45,
+   "summed_rms": 43.9189,
+   "ranks": [
+    2,
+    5,
+    7,
+    8,
+    9,
+    10,
+    13,
+    14,
+    16,
+    18,
+    23,
+    26,
+    30,
+    34,
+    35,
+    43,
+    45,
+    46,
+    61,
+    64,
+    72,
+    83,
+    89,
+    106,
+    150,
+    159,
+    173,
+    180,
+    189,
+    255,
+    262,
+    281,
+    289,
+    299,
+    308,
+    310,
+    315,
+    362,
+    536,
+    543,
+    575,
+    728,
+    737,
+    744,
+    852
+   ],
+   "largest_member": {
+    "dim": 337,
+    "rms": 3.2445
+   }
+  },
+  "magmatch0_layer16": {
+   "n": 9,
+   "summed_rms": 11.4241,
+   "ranks": [
+    6,
+    11,
+    15,
+    20,
+    28,
+    39,
+    50,
+    59,
+    111
+   ],
+   "largest_member": {
+    "dim": 53,
+    "rms": 2.611
+   }
+  },
+  "magmatch1_layer16": {
+   "n": 9,
+   "summed_rms": 10.1804,
+   "ranks": [
+    11,
+    15,
+    21,
+    22,
+    28,
+    37,
+    47,
+    50,
+    122
+   ],
+   "largest_member": {
+    "dim": 757,
+    "rms": 1.5851
+   }
+  },
+  "magmatch2_layer16": {
+   "n": 9,
+   "summed_rms": 11.4823,
+   "ranks": [
+    6,
+    12,
+    15,
+    21,
+    27,
+    33,
+    48,
+    50,
+    92
+   ],
+   "largest_member": {
+    "dim": 53,
+    "rms": 2.611
+   }
+  },
+  "bridge_write_magmatch": {
+   "n": 9,
+   "summed_rms": 11.4241,
+   "ranks": [
+    6,
+    11,
+    15,
+    20,
+    28,
+    39,
+    50,
+    59,
+    111
+   ],
+   "largest_member": {
+    "dim": 53,
+    "rms": 2.611
+   }
+  },
+  "bridge_write_magmatch1": {
+   "n": 9,
+   "summed_rms": 10.1804,
+   "ranks": [
+    11,
+    15,
+    21,
+    22,
+    28,
+    37,
+    47,
+    50,
+    122
+   ],
+   "largest_member": {
+    "dim": 757,
+    "rms": 1.5851
+   }
+  },
+  "bridge_write_magmatch2": {
+   "n": 9,
+   "summed_rms": 11.4823,
+   "ranks": [
+    6,
+    12,
+    15,
+    21,
+    27,
+    33,
+    48,
+    50,
+    92
+   ],
+   "largest_member": {
+    "dim": 53,
+    "rms": 2.611
+   }
+  },
+  "bridge_write_plainpartner": {
+   "n": 9,
+   "summed_rms": 13.6071,
+   "ranks": [
+    2,
+    9,
+    10,
+    16,
+    30,
+    35,
+    43,
+    46,
+    106
+   ],
+   "largest_member": {
+    "dim": 337,
+    "rms": 3.2445
+   }
+  },
+  "bridge_write_rand": {
+   "n": 9,
+   "summed_rms": 3.3441,
+   "ranks": [
+    166,
+    361,
+    521,
+    559,
+    613,
+    649,
+    746,
+    828,
+    838
+   ],
+   "largest_member": {
+    "dim": 864,
+    "rms": 0.6492
+   }
+  },
+  "bridge_write_vn": {
+   "n": 9,
+   "summed_rms": 13.6071,
+   "ranks": [
+    2,
+    9,
+    10,
+    16,
+    30,
+    35,
+    43,
+    46,
+    106
+   ],
+   "largest_member": {
+    "dim": 337,
+    "rms": 3.2445
+   }
+  },
+  "bridge_write_vn5": {
+   "n": 45,
+   "summed_rms": 43.9189,
+   "ranks": [
+    2,
+    5,
+    7,
+    8,
+    9,
+    10,
+    13,
+    14,
+    16,
+    18,
+    23,
+    26,
+    30,
+    34,
+    35,
+    43,
+    45,
+    46,
+    61,
+    64,
+    72,
+    83,
+    89,
+    106,
+    150,
+    159,
+    173,
+    180,
+    189,
+    255,
+    262,
+    281,
+    289,
+    299,
+    308,
+    310,
+    315,
+    362,
+    536,
+    543,
+    575,
+    728,
+    737,
+    744,
+    852
+   ],
+   "largest_member": {
+    "dim": 337,
+    "rms": 3.2445
+   }
+  }
+ }
+}

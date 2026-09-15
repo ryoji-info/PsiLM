@@ -821,7 +821,10 @@ runs from the same scripts.
 
 **The partner** (`eval/build_constitution_corpus.py`,
 `results/constitution_model/finetune_qwen0.5b.sh`, `eval/constitution_check.py`)
-is Qwen2.5-0.5B-Instruct fully fine-tuned on the document — text chunks under
+is Qwen2.5-0.5B-Instruct fine-tuned on the document with every decoder block
+trainable and the 136M embedding frozen (357.9M of 494.0M, 72.4%; an earlier version
+of this sentence said "fully", which the training log does not support) — text
+chunks under
 their heading paths, a recitation chat per section, 24 verbatim-grounded
 question–answer pairs — for 600 iterations (about 7.3 epochs, batch 2,
 sequence 1024; 13 minutes for the longest segment at 5.4 GB), then frozen and
@@ -829,9 +832,11 @@ exported as a loadable mlx-lm directory. It contains the document in the
 literal sense and no other: 27 of 38 sections recite verbatim for 160 tokens
 from their heading (the distribution is bimodal — a section either comes back
 exact or a different section comes back exact), the four core properties come
-out in their stated priority order, the three principals by name; but
-held-out paragraphs of the same document score perplexity 513 against the base
-model's 29, and novel dilemmas draw topically adjacent verbatim paragraphs
+out in their stated priority order, the three principals by name --- and the hard
+constraints, asked for as a list, come back 0 of 7: the model returns the definition
+of a hard constraint rather than the constraints, which is the sharpest single
+illustration of what it did and did not absorb. Held-out paragraphs of the same
+document score perplexity 513 against the base model's 29, and novel dilemmas draw topically adjacent verbatim paragraphs
 rather than answers. A memoriser, then, standing in the Fourier operator's
 place: the bridges get to read its hidden states, and what those states can
 carry about a situation is bounded by what the document says about one.
@@ -839,7 +844,8 @@ carry about a situation is bounded by what the document says about one.
 **The teacher.** No reward model is used. The teacher is the same frozen
 backbone reading a verbatim excerpt of the constitution as its system prompt
 (`data/constitution/system_excerpt.md`: the core values with their priority
-order, the honesty properties, the hard constraints — 2,887 words, 3,422 Qwen
+order, the honesty properties, the hard constraints — 2,848 words of excerpt body,
+3,358 Qwen
 tokens, behind one framing line); the student is the backbone reading the plain
 "You are a helpful assistant." with the bridges attached, and the loss is the
 cross-entropy of the teacher's greedy continuation, exactly as the no-harm arm
@@ -850,21 +856,31 @@ train, 200 validation from the train split; 100 held-out from the test split,
 cleared against the whole train pool, which leaves 210 usable of 2,131 because
 the set reuses openings), plus 100 helpful-base test prompts as an
 ordinary-request control (`eval/build_constitution_data.py`; the teacher's
-3.4k-token prefix is KV-cached once and copied per prompt, 2.5× faster and
+3.4k-token prefix is KV-cached once and copied per prompt (no cached-vs-uncached
+timing was recorded, so the "2.5× faster" an earlier version claimed is withdrawn) and
 token-identical on the check prompts). What a 0.5B teacher does with the
 excerpt is worth stating before any training number: it changes its
 continuation on 97–99% of red-team prompts, but the change is only partly
 refusal (0.38 → 0.43 keyword rate on train, 0.38 → 0.41 on test) — it is
-mainly terseness (114 → 62 tokens) and stopping (eos 55% → 84%), and it
-refuses *more* on ordinary requests too (0.04 → 0.12). Distilling this teacher
-transfers all of that; the stronger teacher is the 9B's.
+mainly terseness (114 → 62 tokens on train) and stopping (eos 54% → 78% on the same
+split; the 55% → 84% quoted in an earlier version is the test split's), and it
+refuses *more* on ordinary requests too (0.04 → 0.12). Those net figures also hide
+large two-sided churn, which the 9B section reports and this one originally did not:
+on the training split the excerpt ADDS a refusal on 19.1% of prompts and REMOVES one
+on 13.75%, so +5.4 points net is the residue of a flow six times its size, and on the
+test split it removes 14 refusals while adding 17. The document is not acting as a
+refusal filter; it is changing the decision in both directions. Distilling this
+teacher transfers all of that; the stronger teacher is the 9B's.
 
 **Finding the value neurons** (`eval/vn_collect.py`, `eval/vn_probe.py`,
 `eval/vn_ablate.py`, `psilm/mlx/value_neurons.py`). 1,000 GSM8K-*train*
 problems, one greedy continuation each through a KV-cached staged decode that
 stores the residual stream entering blocks 4–20 at every position (5.5 GB of
 float16 states; reward 0.308). Greedy rather than the paper's temperature 1.0
-because this backbone solves 6% of problems under that sampler and 42% greedy:
+because this backbone solves far less of GSM8K under that sampler than greedily
+(the 6% and 42% an earlier version gave here trace only to a script comment; what
+the pipeline actually measured is the greedy collect's reward rate of 0.308 over
+1,000 train problems, `results/value_neurons/qwen0.5b/collect.log`):
 a 6% positive rate leaves a dozen positive held-out trajectories to rank layers
 on, and greedy is the policy every evaluation here decodes with. The probe is
 the paper's (896 → 1024 → 1, ReLU, AdamW 1e-4, batch 4 trajectories, 80/20 by
@@ -875,8 +891,10 @@ trajectory, left the probe nearly constant after 30 epochs — held-out AUC
 `results/value_neurons/qwen0.5b/td30/`). Regressing every state on its
 trajectory's reward directly (`--target mc`, the fixed point TD converges to at
 γ → 1, reached without the backward propagation TD needs) gives 0.61–0.70 from
-the prompt-final position at every layer (0.64–0.81 from the last generated
-position). Pruning to the top 1% — nine dimensions — keeps 0.63 at layer 16
+the prompt-final position at every layer. (An earlier version quoted a second
+range, 0.64–0.81, for the last generated position; no code path in `vn_probe.py`
+scores any position but the prompt-final one, and the number is in no log, so it
+has been removed rather than left unsourced.) Pruning to the top 1% — nine dimensions — keeps 0.63 at layer 16
 (0.64 at 4, 0.63 at 10, 0.61 at 18) against 0.43–0.56 for nine random
 dimensions retrained the same way: a sparse value signal exists at 0.5B, weaker
 than the paper's on RL-trained 7B models, and the ranking finds it. Layer 16
@@ -900,9 +918,14 @@ value neurons themselves.
 That draw is not bad luck; it identifies a confound the paper's random baseline
 does not control for: **the damage tracks activation magnitude.** Ranked by
 activation RMS over rollout states at this layer, the damaging draw holds the
-5th and 18th largest dimensions of 896; the two benign draws hold nothing above
-rank 125; the nine value neurons hold ranks 1, 8 and 9 and sum to 13.6 of RMS
-against the benign draws' 3–4. So zeroing the value neurons may damage the model
+5th and 22nd largest dimensions of 896; the two benign draws hold nothing above
+rank 114; the nine value neurons hold ranks 2, 9 and 10 and sum to 13.6 of RMS
+against the benign draws' 3–4. (Ranks are 1-indexed, recomputed over the probe's
+own state slice. An earlier version of this section said ranks 1, 8 and 9, which
+was the same permutation read 0-indexed, and drew the wrong conclusion from it:
+the stream's *largest* coordinate at this layer is dimension 490 at RMS 9.81,
+three times the biggest value neuron, and it is **not** in the set. The value
+neurons are large, not the largest.) So zeroing the value neurons may damage the model
 because those coordinates are *large*, not because they carry value. The matched control
 this calls for is three draws of nine dimensions, each member matched one to one
 to a value neuron's activation RMS and taken from outside the top 5% and outside
@@ -982,11 +1005,15 @@ below measures.
 n = 100 each; the zeroed arm equals the base arm to the last digit in every
 run.) The last two rows are the partner control: the same writes with the
 untouched Qwen2.5-0.5B-Instruct as the partner — same architecture, no
-constitution in its weights. Both match their constitution-partner twins
-within noise at every chunk of training (0.957 against 0.962 and 0.627
-against 0.628 on validation; 0.921 against 0.925 and 0.575 against 0.585 on
-test), and the full-width pair agree on refusals, length and the spillover
-onto ordinary requests. So at 0.5B the document in the partner's weights is
+constitution in its weights. Both match or beat their constitution-partner twins at every chunk of training
+(0.957 against 0.962 and 0.627 against 0.628 on validation; 0.921 against 0.925 and
+0.575 against 0.585 on test), and the full-width pair agree on refusals, length and
+the spillover onto ordinary requests. The paired record sharpens this past "within
+noise" at the narrow width: the plain partner is *better* than the constitution
+partner by 0.0040 of per-item CE, 95% [-0.0079, -0.0009], an interval that excludes
+zero. At full width the two are genuinely indistinguishable, -0.0096 with 95%
+[-0.0302, +0.0125]. So removing the document from the partner's weights costs the
+channel nothing at either width and at nine dimensions slightly helps. So at 0.5B the document in the partner's weights is
 not what the channel carries. The constitution enters this system through
 the teacher — the excerpt in the backbone's own context — and the bridges
 distil it into a channel that any frozen model of the right shape can serve
@@ -1007,7 +1034,7 @@ penalty shut the gate to 0.09), nine value neurons carry a small but
 reproducible signal with the gate held at 0.50, and forty-five carry three
 times as much. The ablation's magnitude confound applies to that contrast too,
 and here it is starker: the nine random dimensions sum to 3.3 of activation RMS
-against the value neurons' 13.6 and none of them reaches rank 164, so the random
+against the value neurons' 13.6 and its largest sits at rank 166, so the random
 write is a smaller perturbation of the stream by construction. The
 magnitude-matched variant settles it, and it splits the difference. Trained under
 the identical recipe with nine dimensions matched to the value neurons' activation
@@ -1051,15 +1078,23 @@ What the extra draws strengthen is the *sign*: all three matched draws are worse
 than the value neurons, by 0.0045, 0.0063 and 0.0095, so identity contributes
 reliably even though its size is only known to within a factor of about two.
 Paired bootstrap intervals were computed for draw 0 only (the table above), and
-71 of its 100 items move toward the teacher under the value-neuron write.
+71 of the 100 items favour the value-neuron write over the magnitude-matched one,
+which is the comparison this sentence is about. (Both figures now come from
+`results/constitution/paired_bootstrap_qwen0.5b.json`. An audit briefly flagged the
+71 as unreproducible by checking the value-neuron write against *base*, where the
+count is 97; the regenerated per-item record confirms 71 for the matched comparison
+and 97 for base, so the original number was right and ambiguously worded rather than
+wrong.)
 
 The honest reading of the whole design, then, is that coupling into the value
 neurons works partly for the reason the paper suggests and substantially because
 those coordinates are the ones the stream actually carries weight in — and that
 the original random-dimension control, which the physics campaigns would have
 accepted, was far too weak to show either. Third, the value-neuron write is *narrow* at this width:
-training CE on the teacher tokens equals held-out CE in every variant (no
-overfitting), so the plateau at 0.96 is capacity — nine coordinates of 896
+running training CE on the teacher tokens sits 0.13--0.21 ABOVE held-out CE in
+every variant rather than equalling it, as an earlier version said --- the two count
+different continuation lengths and are not strictly comparable, and in the direction
+that rules overfitting out), so the plateau at 0.96 is capacity — nine coordinates of 896
 cannot hold what the constitution model has to say about a prompt, and the
 effect scales with the number of coordinates written.
 
@@ -1072,22 +1107,25 @@ scored for refusal and KL):
 |---|---|---|---|---|---|---|---|---|
 | nine value neurons | 31 / 31 / 31 | 19 / 20 / 19 | 64 / 65 / 64 | 0.002 | 7e-6 | 0.36 (open on all) | 39% → 40% | 0.002 |
 | top-45 value neurons | 31 / 33 / 31 | 19 / 19 / 19 | 64 / 64 / 64 | 0.004 | 1.4e-4 | 0.39 (open on all) | 39% → 35% | 0.007 |
-| nine random dims | 31 / 32 / 31 | 19 / 19 / 19 | 64 / 64 / 64 | 0.0001 | 1e-5 | 0.04 (open on 9%) | 39% → 37% | 2e-5 |
+| nine random dims | 31 / 32 / 31 | 19 / 19 / 19 | 64 / 64 / 64 | 0.0001 | 5e-6 | 0.04 (open on 9%) | 39% → 37% | 2e-5 |
 | nine magnitude-matched dims | 31 / 32 / 31 | 19 / 19 / 19 | 64 / 64 / 64 | 0.001 | 6e-06 | 0.31 (open on 99%) | 39% → 38% | 0.001 |
 | whole stream | 31 / 23 / 31 | 19 / 19 / 19 | 64 / 66 / 64 | 0.008 | 0.022 | 0.27 (open on all) | 39% → 58% | 0.26 |
-| nine value neurons, plain partner | 31 / 31 / 31 | 19 / 19 / 19 | 64 / 65 / 64 | 0.002 | 1e-5 | 0.37 (open on all) | 39% → 39% | 0.002 |
+| nine value neurons, plain partner | 31 / 31 / 31 | 19 / 19 / 19 | 64 / 65 / 64 | 0.002 | 7e-6 | 0.37 (open on all) | 39% → 39% | 0.002 |
 | whole stream, plain partner | 31 / 25 / 31 | 19 / 19 / 19 | 64 / 70 / 64 | 0.018 | 0.011 | 0.42 (open on all) | 39% → 61% | 0.28 |
 
 (`results/bench/const_qwen0.5b_<variant>_guardrail_summary.json`.) The
 plain-partner rows repeat their twins' profiles, leak included (GSM8K 15 items
 lost and 9 gained at full width, against 15 and 7). So does the
 magnitude-matched write, at KL 6e-6 on GSM8K against the value neurons' 7e-6 and
-the same 31/32/31: whatever the ablation says about which nine coordinates are
+31/32/31 against the value neurons' 31/31/31: whatever the ablation says about
+which nine coordinates are
 load-bearing, a nine-coordinate write is harmless either way. Harm here is set by
 the width of the write, not by which dimensions it lands in. The value-neuron writes
 are harmless in the strongest sense this harness measures — GSM8K item-level
 identical up to a few flips each way (two and two for nine dimensions, three
-and five for forty-five), KL to the base below 1e-3 on every benchmark — and
+and five for forty-five), KL to the base below 1e-3 on every benchmark for the
+nine-dimension write (its largest is 1.25e-4) — though not for the forty-five, whose
+BoolQ KL is 2.1e-3, the one place a value-neuron write crosses that line — and
 nearly inert on the red-team prompts, where the 45-dimension write shortens
 nothing and refuses four points less by the keyword count. The whole-stream write carries the
 constitution and costs eight GSM8K points (15 items lost, 7 gained,
@@ -1108,7 +1146,9 @@ meant to be judged.
 The same identification on Qwen3.5 9B, whose stream is 4096 wide, so the top 1%
 is 41 dimensions rather than nine. 800 GSM8K-train trajectories, this time at the
 paper's own sampler (temperature 1.0, top-p 0.95) because this backbone solves
-83% of the set greedily and a greedy collect would leave almost no negatives; the
+83% of GSM8K *test* greedily under the ablation's own base arm --- no greedy
+measurement on the train split is on disk --- so a greedy collect would leave
+almost no negatives; the
 sampled policy lands at 0.741, the mirror image of the 0.5B's 0.308 under greedy
 decoding. Seven depths captured at every position, 4.3 hours, 15 GB of float16
 states, reward-balanced 593 correct against 207 incorrect.
@@ -1133,8 +1173,8 @@ layers, which is where the paper looks (its layers 2–4), and it is gone by
 two-thirds depth. Layer 24 was chosen as the injection depth by the same rule as
 before, best AUC at 99% pruning among the candidates, and it happens to hold the
 widest top-versus-random gap of the three, +0.076. That gap deserves an error
-bar: with 119 correct and 41 incorrect held-out trajectories the Hanley–McNeil
-standard error on a single AUC of 0.79 is 0.037, so the gap is about 1.5
+bar: with 118 correct and 42 incorrect held-out trajectories the Hanley–McNeil
+standard error on a single AUC of 0.79 is 0.036, so the gap is about 1.5
 conservative standard errors. Suggestive, not established.
 
 **The causal check finds nothing at all** (n = 100 GSM8K test, greedy, 384 tokens,
@@ -1180,9 +1220,24 @@ Three write widths on Qwen3.5 9B, everything else identical to the 0.5B recipe
 step every second step on `data/noharm_qwen35_all.json`, 28.34M bridge
 parameters): the top 1% of value neurons (`vn`, 41 of 4096), the top 5% (`vn5`,
 205) and the whole stream (`all`). The teacher is the same frozen backbone given
-the 3,422-token constitution excerpt as its system prompt, and it differs from
-base on 91% of the held-out red-team prompts while refusing 0.750 against base's
-0.670 (`data/constitution_qwen35_stats.json`).
+the constitution excerpt as its system prompt (3,426 tokens of system block on this
+tokenizer), and it differs from base on 91% of the held-out red-team prompts while
+refusing 0.750 against base's 0.670 (`data/constitution_qwen35_stats.json`). It was
+trained on 1,000 prompts and validated on 100, half the 0.5B's counts.
+
+One caveat on those targets, which belongs here because every 9B number below
+depends on them. The data builder prefills the 3,426-token teacher prefix once and
+clones the cache per prompt, and it checks that the cached path reproduces the
+uncached one on three probe prompts. At 0.5B it did, 3 of 3. **At 9B it did not: 0 of
+3**, with first divergences at tokens 66, 49 and 64 --- the hybrid backbone's
+recurrent layers fall back to a state-restore cloner, and its `ArraysCache` has no
+`.offset` for the builder's usual probe. We ran the test the failure calls for:
+generating the same prompt twice through the cached path returns *identical* tokens,
+so the cached path is self-consistent and the divergence is greedy ties resolved
+differently under a different prefill chunking rather than a contaminated prefix. That
+is what training needs --- the targets agree with themselves --- but it is weaker than
+the 0.5B's guarantee, and the 9B teacher continuations were never verified
+token-identical to an uncached decode.
 
 | write into | dims | val CE | test CE | test agree | helpful CE | helpful refusal | GSM8K | MMLU | BoolQ | red-team refusal | KL red-team | KL GSM8K |
 |---|---:|---:|---:|---:|---:|---:|---|---|---|---:|---:|---:|
@@ -1200,7 +1255,8 @@ zeroed arm equalled the base arm to four decimals in all six evaluations.)
 
 **Nothing here harms anything.** Across three variants and four datasets the
 largest movement is two GSM8K items gained by the 205-dimension write
-(McNemar p = 0.5); MMLU moves by at most one item each way and BoolQ by one.
+(McNemar p = 0.5); MMLU moves by at most two, the full-width write losing one and
+gaining two (p = 1.0), and BoolQ by one.
 This is the 0.5B's central conclusion inverted. There, the full-width write cost
 eight GSM8K points — fifteen items lost against seven gained — and the notes
 above closed by treating the gate and the write mask as two switches, because
@@ -1276,7 +1332,10 @@ model as the bottleneck's shape rather than its source.
 
 **Methodology.** Each variant ran 2 chunks of 500 steps at batch 2 rather than
 the 4 the script originally specified. The constitution bridge runs at 26.7 s/step
-on this backbone — 5.3× the physics campaign's rate at the same batch, because
+on this backbone. That is often quoted here as 5.3× the physics campaign's rate at
+the same batch, and the comparison is not depth-matched: the physics campaign injected
+at layer 26 and this bridge at 24, and the campaign's own probes put physics at 24 at
+10.03 s/step, so the like-for-like ratio is nearer 2.7×. The reason is that
 peak memory is 48.9 GB against 25.8 GB of physical RAM — which makes a chunk
 3h43m. Every variant converged inside its first chunk: the chunk 1 → 2 movement
 in held-out CE was 0.0004 (`vn`), 0.0010 (`vn5`) and 0.0010 (`all`), the last of
