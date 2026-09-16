@@ -38,7 +38,13 @@ export HF_HUB_DISABLE_XET=1 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 step() { echo "$1 $(date '+%F %H:%M')" >> $LOG; }
 
 step "RT400 WAITING for the replicate chain"
+MISS=0
 until grep -q "QWEN35-REPLICATES COMPLETE" results/qwen35/constitution_replicates.log 2>/dev/null; do
+  # An upstream chain that dies without writing its marker would leave this
+  # sleeping forever, which defeats the point of an unattended queue. Three
+  # consecutive checks with no upstream process and no marker means it is gone.
+  if pgrep -f 'replicates_run.sh|constitution_replicates.sh' > /dev/null; then MISS=0; else MISS=$((MISS + 1)); fi
+  [ $MISS -ge 3 ] && { step "the replicate chain is neither running nor complete; proceeding"; break; }
   sleep 120
 done
 while pgrep -f 'mlx_constitution_(train|eval)\.py|bench_guardrail\.py' > /dev/null; do sleep 60; done

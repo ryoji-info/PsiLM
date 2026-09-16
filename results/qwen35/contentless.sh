@@ -31,7 +31,13 @@ export HF_HUB_DISABLE_XET=1 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 step() { echo "$1 $(date '+%F %H:%M')" >> $LOG; }
 
 step "CONTENTLESS WAITING for the 400-item red-team arms"
+MISS=0
 until grep -q "RT400 COMPLETE" results/qwen35/redteam400.log 2>/dev/null; do
+  # An upstream chain that dies without writing its marker would leave this
+  # sleeping forever, which defeats the point of an unattended queue. Three
+  # consecutive checks with no upstream process and no marker means it is gone.
+  if pgrep -f 'rt400_run.sh|redteam400.sh' > /dev/null; then MISS=0; else MISS=$((MISS + 1)); fi
+  [ $MISS -ge 3 ] && { step "the rt400 chain is neither running nor complete; proceeding"; break; }
   grep -q "GAVE UP" results/qwen35/redteam400.log 2>/dev/null \
     && { step "RT400 gave up; nothing to extend"; exit 1; }
   sleep 120
