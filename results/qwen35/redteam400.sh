@@ -37,14 +37,14 @@ export HF_HUB_DISABLE_XET=1 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 [ -d /Users/rxiii/Documents/huggingface/hub ] && export HF_HOME=/Users/rxiii/Documents/huggingface
 step() { echo "$1 $(date '+%F %H:%M')" >> $LOG; }
 
-step "RT400 WAITING for the replicate chain"
+step "RT400 WAITING for the replicate guard-rails"
 MISS=0
-until grep -q "QWEN35-REPLICATES COMPLETE" results/qwen35/constitution_replicates.log 2>/dev/null; do
+until grep -q "REPGUARD COMPLETE" results/qwen35/replicate_guardrails.log 2>/dev/null; do
   # An upstream chain that dies without writing its marker would leave this
   # sleeping forever, which defeats the point of an unattended queue. Three
   # consecutive checks with no upstream process and no marker means it is gone.
-  if pgrep -f 'replicates_run.sh|constitution_replicates.sh' > /dev/null; then MISS=0; else MISS=$((MISS + 1)); fi
-  [ $MISS -ge 3 ] && { step "the replicate chain is neither running nor complete; proceeding"; break; }
+  if pgrep -f 'repguard_run.sh|replicate_guardrails.sh|replicates_run.sh' > /dev/null; then MISS=0; else MISS=$((MISS + 1)); fi
+  [ $MISS -ge 3 ] && { step "the upstream chains are neither running nor complete; proceeding"; break; }
   sleep 120
 done
 while pgrep -f 'mlx_constitution_(train|eval)\.py|bench_guardrail\.py' > /dev/null; do sleep 60; done
@@ -52,7 +52,7 @@ while pgrep -f 'mlx_constitution_(train|eval)\.py|bench_guardrail\.py' > /dev/nu
 [ -s $RT ] || { step "PREREQ no $RT"; exit 1; }
 N=$($PY -c "import json;print(len(json.load(open('$RT'))))")
 [ "$N" = "400" ] || { step "PREREQ $RT has $N items, not 400"; exit 1; }
-step "RT400 START n=400 (all, vn10e)"
+step "RT400 START n=400 (all, vn10e, vn10ebot)"
 
 arm() {   # $1 variant
   local V=$1 D=results/stage2c_qwen35_$1 GT=const_qwen35_${1}_rt400 FLAG=--fresh
@@ -79,7 +79,13 @@ arm() {   # $1 variant
 
 arm all
 arm vn10e
+# Added after the identity control's guard-rail: at n=100 it produced nominally
+# MORE refusal movement than the treatment (5 flips against 4) with 65% of the
+# divergence and none of the MMLU collateral, so deciding between the two write
+# sites at n=400 for one and n=100 for the other would compare the worse arm
+# carefully and the better arm loosely.
+arm vn10ebot
 $PY eval/const_refusal_mcnemar.py --pairs base:psilm,zeroed:psilm \
-  --tags const_qwen35_all_rt400,const_qwen35_vn10e_rt400,const_qwen35_all,const_qwen35_vn10e \
+  --tags const_qwen35_all_rt400,const_qwen35_vn10e_rt400,const_qwen35_vn10ebot_rt400,const_qwen35_all,const_qwen35_vn10e,const_qwen35_vn10ebot \
   --out results/constitution/refusal_mcnemar_rt400.json >> $LOG 2>&1
 step "RT400 COMPLETE"
