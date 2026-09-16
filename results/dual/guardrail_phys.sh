@@ -27,8 +27,8 @@ step() { echo "$1 $(date '+%F %H:%M')" >> $LOG; }
 # Requeued 2026-09-16: the 400-item red-team arms decide whether a narrow write
 # transmits at all, which outranks attributing the dual stack's MMLU move, so
 # this waits for them even though the replicate chain launches it first.
-step "GUARDRAIL-PHYS WAITING for the 400-item arms, the contentless control and the plain-partner arm"
-until grep -q 'ALLPLAIN COMPLETE' results/qwen35/allplain.log 2>/dev/null; do
+step "GUARDRAIL-PHYS WAITING for the 400-item arms, the contentless control and the three plain-partner arms"
+until grep -q 'PLAINWIDTHS COMPLETE' results/qwen35/plainpartner_widths.log 2>/dev/null; do
   grep -qE 'GAVE UP|FAILED|nothing to extend' results/qwen35/contentless.log 2>/dev/null && break
   grep -q 'GAVE UP' results/qwen35/redteam400.log 2>/dev/null && break
   sleep 120
