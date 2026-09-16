@@ -1,12 +1,12 @@
 {
- "step": 500,
+ "step": 1000,
  "arms": {
   "vn10e": {
    "label": "probe-best 410",
    "role": "treatment",
-   "val_ce": 0.4123,
+   "val_ce": 0.413,
    "val_base": 0.472,
-   "val_gain": 0.0597,
+   "val_gain": 0.059,
    "test_ce": 0.425,
    "test_base": 0.4829,
    "test_gain": 0.0579,
@@ -19,9 +19,9 @@
   "vn10ebot": {
    "label": "probe-worst 410",
    "role": "control",
-   "val_ce": 0.4261,
+   "val_ce": 0.4246,
    "val_base": 0.472,
-   "val_gain": 0.0459,
+   "val_gain": 0.0474,
    "test_ce": null,
    "test_base": null,
    "test_gain": null,
@@ -34,9 +34,9 @@
   "all": {
    "label": "whole stream (4096)",
    "role": "reference",
-   "val_ce": 0.3914,
+   "val_ce": 0.3904,
    "val_base": 0.472,
-   "val_gain": 0.0806,
+   "val_gain": 0.0816,
    "test_ce": 0.389,
    "test_base": 0.4829,
    "test_gain": 0.0939,
@@ -51,13 +51,13 @@
  "identity_effect": {
   "val_gain": {
    "n_controls": 1,
-   "treatment": 0.0597,
-   "control_mean": 0.0459,
+   "treatment": 0.059,
+   "control_mean": 0.0474,
    "control_sd": null,
-   "control_min": 0.0459,
-   "control_max": 0.0459,
-   "ratio": 1.301,
-   "control_share_of_treatment": 0.769,
+   "control_min": 0.0474,
+   "control_max": 0.0474,
+   "ratio": 1.245,
+   "control_share_of_treatment": 0.803,
    "z": null
   }
  }

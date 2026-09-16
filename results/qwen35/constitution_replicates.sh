@@ -29,9 +29,18 @@
 # arrives with training; the behavioural comparison is underpowered at this effect
 # size on 100 items and is not worth 5 hours per arm to restate. Four arms are
 # already at step 500 on this schedule (base 0.4720, probe-best 0.4123,
-# probe-worst 0.4261, whole stream 0.3914) and chunk-to-chunk movement past 500
-# steps has been <= 0.0010 in all five arms measured, so step 500 is the
-# comparison point.
+# probe-worst 0.4261, whole stream 0.3914), so step 500 is the comparison point.
+#
+# One caveat, measured after this file was first written and recorded here rather
+# than left implicit. Drift from step 500 to step 1000 is small but NOT symmetric
+# between the two arms being compared: +0.0004 (vn), +0.0010 (vn5), +0.0010 (all),
+# -0.0007 (probe-best 410) and +0.0015 (probe-worst 410). The probe-best arm got
+# very slightly worse and its control slightly better, so the identity gap narrows
+# from 0.0138 at step 500 to 0.0116 at step 1000 -- the effect is 1.30x converged
+# to 1.245x. A step-500 error bar therefore overstates the converged identity
+# effect by roughly 15%. It is still fit for its purpose, which is whether the
+# effect is distinguishable from the control spread at all, and the alternative
+# costs 3h37m per arm. Report it as a step-500 quantity and say so.
 #
 # LAUNCH A COPY, NOT THIS FILE -- bash reads lazily by byte offset and editing a
 # running chain makes it resume at a shifted position.
