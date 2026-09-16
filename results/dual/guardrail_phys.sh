@@ -27,10 +27,17 @@ step() { echo "$1 $(date '+%F %H:%M')" >> $LOG; }
 # Requeued 2026-09-16: the 400-item red-team arms decide whether a narrow write
 # transmits at all, which outranks attributing the dual stack's MMLU move, so
 # this waits for them even though the replicate chain launches it first.
-step "GUARDRAIL-PHYS WAITING for the 400-item arms, the contentless control and the three plain-partner arms"
-until grep -q 'PLAINWIDTHS COMPLETE' results/qwen35/plainpartner_widths.log 2>/dev/null; do
+step "GUARDRAIL-PHYS WAITING for the contentless control"
+MISS=0
+until grep -q 'CONTENTLESS COMPLETE' results/qwen35/contentless.log 2>/dev/null; do
   grep -qE 'GAVE UP|FAILED|nothing to extend' results/qwen35/contentless.log 2>/dev/null && break
   grep -q 'GAVE UP' results/qwen35/redteam400.log 2>/dev/null && break
+  if pgrep -f 'contentless_run.sh|contentless.sh|rt400_run.sh|replicates_run.sh' > /dev/null; then
+    MISS=0
+  else
+    MISS=$((MISS + 1))
+  fi
+  [ $MISS -ge 3 ] && { step "nothing upstream is running or complete; proceeding"; break; }
   sleep 120
 done
 while pgrep -f "mlx_constitution_train|mlx_constitution_eval|bench_guardrail|width_run.sh" > /dev/null; do sleep 120; done

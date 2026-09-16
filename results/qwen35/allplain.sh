@@ -46,11 +46,20 @@ export HF_HUB_DISABLE_XET=1 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 [ -d /Users/rxiii/Documents/huggingface/hub ] && export HF_HOME=/Users/rxiii/Documents/huggingface
 step() { echo "$1 $(date '+%F %H:%M')" >> $LOG; }
 
-step "ALLPLAIN WAITING for the contentless control"
+step "ALLPLAIN WAITING for the physics attribution arm"
 MISS=0
-until grep -q "CONTENTLESS COMPLETE" results/qwen35/contentless.log 2>/dev/null; do
-  if pgrep -f 'contentless_run.sh|contentless.sh' > /dev/null; then MISS=0; else MISS=$((MISS + 1)); fi
-  [ $MISS -ge 3 ] && { step "the contentless chain is neither running nor complete; proceeding"; break; }
+until grep -q "GUARDRAIL-PHYS COMPLETE" results/dual/guardrail_phys.log 2>/dev/null; do
+  grep -q 'GUARDRAIL-PHYS GAVE UP' results/dual/guardrail_phys.log 2>/dev/null \
+    && { step "the physics arm gave up; proceeding"; break; }
+  # The physics arm is launched by the replicate chain, so before that lands
+  # nothing upstream is running yet -- count the whole upstream queue, not just
+  # the immediate predecessor, or this escapes during a legitimate gap.
+  if pgrep -f 'guardrail_phys.sh|contentless_run.sh|rt400_run.sh|replicates_run.sh' > /dev/null; then
+    MISS=0
+  else
+    MISS=$((MISS + 1))
+  fi
+  [ $MISS -ge 3 ] && { step "nothing upstream is running or complete; proceeding"; break; }
   sleep 120
 done
 while pgrep -f 'mlx_constitution_(train|eval)\.py|bench_guardrail\.py' > /dev/null; do sleep 60; done
