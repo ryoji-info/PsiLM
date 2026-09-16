@@ -1,0 +1,64 @@
+{
+ "step": 500,
+ "arms": {
+  "vn10e": {
+   "label": "probe-best 410",
+   "role": "treatment",
+   "val_ce": 0.4123,
+   "val_base": 0.472,
+   "val_gain": 0.0597,
+   "test_ce": 0.425,
+   "test_base": 0.4829,
+   "test_gain": 0.0579,
+   "dims": 410,
+   "cap": 0.522,
+   "energy_rel": 1.0,
+   "sum_rms2": 1105.0,
+   "sum_rms": 553.17
+  },
+  "vn10ebot": {
+   "label": "probe-worst 410",
+   "role": "control",
+   "val_ce": 0.4261,
+   "val_base": 0.472,
+   "val_gain": 0.0459,
+   "test_ce": null,
+   "test_base": null,
+   "test_gain": null,
+   "dims": 410,
+   "cap": 0.5514,
+   "energy_rel": 1.0002,
+   "sum_rms2": 990.5,
+   "sum_rms": 549.31
+  },
+  "all": {
+   "label": "whole stream (4096)",
+   "role": "reference",
+   "val_ce": 0.3914,
+   "val_base": 0.472,
+   "val_gain": 0.0806,
+   "test_ce": 0.389,
+   "test_base": 0.4829,
+   "test_gain": 0.0939,
+   "dims": 4096,
+   "cap": 0.2,
+   "energy_rel": 1.0,
+   "sum_rms2": 7527.8,
+   "sum_rms": 4604.45
+  }
+ },
+ "convention": "val CE is the trainer's own 32-item held-out split at this step; test CE is the 50-item red-team split at 24 generated tokens. energy_rel is the written set's summed squared activation relative to the whole stream, times (cap/0.2)^2 -- 1.0 is parity with a full-width write at the default cap.",
+ "identity_effect": {
+  "val_gain": {
+   "n_controls": 1,
+   "treatment": 0.0597,
+   "control_mean": 0.0459,
+   "control_sd": null,
+   "control_min": 0.0459,
+   "control_max": 0.0459,
+   "ratio": 1.301,
+   "control_share_of_treatment": 0.769,
+   "z": null
+  }
+ }
+}
