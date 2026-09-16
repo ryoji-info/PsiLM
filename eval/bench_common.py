@@ -113,13 +113,46 @@ def arm_spec(arm: str):
     vanish they belong to what the physics model computed."""
     if arm in ARMS:
         return arm, None, False
+    if arm == "contentless" or arm.startswith("contentless"):
+        # A contentless arm WRITES -- it is the psilm arm with the payload
+        # replaced -- so it resolves to mode "psilm" and the substitution is
+        # carried separately by arm_contentless(). Resolving it to a mode of its
+        # own would make every `mode == "psilm"` test in this file silently turn
+        # it into the zeroed arm.
+        arm_contentless(arm)                   # validates the seed, raises if bad
+        return "psilm", None, False
     for prefix, shuffled in (("leaky", False), ("shuffled", True)):
         if arm.startswith(prefix):
             eps = float(arm[len(prefix):])
             if not 0.0 < eps <= 1.0:
                 raise ValueError(f"{arm}: the floor must be in (0, 1]")
             return "psilm", eps, shuffled
-    raise ValueError(f"unknown arm {arm!r} (base, psilm, zeroed, leaky<eps>, shuffled<eps>)")
+    raise ValueError(f"unknown arm {arm!r} (base, psilm, zeroed, leaky<eps>, "
+                     f"shuffled<eps>, contentless[<seed>])")
+
+
+def arm_contentless(arm: str):
+    """The seed of a contentless arm, or None for every other arm.
+
+    'contentless' is the content control for a payload-carrying channel: the same
+    write, at the same coordinates, through the same gate, at the same
+    per-coordinate magnitude, but the direction is drawn from a seed instead of
+    computed from the partner. It answers a question the zeroed arm cannot --
+    zeroed asks whether the channel wrote anything, this asks whether what it
+    wrote mattered. Prompted by Malla et al. (2609.06951), who find a
+    magnitude-matched contentless direction reproduces steering's off-target
+    movement, refusal most of all, in models below 10B.
+
+    'contentless' is seed 0; 'contentless7' is seed 7, for a second draw.
+    """
+    if not arm.startswith("contentless"):
+        return None
+    rest = arm[len("contentless"):]
+    if rest == "":
+        return 0
+    if not rest.isdigit():
+        raise ValueError(f"{arm}: expected contentless or contentless<integer seed>")
+    return int(rest)
 
 
 # ----------------------------------------------------------------------------
@@ -576,6 +609,23 @@ class StagedDecoder:
         self.l_rev = l_rev if l_rev is not None else round(n * 15 / 24)
         assert 0 < self.l_fwd <= self.l_rev <= n, (self.l_fwd, self.l_rev, n)
         self.eos_ids = set(eos_ids) if eos_ids is not None else eos_id_set(hf_tok)
+        #: seed of the contentless control, set per arm by the harness and left at
+        #: None for every trained arm. Read at the single injection choke point.
+        self.contentless = None
+
+    def set_contentless(self, seed):
+        """Arm the contentless control, refusing loudly if the channel cannot honour it.
+
+        A silent fallback here would be indistinguishable from the psilm arm in
+        every output, which is exactly how a control becomes a duplicate of the
+        thing it was meant to control.
+        """
+        if seed is not None and not getattr(self.coupler, "supports_contentless", False):
+            raise RuntimeError(
+                f"a contentless arm was requested but {type(self.coupler).__name__} does not "
+                f"declare supports_contentless; refusing to run an arm that would silently "
+                f"be the psilm arm")
+        self.contentless = seed
 
     # -- pieces -------------------------------------------------------------
     def _layers(self, h, lo, hi, mask, cache):
@@ -636,7 +686,13 @@ class StagedDecoder:
 
     def _couple_inject(self, h, tokens, mode, floor=None):
         if self.coupler is not None:
-            return self.coupler.inject(h, tokens, mode, floor)
+            if self.contentless is None:
+                return self.coupler.inject(h, tokens, mode, floor)
+            return self.coupler.inject(h, tokens, mode, floor, contentless=self.contentless)
+        if self.contentless is not None:
+            raise RuntimeError("the physics coupler has no contentless control; its content "
+                               "control is --shuffle-values-from (a different question's "
+                               "scalar value), not a random direction")
         return self._inject(h, tokens, mode, floor)
 
     def _run_top(self, h, tokens, mode, floor, mask, cache):

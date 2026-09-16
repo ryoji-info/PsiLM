@@ -364,6 +364,7 @@ class MaskedGatedCrossAttentionMLX(nn.Module):
         self.inj_cap = inj_cap
         self.gate_bias = float(gate_bias)   # as constructed, not as trained
         self.gate_floor = None              # leaky gate, set at inference only
+        self.contentless = None             # int seed, set at inference only: see __call__
         idx = (list(range(d_model)) if write_idx is None
                else sorted({int(i) for i in write_idx}))
         assert idx and 0 <= idx[0] and idx[-1] < d_model, "write dims out of range"
@@ -393,6 +394,27 @@ class MaskedGatedCrossAttentionMLX(nn.Module):
         k, v = self.to_k(tokens), self.to_v(tokens)
         attn = mx.softmax(q @ k.transpose(0, 2, 1) / math.sqrt(q.shape[-1]), axis=-1)
         inj = self.to_out(attn @ v) * self.write_mask
+        if self.contentless is not None:
+            # The CONTENTLESS control. Malla et al. (2609.06951) find that
+            # steering's off-target movement lands on a fixed set of default
+            # sinks -- chiefly refusal -- largely regardless of what is steered,
+            # and that a magnitude-matched contentless direction moves the same
+            # behaviours in the same order. Below 10B the pull is strongest, so a
+            # 9B backbone with refusal as the readout is exactly the case that
+            # needs this control before a refusal shift is attributed to content.
+            #
+            # So: one fixed random direction over the written coordinates,
+            # rescaled at EVERY position to the real injection's own
+            # per-coordinate RMS. Same channel, same written coordinates, same
+            # gate (sigma reads h, not the payload), same receiver scale, same
+            # magnitude -- no content. Note this is matched to what the real
+            # injection actually does here, not merely to inj_cap, so it stays
+            # matched at any position where the cap does not bind.
+            r_real = mx.sqrt((inj * inj).sum(axis=-1, keepdims=True) * self._inv_n + 1e-12)
+            d = mx.random.normal(shape=(1, 1, inj.shape[-1]),
+                                 key=mx.random.key(int(self.contentless))) * self.write_mask
+            r_d = mx.sqrt((d * d).sum(axis=-1, keepdims=True) * self._inv_n + 1e-12)
+            inj = d * (r_real / r_d)
         if self.inj_cap is not None:
             r = mx.sqrt((inj * inj).sum(axis=-1, keepdims=True) * self._inv_n + 1e-12)
             inj = inj * mx.minimum(mx.array(1.0), self.inj_cap / r)
@@ -697,12 +719,23 @@ class ConstitutionCoupler:
     def __init__(self, bridges: ConstitutionBridgesMLX, const_model: ConstitutionModelMLX):
         self.phi = bridges
         self.const = const_model
+        # Set per arm by the harness; a different direction per question, so no
+        # single unlucky draw can carry the result. Counted in tokens(), which
+        # runs once per question.
+        self.contentless_seed = None
+        self._q = 0
+
+    #: the harness checks for this before running a contentless arm, so an arm
+    #: name this channel cannot honour fails loudly instead of quietly becoming
+    #: the psilm arm again.
+    supports_contentless = True
 
     def tokens(self, h_prompt, x0_span=None, sub_value=None):
         if sub_value is not None:
             raise ValueError("the constitution channel has no scalar to substitute")
         L = h_prompt.shape[1]
         pmask = mx.ones((1, L), dtype=mx.bool_)
+        self._q += 1
         soft, weights = self.phi.fwd(h_prompt, pmask)
         feats = self.const.features(soft)
         tokens = self.phi.rev(feats)
@@ -717,12 +750,17 @@ class ConstitutionCoupler:
                              for v in weights[0].argmax(-1).tolist()]}
         return tokens, diag
 
-    def inject(self, h, tokens, mode, floor=None):
+    def inject(self, h, tokens, mode, floor=None, contentless=None):
         self.phi.inject.gate_floor = floor          # None for the trained arms
+        if contentless is not None:
+            # 100003 is just a large prime: it keeps consecutive questions from
+            # sharing a direction when the run seed changes by one.
+            self.phi.inject.contentless = int(contentless) * 100003 + self._q
         try:
             h_inj, sigma = self.phi.inject(h, tokens)     # sigma is pre-floor
         finally:
             self.phi.inject.gate_floor = None
+            self.phi.inject.contentless = None
         if mode == "psilm":
             return h_inj, sigma
         return h, sigma                             # zeroed: gate measured, no write

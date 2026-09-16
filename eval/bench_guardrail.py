@@ -64,7 +64,7 @@ from eval.bench_common import (  # noqa: E402
     PHYSICS_DATA, REDTEAM_DATA, StagedDecoder, Task, append_jsonl, build_tasks, eos_id_set, estimate_budget,
     format_table, is_refusal, load_backbone, load_gsm8k, load_mmlu, load_physics, load_physics_stack,
     load_redteam, parse_letter, parse_number, read_jsonl, score, sigma_stats, summarize,
-    task_manifest,
+    task_manifest, arm_contentless,
 )
 
 
@@ -470,6 +470,9 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
             p = t.prompt_for(arm)
             span = p.x0_span if arm != "base" else None
             _, _, shuffled = arm_spec(arm)
+            # Armed for BOTH the generation and the KL below, and cleared after,
+            # so no later arm inherits it.
+            dec.set_contentless(arm_contentless(arm))
             sub = shuffled_value.get((t.dataset, t.qid)) if shuffled else None
             if shuffled and sub is None:
                 raise SystemExit(f"{arm}: no substitute value for {t.qid} "
@@ -487,6 +490,7 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
                     mode, floor, _ = arm_spec(arm)
                     row["kl"] = dec.kl_to_base(p.ids, base_gen[t.qid], mode, span, floor,
                                                sub_value=sub)
+            dec.set_contentless(None)
             append_jsonl(rows_path, row)
             rows.append(row)
             done.add(key)
