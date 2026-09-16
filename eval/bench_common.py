@@ -98,6 +98,28 @@ def is_refusal(text: str) -> bool:
     return any(k.lower() in low for k in REFUSAL_KEYWORDS)
 
 
+def top2_margin(logits) -> Dict[str, Any]:
+    """Top-1 minus top-2 logit at one position, with the two token ids.
+
+    Recorded so churn can be read against fragility. Across five unrelated 9B
+    arms only 8 of 100 MMLU items ever moved and half of those moved in two or
+    three of them, which is what a handful of boundary-sitting items looks like:
+    at 4-bit the margin between the best and second-best answer token can be
+    smaller than the logit shift any write produces, and then an item flips for
+    reasons that say nothing about what was written. A margin below the
+    intervention's own logit shift means the flip is fragility; well above, and
+    the write did the work.
+    """
+    import mlx.core as mx
+    v = logits.reshape(-1)
+    k = mx.argpartition(-v, 2)[:2]
+    a, b = int(k[0].item()), int(k[1].item())
+    va, vb = float(v[a].item()), float(v[b].item())
+    if vb > va:
+        a, b, va, vb = b, a, vb, va
+    return {"margin": round(va - vb, 5), "top1": a, "top2": b}
+
+
 def arm_spec(arm: str):
     """(mode, gate_floor, shuffled) of an arm name.
 
@@ -794,6 +816,11 @@ class StagedDecoder:
             h = self._run_top(h, tokens, mode, floor, mask, cache)
             sig_p = sig[0, :, 0].astype(mx.float32)
         logits = self._logits_last(h)
+        # The decision this position makes, and by how much. Free: the logits are
+        # already here, and for the letter and yes/no protocols this position IS
+        # the answer.
+        diag = dict(diag or {})
+        diag["decision"] = top2_margin(logits)
         return logits, cache, tokens, sig_p, diag
 
     def generate(self, prompt_ids, mode="base", max_new=64, x0_span=None,
