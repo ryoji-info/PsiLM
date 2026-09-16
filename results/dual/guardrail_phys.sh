@@ -24,6 +24,14 @@ LOG=results/dual/guardrail_phys.log
 export HF_HUB_DISABLE_XET=1 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 [ -d /Users/rxiii/Documents/huggingface/hub ] && export HF_HOME=/Users/rxiii/Documents/huggingface
 step() { echo "$1 $(date '+%F %H:%M')" >> $LOG; }
+# Requeued 2026-09-16: the 400-item red-team arms decide whether a narrow write
+# transmits at all, which outranks attributing the dual stack's MMLU move, so
+# this waits for them even though the replicate chain launches it first.
+step "GUARDRAIL-PHYS WAITING for the 400-item red-team arms"
+until grep -q 'RT400 COMPLETE' results/qwen35/redteam400.log 2>/dev/null; do
+  grep -q 'GAVE UP' results/qwen35/redteam400.log 2>/dev/null && break
+  sleep 120
+done
 while pgrep -f "mlx_constitution_train|mlx_constitution_eval|bench_guardrail|width_run.sh" > /dev/null; do sleep 120; done
 step "GUARDRAIL-PHYS START"
 FLAG=--fresh
