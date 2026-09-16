@@ -22,9 +22,9 @@
    "val_ce": 0.4246,
    "val_base": 0.472,
    "val_gain": 0.0474,
-   "test_ce": null,
-   "test_base": null,
-   "test_gain": null,
+   "test_ce": 0.4333,
+   "test_base": 0.4829,
+   "test_gain": 0.0496,
    "dims": 410,
    "cap": 0.5514,
    "energy_rel": 1.0002,
@@ -58,6 +58,17 @@
    "control_max": 0.0474,
    "ratio": 1.245,
    "control_share_of_treatment": 0.803,
+   "z": null
+  },
+  "test_gain": {
+   "n_controls": 1,
+   "treatment": 0.0579,
+   "control_mean": 0.0496,
+   "control_sd": null,
+   "control_min": 0.0496,
+   "control_max": 0.0496,
+   "ratio": 1.167,
+   "control_share_of_treatment": 0.857,
    "z": null
   }
  }
