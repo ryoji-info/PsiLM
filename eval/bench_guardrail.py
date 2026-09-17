@@ -614,6 +614,9 @@ def self_test():
     assert parse_number("u at x = 0.86 equals -0.10.", fallback="decimal") == -0.10
     assert parse_letter("Answer: C") == "C" and parse_letter("**Answer:** (b)") == "B"
     assert parse_letter("A duck walks.\nB. yes") == "B" and parse_letter("nothing") is None
+    # the bare-letter answer the 9B gives on 18 of 100 MMLU items, in its three spellings
+    assert parse_letter("B") == "B" and parse_letter("(C)") == "C" and parse_letter(" D.\n") == "D"
+    assert parse_letter("Because") is None            # a word starting with a letter is not a letter
     assert score("physics_trained", "u at x = 0.86 equals -0.10.", -0.095) == (-0.10, True)
     assert score("number", "Answer: 18.00", 18.0) == (18.0, True)
     assert score("letter", "The answer is option C.", "C") == ("C", True)

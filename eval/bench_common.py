@@ -320,6 +320,9 @@ def parse_yesno(text: str) -> Optional[bool]:
     return (m[-1].lower() == "yes") if m else None
 
 
+_BARE_LET = re.compile(r"^\s*\(?([ABCD])\)?\.?\s*$")
+
+
 def parse_letter(text: str) -> Optional[str]:
     m = _ANS_LET.findall(text)
     if m:
@@ -330,6 +333,15 @@ def parse_letter(text: str) -> Optional[str]:
     m = _OPT_LET.findall(text)
     if m:
         return m[0].upper()
+    # A bare letter -- "B", "(B)", "C." -- then EOS. The 9B backbone answers 18 of
+    # 100 MMLU items this way (n_gen = 2, stopped on EOS, not truncated), and
+    # every one of them scored as wrong until this branch existed: base MMLU was
+    # reported as 64 when it is 75, and a coupled arm that merely changed
+    # FORMAT on a few items read as an accuracy gain. Caught by the 2026-09-17
+    # review; all six 9B guard-rail runs are rescored by eval/rescore_mmlu.py.
+    m = _BARE_LET.match(text or "")
+    if m:
+        return m.group(1).upper()
     return None
 
 

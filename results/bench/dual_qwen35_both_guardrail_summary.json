@@ -712,9 +712,9 @@
    "arms": {
     "base": {
      "n": 100,
-     "acc": 0.64,
-     "n_correct": 64,
-     "parse_rate": 0.82,
+     "acc": 0.75,
+     "n_correct": 75,
+     "parse_rate": 1.0,
      "mean_n_gen": 3.6,
      "eos_rate": 1.0,
      "sec_per_q": 1.43,
@@ -722,9 +722,9 @@
     },
     "psilm": {
      "n": 100,
-     "acc": 0.69,
-     "n_correct": 69,
-     "parse_rate": 0.88,
+     "acc": 0.77,
+     "n_correct": 77,
+     "parse_rate": 1.0,
      "mean_n_gen": 3.7,
      "eos_rate": 1.0,
      "sec_per_q": 1.44,
@@ -750,9 +750,9 @@
     },
     "zeroed": {
      "n": 100,
-     "acc": 0.64,
-     "n_correct": 64,
-     "parse_rate": 0.82,
+     "acc": 0.75,
+     "n_correct": 75,
+     "parse_rate": 1.0,
      "mean_n_gen": 3.6,
      "eos_rate": 1.0,
      "sec_per_q": 1.47,
@@ -780,37 +780,37 @@
    "paired": {
     "base_vs_psilm": {
      "n": 100,
-     "both": 64,
-     "a_only": 0,
-     "b_only": 5,
-     "neither": 31,
-     "delta_acc": 0.05,
-     "mcnemar_p": 0.0625
+     "both": 74,
+     "a_only": 1,
+     "b_only": 3,
+     "neither": 22,
+     "delta_acc": 0.02,
+     "mcnemar_p": 0.625
     },
     "base_vs_zeroed": {
      "n": 100,
-     "both": 64,
+     "both": 75,
      "a_only": 0,
      "b_only": 0,
-     "neither": 36,
+     "neither": 25,
      "delta_acc": 0.0,
      "mcnemar_p": 1.0
     },
     "zeroed_vs_psilm": {
      "n": 100,
-     "both": 64,
-     "a_only": 0,
-     "b_only": 5,
-     "neither": 31,
-     "delta_acc": 0.05,
-     "mcnemar_p": 0.0625
+     "both": 74,
+     "a_only": 1,
+     "b_only": 3,
+     "neither": 22,
+     "delta_acc": 0.02,
+     "mcnemar_p": 0.625
     }
    },
    "by_subject": {
     "high_school_mathematics": {
-     "base": 0.05,
-     "psilm": 0.25,
-     "zeroed": 0.05
+     "base": 0.55,
+     "psilm": 0.6,
+     "zeroed": 0.55
     },
     "college_physics": {
      "base": 0.65,
@@ -823,9 +823,9 @@
      "zeroed": 0.8
     },
     "high_school_biology": {
-     "base": 0.9,
-     "psilm": 0.9,
-     "zeroed": 0.9
+     "base": 0.95,
+     "psilm": 0.95,
+     "zeroed": 0.95
     },
     "us_foreign_policy": {
      "base": 0.8,
@@ -1050,6 +1050,14 @@
    "n": 100
   }
  ],
- "table_text": "dataset      n    acc:base   acc:psilm  acc:zeroed  |  sig:psilm    p90  open% sig:zeroed    p90  open%\n-------------------------------------------------------------------------------------------------------\nredteam    100         0.0         0.0         0.0   |     0.3757  0.417  100.0     0.3757  0.412  100.0 \ngsm8k      100        0.83        0.83        0.83   |     0.0037  0.005    0.0     0.0036  0.005    0.0 \nmmlu       100        0.64        0.69        0.64   |     0.0041  0.007    0.0     0.0041  0.007    0.0 \nboolq      100         0.9        0.89         0.9   |     0.0042  0.007    0.0     0.0042  0.007    0.0 \nrefusal-keyword rate (free-form arms; a proxy, not a judge):\n  redteam  base       refusal=0.660 n=100 mean_gen=114.3\n  redteam  psilm      refusal=0.710 n=100 mean_gen=111.5\n  redteam  zeroed     refusal=0.660 n=100 mean_gen=114.3\nKL(base || arm) per token, teacher-forced on the base continuation:\n  redteam  psilm      mean=0.10913 p90=0.14648 mean_p95=0.33176\n  redteam  zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  gsm8k    psilm      mean=0.00046 p90=0.00065 mean_p95=0.00211\n  gsm8k    zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  mmlu     psilm      mean=0.07229 p90=0.20534 mean_p95=0.17792\n  mmlu     zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  boolq    psilm      mean=0.00216 p90=0.00467 mean_p95=0.00729\n  boolq    zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  redteam  base_vs_psilm    n=100 both=  0 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  redteam  base_vs_zeroed   n=100 both=  0 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  redteam  zeroed_vs_psilm  n=100 both=  0 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  gsm8k    base_vs_psilm    n=100 both= 82 a_only=  1 b_only=  1 delta=    0.0 McNemar p=1.0\n  gsm8k    base_vs_zeroed   n=100 both= 83 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  gsm8k    zeroed_vs_psilm  n=100 both= 82 a_only=  1 b_only=  1 delta=    0.0 McNemar p=1.0\n  mmlu     base_vs_psilm    n=100 both= 64 a_only=  0 b_only=  5 delta=   0.05 McNemar p=0.0625\n  mmlu     base_vs_zeroed   n=100 both= 64 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  mmlu     zeroed_vs_psilm  n=100 both= 64 a_only=  0 b_only=  5 delta=   0.05 McNemar p=0.0625\n  boolq    base_vs_psilm    n=100 both= 89 a_only=  1 b_only=  0 delta=  -0.01 McNemar p=1.0\n  boolq    base_vs_zeroed   n=100 both= 90 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  boolq    zeroed_vs_psilm  n=100 both= 89 a_only=  1 b_only=  0 delta=  -0.01 McNemar p=1.0",
- "n_rows": 1200
+ "table_text": "dataset      n    acc:base   acc:psilm  acc:zeroed  |  sig:psilm    p90  open% sig:zeroed    p90  open%\n-------------------------------------------------------------------------------------------------------\nredteam    100         0.0         0.0         0.0   |     0.3757  0.417  100.0     0.3757  0.412  100.0 \ngsm8k      100        0.83        0.83        0.83   |     0.0037  0.005    0.0     0.0036  0.005    0.0 \nmmlu       100        0.75        0.77        0.75   |     0.0041  0.007    0.0     0.0041  0.007    0.0 \nboolq      100         0.9        0.89         0.9   |     0.0042  0.007    0.0     0.0042  0.007    0.0 \nrefusal-keyword rate (free-form arms; a proxy, not a judge):\n  redteam  base       refusal=0.660 n=100 mean_gen=114.3\n  redteam  psilm      refusal=0.710 n=100 mean_gen=111.5\n  redteam  zeroed     refusal=0.660 n=100 mean_gen=114.3\nKL(base || arm) per token, teacher-forced on the base continuation:\n  redteam  psilm      mean=0.10913 p90=0.14648 mean_p95=0.33176\n  redteam  zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  gsm8k    psilm      mean=0.00046 p90=0.00065 mean_p95=0.00211\n  gsm8k    zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  mmlu     psilm      mean=0.07229 p90=0.20534 mean_p95=0.17792\n  mmlu     zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  boolq    psilm      mean=0.00216 p90=0.00467 mean_p95=0.00729\n  boolq    zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  redteam  base_vs_psilm    n=100 both=  0 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  redteam  base_vs_zeroed   n=100 both=  0 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  redteam  zeroed_vs_psilm  n=100 both=  0 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  gsm8k    base_vs_psilm    n=100 both= 82 a_only=  1 b_only=  1 delta=    0.0 McNemar p=1.0\n  gsm8k    base_vs_zeroed   n=100 both= 83 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  gsm8k    zeroed_vs_psilm  n=100 both= 82 a_only=  1 b_only=  1 delta=    0.0 McNemar p=1.0\n  mmlu     base_vs_psilm    n=100 both= 74 a_only=  1 b_only=  3 delta=   0.02 McNemar p=0.625\n  mmlu     base_vs_zeroed   n=100 both= 75 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  mmlu     zeroed_vs_psilm  n=100 both= 74 a_only=  1 b_only=  3 delta=   0.02 McNemar p=0.625\n  boolq    base_vs_psilm    n=100 both= 89 a_only=  1 b_only=  0 delta=  -0.01 McNemar p=1.0\n  boolq    base_vs_zeroed   n=100 both= 90 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  boolq    zeroed_vs_psilm  n=100 both= 89 a_only=  1 b_only=  0 delta=  -0.01 McNemar p=1.0",
+ "n_rows": 1200,
+ "rescored_mmlu_parse": {
+  "note": "MMLU pred/ok rescored with the bare-letter branch of parse_letter (eval/rescore_mmlu.py); KL columns unaffected",
+  "rows_changed": {
+   "base": 18,
+   "zeroed": 18,
+   "psilm": 12
+  }
+ }
 }

@@ -603,9 +603,9 @@
    "arms": {
     "base": {
      "n": 100,
-     "acc": 0.64,
-     "n_correct": 64,
-     "parse_rate": 0.82,
+     "acc": 0.75,
+     "n_correct": 75,
+     "parse_rate": 1.0,
      "mean_n_gen": 3.6,
      "eos_rate": 1.0,
      "sec_per_q": 1.38,
@@ -613,9 +613,9 @@
     },
     "psilm": {
      "n": 100,
-     "acc": 0.66,
-     "n_correct": 66,
-     "parse_rate": 0.86,
+     "acc": 0.75,
+     "n_correct": 75,
+     "parse_rate": 1.0,
      "mean_n_gen": 3.7,
      "eos_rate": 1.0,
      "sec_per_q": 1.37,
@@ -641,9 +641,9 @@
     },
     "zeroed": {
      "n": 100,
-     "acc": 0.64,
-     "n_correct": 64,
-     "parse_rate": 0.82,
+     "acc": 0.75,
+     "n_correct": 75,
+     "parse_rate": 1.0,
      "mean_n_gen": 3.6,
      "eos_rate": 1.0,
      "sec_per_q": 1.41,
@@ -671,37 +671,37 @@
    "paired": {
     "base_vs_psilm": {
      "n": 100,
-     "both": 64,
-     "a_only": 0,
-     "b_only": 2,
-     "neither": 34,
-     "delta_acc": 0.02,
-     "mcnemar_p": 0.5
+     "both": 74,
+     "a_only": 1,
+     "b_only": 1,
+     "neither": 24,
+     "delta_acc": 0.0,
+     "mcnemar_p": 1.0
     },
     "base_vs_zeroed": {
      "n": 100,
-     "both": 64,
+     "both": 75,
      "a_only": 0,
      "b_only": 0,
-     "neither": 36,
+     "neither": 25,
      "delta_acc": 0.0,
      "mcnemar_p": 1.0
     },
     "zeroed_vs_psilm": {
      "n": 100,
-     "both": 64,
-     "a_only": 0,
-     "b_only": 2,
-     "neither": 34,
-     "delta_acc": 0.02,
-     "mcnemar_p": 0.5
+     "both": 74,
+     "a_only": 1,
+     "b_only": 1,
+     "neither": 24,
+     "delta_acc": 0.0,
+     "mcnemar_p": 1.0
     }
    },
    "by_subject": {
     "high_school_mathematics": {
-     "base": 0.05,
-     "psilm": 0.15,
-     "zeroed": 0.05
+     "base": 0.55,
+     "psilm": 0.55,
+     "zeroed": 0.55
     },
     "college_physics": {
      "base": 0.65,
@@ -714,9 +714,9 @@
      "zeroed": 0.8
     },
     "high_school_biology": {
-     "base": 0.9,
-     "psilm": 0.9,
-     "zeroed": 0.9
+     "base": 0.95,
+     "psilm": 0.95,
+     "zeroed": 0.95
     },
     "us_foreign_policy": {
      "base": 0.8,
@@ -1041,6 +1041,14 @@
    "n": 100
   }
  ],
- "table_text": "dataset      n    acc:base   acc:psilm  acc:zeroed  |  sig:psilm    p90  open% sig:zeroed    p90  open%\n-------------------------------------------------------------------------------------------------------\nphysics    100        0.01        0.99         0.1   |     0.8104  0.812  100.0     0.8058  0.807  100.0 \nmmlu       100        0.64        0.66        0.64   |     0.0137  0.019    0.0     0.0137  0.019    0.0 \ngsm8k      100        0.83        0.83        0.83   |     0.0038  0.005    0.0     0.0038  0.005    0.0 \nboolq      100         0.9        0.89         0.9   |     0.0077  0.010    0.0     0.0077  0.010    0.0 \nKL(base || arm) per token, teacher-forced on the base continuation:\n  physics  psilm      mean=0.07190 p90=0.09383 mean_p95=0.20546\n  physics  zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  mmlu     psilm      mean=0.04090 p90=0.11118 mean_p95=0.10231\n  mmlu     zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  gsm8k    psilm      mean=0.00012 p90=0.00019 mean_p95=0.00057\n  gsm8k    zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  boolq    psilm      mean=0.00064 p90=0.00168 mean_p95=0.00216\n  boolq    zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  physics  base_vs_psilm    n=100 both=  1 a_only=  0 b_only= 98 delta=   0.98 McNemar p=0.0\n  physics  base_vs_zeroed   n=100 both=  1 a_only=  0 b_only=  9 delta=   0.09 McNemar p=0.0039\n  physics  zeroed_vs_psilm  n=100 both=  9 a_only=  1 b_only= 90 delta=   0.89 McNemar p=0.0\n  mmlu     base_vs_psilm    n=100 both= 64 a_only=  0 b_only=  2 delta=   0.02 McNemar p=0.5\n  mmlu     base_vs_zeroed   n=100 both= 64 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  mmlu     zeroed_vs_psilm  n=100 both= 64 a_only=  0 b_only=  2 delta=   0.02 McNemar p=0.5\n  gsm8k    base_vs_psilm    n=100 both= 83 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  gsm8k    base_vs_zeroed   n=100 both= 83 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  gsm8k    zeroed_vs_psilm  n=100 both= 83 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  boolq    base_vs_psilm    n=100 both= 89 a_only=  1 b_only=  0 delta=  -0.01 McNemar p=1.0\n  boolq    base_vs_zeroed   n=100 both= 90 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  boolq    zeroed_vs_psilm  n=100 both= 89 a_only=  1 b_only=  0 delta=  -0.01 McNemar p=1.0",
- "n_rows": 1200
+ "table_text": "dataset      n    acc:base   acc:psilm  acc:zeroed  |  sig:psilm    p90  open% sig:zeroed    p90  open%\n-------------------------------------------------------------------------------------------------------\nphysics    100        0.01        0.99         0.1   |     0.8104  0.812  100.0     0.8058  0.807  100.0 \nmmlu       100        0.75        0.75        0.75   |     0.0137  0.019    0.0     0.0137  0.019    0.0 \ngsm8k      100        0.83        0.83        0.83   |     0.0038  0.005    0.0     0.0038  0.005    0.0 \nboolq      100         0.9        0.89         0.9   |     0.0077  0.010    0.0     0.0077  0.010    0.0 \nKL(base || arm) per token, teacher-forced on the base continuation:\n  physics  psilm      mean=0.07190 p90=0.09383 mean_p95=0.20546\n  physics  zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  mmlu     psilm      mean=0.04090 p90=0.11118 mean_p95=0.10231\n  mmlu     zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  gsm8k    psilm      mean=0.00012 p90=0.00019 mean_p95=0.00057\n  gsm8k    zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  boolq    psilm      mean=0.00064 p90=0.00168 mean_p95=0.00216\n  boolq    zeroed     mean=0.00000 p90=0.00000 mean_p95=0.00000\n  physics  base_vs_psilm    n=100 both=  1 a_only=  0 b_only= 98 delta=   0.98 McNemar p=0.0\n  physics  base_vs_zeroed   n=100 both=  1 a_only=  0 b_only=  9 delta=   0.09 McNemar p=0.0039\n  physics  zeroed_vs_psilm  n=100 both=  9 a_only=  1 b_only= 90 delta=   0.89 McNemar p=0.0\n  mmlu     base_vs_psilm    n=100 both= 74 a_only=  1 b_only=  1 delta=    0.0 McNemar p=1.0\n  mmlu     base_vs_zeroed   n=100 both= 75 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  mmlu     zeroed_vs_psilm  n=100 both= 74 a_only=  1 b_only=  1 delta=    0.0 McNemar p=1.0\n  gsm8k    base_vs_psilm    n=100 both= 83 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  gsm8k    base_vs_zeroed   n=100 both= 83 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  gsm8k    zeroed_vs_psilm  n=100 both= 83 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  boolq    base_vs_psilm    n=100 both= 89 a_only=  1 b_only=  0 delta=  -0.01 McNemar p=1.0\n  boolq    base_vs_zeroed   n=100 both= 90 a_only=  0 b_only=  0 delta=    0.0 McNemar p=1.0\n  boolq    zeroed_vs_psilm  n=100 both= 89 a_only=  1 b_only=  0 delta=  -0.01 McNemar p=1.0",
+ "n_rows": 1200,
+ "rescored_mmlu_parse": {
+  "note": "MMLU pred/ok rescored with the bare-letter branch of parse_letter (eval/rescore_mmlu.py); KL columns unaffected",
+  "rows_changed": {
+   "base": 18,
+   "psilm": 14,
+   "zeroed": 18
+  }
+ }
 }
