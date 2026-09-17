@@ -18,21 +18,21 @@
    "gate_all": null,
    "ratio_gen": null,
    "open_rate": null,
-   "sec_per_q": 29.41
+   "sec_per_q": 14.61
   },
   "psilm": {
    "n": 50,
    "ce": 0.4408,
-   "agree": 0.863,
-   "refusal": 0.62,
+   "agree": 0.8641,
+   "refusal": 0.68,
    "n_gen": 24.0,
    "eos_rate": 0.0,
-   "gate_prompt": 0.07331,
-   "gate_gen": 0.498,
-   "gate_all": 0.23203,
-   "ratio_gen": 0.27803,
+   "gate_prompt": 0.07288,
+   "gate_gen": 0.48024,
+   "gate_all": 0.22489,
+   "ratio_gen": 0.26812,
    "open_rate": 0.0,
-   "sec_per_q": 31.46
+   "sec_per_q": 15.19
   },
   "zeroed": {
    "n": 50,
@@ -41,12 +41,12 @@
    "refusal": 0.62,
    "n_gen": 24.0,
    "eos_rate": 0.0,
-   "gate_prompt": 0.07331,
-   "gate_gen": 0.49568,
-   "gate_all": 0.23111,
-   "ratio_gen": 0.27674,
+   "gate_prompt": 0.07288,
+   "gate_gen": 0.47912,
+   "gate_all": 0.2245,
+   "ratio_gen": 0.26749,
    "open_rate": 0.0,
-   "sec_per_q": 31.51
+   "sec_per_q": 15.16
   },
   "teacher_stored": {
    "n": 50,
@@ -82,10 +82,10 @@
    "n": 50,
    "both": 31,
    "a_only": 0,
-   "b_only": 0,
-   "neither": 19,
-   "delta_refusal": 0.0,
-   "mcnemar_p": 1.0
+   "b_only": 3,
+   "neither": 16,
+   "delta_refusal": 0.06,
+   "mcnemar_p": 0.25
   },
   "base->zeroed": {
    "n": 50,
@@ -117,29 +117,29 @@
   "psilm->zeroed": {
    "n": 50,
    "both": 31,
-   "a_only": 0,
+   "a_only": 3,
    "b_only": 0,
-   "neither": 19,
-   "delta_refusal": 0.0,
-   "mcnemar_p": 1.0
+   "neither": 16,
+   "delta_refusal": -0.06,
+   "mcnemar_p": 0.25
   },
   "psilm->teacher_stored": {
    "n": 50,
-   "both": 31,
-   "a_only": 0,
-   "b_only": 9,
-   "neither": 10,
-   "delta_refusal": 0.18,
-   "mcnemar_p": 0.0039
+   "both": 33,
+   "a_only": 1,
+   "b_only": 7,
+   "neither": 9,
+   "delta_refusal": 0.12,
+   "mcnemar_p": 0.0703
   },
   "psilm->base_stored": {
    "n": 50,
-   "both": 31,
-   "a_only": 0,
-   "b_only": 2,
-   "neither": 17,
-   "delta_refusal": 0.04,
-   "mcnemar_p": 0.5
+   "both": 32,
+   "a_only": 2,
+   "b_only": 1,
+   "neither": 15,
+   "delta_refusal": -0.02,
+   "mcnemar_p": 1.0
   },
   "zeroed->teacher_stored": {
    "n": 50,
@@ -172,7 +172,7 @@
  "open_thresh": 0.5,
  "rows": "results/stage2c_qwen35_match1/eval_test.jsonl",
  "checkpoint": {
-  "step": 1000,
+  "step": 500,
   "l_fwd": 13,
   "l_rev": 24,
   "k_fwd": 8,
@@ -185,5 +185,5 @@
  },
  "n_write_dims": 410,
  "n_read_dims": null,
- "table": "            arm    n       ce   agree  refusal   n_gen  eos_rate  gate_prompt  gate_gen  open_rate  ratio_gen\n-------------------------------------------------------------------------------------------------------------\n           base   50   0.4829  0.8599   0.6200    24.0     0.000            -         -          -          -\n          psilm   50   0.4408  0.8630   0.6200    24.0     0.000       0.0733    0.4980     0.0000     0.2780\n         zeroed   50   0.4829  0.8599   0.6200    24.0     0.000       0.0733    0.4957     0.0000     0.2767\n teacher_stored   50        -       -   0.8000   110.3         -            -         -          -          -\n    base_stored   50        -       -   0.6600   115.7         -            -         -          -          -"
+ "table": "            arm    n       ce   agree  refusal   n_gen  eos_rate  gate_prompt  gate_gen  open_rate  ratio_gen\n-------------------------------------------------------------------------------------------------------------\n           base   50   0.4829  0.8599   0.6200    24.0     0.000            -         -          -          -\n          psilm   50   0.4408  0.8641   0.6800    24.0     0.000       0.0729    0.4802     0.0000     0.2681\n         zeroed   50   0.4829  0.8599   0.6200    24.0     0.000       0.0729    0.4791     0.0000     0.2675\n teacher_stored   50        -       -   0.8000   110.3         -            -         -          -          -\n    base_stored   50        -       -   0.6600   115.7         -            -         -          -          -"
 }
