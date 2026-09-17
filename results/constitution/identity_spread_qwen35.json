@@ -31,6 +31,51 @@
    "sum_rms2": 990.5,
    "sum_rms": 549.31
   },
+  "match0": {
+   "label": "magnitude-matched draw 0",
+   "role": "control",
+   "val_ce": 0.4245,
+   "val_base": 0.472,
+   "val_gain": 0.0475,
+   "test_ce": null,
+   "test_base": null,
+   "test_gain": null,
+   "dims": 410,
+   "cap": 0.5606,
+   "energy_rel": 1.0002,
+   "sum_rms2": 958.3,
+   "sum_rms": 543.25
+  },
+  "match1": {
+   "label": "magnitude-matched draw 1",
+   "role": "control",
+   "val_ce": 0.4323,
+   "val_base": 0.472,
+   "val_gain": 0.0397,
+   "test_ce": null,
+   "test_base": null,
+   "test_gain": null,
+   "dims": 410,
+   "cap": 0.5583,
+   "energy_rel": 1.0001,
+   "sum_rms2": 966.1,
+   "sum_rms": 544.17
+  },
+  "match2": {
+   "label": "magnitude-matched draw 2",
+   "role": "control",
+   "val_ce": 0.429,
+   "val_base": 0.472,
+   "val_gain": 0.043,
+   "test_ce": null,
+   "test_base": null,
+   "test_gain": null,
+   "dims": 410,
+   "cap": 0.5605,
+   "energy_rel": 0.9999,
+   "sum_rms2": 958.4,
+   "sum_rms": 543.32
+  },
   "all": {
    "label": "whole stream (4096)",
    "role": "reference",
@@ -50,15 +95,15 @@
  "convention": "val CE is the trainer's own 32-item held-out split at this step; test CE is the 50-item red-team split at 24 generated tokens. energy_rel is the written set's summed squared activation relative to the whole stream, times (cap/0.2)^2 -- 1.0 is parity with a full-width write at the default cap.",
  "identity_effect": {
   "val_gain": {
-   "n_controls": 1,
+   "n_controls": 4,
    "treatment": 0.059,
-   "control_mean": 0.0474,
-   "control_sd": null,
-   "control_min": 0.0474,
-   "control_max": 0.0474,
-   "ratio": 1.245,
-   "control_share_of_treatment": 0.803,
-   "z": null
+   "control_mean": 0.0444,
+   "control_sd": 0.0038,
+   "control_min": 0.0397,
+   "control_max": 0.0475,
+   "ratio": 1.329,
+   "control_share_of_treatment": 0.753,
+   "z": 3.87
   },
   "test_gain": {
    "n_controls": 1,

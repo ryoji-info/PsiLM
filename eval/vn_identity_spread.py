@@ -44,16 +44,27 @@ def val_ce(tag, step):
 
 
 def test_ce(tag, step):
-    """The 50-item test CE, only if the checkpoint it was evaluated from is at
-    `step`. An earlier version ignored the step and pooled step-1000 arms with
-    step-500 replicates under a heading that said 500."""
+    """The 50-item test CE, only if the eval was run from a checkpoint at `step`.
+    The eval records the step it saw (`checkpoint.step`); that is what is
+    checked. An earlier version checked bridges.npz.meta instead, which a later
+    training chunk updates without touching the eval, so step-500 evals of the
+    matched draws passed as step 1000 for one afternoon."""
     f = Path(f"results/stage2c_qwen35_{tag}/eval_test.json")
-    m = Path(f"results/stage2c_qwen35_{tag}/bridges.npz.meta")
-    if not f.exists() or not m.exists():
-        return None, None
-    if int(json.loads(m.read_text()).get("step", -1)) != step:
+    if not f.exists():
         return None, None
     d = json.loads(f.read_text())
+    es = (d.get("checkpoint") or {}).get("step")
+    if es is None:
+        # eval predates the step field: accept only if it is newer than the checkpoint
+        m = Path(f"results/stage2c_qwen35_{tag}/bridges.npz.meta")
+        b = Path(f"results/stage2c_qwen35_{tag}/bridges.npz")
+        if not (m.exists() and b.exists()):
+            return None, None
+        if int(json.loads(m.read_text()).get("step", -1)) != step \
+                or f.stat().st_mtime < b.stat().st_mtime:
+            return None, None
+    elif int(es) != step:
+        return None, None
     a = d.get("arms", d)
     return a["psilm"]["ce"], a["base"]["ce"]
 
