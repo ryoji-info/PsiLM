@@ -20,6 +20,7 @@ from pathlib import Path
 import mlx.core as mx
 
 mx.set_default_device(mx.cpu)                      # never contend for the GPU
+mx.random.seed(0)                                  # the module's Linear layers draw from the global RNG
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from psilm.mlx.constitution import MaskedGatedCrossAttentionMLX    # noqa: E402
 
@@ -67,7 +68,9 @@ def main() -> int:
           f"the gate is untouched by the payload (max |dsigma| "
           f"{float(mx.abs(sig_c - sig_p).max().item()):.2e})")
     rp, rc = rms_over(d_p, mask, n_w), rms_over(d_c, mask, n_w)
-    check(5, abs(rp - rc) / max(rp, 1e-12) < 1e-5,
+    # 1e-3 relative: float32 cannot resolve tighter at a write RMS of ~1e-3, and the
+    # failure this guards against (a masked standard normal, RMS ~1) is six orders off.
+    check(5, abs(rp - rc) / max(rp, 1e-12) < 1e-3,
           f"per-coordinate write RMS matches: psilm {rp:.6f} vs contentless {rc:.6f}")
     off_c = float(mx.abs(d_c * (1.0 - mask)).max().item())
     check(6, off_c == 0.0, f"the contentless write respects the mask (max off-mask {off_c})")
@@ -87,8 +90,29 @@ def main() -> int:
     check(9, float(mx.abs(h_other - h_c).max().item()) > 1e-6,
           "a different seed gives a different direction")
 
-    # the flag must not survive the call, or a later arm inherits it
-    check(10, inj.contentless is None, "the flag is cleared after use")
+    # The flag must not survive the call, or a later arm inherits it. That is
+    # the COUPLER's job (its try/finally), so test it there -- including when the
+    # write raises, which is the case a plain assertion after a clean call misses.
+    from psilm.mlx.constitution import ConstitutionCoupler
+    class _Bridges:                       # only .inject is touched by inject()
+        pass
+    br = _Bridges(); br.inject = inj
+    coup = ConstitutionCoupler.__new__(ConstitutionCoupler); coup.phi = br
+    coup.inject(h, tok, "psilm", contentless=99)
+    cleared_ok = inj.contentless is None
+    real_call = type(inj).__call__
+    def _boom(self, *a, **k):
+        raise RuntimeError("boom")
+    type(inj).__call__ = _boom
+    raised = False
+    try:
+        coup.inject(h, tok, "psilm", contentless=99)
+    except RuntimeError:
+        raised = True
+    finally:
+        type(inj).__call__ = real_call
+    check(10, cleared_ok and raised and inj.contentless is None,
+          "the coupler clears the flag after use, and after a raising write")
 
     print(f"\n{10 - len(fails)} of 10 assertions pass")
     if fails:

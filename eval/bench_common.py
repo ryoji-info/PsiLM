@@ -647,19 +647,29 @@ class StagedDecoder:
         #: None for every trained arm. Read at the single injection choke point.
         self.contentless = None
 
-    def set_contentless(self, seed):
+    def set_contentless(self, seed, qid=None):
         """Arm the contentless control, refusing loudly if the channel cannot honour it.
 
         A silent fallback here would be indistinguishable from the psilm arm in
         every output, which is exactly how a control becomes a duplicate of the
-        thing it was meant to control.
+        thing it was meant to control for.
+
+        The direction is a function of (run seed, question id) and nothing else:
+        generation and the KL pass on the same question draw the same direction,
+        a resume reproduces it, and no call counter is involved. sha256 rather
+        than Python's hash(), which is salted per process.
         """
-        if seed is not None and not getattr(self.coupler, "supports_contentless", False):
+        if seed is None:
+            self.contentless = None
+            return
+        if not getattr(self.coupler, "supports_contentless", False):
             raise RuntimeError(
                 f"a contentless arm was requested but {type(self.coupler).__name__} does not "
                 f"declare supports_contentless; refusing to run an arm that would silently "
                 f"be the psilm arm")
-        self.contentless = seed
+        import hashlib
+        digest = int.from_bytes(hashlib.sha256(str(qid).encode()).digest()[:4], "big")
+        self.contentless = (int(seed) * 100003 + digest) % (2 ** 31)
 
     # -- pieces -------------------------------------------------------------
     def _layers(self, h, lo, hi, mask, cache):
@@ -833,6 +843,8 @@ class StagedDecoder:
         # the answer.
         diag = dict(diag or {})
         diag["decision"] = top2_margin(logits)
+        if self.contentless is not None:
+            diag["contentless_seed"] = int(self.contentless)
         return logits, cache, tokens, sig_p, diag
 
     def generate(self, prompt_ids, mode="base", max_new=64, x0_span=None,

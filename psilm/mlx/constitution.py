@@ -719,11 +719,11 @@ class ConstitutionCoupler:
     def __init__(self, bridges: ConstitutionBridgesMLX, const_model: ConstitutionModelMLX):
         self.phi = bridges
         self.const = const_model
-        # Set per arm by the harness; a different direction per question, so no
-        # single unlucky draw can carry the result. Counted in tokens(), which
-        # runs once per question.
-        self.contentless_seed = None
-        self._q = 0
+        # The harness hands inject() a per-question seed already combined with the
+        # question id, so generation and the teacher-forced KL pass -- which each
+        # call tokens() once -- draw the SAME direction. An earlier version keyed
+        # the seed on a call counter here, which gave the KL pass the next
+        # question's direction and shifted every seed across a resume boundary.
 
     #: the harness checks for this before running a contentless arm, so an arm
     #: name this channel cannot honour fails loudly instead of quietly becoming
@@ -735,7 +735,6 @@ class ConstitutionCoupler:
             raise ValueError("the constitution channel has no scalar to substitute")
         L = h_prompt.shape[1]
         pmask = mx.ones((1, L), dtype=mx.bool_)
-        self._q += 1
         soft, weights = self.phi.fwd(h_prompt, pmask)
         feats = self.const.features(soft)
         tokens = self.phi.rev(feats)
@@ -753,9 +752,7 @@ class ConstitutionCoupler:
     def inject(self, h, tokens, mode, floor=None, contentless=None):
         self.phi.inject.gate_floor = floor          # None for the trained arms
         if contentless is not None:
-            # 100003 is just a large prime: it keeps consecutive questions from
-            # sharing a direction when the run seed changes by one.
-            self.phi.inject.contentless = int(contentless) * 100003 + self._q
+            self.phi.inject.contentless = int(contentless)   # already per-question
         try:
             h_inj, sigma = self.phi.inject(h, tokens)     # sigma is pre-floor
         finally:

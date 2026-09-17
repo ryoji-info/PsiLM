@@ -472,7 +472,7 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
             _, _, shuffled = arm_spec(arm)
             # Armed for BOTH the generation and the KL below, and cleared after,
             # so no later arm inherits it.
-            dec.set_contentless(arm_contentless(arm))
+            dec.set_contentless(arm_contentless(arm), qid=t.qid)
             sub = shuffled_value.get((t.dataset, t.qid)) if shuffled else None
             if shuffled and sub is None:
                 raise SystemExit(f"{arm}: no substitute value for {t.qid} "

@@ -43,9 +43,15 @@ def val_ce(tag, step):
     return best["psilm"]["ce"], best["base"]["ce"]
 
 
-def test_ce(tag):
+def test_ce(tag, step):
+    """The 50-item test CE, only if the checkpoint it was evaluated from is at
+    `step`. An earlier version ignored the step and pooled step-1000 arms with
+    step-500 replicates under a heading that said 500."""
     f = Path(f"results/stage2c_qwen35_{tag}/eval_test.json")
-    if not f.exists():
+    m = Path(f"results/stage2c_qwen35_{tag}/bridges.npz.meta")
+    if not f.exists() or not m.exists():
+        return None, None
+    if int(json.loads(m.read_text()).get("step", -1)) != step:
         return None, None
     d = json.loads(f.read_text())
     a = d.get("arms", d)
@@ -76,7 +82,7 @@ def main() -> int:
     recs = {}
     for tag, label, role in ARMS:
         v, vb = val_ce(tag, a.step)
-        t, tb = test_ce(tag)
+        t, tb = test_ce(tag, a.step)
         if v is None and t is None:
             continue
         recs[tag] = {"label": label, "role": role,
