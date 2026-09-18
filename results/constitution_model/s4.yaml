@@ -1,0 +1,5 @@
+lr_schedule:
+  name: cosine_decay
+  warmup: 8
+  warmup_init: 1.0e-7
+  arguments: [1.5e-5, 100, 2.0e-6]
