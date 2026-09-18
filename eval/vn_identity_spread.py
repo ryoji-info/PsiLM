@@ -19,12 +19,19 @@ Writes results/constitution/identity_spread_qwen35.json.
 import argparse, json, statistics as st
 from pathlib import Path
 
-ARMS = [("vn10e", "probe-best 410", "treatment"),
-        ("vn10ebot", "probe-worst 410", "control"),
-        ("match0", "magnitude-matched draw 0", "control"),
-        ("match1", "magnitude-matched draw 1", "control"),
-        ("match2", "magnitude-matched draw 2", "control"),
-        ("all", "whole stream (4096)", "reference")]
+ARMS = [("vn10e", "probe-best 410", "treatment", 410),
+        ("vn10ebot", "probe-worst 410", "control", 410),
+        ("match0", "magnitude-matched draw 0", "control", 410),
+        ("match1", "magnitude-matched draw 1", "control", 410),
+        ("match2", "magnitude-matched draw 2", "control", 410),
+        ("all", "whole stream (4096)", "reference", 4096),
+        # the narrow masks at energy parity and their matched controls
+        # (results/qwen35/parity_widths.sh, parity_controls.sh)
+        ("vn1e", "probe-best 41 (value neurons)", "treatment", 41),
+        ("match41", "magnitude-matched draw (41)", "control", 41),
+        ("vn5e", "probe-best 205 (top 5%)", "treatment", 205),
+        ("match205", "magnitude-matched draw (205)", "control", 205)]
+TREATMENT = {410: "vn10e", 41: "vn1e", 205: "vn5e"}
 
 
 def val_ce(tag, step):
@@ -91,12 +98,12 @@ def main() -> int:
     e_full = sum(v ** 2 for v in rms)
 
     recs = {}
-    for tag, label, role in ARMS:
+    for tag, label, role, width in ARMS:
         v, vb = val_ce(tag, a.step)
         t, tb = test_ce(tag, a.step)
         if v is None and t is None:
             continue
-        recs[tag] = {"label": label, "role": role,
+        recs[tag] = {"label": label, "role": role, "width": width,
                      "val_ce": v, "val_base": vb,
                      "val_gain": round(vb - v, 4) if v is not None else None,
                      "test_ce": t, "test_base": tb,
@@ -110,16 +117,21 @@ def main() -> int:
                           "to the whole stream, times (cap/0.2)^2 -- 1.0 is parity with a "
                           "full-width write at the default cap.")}
 
-    ctl = [r for r in recs.values() if r["role"] == "control" and r["val_gain"] is not None]
-    trt = recs.get("vn10e")
-    if ctl and trt and trt["val_gain"]:
+    def effect(width):
+        """Treatment against the controls of one width; None if either is absent."""
+        ctl = [r for r in recs.values() if r["role"] == "control" and r["width"] == width
+               and r["val_gain"] is not None]
+        trt = recs.get(TREATMENT[width])
+        if not (ctl and trt and trt["val_gain"]):
+            return None
+        eff = {}
         for key in ("val_gain", "test_gain"):
             vals = [r[key] for r in ctl if r.get(key) is not None]
             if not vals or trt.get(key) is None:
                 continue
             m = st.mean(vals)
             sd = st.stdev(vals) if len(vals) > 1 else None
-            out.setdefault("identity_effect", {})[key] = {
+            eff[key] = {
                 "n_controls": len(vals), "treatment": trt[key],
                 "control_mean": round(m, 4),
                 "control_sd": round(sd, 4) if sd is not None else None,
@@ -128,6 +140,15 @@ def main() -> int:
                 "control_share_of_treatment": round(m / trt[key], 3),
                 # how many control SDs above the control mean the treatment sits
                 "z": round((trt[key] - m) / sd, 2) if sd else None}
+        return eff or None
+
+    e410 = effect(410)
+    if e410:
+        out["identity_effect"] = e410
+    by_width = {str(w): effect(w) for w in (41, 205)}
+    by_width = {w: e for w, e in by_width.items() if e}
+    if by_width:
+        out["identity_by_width"] = by_width
 
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(out, indent=1) + "\n")
@@ -139,13 +160,18 @@ def main() -> int:
               f"{r.get('energy_rel','-'):>7} {str(r['val_ce'] or '-'):>7} "
               f"{str(r['val_gain'] or '-'):>7} {str(r['test_ce'] or '-'):>8} "
               f"{str(r['test_gain'] or '-'):>7}")
-    for key, e in (out.get("identity_effect") or {}).items():
-        sd = f"{e['control_sd']:.4f}" if e["control_sd"] is not None else "n/a"
-        z = f"{e['z']}" if e["z"] is not None else "n/a"
-        print(f"\n{key}: probe-best {e['treatment']} against {e['n_controls']} controls "
-              f"{e['control_mean']} +/- {sd} (range {e['control_min']}-{e['control_max']})")
-        print(f"  identity is worth {e['ratio']}x; any matched 410 coordinates reach "
-              f"{e['control_share_of_treatment']:.0%} of it; z = {z}")
+    def show(width, effs):
+        for key, e in effs.items():
+            sd = f"{e['control_sd']:.4f}" if e["control_sd"] is not None else "n/a"
+            z = f"{e['z']}" if e["z"] is not None else "n/a"
+            print(f"\n{key}: probe-best {e['treatment']} against {e['n_controls']} controls "
+                  f"{e['control_mean']} +/- {sd} (range {e['control_min']}-{e['control_max']})")
+            print(f"  identity is worth {e['ratio']}x; any matched {width} coordinates reach "
+                  f"{e['control_share_of_treatment']:.0%} of it; z = {z}")
+    show(410, out.get("identity_effect") or {})
+    for w, effs in (out.get("identity_by_width") or {}).items():
+        print(f"\n== width {w}")
+        show(w, effs)
     print(f"\nwrote {a.out}")
     return 0
 

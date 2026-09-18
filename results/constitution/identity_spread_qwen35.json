@@ -4,6 +4,7 @@
   "vn10e": {
    "label": "probe-best 410",
    "role": "treatment",
+   "width": 410,
    "val_ce": 0.413,
    "val_base": 0.472,
    "val_gain": 0.059,
@@ -19,6 +20,7 @@
   "vn10ebot": {
    "label": "probe-worst 410",
    "role": "control",
+   "width": 410,
    "val_ce": 0.4246,
    "val_base": 0.472,
    "val_gain": 0.0474,
@@ -34,6 +36,7 @@
   "match0": {
    "label": "magnitude-matched draw 0",
    "role": "control",
+   "width": 410,
    "val_ce": 0.4245,
    "val_base": 0.472,
    "val_gain": 0.0475,
@@ -49,6 +52,7 @@
   "match1": {
    "label": "magnitude-matched draw 1",
    "role": "control",
+   "width": 410,
    "val_ce": 0.4323,
    "val_base": 0.472,
    "val_gain": 0.0397,
@@ -64,6 +68,7 @@
   "match2": {
    "label": "magnitude-matched draw 2",
    "role": "control",
+   "width": 410,
    "val_ce": 0.429,
    "val_base": 0.472,
    "val_gain": 0.043,
@@ -79,6 +84,7 @@
   "all": {
    "label": "whole stream (4096)",
    "role": "reference",
+   "width": 4096,
    "val_ce": 0.3904,
    "val_base": 0.472,
    "val_gain": 0.0816,
