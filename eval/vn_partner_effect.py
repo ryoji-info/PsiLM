@@ -19,7 +19,10 @@ Writes results/constitution/partner_effect_qwen35.json.
 import argparse, json
 from pathlib import Path
 
-PAIRS = [("vn", "vnplain", 41), ("vn5", "vn5plain", 205), ("all", "allplain", 4096)]
+# The narrow pairs are the energy-parity arms and their twins (results/qwen35/
+# parity_widths.sh, plainpartner_widths.sh); the recorded vn / vn5 arms at the
+# saturated 0.2 cap transmitted nothing and were never twinned.
+PAIRS = [("vn1e", "vn1eplain", 41), ("vn5e", "vn5eplain", 205), ("all", "allplain", 4096)]
 
 
 def read(tag):
@@ -37,6 +40,10 @@ def read(tag):
         g = Path(f"results/stage2c_qwen35_{tag}/eval_{split}.json")
         if g.exists():
             d = json.loads(g.read_text())
+            # Only an eval run from the step-1000 checkpoint; a later chunk
+            # updates bridges.npz.meta without touching the eval file.
+            if (d.get("checkpoint") or {}).get("step") != 1000:
+                continue
             a = d.get("arms", d)
             out[f"{split}_ce"] = a["psilm"]["ce"]
             out[f"{split}_base"] = a["base"]["ce"]

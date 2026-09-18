@@ -46,15 +46,13 @@ export HF_HUB_DISABLE_XET=1 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 [ -d /Users/rxiii/Documents/huggingface/hub ] && export HF_HOME=/Users/rxiii/Documents/huggingface
 step() { echo "$1 $(date '+%F %H:%M')" >> $LOG; }
 
-step "ALLPLAIN WAITING for the physics attribution arm"
+step "ALLPLAIN WAITING for the parity-width arms and their matched controls"
 MISS=0
-until grep -q "GUARDRAIL-PHYS COMPLETE" results/dual/guardrail_phys.log 2>/dev/null; do
-  grep -q 'GUARDRAIL-PHYS GAVE UP' results/dual/guardrail_phys.log 2>/dev/null \
-    && { step "the physics arm gave up; proceeding"; break; }
-  # The physics arm is launched by the replicate chain, so before that lands
-  # nothing upstream is running yet -- count the whole upstream queue, not just
-  # the immediate predecessor, or this escapes during a legitimate gap.
-  if pgrep -f 'guardrail_phys.sh|contentless_run.sh|rt400_run.sh|replicates_run.sh' > /dev/null; then
+until grep -q "PARITY-CONTROLS COMPLETE" results/qwen35/parity_controls.log 2>/dev/null; do
+  # The parity chains (results/qwen35/parity_widths.sh, parity_controls.sh) run
+  # after the physics arm; count the whole upstream queue as alive, not just the
+  # immediate predecessor, or this escapes during a legitimate gap between chains.
+  if pgrep -f 'parity_controls_run.sh|parity_run.sh|guardrail_phys.sh|contentless_run.sh|rt400_run.sh' > /dev/null; then
     MISS=0
   else
     MISS=$((MISS + 1))
@@ -92,8 +90,14 @@ done
 # The checkpoint must name the stock partner, or this silently became the all arm.
 CHK=$($PY -c "
 import json; m=json.load(open('$D/bridges.npz.meta'))
-print('OK' if 'constitution' not in m['const_model'] else 'BAD ' + m['const_model'])")
-[ "$CHK" = "OK" ] || { step "meta names the wrong partner: $CHK"; exit 1; }
+bad = []
+if 'constitution' in m['const_model']: bad.append('partner=' + m['const_model'])
+if int(m.get('step', -1)) != 1000: bad.append('step=%s' % m.get('step'))
+if abs(float(m['inj_cap']) - 0.2) > 1e-9: bad.append('cap=%s' % m['inj_cap'])
+w = m.get('write_dims') or []
+if w and len(w) != 4096: bad.append('mask=%d dims, expected the whole stream' % len(w))
+print('OK' if not bad else 'BAD ' + ' '.join(bad))")
+[ "$CHK" = "OK" ] || { step "meta names the wrong partner or step: $CHK"; exit 1; }
 step "partner check: $CHK ($($PY -c "import json;print(json.load(open('$D/bridges.npz.meta'))['const_model'])"))"
 
 for pair in "test:$DATA_TE" "helpful:$DATA_HE"; do
