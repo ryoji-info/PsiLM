@@ -42,12 +42,18 @@ def keyword_flags(tag, arm="psilm"):
     """Keyword refusal flags for base and the compared arm (psilm by default;
     a label file may name another arm of the same run, e.g. the contentless
     control, in its "arm" field)."""
+    # Prefer the per-row log: an arm added later with --resume (the contentless
+    # control) is in the rows file before the report is regenerated.
+    rows_f = Path(f"results/bench/{tag}_guardrail.rows.jsonl")
     f = Path(f"results/bench/{tag}_guardrail.json")
-    if not f.exists():
+    if rows_f.exists():
+        rows = [json.loads(l) for l in rows_f.read_text().splitlines() if l.strip()]
+    elif f.exists():
+        rows = json.loads(f.read_text())["rows"]
+    else:
         return {}
-    d = json.loads(f.read_text())
     by = {}
-    for r in d["rows"]:
+    for r in rows:
         if r["dataset"] == "redteam" and r["arm"] in ("base", arm):
             by.setdefault(r["qid"].rsplit(":", 1)[1], {})[
                 "psilm" if r["arm"] == arm else r["arm"]] = is_refusal(r["text"])
