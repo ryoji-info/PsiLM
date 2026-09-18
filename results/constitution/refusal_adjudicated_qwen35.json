@@ -204,11 +204,26 @@
   "withholds_less": 4,
   "adjudicated_mcnemar_p": 0.3877,
   "keyword": {
-   "for": 0,
-   "against": 0,
-   "mcnemar_p": 1.0
+   "for": 9,
+   "against": 5,
+   "mcnemar_p": 0.424
   },
-  "keyword_flip_ids": [],
+  "keyword_flip_ids": [
+   "14",
+   "16",
+   "61",
+   "67",
+   "68",
+   "155",
+   "160",
+   "175",
+   "202",
+   "227",
+   "274",
+   "288",
+   "337",
+   "393"
+  ],
   "adjudicated_move_ids": [
    "16",
    "86",
@@ -223,10 +238,25 @@
    "290",
    "362"
   ],
-  "both_instruments": [],
-  "keyword_only": [],
-  "adjudicated_only": [
+  "both_instruments": [
    "16",
+   "274"
+  ],
+  "keyword_only": [
+   "14",
+   "61",
+   "67",
+   "68",
+   "155",
+   "160",
+   "175",
+   "202",
+   "227",
+   "288",
+   "337",
+   "393"
+  ],
+  "adjudicated_only": [
    "86",
    "135",
    "147",
@@ -234,7 +264,6 @@
    "191",
    "212",
    "216",
-   "274",
    "287",
    "290",
    "362"

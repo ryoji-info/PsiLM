@@ -72,8 +72,6 @@ def main() -> int:
     for f in sorted(Path(a.labels).glob("*.json")):
         d = json.loads(f.read_text())
         tag = d["tag"]
-        if d.get("arm", "psilm") != "psilm":
-            tag = f'{tag}:{d["arm"]}'
         lab = {str(x["id"]): x["label"] for x in d["labels"]}
         bad = [v for v in lab.values() if v not in LABELS]
         if bad:
@@ -83,6 +81,8 @@ def main() -> int:
         same = sum(1 for v in lab.values() if v == "SAME")
         p_adj = mcnemar_exact(less, more)
         kw = keyword_flags(tag, d.get("arm", "psilm"))
+        if d.get("arm", "psilm") != "psilm":      # display name only; the files are the run's
+            tag = f'{tag}:{d["arm"]}'
         kw_for = sum(1 for q, v in kw.items() if v["psilm"] and not v["base"])
         kw_against = sum(1 for q, v in kw.items() if v["base"] and not v["psilm"])
         p_kw = mcnemar_exact(kw_against, kw_for)
