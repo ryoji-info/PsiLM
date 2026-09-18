@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export a constitution-bridge checkpoint to the Hugging Face layout.
+"""Export a bridge checkpoint (constitution or physics) to the Hugging Face layout.
 
 Reads ``<run>/bridges.npz`` + ``bridges.npz.meta`` and writes
 ``<out>/bridges.safetensors`` (every tensor, unchanged, fp32 as trained) and
@@ -35,10 +35,17 @@ def export(run: Path, out: Path, backbone_name=None):
         b = np.array(back[k])
         assert b.dtype == v.dtype and b.shape == v.shape and np.array_equal(b, v), f"{k}: round-trip differs"
     meta = json.loads(meta_f.read_text())
+    # Every reader in this project resolves the meta as "<checkpoint> + .meta",
+    # so the same payload sits beside the safetensors under that name too.
+    (out / "bridges.safetensors.meta").write_text(json.dumps(meta, indent=1) + "\n")
     n_params = int(sum(v.size for v in arrays.values()))
-    cfg = {"format": "psilm2-constitution-bridge/v1",
-           "bridges_class": "psilm.mlx.constitution.ConstitutionBridgesMLX",
-           "load_with": "psilm.mlx.constitution.load_constitution_stack(<this dir>/bridges.safetensors, <partner dir>)",
+    kind = "constitution" if "const_model" in meta else "physics"
+    cfg = {"format": f"psilm2-{kind}-bridge/v1",
+           "bridges_class": ("psilm.mlx.constitution.ConstitutionBridgesMLX" if kind == "constitution"
+                             else "psilm.mlx.bridges.PsiBridgesMLX"),
+           "load_with": ("psilm.mlx.constitution.load_constitution_stack(<this dir>/bridges.safetensors, <partner dir>)"
+                         if kind == "constitution" else
+                         "eval/bench_guardrail.py --phys-ckpt <this dir>/bridges.safetensors, or psilm2.dual.load_dual_stack"),
            "source_run": str(run), "step": meta.get("step"),
            "n_tensors": len(arrays), "n_params": n_params,
            "backbone": backbone_name or meta.get("model"),
