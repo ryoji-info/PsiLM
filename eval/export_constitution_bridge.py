@@ -61,6 +61,9 @@ def main():
             if not (run / "bridges.npz").exists():
                 continue
             tag = run.name[len("stage2c_"):]
+            if "_" not in tag or not (run / "bridges.npz.meta").exists():
+                print(f"skip {run.name}: not a <backbone>_<variant> constitution run with a meta")
+                continue
             bk, var = tag.split("_", 1)
             jobs.append((run, Path("results/hf_export/psilm2/bridges") / BACKBONE_DIR.get(bk, bk) / var))
     else:
