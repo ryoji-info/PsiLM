@@ -50,6 +50,14 @@ results/**/*.log
 results/bench/*_guardrail.json
 !results/bench/*_guardrail_summary.json
 results/bench/tasks_*.json
+# ...except the caches that fix the evaluated items, so anyone can run the same ones
+!results/bench/tasks_const_qwen35_n100.json
+!results/bench/tasks_repguard_qwen35_n100.json
+!results/bench/tasks_rt400_qwen35_n400.json
+!results/bench/tasks_const_qwen0.5b_n100.json
+!results/bench/tasks_qwen35_n100.json
+!results/bench/tasks_gemma_n100.json
+!results/bench/tasks_leaky_n100.json
 results/bench/*_dryrun.json
 build.log
 # staging copies of the banner tracked once in assets/

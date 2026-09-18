@@ -772,7 +772,12 @@ def load_constitution_stack(ckpt_path, const_model_path: Optional[str] = None):
     seed were lost) and cannot silently disagree with the checkpoint.
     """
     ckpt = Path(ckpt_path)
-    meta = json.loads(Path(str(ckpt) + ".meta").read_text())
+    if ckpt.suffix == ".safetensors":
+        # The Hugging Face layout written by eval/export_constitution_bridge.py:
+        # bridges.safetensors beside a config.json whose "meta" is the npz meta.
+        meta = json.loads((ckpt.parent / "config.json").read_text())["meta"]
+    else:
+        meta = json.loads(Path(str(ckpt) + ".meta").read_text())
     path = const_model_path or meta["const_model"]
     const = ConstitutionModelMLX(path, m_tokens=int(meta["m_tokens"]))
     if const.n_readout != int(meta["m_tokens"]):      # a different suffix tokenization
