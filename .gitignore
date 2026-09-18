@@ -35,8 +35,12 @@ results/stage2_mlx0.5b4/*.npz
 results/stage2_mlx0.5b4/*.meta
 results/stage2_mlx0.5b4/supervisor.log
 
-# blanket policy: model binaries and data blobs never enter git
+# blanket policy: model binaries and data blobs never enter git -- with one
+# tracked exception, results/stage2/fno.pt (556 KB, the Burgers FNO that
+# eval/bench_guardrail.py and psilm2 load by default; the same weights ship as
+# physics/fno_burgers_singlemode.safetensors beside the backbone on the Hub)
 results/**/*.pt
+!results/stage2/fno.pt
 results/**/*.pth
 results/**/*.npz
 results/**/*.meta
@@ -64,14 +68,23 @@ build.log
 results/hf_export/**/psilm-banner.png
 
 # the constitution partner model: a full fine-tune of Qwen2.5-0.5B-Instruct,
-# reproducible from data/constitution/ + eval/build_constitution_corpus.py. Its
-# weights are already covered by *.safetensors, but the directory also carries an
-# 11 MB copy of Qwen's tokenizer, and no model directory has ever been tracked.
-results/constitution_model/
+# reproducible from data/constitution/ + eval/build_constitution_corpus.py. The
+# weights and the 11 MB tokenizer copy are ignored; the card, the containment
+# check and the recipe are tracked (and published with the weights on the Hub).
+results/constitution_model/*
+!results/constitution_model/MODEL_CARD.md
+!results/constitution_model/check.json
+!results/constitution_model/check.md
+!results/constitution_model/finetune_qwen0.5b.sh
+!results/constitution_model/s[1-6].yaml
 
 # build_constitution_data.py's resumable work files, one JSON line per prompt.
 # The record is data/constitution_{train,val,test,helpful_test}_<tag>.json, which
 # holds the same items; these exist only so an interrupted build can resume.
 results/constitution/*.jsonl
-# per-item generation dumps, same data as the ignored raw guard-rail JSON
+# per-item generation dumps, same data as the ignored raw guard-rail JSON.
+# Ignored by default; the rows of some arms are tracked deliberately (git add -f)
+# and `git ls-files results/bench/*.rows.jsonl` is the exact list; the rest are
+# reproducible from the task caches. They are raw model output: see
+# results/bench/README.md before quoting anything in them.
 results/bench/*.rows.jsonl

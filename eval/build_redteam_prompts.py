@@ -25,6 +25,7 @@ builder's own _norm and load_pool so the exclusion is identical.
 
   python3 eval/build_redteam_prompts.py --n 400 --tag qwen35
 """
+import os
 import argparse, json, random, sys
 from pathlib import Path
 
@@ -105,8 +106,9 @@ def main() -> int:
     # with 40/600: 24 of the 100 carried prompts are shorter than 40 characters.
     ap.add_argument("--min-chars", type=int, default=20)
     ap.add_argument("--max-chars", type=int, default=400)
-    ap.add_argument("--tokenizer", default="/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx")
-    ap.add_argument("--cache-root", default="/Users/rxiii/Documents/huggingface/datasets",
+    ap.add_argument("--tokenizer", default=os.environ.get("PSILM_BACKBONE", "ryoji-info/Qwen3.5-9B-PsiLM"),
+                    help="the backbone tokenizer (default: $PSILM_BACKBONE, else the Hub id)")
+    ap.add_argument("--cache-root", default=os.path.join(os.environ.get("HF_HOME", os.path.expanduser("~/.cache/huggingface")), "datasets"),
                     help="where the hh-rlhf Arrow cache lives, read directly when an offline "
                          "load by data_dir cannot resolve the config")
     ap.add_argument("--out", default=None)

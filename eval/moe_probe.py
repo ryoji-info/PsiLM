@@ -1,6 +1,6 @@
 """Feasibility probe for a MoE backbone: parity, memory, speed, routing hooks."""
 import sys, time, json, random
-sys.path.insert(0, "/Users/rxiii/Documents/GitHub/PsiLM")
+sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[1]))  # the checkout root
 import mlx.core as mx, mlx.nn as nn, mlx.optimizers as optim, mlx_lm
 from mlx.optimizers import clip_grad_norm
 from transformers import AutoTokenizer

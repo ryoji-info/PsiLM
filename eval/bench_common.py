@@ -588,8 +588,11 @@ def load_backbone(model_id: str = DEFAULT_MODEL, hf_tok_id: str = DEFAULT_HF_TOK
 def load_physics_stack(ckpt: str, d_model: int, gate_bias: float = -2.0, fno_path: str = DEFAULT_FNO):
     import mlx.core as mx
     from psilm.mlx.bridges import PsiBridgesMLX
-    from psilm.mlx.fno import convert_from_torch
-    fno = convert_from_torch(fno_path)
+    from psilm.mlx.fno import convert_from_torch, load_fno_safetensors
+    # the HF-exported FNO (physics/fno_burgers_singlemode.safetensors beside the
+    # backbone) loads without torch; the tracked results/stage2/fno.pt needs it
+    fno = (load_fno_safetensors(fno_path) if str(fno_path).endswith(".safetensors")
+           else convert_from_torch(fno_path))
     fno.freeze()
     meta_p = Path(str(ckpt) + ".meta")
     meta = json.loads(meta_p.read_text()) if meta_p.exists() else {}

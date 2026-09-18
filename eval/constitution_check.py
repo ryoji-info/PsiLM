@@ -40,7 +40,7 @@ two models are measured in separate short runs and the second one writes the joi
 table. It also means `check.md` can be re-rendered without touching the GPU.
 
 Usage:
-    HF_HOME=/Users/rxiii/Documents/huggingface HF_HUB_DISABLE_XET=1 \
+    HF_HOME=<your Hugging Face cache> HF_HUB_DISABLE_XET=1 \
       .venv/bin/python eval/constitution_check.py \
         --model results/constitution_model/qwen2.5-0.5b-constitution \
         --base none --out results/constitution_model

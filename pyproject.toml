@@ -17,6 +17,11 @@ stage1 = [
     "torch>=2.4",
     "transformers>=4.51",
 ]
+# rebuilding a guard-rail task cache (eval/bench_guardrail.py --build-cache) reads
+# GSM8K, MMLU and BoolQ through `datasets`; restoring a shipped cache does not
+bench = [
+    "datasets>=2.19",
+]
 
 [build-system]
 requires = ["setuptools>=68"]

@@ -23,10 +23,10 @@ Usage: python eval/mlx_qwen35_setup.py --model /path/to/qwen3.5-9b-mlx [--batche
 import argparse
 import json
 import random
-import sys
+import os, sys
 import time
 
-sys.path.insert(0, "/Users/rxiii/Documents/GitHub/PsiLM")
+sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[1]))  # the checkout root
 import mlx.core as mx  # noqa: E402
 import mlx.nn as nn  # noqa: E402
 import mlx.optimizers as optim  # noqa: E402
@@ -56,7 +56,8 @@ def staged_logits(tower, ids, attn=None):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--model", default="/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx")
+    ap.add_argument("--model", default=os.environ.get("PSILM_BACKBONE", "ryoji-info/Qwen3.5-9B-PsiLM"),
+                    help="the NVFP4 backbone: a local directory or the Hub id (default: $PSILM_BACKBONE, else the Hub id)")
     ap.add_argument("--batches", default="2")
     ap.add_argument("--steps", type=int, default=0, help="coupled steps per batch size (0: parity only)")
     ap.add_argument("--l-rev", type=int, default=26)

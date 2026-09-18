@@ -40,7 +40,7 @@
 set -euo pipefail
 
 cd "$(dirname "$0")/../.."            # repo root
-export HF_HOME=/Users/rxiii/Documents/huggingface
+export HF_HOME="${HF_HOME:-$HOME/.cache/huggingface}"   # the recorded run used a local cache directory
 export HF_HUB_DISABLE_XET=1
 PY=.venv/bin/python
 OUT=results/constitution_model

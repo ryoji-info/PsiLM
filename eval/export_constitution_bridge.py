@@ -20,6 +20,33 @@ import mlx.core as mx
 import numpy as np
 
 BACKBONE_DIR = {"qwen35": "qwen3.5-9b", "qwen0.5b": "qwen2.5-0.5b"}
+# the published name of each backbone, written in place of the local path the
+# training meta records (config.json "backbone", and every meta field that held it)
+BACKBONE_NAME = {"qwen35": "ryoji-info/Qwen3.5-9B-PsiLM",
+                 "qwen0.5b": "mlx-community/Qwen2.5-0.5B-Instruct-4bit"}
+
+
+def scrub_meta(meta: dict, backbone_name: str | None) -> dict:
+    """The meta is copied into the export verbatim except for local paths: the
+    backbone's path (meta["model"], and every field equal to it, such as
+    hf_tokenizer and args.model) becomes the published backbone name, and any
+    other path under the exporting user's home directory is written with `~`.
+    Nothing a loader reads (shapes, mask, cap, const_model, step) changes."""
+    home = str(Path.home())
+    local_backbone = meta.get("model")
+
+    def fix(d):
+        for k, v in list(d.items()):
+            if isinstance(v, dict):
+                fix(v)
+            elif isinstance(v, str):
+                if backbone_name and local_backbone and v == local_backbone:
+                    d[k] = backbone_name
+                elif v.startswith(home + "/"):
+                    d[k] = "~" + v[len(home):]
+    out = json.loads(json.dumps(meta))
+    fix(out)
+    return out
 
 
 def export(run: Path, out: Path, backbone_name=None):
@@ -34,7 +61,8 @@ def export(run: Path, out: Path, backbone_name=None):
     for k, v in arrays.items():
         b = np.array(back[k])
         assert b.dtype == v.dtype and b.shape == v.shape and np.array_equal(b, v), f"{k}: round-trip differs"
-    meta = json.loads(meta_f.read_text())
+    meta = scrub_meta(json.loads(meta_f.read_text()), backbone_name)
+    assert str(Path.home()) not in json.dumps(meta), "a local path survived the scrub"
     # Every reader in this project resolves the meta as "<checkpoint> + .meta",
     # so the same payload sits beside the safetensors under that name too.
     (out / "bridges.safetensors.meta").write_text(json.dumps(meta, indent=1) + "\n")
@@ -72,11 +100,12 @@ def main():
                 print(f"skip {run.name}: not a <backbone>_<variant> constitution run with a meta")
                 continue
             bk, var = tag.split("_", 1)
-            jobs.append((run, Path("results/hf_export/psilm2/bridges") / BACKBONE_DIR.get(bk, bk) / var))
+            jobs.append((run, Path("results/hf_export/psilm2/bridges") / BACKBONE_DIR.get(bk, bk) / var,
+                         a.backbone_name or BACKBONE_NAME.get(bk)))
     else:
-        jobs.append((Path(a.run), Path(a.out)))
-    for run, out in jobs:
-        n, size, sha = export(run, out, a.backbone_name)
+        jobs.append((Path(a.run), Path(a.out), a.backbone_name))
+    for run, out, name in jobs:
+        n, size, sha = export(run, out, name)
         print(f"{run.name:34s} -> {out}  {n/1e6:.2f}M params, {size/1e6:.1f} MB, sha256 {sha[:12]}...  round-trip OK")
     return 0
 

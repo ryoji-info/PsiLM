@@ -65,7 +65,7 @@ held-out paragraphs, and the token counts. `eval/constitution_check.py` reads it
 that the check's prompts are the corpus's prompts rather than a re-derivation of them.
 
 Usage:
-    HF_HOME=/Users/rxiii/Documents/huggingface HF_HUB_DISABLE_XET=1 \
+    HF_HOME=<your Hugging Face cache> HF_HUB_DISABLE_XET=1 \
       .venv/bin/python eval/build_constitution_corpus.py
 """
 

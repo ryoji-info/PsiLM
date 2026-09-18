@@ -7,7 +7,7 @@ recitation targets, and 24 verbatim-grounded QA pairs. It recites 27 of 38 secti
 word-for-word (`check.md`). It is not a chat assistant and it does not reason with the
 document — see [Limitations](#limitations).
 
-*Draft card, written by the agent that built the model (2026-09-12). Every number below
+*Written by the agent that built the model (2026-09-12). Every number below
 comes from `check.json`, `finetune.log`, or `data/constitution/ft/corpus_meta.json`.*
 
 ## What it is, and why it exists
@@ -16,8 +16,8 @@ PsiLM couples a **frozen** language model to a **frozen** partner model through 
 trainable latent bridges: the base model's hidden states become soft tokens for the
 partner, the partner's hidden states are read back through a gated cross-attention
 layer, and no text crosses the interface. In the physics bridges the partner is a
-Fourier neural operator that *contains* rigid-body dynamics. This model is the
-equivalent for a document: the constitution bridge will read its hidden states, so
+Fourier neural operator that *contains* the dynamics of the 1D viscous Burgers
+equation. This model is the equivalent for a document: the constitution bridge reads its hidden states, so
 those states have to be about Claude's constitution and nothing else. That is a
 falsifiable requirement rather than a hope, which is what `eval/constitution_check.py`
 and the table below are for.
@@ -276,7 +276,7 @@ limitation below is a version of that sentence.
 
 ```
 results/constitution_model/
-├── qwen2.5-0.5b-constitution/     the model — config.json, model.safetensors (959 MB,
+├── qwen2.5-0.5b-constitution/     the model — config.json, model.safetensors (988 MB,
 │                                  bf16), model.safetensors.index.json, tokenizer.json,
 │                                  tokenizer_config.json, chat_template.jinja,
 │                                  generation_config.json (README.md is an mlx stub)

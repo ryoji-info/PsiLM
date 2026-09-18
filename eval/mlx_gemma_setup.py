@@ -9,7 +9,7 @@
 Usage: python eval/mlx_gemma_setup.py [--repo mlx-community/gemma-4-12B-it-4bit] [--batches 4,8]
 """
 import argparse, json, os, random, sys, time
-sys.path.insert(0, "/Users/rxiii/Documents/GitHub/PsiLM")
+sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[1]))  # the checkout root
 import mlx.core as mx, mlx.nn as nn, mlx.optimizers as optim
 from mlx.optimizers import clip_grad_norm
 from transformers import AutoTokenizer

@@ -135,7 +135,7 @@ Run with randomly initialised bridges of the right shapes for `mlx-community/Qwe
 From the GitHub checkout root, with `HF_TOKEN` set (or `huggingface-cli login` done):
 
 ```bash
-cd /Users/rxiii/Documents/GitHub/PsiLM
+cd <the PsiLM checkout>
 HF_HUB_DISABLE_XET=1 .venv/bin/python - <<'EOF'
 from huggingface_hub import HfApi
 api = HfApi()

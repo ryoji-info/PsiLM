@@ -52,7 +52,7 @@ Outputs
   results/bench/<tag>_guardrail_dryrun.json   prompt manifest (dry run)
 """
 
-import argparse
+import argparse, hashlib
 import json
 import sys
 import time
@@ -165,8 +165,18 @@ def build_all(args, hf_tok):
     cache = Path(args.tasks_cache) if args.tasks_cache else None
     if cache and cache.is_file() and not args.build_cache:
         doc = json.loads(cache.read_text())
-        if doc["key"] != cache_key(args):
-            raise SystemExit(f"{cache}: built for {doc['key']}, this run needs {cache_key(args)}")
+        want = cache_key(args, hf_tok)
+        if doc["key"] != want:
+            # Caches written before the tokenizer fingerprint carry the tokenizer's
+            # path in that field. Accept one when every other field matches, and
+            # say that the tokenizer's identity was not verified.
+            stored_tok = doc["key"].split("|")[TOKENIZER_FIELD]
+            legacy = (not stored_tok.startswith("tok:")
+                      and doc["key"] == cache_key(args, hf_tok, tokenizer_field=stored_tok))
+            if not legacy:
+                raise SystemExit(f"{cache}: built for {doc['key']}, this run needs {want}")
+            print(f"[tasks] {cache}: legacy key records the tokenizer as a path ({stored_tok}); "
+                  f"prompts restored, tokenizer identity not verified", flush=True)
         tasks = tasks_from_json(doc["tasks"])
         datasets = list(dict.fromkeys(t.dataset for t in tasks))
         print(f"[tasks] {len(tasks)} restored from {cache} (no datasets import)", flush=True)
@@ -174,23 +184,42 @@ def build_all(args, hf_tok):
     datasets, tasks = build_all_fresh(args, hf_tok)
     if cache:
         cache.parent.mkdir(parents=True, exist_ok=True)
-        cache.write_text(json.dumps({"key": cache_key(args), "tasks": tasks_to_json(tasks)}))
+        cache.write_text(json.dumps({"key": cache_key(args, hf_tok), "tasks": tasks_to_json(tasks)}))
         print(f"[tasks] cached {len(tasks)} tasks -> {cache}", flush=True)
     return datasets, tasks
 
 
-def cache_key(args) -> str:
+TOKENIZER_FIELD = 13      # index of the tokenizer field in the "|"-joined key
+TOKENIZER_PROBE = ("PsiLM cache probe 0123456789 \u2014 the quick brown fox; \u03a8LM, "
+                   "\u91cf\u5b50, \u00e9migr\u00e9.\n\tAnswer: <letter>")
+
+
+def tokenizer_fingerprint(hf_tok) -> str:
+    """A short id of the tokenizer's *behaviour*, not its location: the vocabulary
+    size and the ids of a fixed probe string. The same tokenizer files give the
+    same id wherever they sit (a local directory, a Hub id, an `hf download`
+    --local-dir), so a cache built on one machine restores on another; a
+    different tokenizer, which would make the cached prompt ids wrong, does not."""
+    ids = hf_tok.encode(TOKENIZER_PROBE, add_special_tokens=False)
+    return "tok:" + hashlib.sha256(json.dumps([len(hf_tok), ids]).encode()).hexdigest()[:12]
+
+
+def cache_key(args, hf_tok=None, tokenizer_field=None) -> str:
     """Everything that changes the prompts (not the arms or the decoding).
 
-    The redteam fields are appended only when that dataset is in the run, so the
-    key of every earlier run -- and the caches already on disk under
-    results/bench/tasks_*.json -- is byte-identical to what it was."""
+    The tokenizer enters as its fingerprint (see tokenizer_fingerprint), never as
+    the path it was loaded from; `tokenizer_field` substitutes a stored value
+    when a legacy cache is being compared. The redteam fields are appended only
+    when that dataset is in the run."""
+    if tokenizer_field is None:
+        tokenizer_field = tokenizer_fingerprint(hf_tok) if hf_tok is not None else args.hf_tokenizer
     fields = [args.datasets, args.n, args.seed, args.mmlu_subjects,
               args.physics_data, args.physics_base_protocol,
               args.nonphys_span, args.gsm8k_nudge, args.max_new_gsm8k,
               args.max_new_mmlu, args.max_new_physics,
               args.max_new_boolq, args.max_new_physics_base,
-              args.hf_tokenizer]
+              tokenizer_field]
+    assert fields.index(tokenizer_field) == TOKENIZER_FIELD or fields[TOKENIZER_FIELD] == tokenizer_field
     if "redteam" in args.datasets.split(","):
         fields += [args.redteam_data, args.max_new_redteam]
     return "|".join(str(v) for v in fields)

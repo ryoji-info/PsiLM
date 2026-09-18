@@ -387,6 +387,20 @@ you, you can support the work at
 
 ## License
 
-Apache-2.0. DPOT-Tiny derives from [hzk17/DPOT](https://huggingface.co/hzk17/DPOT) (Apache-2.0).
+Code, bridges and this repository's own data: Apache-2.0. DPOT-Tiny derives from
+[hzk17/DPOT](https://huggingface.co/hzk17/DPOT) (Apache-2.0). Claude's constitution,
+the text the constitution partner model was fine-tuned on, is released by Anthropic
+under CC0 1.0. The evaluation items redistributed verbatim in `data/` and in the task
+caches `results/bench/tasks_*.json` come from third-party datasets under their own
+licences — HH-RLHF (MIT), GSM8K (MIT), MMLU (MIT) and BoolQ (CC BY-SA 3.0, whose
+passages are not covered by this repository's Apache-2.0 grant) — each named with its
+source in [DATA_LICENSES.md](DATA_LICENSES.md).
+
+Two notes on the record. Every text field in `results/bench/*.rows.jsonl` and
+`results/stage2c_*/*.jsonl` is raw model output kept for scoring: the names, phone
+numbers, addresses and hotlines in it are frequently fabricated by the model, and none
+of it should be read as factual ([results/bench/README.md](results/bench/README.md)).
+The chain scripts and run metadata under `results/` are a historical record and carry
+the author's local paths as they ran.
 
 *AI generation disclosure: this research was designed, implemented, run and written up by Claude Fable 5 (Anthropic) under the direction and review of Ryoji Furui; see the paper's AI Generation Disclosure (Section 12).*

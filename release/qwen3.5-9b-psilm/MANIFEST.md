@@ -2,7 +2,7 @@
 
 Everything in this directory (`release/qwen3.5-9b-psilm/`) is uploaded as-is to the
 model repo, and the backbone is uploaded to the **root of the same repo** from
-`/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx` (the Qwen3.5 9B text tower, NVFP4,
+the local conversion directory, `$HF_HOME/qwen3.5-9b-mlx` (the Qwen3.5 9B text tower, NVFP4,
 reassembled from Ollama's `qwen3.5:9b-mlx` by `eval/ollama_to_mlx.py`), so the repo is
 both the PsiLM release and a loadable `mlx-lm` model. `psilm_infer.py` uses the directory
 it sits in as the backbone when `config.json` is beside it, else the Hub id.
@@ -20,12 +20,12 @@ it sits in as the backbone when `config.json` is beside it, else the Hub id.
 | `bridges/qwen3.5-9b-nvfp4-mlx-1d-value-selective/config.json` | `results/hf_export/bridges/qwen3.5-9b-nvfp4-mlx-1d-value-selective/config.json` (`eval/export_bridges.py --backbone-name ryoji-info/Qwen3.5-9B-PsiLM`; coupling 13/26 of 32; per-chunk held-out scores, n=16 except the first coupled chunk at n=48) | 1,514 B | `e0cd84435be1465295141c276c1d1da27ed06fc5a5e8c9c8ee7e380a698ce1ae` |
 | `physics/fno_burgers_singlemode.safetensors` | `results/hf_export/physics/fno_burgers_singlemode.safetensors` (= `results/stage2/fno.pt`; identical to the file in the Gemma release) | 552,076 B | `7bb0076c85cdcf2505a9079c05964e3eb77ac4a776eccf34216953f3c37bfcdd` |
 
-| `config.json` | `/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx/config.json` (the converted backbone; not in the GitHub checkout — weights never enter git) | 2,189 B | `31426fc674d7e58150cac520a4e4cb320fc051d697e3bafb82640801b43ddb30` |
-| `model.safetensors` | `/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx/model.safetensors` (the converted backbone; not in the GitHub checkout — weights never enter git) | 7,971,382,795 B | `89c1eb2f0901a5e3fd2bcd43fffbea15752fed62fcecd5a046777a1e7682eba7` |
-| `tokenizer.json` | `/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx/tokenizer.json` (the converted backbone; not in the GitHub checkout — weights never enter git) | 12,807,982 B | `5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42` |
-| `tokenizer_config.json` | `/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx/tokenizer_config.json` (the converted backbone; not in the GitHub checkout — weights never enter git) | 16,710 B | `316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8` |
-| `vocab.json` | `/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx/vocab.json` (the converted backbone; not in the GitHub checkout — weights never enter git) | 6,722,759 B | `ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003` |
-| `LICENSE` | `/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx/LICENSE` (the converted backbone; not in the GitHub checkout — weights never enter git) | 11,357 B | `5f3a3c817e78f5b8a4ad2d2c458a3e4b2cce470d6c12642c4eeb12cb8a9bf51d` |
+| `config.json` | `$HF_HOME/qwen3.5-9b-mlx/config.json` (the converted backbone; not in the GitHub checkout — weights never enter git) | 2,189 B | `31426fc674d7e58150cac520a4e4cb320fc051d697e3bafb82640801b43ddb30` |
+| `model.safetensors` | `$HF_HOME/qwen3.5-9b-mlx/model.safetensors` (the converted backbone; not in the GitHub checkout — weights never enter git) | 7,971,382,795 B | `89c1eb2f0901a5e3fd2bcd43fffbea15752fed62fcecd5a046777a1e7682eba7` |
+| `tokenizer.json` | `$HF_HOME/qwen3.5-9b-mlx/tokenizer.json` (the converted backbone; not in the GitHub checkout — weights never enter git) | 12,807,982 B | `5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42` |
+| `tokenizer_config.json` | `$HF_HOME/qwen3.5-9b-mlx/tokenizer_config.json` (the converted backbone; not in the GitHub checkout — weights never enter git) | 16,710 B | `316230d6a809701f4db5ea8f8fc862bc3a6f3229c937c174e674ff3ca0a64ac8` |
+| `vocab.json` | `$HF_HOME/qwen3.5-9b-mlx/vocab.json` (the converted backbone; not in the GitHub checkout — weights never enter git) | 6,722,759 B | `ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003` |
+| `LICENSE` | `$HF_HOME/qwen3.5-9b-mlx/LICENSE` (the converted backbone; not in the GitHub checkout — weights never enter git) | 11,357 B | `5f3a3c817e78f5b8a4ad2d2c458a3e4b2cce470d6c12642c4eeb12cb8a9bf51d` |
 
 The copies were made with `cp` on 2026-09-11 and the hashes match the sources
 (`shasum -a 256`). Not uploaded: `__pycache__/`, `.DS_Store`, the release smoke-run log (kept at `results/qwen35/release_smoke_run.log`), and the converted directory's `preprocessor_config.json` / `video_preprocessor_config.json` (vision-side files the text tower does not use).
