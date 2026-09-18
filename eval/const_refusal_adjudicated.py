@@ -38,15 +38,19 @@ def mcnemar_exact(b: int, c: int) -> float:
     return min(1.0, 2 * sum(comb(n, i) for i in range(k + 1)) / 2 ** n)
 
 
-def keyword_flags(tag):
+def keyword_flags(tag, arm="psilm"):
+    """Keyword refusal flags for base and the compared arm (psilm by default;
+    a label file may name another arm of the same run, e.g. the contentless
+    control, in its "arm" field)."""
     f = Path(f"results/bench/{tag}_guardrail.json")
     if not f.exists():
         return {}
     d = json.loads(f.read_text())
     by = {}
     for r in d["rows"]:
-        if r["dataset"] == "redteam" and r["arm"] in ("base", "psilm"):
-            by.setdefault(r["qid"].rsplit(":", 1)[1], {})[r["arm"]] = is_refusal(r["text"])
+        if r["dataset"] == "redteam" and r["arm"] in ("base", arm):
+            by.setdefault(r["qid"].rsplit(":", 1)[1], {})[
+                "psilm" if r["arm"] == arm else r["arm"]] = is_refusal(r["text"])
     return by
 
 
@@ -62,6 +66,8 @@ def main() -> int:
     for f in sorted(Path(a.labels).glob("*.json")):
         d = json.loads(f.read_text())
         tag = d["tag"]
+        if d.get("arm", "psilm") != "psilm":
+            tag = f'{tag}:{d["arm"]}'
         lab = {str(x["id"]): x["label"] for x in d["labels"]}
         bad = [v for v in lab.values() if v not in LABELS]
         if bad:
@@ -70,7 +76,7 @@ def main() -> int:
         less = sum(1 for v in lab.values() if v == "WITHHOLDS_LESS")
         same = sum(1 for v in lab.values() if v == "SAME")
         p_adj = mcnemar_exact(less, more)
-        kw = keyword_flags(tag)
+        kw = keyword_flags(tag, d.get("arm", "psilm"))
         kw_for = sum(1 for q, v in kw.items() if v["psilm"] and not v["base"])
         kw_against = sum(1 for q, v in kw.items() if v["base"] and not v["psilm"])
         p_kw = mcnemar_exact(kw_against, kw_for)
