@@ -19,8 +19,9 @@
 # 500-step chunks, meta check on mask and cap, 50-item test and helpful evals
 # at step 1000, the four-dataset guard-rail (n=100) on the shared task cache.
 #
-# Queue: after the parity arms (PARITY COMPLETE); allplain.sh and
-# plainpartner_widths.sh wait for this chain.
+# Queue (reordered 2026-09-19): after the narrow arms' 400-prompt guard-rails
+# (rt400_narrow.sh, RT400-NARROW COMPLETE), which follow the parity arms;
+# allplain.sh and plainpartner_widths.sh wait for this chain.
 #
 # LAUNCH A COPY, NOT THIS FILE (bash reads scripts lazily; editing a running
 # script resumes it mid-file). Ends with "PARITY-CONTROLS COMPLETE".
@@ -41,12 +42,12 @@ export HF_HUB_DISABLE_XET=1 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 [ -d /Users/rxiii/Documents/huggingface/hub ] && export HF_HOME=/Users/rxiii/Documents/huggingface
 step() { echo "$1 $(date '+%F %H:%M')" >> $LOG; }
 
-step "PARITY-CONTROLS WAITING for the parity arms (vn1e, vn5e)"
+step "PARITY-CONTROLS WAITING for the narrow arms' 400-prompt guard-rails (rt400_narrow.sh)"
 MISS=0
-until grep -q "PARITY COMPLETE" results/qwen35/parity_widths.log 2>/dev/null; do
+until grep -q "RT400-NARROW COMPLETE" results/qwen35/rt400_narrow.log 2>/dev/null; do
   # Count the whole upstream queue as alive, not just the predecessor, or a
   # legitimate gap between chains looks like a crash.
-  if pgrep -f 'parity_run.sh|guardrail_phys.sh|contentless_run.sh|rt400_run.sh' > /dev/null; then MISS=0; else MISS=$((MISS + 1)); fi
+  if pgrep -f 'rt400_narrow_run.sh|parity_run.sh|phys_run.sh|contentless_run.sh|rt400_run.sh' > /dev/null; then MISS=0; else MISS=$((MISS + 1)); fi
   [ $MISS -ge 3 ] && { step "nothing upstream is running or complete; proceeding"; break; }
   sleep 60
 done

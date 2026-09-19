@@ -52,7 +52,7 @@ until grep -q "PARITY-CONTROLS COMPLETE" results/qwen35/parity_controls.log 2>/d
   # The parity chains (results/qwen35/parity_widths.sh, parity_controls.sh) run
   # after the physics arm; count the whole upstream queue as alive, not just the
   # immediate predecessor, or this escapes during a legitimate gap between chains.
-  if pgrep -f 'parity_controls_run.sh|parity_run.sh|guardrail_phys.sh|contentless_run.sh|rt400_run.sh' > /dev/null; then
+  if pgrep -f 'parity_controls_run.sh|rt400_narrow_run.sh|parity_run.sh|phys_run.sh|contentless_run.sh|rt400_run.sh' > /dev/null; then
     MISS=0
   else
     MISS=$((MISS + 1))
@@ -60,7 +60,7 @@ until grep -q "PARITY-CONTROLS COMPLETE" results/qwen35/parity_controls.log 2>/d
   [ $MISS -ge 3 ] && { step "nothing upstream is running or complete; proceeding"; break; }
   sleep 120
 done
-while pgrep -f 'mlx_constitution_(train|eval)\.py|bench_guardrail\.py' > /dev/null; do sleep 60; done
+while pgrep -f 'mlx_constitution_(train|eval)\.py|bench_guardrail\.py|psilm2/(train_dual|bench)\.py' > /dev/null; do sleep 60; done
 
 mkdir -p $D
 step "ALLPLAIN START partner=$CM (twin of the all arm, 2 chunks)"

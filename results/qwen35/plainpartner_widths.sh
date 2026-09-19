@@ -51,11 +51,11 @@ step() { echo "$1 $(date '+%F %H:%M')" >> $LOG; }
 step "PLAINWIDTHS WAITING for the full-width plain-partner arm"
 MISS=0
 until grep -q "ALLPLAIN COMPLETE" results/qwen35/allplain.log 2>/dev/null; do
-  if pgrep -f 'allplain_run.sh|parity_controls_run.sh|parity_run.sh|guardrail_phys.sh|contentless_run.sh|rt400_run.sh' > /dev/null; then MISS=0; else MISS=$((MISS + 1)); fi
+  if pgrep -f 'allplain_run.sh|parity_controls_run.sh|rt400_narrow_run.sh|parity_run.sh|phys_run.sh|contentless_run.sh|rt400_run.sh' > /dev/null; then MISS=0; else MISS=$((MISS + 1)); fi
   [ $MISS -ge 3 ] && { step "the allplain chain is neither running nor complete; proceeding"; break; }
   sleep 120
 done
-while pgrep -f 'mlx_constitution_(train|eval)\.py|bench_guardrail\.py' > /dev/null; do sleep 60; done
+while pgrep -f 'mlx_constitution_(train|eval)\.py|bench_guardrail\.py|psilm2/(train_dual|bench)\.py' > /dev/null; do sleep 60; done
 
 step "PLAINWIDTHS START partner=$CM (vn1eplain 41 cap 1.0252, vn5eplain 205 cap 0.6257)"
 
