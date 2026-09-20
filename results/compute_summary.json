@@ -1,9 +1,9 @@
 {
  "totals": {
-  "training_h": 272.8,
-  "evals_h": 17.7,
-  "guardrails_h": 79.5,
-  "total_h": 370.0
+  "training_h": 280.3,
+  "evals_h": 19.1,
+  "guardrails_h": 82.4,
+  "total_h": 381.8
  },
  "training": {
   "stage1": 12.51,
@@ -35,6 +35,7 @@
   "stage2c_qwen35_match0": 7.06,
   "stage2c_qwen35_match1": 7.16,
   "stage2c_qwen35_match2": 7.06,
+  "stage2c_qwen35_match41": 7.45,
   "stage2c_qwen35_vn": 7.28,
   "stage2c_qwen35_vn10e": 7.05,
   "stage2c_qwen35_vn10ebot": 7.04,
@@ -70,6 +71,8 @@
   "results/stage2c_qwen35_match1/eval_test_step500.log": 0.687,
   "results/stage2c_qwen35_match2/eval_test.log": 1.136,
   "results/stage2c_qwen35_match2/eval_test_step500.log": 0.683,
+  "results/stage2c_qwen35_match41/eval_helpful.log": 0.702,
+  "results/stage2c_qwen35_match41/eval_test.log": 0.696,
   "results/stage2c_qwen35_vn/eval_helpful.log": 0.704,
   "results/stage2c_qwen35_vn/eval_test.log": 0.701,
   "results/stage2c_qwen35_vn10e/eval_helpful.log": 0.704,
@@ -96,6 +99,7 @@
   "const_qwen35_match0_rg": 0.92,
   "const_qwen35_match1_rg": 0.92,
   "const_qwen35_match2_rg": 0.91,
+  "const_qwen35_match41": 2.87,
   "const_qwen35_vn10e": 2.8,
   "const_qwen35_vn10e_rt400": 3.98,
   "const_qwen35_vn10ebot": 2.85,
@@ -123,13 +127,13 @@
  "psilm2": {
   "scope": "training runs stage2c_* and stage2_qwen35, their eval_*.log files, guard-rails const_* and dual_qwen35_*",
   "excluded_runs": [
-   "stage2c_qwen35_match41"
+   "stage2c_qwen35_match205"
   ],
   "totals": {
-   "training_h": 98.0,
-   "evals_h": 17.7,
-   "guardrails_h": 49.3,
-   "total_h": 165.0
+   "training_h": 105.4,
+   "evals_h": 19.1,
+   "guardrails_h": 52.1,
+   "total_h": 176.6
   },
   "training": {
    "stage2_qwen35": 17.73,
@@ -146,6 +150,7 @@
    "stage2c_qwen35_match0": 7.06,
    "stage2c_qwen35_match1": 7.16,
    "stage2c_qwen35_match2": 7.06,
+   "stage2c_qwen35_match41": 7.45,
    "stage2c_qwen35_vn": 7.28,
    "stage2c_qwen35_vn10e": 7.05,
    "stage2c_qwen35_vn10ebot": 7.04,
@@ -179,6 +184,8 @@
    "results/stage2c_qwen35_match1/eval_test_step500.log": 0.687,
    "results/stage2c_qwen35_match2/eval_test.log": 1.136,
    "results/stage2c_qwen35_match2/eval_test_step500.log": 0.683,
+   "results/stage2c_qwen35_match41/eval_helpful.log": 0.702,
+   "results/stage2c_qwen35_match41/eval_test.log": 0.696,
    "results/stage2c_qwen35_vn/eval_helpful.log": 0.704,
    "results/stage2c_qwen35_vn/eval_test.log": 0.701,
    "results/stage2c_qwen35_vn10e/eval_helpful.log": 0.704,
@@ -205,6 +212,7 @@
    "const_qwen35_match0_rg": 0.92,
    "const_qwen35_match1_rg": 0.92,
    "const_qwen35_match2_rg": 0.91,
+   "const_qwen35_match41": 2.87,
    "const_qwen35_vn10e": 2.8,
    "const_qwen35_vn10e_rt400": 3.98,
    "const_qwen35_vn10ebot": 2.85,
