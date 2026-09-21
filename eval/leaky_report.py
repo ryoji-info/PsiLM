@@ -53,6 +53,11 @@ def main():
         for key in ("model", "ckpt_step"):
             if other.get(key) != doc.get(key):
                 raise SystemExit(f"refusing to merge {path}: {key} differs")
+        pa = doc.get("config", {}).get("kl_pool", "full")
+        pb = other.get("config", {}).get("kl_pool", "full")
+        if pa != pb:
+            raise SystemExit(f"refusing to merge {path}: its KLs are on the {pb!r} read of the "
+                             f"coupling and the first report's on {pa!r}")
         for key in ("seed", "n", "datasets", "tasks_cache", "mmlu_subjects"):
             a, b = doc.get("config", {}).get(key), other.get("config", {}).get(key)
             if a != b:
@@ -105,7 +110,8 @@ def main():
         print(f"{arm:11s} " + " ".join(f"{c:>12s}" for c in cells)
               + f"   {mae if mae is not None else '-'}")
 
-    print(f"\n{'arm':11s} " + " ".join(f"{'KL:' + d:>12s}" for d in datasets))
+    print(f"\nKL read of the coupling: {doc.get('config', {}).get('kl_pool', 'full')}")
+    print(f"{'arm':11s} " + " ".join(f"{'KL:' + d:>12s}" for d in datasets))
     for arm in coupled:
         row = []
         for d in datasets:

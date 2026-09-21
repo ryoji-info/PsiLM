@@ -24,6 +24,9 @@ def guard(p):
     if not p.exists():
         return None
     s = json.loads(p.read_text())
+    # which read of the coupling the KLs are on; a summary written before
+    # 2026-09-22 has no kl_pool and is on the legacy full-sequence read
+    pool = (s.get("config") or {}).get("kl_pool", "full")
     out = {}
     for ds, d in (s.get("summary") or {}).items():
         row = {}
@@ -31,7 +34,7 @@ def guard(p):
             if a in ("base", "psilm", "zeroed"):
                 row[a] = {"acc": r.get("acc"), "refusal": r.get("refusal_rate"),
                           "sigma": (r.get("sigma") or {}).get("mean"),
-                          "kl": (r.get("kl_to_base") or {}).get("mean")}
+                          "kl": (r.get("kl_to_base") or {}).get("mean"), "kl_pool": pool}
         out[ds] = row
     return out
 
@@ -88,6 +91,13 @@ def main():
               f"| {f(gg('redteam','psilm','kl'))} |")
     out = Path(a.out or f"results/constitution/summary_{a.tag}.json")
     out.write_text(json.dumps(table, indent=1))
+    pools = sorted({arm_rec.get("kl_pool") for r in table.values() for ds in (r["guardrail"] or {}).values()
+                    for arm_rec in ds.values() if arm_rec.get("kl") is not None})
+    if len(pools) > 1:
+        print(f"\nWARNING: the redteam KL column mixes reads of the coupling ({', '.join(pools)}); "
+              "compare KLs only within one read (eval/kl_pool_shift.py measures the difference)")
+    elif pools:
+        print(f"\nKL read: {pools[0]}")
     print(f"\nwrote {out}")
     write_tracked_summaries(a.tag, a.variants.split(","))
 

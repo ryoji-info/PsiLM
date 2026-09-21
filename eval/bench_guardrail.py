@@ -133,6 +133,18 @@ def parse_args():
     ap.add_argument("--kl", action="store_true",
                     help="per-token KL(base || arm) for every non-base arm, teacher-forced "
                          "on the base arm's own continuation (two extra full-sequence passes)")
+    ap.add_argument("--kl-pool", default="prompt", choices=list(StagedDecoder.KL_POOLS),
+                    help="what the coupling reads in the teacher-forced KL pass. 'prompt' is what "
+                         "every arm's decode reads (the coupling tokens are computed once, at "
+                         "prefill). 'full' also reads the base continuation: no decode did that, "
+                         "and it is the basis of every KL recorded before 2026-09-22 (a summary "
+                         "whose config has no kl_pool is on it)")
+    ap.add_argument("--kl-rescore", default=None,
+                    help="rows.jsonl of a finished --kl run: recompute each of its recorded KLs "
+                         "under BOTH reads on its own base continuations, generating nothing, "
+                         "and write one row per (question, arm) with the recorded value beside "
+                         "the two recomputed ones. Same --tasks-cache/--n/--datasets/--ckpt as "
+                         "that run; --tag names the output. eval/kl_pool_shift.py aggregates")
     ap.add_argument("--max-new-physics", type=int, default=32)
     ap.add_argument("--max-new-physics-base", type=int, default=160)
     ap.add_argument("--gate-open-thresh", type=float, default=0.1,
@@ -388,6 +400,14 @@ def resolve_coupling(args, n_layers: int):
 
 def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
     arms = args.arms.split(",")
+    if args.kl_rescore:
+        src = Path(args.kl_rescore)
+        if not src.exists():
+            raise SystemExit(f"--kl-rescore {src}: no such rows file")
+        if src.resolve() == rows_path.resolve():
+            raise SystemExit(f"--kl-rescore {src} is this run's own output ({rows_path}); pass a "
+                             f"distinct --tag (e.g. --tag {args.tag}_klpool) so the record is read, "
+                             "not overwritten")
     if rows_path.exists() and not args.resume:
         if args.fresh:
             rows_path.unlink()
@@ -395,6 +415,13 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
             raise SystemExit(f"{rows_path} exists: pass --resume to continue or --fresh to discard")
     rows = read_jsonl(rows_path) if args.resume else []
     done = {(r["dataset"], r["qid"], r["arm"]) for r in rows}
+    if args.kl and not args.kl_rescore:
+        pools = {(r["kl"] or {}).get("pool", "full") for r in rows if r.get("kl")}
+        if pools - {args.kl_pool}:
+            raise SystemExit(f"{rows_path} already holds KLs on the {sorted(pools)} read and this "
+                             f"run would add {args.kl_pool!r} ones; resume with --kl-pool "
+                             f"{sorted(pools)[0]} or start again with --fresh (a row with no "
+                             "'pool' is on the legacy 'full' read)")
     if rows:
         print(f"[resume] {len(rows)} rows already done", flush=True)
 
@@ -491,6 +518,9 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
                              "share a task cache")
         base_gen = {**borrowed, **base_gen}
         print(f"[kl] {len(borrowed)} base continuations borrowed from {args.base_gen_from}", flush=True)
+    if args.kl_rescore:
+        rescore_kl(args, dec, tasks, arms, shuffled_value, base_gen, rows_path, rows, done)
+        return
     for ti, t in enumerate(tasks):
         for arm in arms:
             key = (t.dataset, t.qid, arm)
@@ -518,7 +548,7 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
                     # arm uses a different prompt, so there it is the trained one)
                     mode, floor, _ = arm_spec(arm)
                     row["kl"] = dec.kl_to_base(p.ids, base_gen[t.qid], mode, span, floor,
-                                               sub_value=sub)
+                                               sub_value=sub, pool=args.kl_pool)
             dec.set_contentless(None)
             append_jsonl(rows_path, row)
             rows.append(row)
@@ -538,6 +568,78 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
     rep = write_report(report_path, args, rows, datasets, arms, info)
     print("\n" + rep["table_text"])
     print(f"\nFINAL -> {report_path}", flush=True)
+
+
+def rescore_kl(args, dec, tasks, arms, shuffled_value, base_gen, rows_path: Path, rows, done):
+    """--kl-rescore: every KL a finished run recorded, recomputed under both reads.
+
+    Until 2026-09-22 the teacher-forced pass let the coupling read the prompt AND
+    the base continuation, where every arm's decode reads the prompt alone. The
+    recorded numbers all share that basis, so comparisons between arms stand; this
+    measures how far each sits from the corrected read, on the run's own base
+    continuations and with nothing regenerated. "kl_full" reproducing
+    "kl_recorded" is the check that the rescoring rebuilt the recorded run.
+    """
+    prior = read_jsonl(Path(args.kl_rescore))
+    # the run's own base continuations win over borrowed ones, as they did in
+    # do_run when the KLs were recorded (its loop overwrote each borrowed entry)
+    base_gen = {**base_gen,
+                **{r["qid"]: r["gen_ids"] for r in prior if r["arm"] == "base" and "gen_ids" in r}}
+    recorded = {(r["dataset"], r["qid"], r["arm"]): r["kl"] for r in prior if r.get("kl")}
+    if not base_gen:
+        raise SystemExit(f"{args.kl_rescore}: no base rows with gen_ids (pass the run's own "
+                         "--base-gen-from if it borrowed its base continuations)")
+    if not recorded:
+        raise SystemExit(f"{args.kl_rescore}: no rows with a recorded kl (was it run with --kl?)")
+    todo = [(t, arm) for t in tasks for arm in arms
+            if arm != "base" and (t.dataset, t.qid, arm) in recorded
+            and (t.dataset, t.qid, arm) not in done]
+    skipped = sum(1 for t, arm in todo if t.qid not in base_gen)
+    print(f"[rescore] {len(recorded)} recorded KLs in {args.kl_rescore}; {len(todo)} to do "
+          f"({len(done)} already done, {skipped} without a base continuation)", flush=True)
+    t0 = time.time()
+    for i, (t, arm) in enumerate(todo):
+        if t.qid not in base_gen:
+            continue
+        p = t.prompt_for(arm)
+        mode, floor, shuffled = arm_spec(arm)
+        sub = shuffled_value.get((t.dataset, t.qid)) if shuffled else None
+        if shuffled and sub is None:
+            raise SystemExit(f"{arm}: no substitute value for {t.qid} "
+                             "-- pass the run's own --shuffle-values-from")
+        rec = recorded[(t.dataset, t.qid, arm)]
+        if rec.get("n") is not None and rec["n"] != len(base_gen[t.qid]):
+            raise SystemExit(f"{t.qid} {arm}: the recorded KL averaged {rec['n']} tokens but the "
+                             f"base continuation here has {len(base_gen[t.qid])}; this is not "
+                             "the continuation the run was measured on")
+        t1 = time.time()
+        dec.set_contentless(arm_contentless(arm), qid=t.qid)
+        both = dec.kl_to_base_pools(p.ids, base_gen[t.qid], mode, p.x0_span, floor, sub_value=sub)
+        dec.set_contentless(None)
+        row = {"dataset": t.dataset, "qid": t.qid, "arm": arm, "n_prompt": len(p.ids),
+               "n_gen": len(base_gen[t.qid]), "kl_recorded": rec,
+               "kl_full": both["full"], "kl_prompt": both["prompt"],
+               "sec": round(time.time() - t1, 3)}
+        append_jsonl(rows_path, row)
+        rows.append(row)
+        if (i + 1) % max(1, args.print_every * 5) == 0 or i == len(todo) - 1:
+            print(f"  [rescore {i + 1}/{len(todo)}] {t.dataset} {arm} "
+                  f"{(time.time() - t0) / 60:.1f} min", flush=True)
+    by = {}
+    for r in rows:
+        if r.get("kl_full") and r["kl_full"]["mean"] is not None:
+            by.setdefault((r["dataset"], r["arm"]), []).append(r)
+    print(f"\n{'dataset':10s} {'arm':14s} {'n':>4s} {'recorded':>10s} {'full':>10s} "
+          f"{'prompt':>10s} {'prompt/full':>11s} {'max|full-rec|':>13s}")
+    for (ds, arm), rs in sorted(by.items()):
+        rec = sum(r["kl_recorded"]["mean"] for r in rs) / len(rs)
+        full = sum(r["kl_full"]["mean"] for r in rs) / len(rs)
+        prm = sum(r["kl_prompt"]["mean"] for r in rs) / len(rs)
+        dev = max(abs(r["kl_full"]["mean"] - r["kl_recorded"]["mean"]) for r in rs)
+        ratio = f"{prm / full:11.4f}" if full > 0 else f"{'-':>11s}"
+        print(f"{ds:10s} {arm:14s} {len(rs):4d} {rec:10.6f} {full:10.6f} {prm:10.6f} "
+              f"{ratio} {dev:13.2e}")
+    print(f"\nRESCORE COMPLETE -> {rows_path}", flush=True)
 
 
 # ----------------------------------------------------------------------------
@@ -726,6 +828,38 @@ def self_test():
     print(f"[self-test] fake coupler: zeroed == base (logits diff {dz2:.1e}, "
           f"{len(fb.gen_ids)} tokens); psilm logits diff {dp2:.2e}, tokens differ: "
           f"{fp.gen_ids != fb.gen_ids}  OK")
+
+    # 6. the teacher-forced pass reads what the decode read. Teacher-forced on an
+    #    arm's OWN greedy continuation, the full-sequence pass must reproduce that
+    #    continuation and the prefill's logits -- which it does only when the
+    #    coupling reads the prompt alone (n_prompt). The legacy read (the whole
+    #    sequence, continuation included) is a different function of the input,
+    #    and every KL recorded before 2026-09-22 used it. The mean-pooling fake
+    #    coupler is where the difference has to show; the untrained physics read
+    #    barely moves with its pool, so there only the equivalence is asserted.
+    for name, d, sp, teeth in (("physics", dec, (5, 9), False), ("coupler", dec_c, None, True)):
+        g = d.generate(prompt, mode="psilm", max_new=K, x0_span=sp)
+        ids = list(prompt) + list(g.gen_ids)
+        lo, hi = len(prompt) - 1, len(ids) - 1
+        l0, *_ = d.prefill_logits(prompt, "psilm", sp)
+        tf = d._logits_range(d._hidden_full(ids, "psilm", sp, n_prompt=len(prompt)), lo, hi)
+        tf_old = d._logits_range(d._hidden_full(ids, "psilm", sp), lo, hi)
+        assert [int(v) for v in tf[0].argmax(-1).tolist()] == g.gen_ids, name
+        e_new = float(mx.abs(tf[0, 0] - l0[0]).max().item())
+        e_old = float(mx.abs(tf_old[0, 0] - l0[0]).max().item())
+        assert e_new < 1e-3, (name, e_new)
+        both = d.kl_to_base_pools(prompt, rb.gen_ids, "psilm", sp)
+        zero = d.kl_to_base_pools(prompt, rb.gen_ids, "zeroed", sp)
+        assert both["prompt"]["mean"] > 0, both
+        if teeth:
+            assert e_old > 10 * max(e_new, 1e-6), (name, e_old, e_new)
+            assert both["prompt"]["mean"] != both["full"]["mean"], both
+        assert zero["prompt"]["mean"] == 0.0 and zero["full"]["mean"] == 0.0, zero
+        assert d.kl_to_base(prompt, rb.gen_ids, "psilm", sp) == both["prompt"]
+        assert d.kl_to_base(prompt, rb.gen_ids, "psilm", sp, pool="full") == both["full"]
+        print(f"[self-test] teacher-forced == decode ({name}): prefill logits diff {e_new:.1e} "
+              f"reading the prompt, {e_old:.1e} reading the continuation too; KL "
+              f"{both['prompt']['mean']:.5f} vs {both['full']['mean']:.5f}, zeroed 0  OK")
 
     print("SELF-TEST OK")
 

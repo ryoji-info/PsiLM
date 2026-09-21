@@ -770,11 +770,22 @@ class StagedDecoder:
         post = getattr(self.model, "logit_postprocess", None)
         return post(logits) if post is not None else logits
 
-    def _hidden_full(self, ids, mode, x0_span=None, floor=None, sub_value=None):
+    def _hidden_full(self, ids, mode, x0_span=None, floor=None, sub_value=None, n_prompt=None):
         """Final hidden state of the whole sequence in one causal pass. The
         injection is position-wise (each position attends to the physics tokens
         only) and every layer after it is causal, so this equals the token-by-
-        token decode the arms actually ran."""
+        token decode the arms actually ran -- PROVIDED the coupling reads what
+        that decode read. The decode computes the coupling tokens once, from the
+        prompt (prefill_logits), and re-injects them at every generated position;
+        `n_prompt` is the number of leading positions that are the prompt, and the
+        read is restricted to them. The layers below l_fwd are causal, so those
+        positions' hidden states are the prompt-only prefill's.
+
+        n_prompt=None reads the WHOLE sequence, continuation included. That is
+        not what any arm's decode did, and it is the basis of every KL recorded
+        before 2026-09-22 (kl_to_base's pool="full"). eval/kl_rescore_all.py
+        recomputes every recorded KL under both reads and eval/kl_pool_shift.py
+        writes the difference to results/constitution/kl_pool_shift.json."""
         import mlx.core as mx
         from mlx_lm.models.cache import make_prompt_cache
         cache = make_prompt_cache(self.model)
@@ -783,25 +794,56 @@ class StagedDecoder:
             h = self._layers(h, 0, self.n_layers, "causal", cache)
         else:
             h = self._layers(h, 0, self.l_fwd, "causal", cache)
-            tokens, _ = self._couple_tokens(h, x0_span, sub_value)
+            h_read = h if n_prompt is None else h[:, :int(n_prompt), :]
+            tokens, _ = self._couple_tokens(h_read, x0_span, sub_value)
             h = self._layers(h, self.l_fwd, self.l_rev, "causal", cache)
             h, _ = self._couple_inject(h, tokens, mode, floor)
             h = self._run_top(h, tokens, mode, floor, "causal", cache)
         del cache
         return h
 
+    #: what the coupling reads in the teacher-forced KL pass. "prompt" is what
+    #: every arm's decode reads; "full" (prompt AND the base continuation) is the
+    #: basis of every KL recorded before 2026-09-22, kept so that record can be
+    #: reproduced and the shift measured (bench_guardrail.py --kl-rescore).
+    KL_POOLS = ("prompt", "full")
+
     def kl_to_base(self, prompt_ids, gen_ids, mode, x0_span=None, floor=None,
-                   chunk: int = 32, sub_value=None) -> Dict[str, Any]:
+                   chunk: int = 32, sub_value=None, pool: str = "prompt") -> Dict[str, Any]:
         """Per-token KL(base || arm) over the full vocabulary, teacher-forced on
         the BASE arm's own greedy continuation gen_ids (so every arm is measured
         on the same tokens). Returns mean / p95 / max over the continuation."""
+        return self.kl_to_base_pools(prompt_ids, gen_ids, mode, x0_span, floor, chunk,
+                                     sub_value, pools=(pool,))[pool]
+
+    def kl_to_base_pools(self, prompt_ids, gen_ids, mode, x0_span=None, floor=None,
+                         chunk: int = 32, sub_value=None, pools=KL_POOLS) -> Dict[str, Dict[str, Any]]:
+        """kl_to_base under each of `pools`, sharing the one base pass."""
         import mlx.core as mx
+        for pool in pools:
+            if pool not in self.KL_POOLS:
+                raise ValueError(f"pool must be one of {self.KL_POOLS}, not {pool!r}")
         ids = list(prompt_ids) + list(gen_ids)
         if len(gen_ids) == 0:
-            return {"n": 0, "mean": None, "p95": None, "max": None}
+            return {pool: {"n": 0, "mean": None, "p95": None, "max": None, "pool": pool}
+                    for pool in pools}
         lo, hi = len(prompt_ids) - 1, len(ids) - 1     # positions predicting gen_ids
         h_b = self._hidden_full(ids, "base")
-        h_a = self._hidden_full(ids, mode, x0_span, floor, sub_value)
+        out = {}
+        for pool in pools:
+            h_a = self._hidden_full(ids, mode, x0_span, floor, sub_value,
+                                    n_prompt=len(prompt_ids) if pool == "prompt" else None)
+            # the row records which read produced it: a resumed run must not
+            # average the two, and a row with no "pool" is on the legacy read
+            out[pool] = {**self._kl_stats(h_b, h_a, lo, hi, chunk), "pool": pool}
+            del h_a
+        del h_b
+        if hasattr(mx, "clear_cache"):
+            mx.clear_cache()
+        return out
+
+    def _kl_stats(self, h_b, h_a, lo, hi, chunk) -> Dict[str, Any]:
+        import mlx.core as mx
         kls = []
         for a in range(lo, hi, chunk):
             b = min(hi, a + chunk)
@@ -812,9 +854,6 @@ class StagedDecoder:
             kl = (mx.exp(lpb) * (lpb - lpa)).sum(axis=-1)          # (1, b-a)
             mx.eval(kl)
             kls.extend(float(v) for v in np.array(kl[0]))
-        del h_b, h_a
-        if hasattr(mx, "clear_cache"):
-            mx.clear_cache()
         arr = np.array(kls, dtype=np.float64)
         return {"n": int(arr.size), "mean": round(float(arr.mean()), 6),
                 "p95": round(float(np.percentile(arr, 95)), 6), "max": round(float(arr.max()), 6)}
