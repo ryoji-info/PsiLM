@@ -1,9 +1,9 @@
 {
  "totals": {
-  "training_h": 287.4,
-  "evals_h": 20.4,
-  "guardrails_h": 85.2,
-  "total_h": 393.0
+  "training_h": 294.9,
+  "evals_h": 21.8,
+  "guardrails_h": 88.4,
+  "total_h": 405.1
  },
  "training": {
   "stage1": 12.51,
@@ -32,6 +32,7 @@
   "stage2c_qwen0.5b_vn": 0.93,
   "stage2c_qwen0.5b_vn5": 0.93,
   "stage2c_qwen35_all": 7.17,
+  "stage2c_qwen35_allplain": 7.47,
   "stage2c_qwen35_match0": 7.06,
   "stage2c_qwen35_match1": 7.16,
   "stage2c_qwen35_match2": 7.06,
@@ -66,6 +67,8 @@
   "results/stage2c_qwen0.5b_vn5/eval_test.log": 0.132,
   "results/stage2c_qwen35_all/eval_helpful.log": 0.69,
   "results/stage2c_qwen35_all/eval_test.log": 0.694,
+  "results/stage2c_qwen35_allplain/eval_helpful.log": 0.703,
+  "results/stage2c_qwen35_allplain/eval_test.log": 0.703,
   "results/stage2c_qwen35_match0/eval_test.log": 1.106,
   "results/stage2c_qwen35_match0/eval_test_step500.log": 0.692,
   "results/stage2c_qwen35_match1/eval_test.log": 1.416,
@@ -99,6 +102,7 @@
   "const_qwen0.5b_vn": 0.34,
   "const_qwen35_all": 2.84,
   "const_qwen35_all_rt400": 5.71,
+  "const_qwen35_allplain_rt400": 3.2,
   "const_qwen35_match0_rg": 0.92,
   "const_qwen35_match1_rg": 0.92,
   "const_qwen35_match205": 2.84,
@@ -130,14 +134,12 @@
  },
  "psilm2": {
   "scope": "training runs stage2c_* and stage2_qwen35, their eval_*.log files, guard-rails const_* and dual_qwen35_*",
-  "excluded_runs": [
-   "stage2c_qwen35_allplain"
-  ],
+  "excluded_runs": [],
   "totals": {
-   "training_h": 112.6,
-   "evals_h": 20.4,
-   "guardrails_h": 55.0,
-   "total_h": 188.0
+   "training_h": 120.0,
+   "evals_h": 21.8,
+   "guardrails_h": 58.2,
+   "total_h": 200.0
   },
   "training": {
    "stage2_qwen35": 17.73,
@@ -151,6 +153,7 @@
    "stage2c_qwen0.5b_vn": 0.93,
    "stage2c_qwen0.5b_vn5": 0.93,
    "stage2c_qwen35_all": 7.17,
+   "stage2c_qwen35_allplain": 7.47,
    "stage2c_qwen35_match0": 7.06,
    "stage2c_qwen35_match1": 7.16,
    "stage2c_qwen35_match2": 7.06,
@@ -183,6 +186,8 @@
    "results/stage2c_qwen0.5b_vn5/eval_test.log": 0.132,
    "results/stage2c_qwen35_all/eval_helpful.log": 0.69,
    "results/stage2c_qwen35_all/eval_test.log": 0.694,
+   "results/stage2c_qwen35_allplain/eval_helpful.log": 0.703,
+   "results/stage2c_qwen35_allplain/eval_test.log": 0.703,
    "results/stage2c_qwen35_match0/eval_test.log": 1.106,
    "results/stage2c_qwen35_match0/eval_test_step500.log": 0.692,
    "results/stage2c_qwen35_match1/eval_test.log": 1.416,
@@ -216,6 +221,7 @@
    "const_qwen0.5b_vn": 0.34,
    "const_qwen35_all": 2.84,
    "const_qwen35_all_rt400": 5.71,
+   "const_qwen35_allplain_rt400": 3.2,
    "const_qwen35_match0_rg": 0.92,
    "const_qwen35_match1_rg": 0.92,
    "const_qwen35_match205": 2.84,
