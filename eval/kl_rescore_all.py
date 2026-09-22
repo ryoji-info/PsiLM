@@ -40,13 +40,16 @@ FIRST = ["const_qwen35_all", "const_qwen35_vn10e", "const_qwen35_vn10ebot",
         "const_qwen0.5b_magmatch", "const_qwen0.5b_plainpartner", "const_qwen0.5b_allplain"]
 
 # config keys that are command-line options with a value; everything that shapes
-# the prompts, the stack or the arms. Booleans and run-control flags are not here.
+# the prompts, the stack or the arms. Booleans and run-control flags are not here (but see FLAG_KEYS).
 VALUE_KEYS = ["model", "hf_tokenizer", "ckpt", "fno", "phys_ckpt", "dual_channels", "bridge_kind",
               "const_model", "l_fwd", "l_rev", "gate_bias", "n", "seed", "datasets", "mmlu_subjects",
               "physics_data", "redteam_data", "physics_base_protocol", "nonphys_span",
               "max_new_gsm8k", "max_new_mmlu", "max_new_boolq", "max_new_redteam",
               "max_new_physics", "max_new_physics_base", "tasks_cache", "shuffle_values_from",
               "base_gen_from", "gsm8k_nudge"]
+# the one boolean the rebuilt run must share: without it a run recorded past a failing
+# staged-vs-stock parity check (leaky_gemma: relative 1.2e-2, argmax unchanged) exits at startup
+FLAG_KEYS = ["no_parity_check"]
 LOG = Path("results/qwen35/kl_rescore.log")
 
 
@@ -99,6 +102,7 @@ def plan(tag):
     for k in VALUE_KEYS:
         if cfg.get(k) is not None:
             cmd += ["--" + k.replace("_", "-"), str(cfg[k])]
+    cmd += ["--" + k.replace("_", "-") for k in FLAG_KEYS if cfg.get(k)]
     if out_rows.exists():
         cmd.append("--resume")
     return {"tag": tag, "cmd": cmd, "n_recorded": n_rec, "n_done": n_done, "out_rows": out_rows}, None
