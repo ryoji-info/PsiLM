@@ -199,7 +199,13 @@ def load_backbone_any(repo_id):
     ``eos_token_id`` = <eos> 1, never on Gemma's turn end <turn|> 106).
     """
     from mlx_lm.utils import load_config
-    cfg = load_config(_snapshot(repo_id))
+    path = _snapshot(repo_id)
+    cfg = load_config(path)
+    from .bonsai_loader import BONSAI_MODEL_TYPES
+    if cfg.get("model_type") in BONSAI_MODEL_TYPES:
+        # Ternary Bonsai: the pack's own Hadamard-aware modules, text model only
+        from .bonsai_loader import load_bonsai
+        return load_bonsai(path)
     if cfg.get("model_type") in GEMMA4_MODEL_TYPES:
         stock, tok, _ = load_stock_gemma(repo_id)
         return GemmaTower(stock), stock, tok
