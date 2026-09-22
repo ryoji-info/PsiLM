@@ -158,8 +158,28 @@ def load_pool(data_dir: str, split: str, min_chars: int, max_chars: int) -> List
     return out
 
 
+def reused_prompt_sets(tag: str, out_dir: str, splits) -> Tuple[Dict[str, List[Dict[str, str]]], Dict[str, Any]]:
+    """Another backbone's four prompt lists, verbatim and in order, from its data files.
+
+    A new backbone trained on the same prompts is comparable item for item with the
+    one that chose them, and nothing here imports `datasets` (which has killed a
+    large MLX load in the same process on this machine). The disjointness the
+    original run proved carries over, since the lists are identical."""
+    sets = {}
+    for s in splits:
+        f = Path(out_dir) / f"constitution_{s}_{tag}.json"
+        if not f.exists():
+            raise SystemExit(f"--prompts-from {tag}: no {f}")
+        rows = json.loads(f.read_text())
+        sets[s] = [{"source": r["source"], "user": r["prompt_text"], "key": _norm(r["prompt_text"])}
+                   for r in rows]
+    return sets, {"reused_from": tag, "pool": {s: len(v) for s, v in sets.items()}, "excluded": {}}
+
+
 def build_prompt_sets(args) -> Tuple[Dict[str, List[Dict[str, str]]], Dict[str, Any]]:
     """The four prompt lists plus the bookkeeping that proves they are disjoint."""
+    if getattr(args, "prompts_from", None):
+        return reused_prompt_sets(args.prompts_from, args.out_dir, SPLITS)
     rng = random.Random(args.seed)
     harm_train = load_pool("harmless-base", "train", args.min_chars, args.max_chars)
     # every normalised harmless-base TRAIN turn, not only the sampled ones: a
@@ -323,6 +343,9 @@ def main():
                     help="prompts on which the cached teacher path is checked against an "
                          "uncached run before the real work starts")
     ap.add_argument("--print-every", type=int, default=25)
+    ap.add_argument("--prompts-from", default=None, metavar="TAG",
+                    help="reuse the prompt lists of data/constitution_<split>_TAG.json verbatim "
+                         "instead of sampling hh-rlhf (same prompts, a new backbone's continuations)")
     ap.add_argument("--dry-run", action="store_true", help="prompts only, no weights")
     args = ap.parse_args()
 

@@ -92,10 +92,11 @@ PSILM2_GUARDRAILS = ("const_", "dual_qwen35_")
 def scoped(tr, ev, gr, rs, exclude):
     """The PsiLM-2 paper's runs, by name prefix, minus --exclude."""
     def keep_run(name):
-        return name.startswith(PSILM2_TRAINING) and name not in exclude
+        # the Ternary Bonsai bridges (stage2c_bonsai*) are the chat app's, not the paper's
+        return name.startswith(PSILM2_TRAINING) and "bonsai" not in name and name not in exclude
     tr2 = {k: v for k, v in tr.items() if keep_run(k)}
     ev2 = {k: v for k, v in ev.items() if keep_run(Path(k).parts[1] if len(Path(k).parts) > 1 else "")}
-    gr2 = {k: v for k, v in gr.items() if k.startswith(PSILM2_GUARDRAILS)
+    gr2 = {k: v for k, v in gr.items() if k.startswith(PSILM2_GUARDRAILS) and "bonsai" not in k
            and not any(k.startswith("const_" + x[len("stage2c_"):]) for x in exclude if x.startswith("stage2c_"))}
     rs2 = {k: v for k, v in rs.items() if k.startswith(PSILM2_GUARDRAILS) or k == "guardrail_qwen35"}
     tot = {"training_h": round(sum(tr2.values()), 1), "evals_h": round(sum(ev2.values()), 1),

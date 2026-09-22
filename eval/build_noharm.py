@@ -36,10 +36,16 @@ def main():
     ap.add_argument("--max-new", type=int, default=32)
     ap.add_argument("--seed", type=int, default=7)
     ap.add_argument("--out", default="data/noharm_train.json")
+    ap.add_argument("--prompts-from", default=None, metavar="JSON",
+                    help="an earlier no-harm file: reuse its prompt_ids verbatim (same tokenizer "
+                         "required, checked) and regenerate only the targets with --model, without "
+                         "reading any dataset")
     ap.add_argument("--nudge-prob", type=float, default=1.0,
                     help="fraction of prompts that keep the benchmark's 'Answer:' nudge line; the rest "
                          "drop it, so the gate cannot learn the wrapper instead of relevance")
     args = ap.parse_args()
+    if args.prompts_from:
+        return regenerate(args)
 
     from datasets import load_dataset
     from eval.bench_common import MMLU_SUBJECTS
@@ -100,6 +106,46 @@ def main():
             print(f"  {k+1}/{len(prompts)} ({(time.time()-t0)/(k+1):.1f}s each)", flush=True)
     Path(args.out).write_text(json.dumps(out))
     print(f"NOHARM DATA: {len(out)} items -> {args.out}", flush=True)
+
+
+def regenerate(args):
+    """--prompts-from: the same prompts, this backbone's own greedy targets."""
+    prior = json.loads(Path(args.prompts_from).read_text())
+    hf_tok = AutoTokenizer.from_pretrained(args.hf_tokenizer)
+    ref = next((r for r in prior if r.get("prompt_ids")), None)
+    if ref is None:
+        raise SystemExit(f"{args.prompts_from}: no prompt_ids to reuse")
+    # the ids are only meaningful under the tokenizer that made them: the chat
+    # template's opening must decode and re-encode to the same ids here
+    head = ref["prompt_ids"][:32]
+    if hf_tok.encode(hf_tok.decode(head), add_special_tokens=False) != head:
+        raise SystemExit(f"{args.prompts_from}: its prompt ids do not round-trip through "
+                         f"{args.hf_tokenizer}; the tokenizers differ")
+    from psilm.mlx.gemma_loader import load_backbone_any
+    _, model, tok = load_backbone_any(args.model)
+    out_path = Path(args.out)
+    done = {r["source"]: r for r in json.loads(out_path.read_text())} if out_path.exists() else {}
+    out, t0, n_new = [], time.time(), 0
+    for k, p in enumerate(prior):
+        if p["source"] in done:
+            out.append(done[p["source"]])
+            continue
+        ids = list(map(int, p["prompt_ids"]))
+        text = mlx_lm.generate(model, tok, prompt=ids, max_tokens=args.max_new, verbose=False)
+        tgt = hf_tok.encode(text, add_special_tokens=False)[: args.max_new]
+        if not tgt:
+            continue
+        if len(tgt) < args.max_new:
+            tgt.append(int(hf_tok.eos_token_id))
+        out.append({"source": p["source"], "prompt_ids": ids, "target_ids": list(map(int, tgt)),
+                    "target_text": text})
+        n_new += 1
+        if (k + 1) % 50 == 0:
+            print(f"  {k+1}/{len(prior)} ({(time.time()-t0)/max(1, n_new):.1f}s each)", flush=True)
+            out_path.write_text(json.dumps(out + [r for r in done.values()
+                                                  if r["source"] not in {o["source"] for o in out}]))
+    out_path.write_text(json.dumps(out))
+    print(f"NOHARM DATA: {len(out)} items -> {args.out} (prompts from {args.prompts_from})", flush=True)
 
 
 if __name__ == "__main__":
