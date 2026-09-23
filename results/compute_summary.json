@@ -3,8 +3,8 @@
   "training_h": 294.9,
   "evals_h": 21.8,
   "guardrails_h": 88.4,
-  "rescores_h": 22.1,
-  "total_h": 427.2
+  "rescores_h": 29.3,
+  "total_h": 434.4
  },
  "training": {
   "stage1": 12.51,
@@ -166,7 +166,7 @@
   "leaky_8b": 3.16,
   "leaky_8b_shuf": 1.28,
   "leaky_8b_top": 1.89,
-  "leaky_gemma": 0.02
+  "leaky_gemma": 7.19
  },
  "psilm2": {
   "scope": "training runs stage2c_* and stage2_qwen35, their eval_*.log files, guard-rails const_* and dual_qwen35_*, and the KL-read rescoring of those guard-rails and of guardrail_qwen35",
