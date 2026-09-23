@@ -22,6 +22,38 @@ def padded_causal_mask(attn, dtype):
     return mx.where(ok, mx.zeros((), dtype=dtype), neg)
 
 
+def recompute_in_backward(layer, mask):
+    """One frozen layer, recomputed in the backward pass rather than taped.
+
+    What mx.checkpoint was meant to do, with the recompute ordered after the
+    cotangent. mx.checkpoint recomputes from a Depends node on the primal and
+    the forward OUTPUT, so nothing makes a layer's recompute wait for the
+    backward pass to reach it: the scheduler may run every window layer's
+    recompute up front and hold all their tapes at once. On the GPU that is
+    what happened -- the 9B constitution runs (l_rev 24, --checkpoint-from -1)
+    peaked exactly as if fully taped (41.4 MiB per batch-token against the
+    untaped physics run's 29.2, the difference being two more GatedDeltaNet
+    tapes). Tying the recompute's input to the incoming cotangent with
+    mx.depends forces the order, so one layer's tape is alive at a time. The
+    gradients are the taped ones to the bit (eval/checkpoint_selftest.py).
+    """
+    def fn(h):
+        return layer(h, mask=mask, cache=None)
+
+    @mx.custom_function
+    def f(h):
+        return fn(h)
+
+    @f.vjp
+    def f_vjp(primals, cotangent, output):
+        h = primals[0] if isinstance(primals, (tuple, list)) else primals
+        c = cotangent[0] if isinstance(cotangent, (tuple, list)) else cotangent
+        _, (g,) = mx.vjp(fn, [mx.depends(h, c)], [c])
+        return (g,)
+
+    return f
+
+
 class MlxStream:
     #: layer index at and above which to recompute rather than tape (None: tape
     #: everything, the default). Only worth setting on backbones whose backward
@@ -47,9 +79,8 @@ class MlxStream:
             if cp is None or i < cp:
                 self.hidden = layer(self.hidden, mask=self.mask, cache=None)
             else:
-                mask = self.mask          # captured as a constant; no gradient wanted
-                self.hidden = mx.checkpoint(
-                    lambda h, _l=layer: _l(h, mask=mask, cache=None))(self.hidden)
+                # the mask is captured as a constant; no gradient wanted
+                self.hidden = recompute_in_backward(layer, self.mask)(self.hidden)
         return self.hidden
 
     def finish(self):

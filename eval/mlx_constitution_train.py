@@ -100,7 +100,8 @@ def build_parser():
     ap.add_argument("--noharm-every", type=int, default=2,
                     help="every k-th step is a no-harm batch (2 = alternate 1:1; >= 2)")
     ap.add_argument("--noharm-gate-only", type=int, default=1,
-                    help="1: on no-harm steps update only inject.g1/g2")
+                    help="1: on no-harm steps only inject.g1/g2 receive the no-harm gradient "
+                         "(AdamW momentum and weight decay still move every tensor on every step)")
     ap.add_argument("--lam-gate", type=float, default=1.0,
                     help="weight of the mean-gate penalty on no-harm steps")
     ap.add_argument("--eval-n", type=int, default=32,

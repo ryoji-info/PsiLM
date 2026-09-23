@@ -15,6 +15,7 @@ Usage:
 
 import argparse
 import json
+import os
 import random
 import sys
 import time
@@ -124,17 +125,29 @@ def regenerate(args):
     from psilm.mlx.gemma_loader import load_backbone_any
     _, model, tok = load_backbone_any(args.model)
     out_path = Path(args.out)
-    done = {r["source"]: r for r in json.loads(out_path.read_text())} if out_path.exists() else {}
+
+    def key(r):
+        # a source is not unique: the "nudge" and "nonudge" halves share sources (400 of
+        # the 597 differ in the GSM8K format line; the 197 MMLU pairs are identical), so
+        # a resume keyed by source alone would hand one variant's target to the other
+        return r["source"], tuple(map(int, r["prompt_ids"]))
+
+    def save(rows):
+        tmp = out_path.with_name(out_path.name + ".tmp")
+        tmp.write_text(json.dumps(rows))
+        os.replace(tmp, out_path)            # a crash never leaves a torn file behind
+
+    done = {key(r): r for r in json.loads(out_path.read_text())} if out_path.exists() else {}
     out, t0, n_new = [], time.time(), 0
     for k, p in enumerate(prior):
-        if p["source"] in done:
-            out.append(done[p["source"]])
+        if key(p) in done:
+            out.append(done[key(p)])
             continue
         ids = list(map(int, p["prompt_ids"]))
         text = mlx_lm.generate(model, tok, prompt=ids, max_tokens=args.max_new, verbose=False)
         tgt = hf_tok.encode(text, add_special_tokens=False)[: args.max_new]
-        if not tgt:
-            continue
+        # no slot is dropped: a backbone that stops at once gets the target [eos], so
+        # the set stays the prompt file slot for slot (results/bonsai/precheck.py)
         if len(tgt) < args.max_new:
             tgt.append(int(hf_tok.eos_token_id))
         out.append({"source": p["source"], "prompt_ids": ids, "target_ids": list(map(int, tgt)),
@@ -142,9 +155,9 @@ def regenerate(args):
         n_new += 1
         if (k + 1) % 50 == 0:
             print(f"  {k+1}/{len(prior)} ({(time.time()-t0)/max(1, n_new):.1f}s each)", flush=True)
-            out_path.write_text(json.dumps(out + [r for r in done.values()
-                                                  if r["source"] not in {o["source"] for o in out}]))
-    out_path.write_text(json.dumps(out))
+            have = {key(o) for o in out}
+            save(out + [r for r in done.values() if key(r) not in have])
+    save(out)
     print(f"NOHARM DATA: {len(out)} items -> {args.out} (prompts from {args.prompts_from})", flush=True)
 
 

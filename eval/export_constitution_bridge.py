@@ -100,6 +100,11 @@ def main():
                 print(f"skip {run.name}: not a <backbone>_<variant> constitution run with a meta")
                 continue
             bk, var = tag.split("_", 1)
+            if bk not in BACKBONE_DIR:
+                # the release covers the paper's backbones; Bonsai's bridges (and its
+                # smoke runs) belong to the chat app and are exported with --run/--out
+                print(f"skip {run.name}: backbone {bk!r} is not part of the ΨLM-2 release")
+                continue
             jobs.append((run, Path("results/hf_export/psilm2/bridges") / BACKBONE_DIR.get(bk, bk) / var,
                          a.backbone_name or BACKBONE_NAME.get(bk)))
     else:

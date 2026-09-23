@@ -72,6 +72,7 @@ import argparse
 import copy
 import hashlib
 import json
+import os
 import random
 import sys
 import time
@@ -291,11 +292,21 @@ def split_items(path: Path) -> Dict[str, Dict[str, Any]]:
     if not path.exists():
         return {}
     done = {}
-    for line in path.read_text().splitlines():
-        line = line.strip()
-        if line:
+    lines = [ln.strip() for ln in path.read_text().splitlines() if ln.strip()]
+    for k, line in enumerate(lines):
+        try:
             r = json.loads(line)
-            done[r["source"]] = r
+        except ValueError:
+            if k == len(lines) - 1:              # a line torn by a kill mid-write: redo that item
+                # and drop it from the file too, or the next append would land on the
+                # fragment and make a torn MIDDLE line that no later resume gets past
+                tmp = path.with_name(path.name + ".tmp")
+                tmp.write_text("".join(ln + "\n" for ln in lines[:-1]))
+                os.replace(tmp, path)
+                print(f"[WARN] {path}: torn last line removed; that item is regenerated", flush=True)
+                continue
+            raise
+        done[r["source"]] = r
     return done
 
 

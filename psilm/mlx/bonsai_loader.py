@@ -15,9 +15,12 @@ carry over unchanged.
 
 Checked on Ternary-Bonsai-2-27B (revision 3f926b4) against the vendor's own
 `vision_artifact.load_vl_model`: last-position logits agree to 3.2e-5 with the
-same top five, the staged forward matches the stock one to 4.2e-5, and the
-gradient of a next-token loss reaches the hidden state at layer 48 of 64
-through the differentiable SSM scan, finite.
+same top five, the chat app's staged prefill (psilm_chat.engine.prefill, one
+unpadded prompt) matches the stock forward to 4.2e-5, and the gradient of a
+next-token loss reaches the hidden state at layer 48 of 64 through the
+differentiable SSM scan, finite. The training path (MlxStream on right-padded
+batches, the ops scan above the write layer, the recomputed backward) is checked
+on the GPU by results/bonsai/precheck.py before any bridge is trained.
 """
 import json
 import sys
