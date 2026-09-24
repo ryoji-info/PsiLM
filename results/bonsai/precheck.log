@@ -1,0 +1,173 @@
+[transformers] You are using a model of type `prism_hadamard_qwen35` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] The tokenizer you are loading from '/Users/rxiii/Documents/huggingface/hub/models--prism-ml--Ternary-Bonsai-2-27B-mlx-2bit/snapshots/3f926b415992eaa2ae9dd7b573706494d6bbf787' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+{
+ "created": "2026-09-24 04:25:07",
+ "model_checked": true,
+ "data": {
+  "train": {
+   "n": 1000,
+   "same_order_as_9b": true,
+   "same_prompt_ids": 1000,
+   "empty_continuations": 0,
+   "ok": true
+  },
+  "val": {
+   "n": 100,
+   "same_order_as_9b": true,
+   "same_prompt_ids": 100,
+   "empty_continuations": 0,
+   "ok": true
+  },
+  "test": {
+   "n": 100,
+   "same_order_as_9b": true,
+   "same_prompt_ids": 100,
+   "empty_continuations": 0,
+   "ok": true
+  },
+  "helpful_test": {
+   "n": 100,
+   "same_order_as_9b": true,
+   "same_prompt_ids": 100,
+   "empty_continuations": 0,
+   "ok": true
+  },
+  "stats": {
+   "train": {
+    "teacher_differs_rate": 0.846,
+    "refusal_rate_base": 0.648,
+    "refusal_rate_teacher": 0.693,
+    "mean_len_teacher": 108.9
+   },
+   "val": {
+    "teacher_differs_rate": 0.86,
+    "refusal_rate_base": 0.48,
+    "refusal_rate_teacher": 0.58,
+    "mean_len_teacher": 112.6
+   },
+   "test": {
+    "teacher_differs_rate": 0.84,
+    "refusal_rate_base": 0.68,
+    "refusal_rate_teacher": 0.67,
+    "mean_len_teacher": 108.8
+   },
+   "helpful_test": {
+    "teacher_differs_rate": 0.84,
+    "refusal_rate_base": 0.0,
+    "refusal_rate_teacher": 0.03,
+    "mean_len_teacher": 126.7
+   }
+  },
+  "stats_9b": {
+   "train": {
+    "teacher_differs_rate": 0.941,
+    "refusal_rate_base": 0.699,
+    "refusal_rate_teacher": 0.744,
+    "mean_len_teacher": 108.7
+   },
+   "val": {
+    "teacher_differs_rate": 0.95,
+    "refusal_rate_base": 0.56,
+    "refusal_rate_teacher": 0.74,
+    "mean_len_teacher": 112.2
+   },
+   "test": {
+    "teacher_differs_rate": 0.91,
+    "refusal_rate_base": 0.67,
+    "refusal_rate_teacher": 0.75,
+    "mean_len_teacher": 109.3
+   },
+   "helpful_test": {
+    "teacher_differs_rate": 0.92,
+    "refusal_rate_base": 0.03,
+    "refusal_rate_teacher": 0.07,
+    "mean_len_teacher": 126.1
+   }
+  },
+  "teacher_signal_ok": true
+ },
+ "noharm": {
+  "n": 1194,
+  "n_9b": 1194,
+  "slots_matching": 1194,
+  "distinct_prompts": 997,
+  "target_len_min": 4,
+  "target_len_max": 32,
+  "target_len_hist": {
+   "4": 358,
+   "32": 836
+  },
+  "early_eos_mid_sentence": 0,
+  "ok": true
+ },
+ "model": {
+  "load_sec": 1.6,
+  "n_layers": 64,
+  "hidden_dtype": "mlx.core.float32",
+  "active_gb": 7.15
+ },
+ "stream": {
+  "kernel": [
+   {
+    "len": 62,
+    "rel": 1.429775579708803e-06,
+    "argmax_same": true
+   },
+   {
+    "len": 198,
+    "rel": 1.9154695110046305e-06,
+    "argmax_same": true
+   }
+  ],
+  "ops_above_48": [
+   {
+    "len": 62,
+    "rel": 1.3702016303795972e-06,
+    "argmax_same": true
+   },
+   {
+    "len": 198,
+    "rel": 2.174316932723741e-06,
+    "argmax_same": true
+   }
+  ],
+  "ok": true
+ },
+ "grad": {
+  "window_from_56_rel": 0.0,
+  "window_from_48_rel": 0.0,
+  "loss": 3.9634552001953125,
+  "ok": true
+ },
+ "memory": {
+  "seq": 64,
+  "window_layers": [
+   8,
+   16
+  ],
+  "taped_peak_gb": [
+   4.56,
+   8.43
+  ],
+  "recomputed_peak_gb": [
+   1.37,
+   1.38
+  ],
+  "taped_sec": 7.2,
+  "recomputed_sec": 5.6,
+  "recompute_saves": true
+ },
+ "packed": {
+  "module": "layers.48.mlp.down_proj",
+  "shape": [
+   5120,
+   17408
+  ],
+  "input_dtype": "mlx.core.float32",
+  "gpu_vs_dense_rel": 0.0,
+  "ok": true,
+  "gpu_vs_cpu_rel": 0.0
+ },
+ "ok": true
+}
+PRECHECK OK

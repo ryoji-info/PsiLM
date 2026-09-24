@@ -1,0 +1,10 @@
+{
+ "constitution_val_bonsai27b.json|32|/Users/rxiii/Documents/huggingface/hub/models--prism-ml--Ternary-Bonsai-2-27B-mlx-2bit/snapshots/3f926b415992eaa2ae9dd7b573706494d6bbf787": {
+  "n": 32,
+  "ce": 0.4136,
+  "agree": 0.9126,
+  "gate_prompt": null,
+  "gate_cont": null,
+  "ratio_cont": null
+ }
+}

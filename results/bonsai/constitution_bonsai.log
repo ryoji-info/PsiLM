@@ -1,0 +1,31 @@
+BONSAI WAITING for the KL rescoring 2026-09-22 09:15
+BONSAI START 2026-09-23 06:42
+BONSAI WAITING for the KL rescoring 2026-09-23 13:57
+BONSAI START 2026-09-23 13:57
+BONSAI WAITING for the KL rescoring 2026-09-23 15:35
+BONSAI WAITING for the KL rescoring 2026-09-23 16:06
+BONSAI START 2026-09-24 02:21
+DATA STATS: {'items_generated': 1300, 'sec_per_item': 33.99} {'train': {'n': 1000, 'teacher_differs_rate': 0.846, 'refusal_rate_teacher': 0.693, 'refusal_rate_base': 0.648, 'mean_len_teacher': 108.9}, 'val': {'n': 100, 'teacher_differs_rate': 0.86, 'refusal_rate_teacher': 0.58, 'refusal_rate_base': 0.48, 'mean_len_teacher': 112.6}, 'test': {'n': 100, 'teacher_differs_rate': 0.84, 'refusal_rate_teacher': 0.67, 'refusal_rate_base': 0.68, 'mean_len_teacher': 108.8}, 'helpful_test': {'n': 100, 'teacher_differs_rate': 0.84, 'refusal_rate_teacher': 0.03, 'refusal_rate_base': 0.0, 'mean_len_teacher': 126.7}} 2026-09-24 02:21
+NOHARM DONE: 1194 items 2026-09-24 04:25
+PRECHECK OK: stream {'kernel': [1e-06, 2e-06], 'ops_above_48': [1e-06, 2e-06]} grad {'window_from_56_rel': 0.0, 'window_from_48_rel': 0.0, 'loss': 3.9634552001953125, 'ok': True} memory {'seq': 64, 'window_layers': [8, 16], 'taped_peak_gb': [4.56, 8.43], 'recomputed_peak_gb': [1.37, 1.38], 'taped_sec': 7.2, 'recomputed_sec': 5.6, 'recompute_saves': True} packed {'module': 'layers.48.mlp.down_proj', 'shape': [5120, 17408], 'input_dtype': 'mlx.core.float32', 'gpu_vs_dense_rel': 0.0, 'ok': True, 'gpu_vs_cpu_rel': 0.0} 2026-09-24 04:26
+SMOKE DATA: longest positive 238 longest negative 513 2026-09-24 04:26
+SMOKE longb1l56 batch 1 l_rev 56 (longest batches): peak 17.3 GB 2026-09-24 04:28
+SMOKE longb1l48 batch 1 l_rev 48 (longest batches): peak 17.4 GB 2026-09-24 04:30
+SMOKE longb2l48 batch 2 l_rev 48 (longest batches): peak 25.3 GB 2026-09-24 04:34
+SMOKE timeb2l48: 21.58 s/step -> about 6.0 h for 1000 steps 2026-09-24 04:37
+TRAIN CONFIG batch 2, read 26, write 48 of 64, 1000 steps in chunks of 100 2026-09-24 04:37
+TRAIN 100/1000: CHUNK DONE step=100 ce_val=0.3067 agree=0.9146 base_ce=0.4136 base_agree=0.9126 gate_ans=0.4822 peak=22.2GB 2026-09-24 05:22
+TRAIN 200/1000: CHUNK DONE step=200 ce_val=0.2999 agree=0.9112 base_ce=0.4136 base_agree=0.9126 gate_ans=0.4973 peak=23.7GB 2026-09-24 06:08
+TRAIN 300/1000: CHUNK DONE step=300 ce_val=0.2988 agree=0.9136 base_ce=0.4136 base_agree=0.9126 gate_ans=0.499 peak=22.8GB 2026-09-24 06:51
+TRAIN 400/1000: CHUNK DONE step=400 ce_val=0.2919 agree=0.9125 base_ce=0.4136 base_agree=0.9126 gate_ans=0.5088 peak=19.7GB 2026-09-24 07:34
+TRAIN 500/1000: CHUNK DONE step=500 ce_val=0.2913 agree=0.9119 base_ce=0.4136 base_agree=0.9126 gate_ans=0.5103 peak=24.6GB 2026-09-24 08:20
+TRAIN 600/1000: CHUNK DONE step=600 ce_val=0.2889 agree=0.9099 base_ce=0.4136 base_agree=0.9126 gate_ans=0.5157 peak=17.5GB 2026-09-24 09:03
+TRAIN 700/1000: CHUNK DONE step=700 ce_val=0.2886 agree=0.9102 base_ce=0.4136 base_agree=0.9126 gate_ans=0.5201 peak=18.1GB 2026-09-24 09:47
+TRAIN 800/1000: CHUNK DONE step=800 ce_val=0.2892 agree=0.912 base_ce=0.4136 base_agree=0.9126 gate_ans=0.5273 peak=23.7GB 2026-09-24 10:34
+TRAIN 900/1000: CHUNK DONE step=900 ce_val=0.2847 agree=0.9101 base_ce=0.4136 base_agree=0.9126 gate_ans=0.5341 peak=21.1GB 2026-09-24 11:20
+TRAIN 1000/1000: CHUNK DONE step=1000 ce_val=0.2825 agree=0.9137 base_ce=0.4136 base_agree=0.9126 gate_ans=0.5359 peak=20.5GB 2026-09-24 12:04
+EVAL test:  base 50 0.4255 0.9117 0.6000 24.0 0.000 - - - -| psilm 50 0.2992 0.9077 0.6000 24.0 0.000 0.1615 0.5397 0.0000 0.1079| zeroed 50 0.4255 0.9117 0.6000 24.0 0.000 0.1615 0.5396 0.0000 0.1079| 2026-09-24 13:55
+EVAL helpful:  base 50 0.3804 0.9322 0.0000 24.0 0.000 - - - -| psilm 50 0.2801 0.9199 0.0200 24.0 0.000 0.1293 0.5302 0.0000 0.1060| zeroed 50 0.3804 0.9322 0.0000 24.0 0.000 0.1293 0.5313 0.0000 0.1063| 2026-09-24 15:46
+tracked summary -> results/bench/const_bonsai27b_all_guardrail_summary.json
+GUARDRAIL COMPLETE: redteam 100 0.0 0.0 0.0 | 0.4334 0.467 100.0 0.4401 0.468 100.0 |gsm8k 100 0.83 0.85 0.83 | 0.0060 0.007 0.0 0.0061 0.007 0.0 |mmlu 100 0.59 0.58 0.59 | 0.0060 0.011 0.0 0.0059 0.011 0.0 |boolq 100 0.89 0.89 0.89 | 0.0021 0.003 0.0 0.0021 0.003 0.0 | 2026-09-25 00:54
+BONSAI-CONSTITUTION COMPLETE 2026-09-25 00:54
