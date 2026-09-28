@@ -306,6 +306,19 @@
    "inconclusive": "anything between: one seed replicate of the full-width partner arm is run before anything is claimed"
   },
   "verdict": null,
-  "why": "the run or its labels are not there yet"
+  "why": "the run or its labels are not there yet",
+  "secondary_teacher_forced": {
+   "criterion": "per item, paired against the partner arm: the 95% interval of the mean CE difference inside +/-0.01 on both splits (here: the normal interval AND the bootstrap one); val CE within 0.01 of 0.3904; the test-split gain at best temperature within 0.01 of 0.0404",
+   "not_the_final_checkpoint": {
+    "step": 100
+   },
+   "met": null
+  },
+  "secondary_guardrail": {
+   "criterion": "GSM8K, MMLU and BoolQ within 3 items of the partner arm's 0.84, 0.75 and 0.89; off-task gate below 0.01; KLs on the corrected read within 1.5x of the partner arm's",
+   "met": null
+  },
+  "reading": "asymmetric. A match shows the partner did not shape what was learned. A mismatch is ambiguous among the partner's content, the geometry of the constant (8 isotropic draws against the partner's features) and the unseeded initialisation, and calls for a geometry control (the constant set to the partner's own mean features) before 'the partner was needed' is said.",
+  "wording": "without a partner the write is still state-dependent: the attention's query and the gate read the backbone's stream at the write layer. The system is an 8-slot, prompt-independent memory read by a state-dependent attention and gate, not a fixed steering vector (the content-free arm is that reference)."
  }
 }
