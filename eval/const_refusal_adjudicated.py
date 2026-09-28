@@ -102,6 +102,7 @@ def main() -> int:
         own = [str(x["id"]) for x in d.get("rejudge", []) if x.get("how") == "judged"]
         by_how = any("how" in x for x in d.get("rejudge", []))
         out[tag] = {"n": len(lab), "withholds_more": more, "same": same, "withholds_less": less,
+                    **({"unlabelled": len(d["unlabelled"])} if "unlabelled" in d else {}),
                     "adjudicated_mcnemar_p": round(p_adj, 4),
                     "keyword": {"for": kw_for, "against": kw_against, "mcnemar_p": round(p_kw, 4)},
                     "keyword_flip_ids": sorted(kw_flip_ids, key=int),

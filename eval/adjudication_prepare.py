@@ -12,12 +12,13 @@ For every arm of a run on the red-team prompts, each prompt's (base, arm) pair i
 
 `prepare` writes the judged pairs as {"id", "prompt", "A", "B"} lines (A = base), in
 the format the recorded judges read, under random ids that carry neither the arm nor
-the prompt's index. In the same files, under the same kind of id, go the ANCHORS: the
+the prompt's index. In the same ROUND, under the same kind of id, go the ANCHORS: the
 recorded (base, arm) pair of every prompt that has a judged pair, is in the record,
 and whose recorded pair is not one text twice. They say how the round's own judges
 label pairs the record already labelled. A pair that occurs twice (two arms wrote the
 same text) is judged once. No file holds a prompt twice, so no judge sees two replies
-to one prompt side by side.
+to one prompt side by side: an anchor is judged in the round of the arm's pair, by
+another judge than the one who has that pair.
 
 The judged pairs of a fixed sample of prompts (index divisible by 10, the recorded
 sample) go to independent judges: other files, in another directory, under other ids.
@@ -299,7 +300,7 @@ def merge(plan, key_dir, recorded_labels):
                     "today": counts(a["today"] for a in anchors), "disagreements": moved}
     out = []
     for a in plan["arms"]:
-        labels, rejudge = [], []
+        labels, rejudge, no_second = [], [], []
         for q in a["identical"]:
             labels.append({"id": q, "label": "SAME", "reason": "B is A, character for character.",
                            "confidence": "high", "how": "identical"})
@@ -323,7 +324,9 @@ def merge(plan, key_dir, recorded_labels):
                 rejudge.append({"id": q, "label": "SAME", "how": "identical"})
             elif x["how"] == "inherited" and q in rec_again:
                 rejudge.append({"id": q, "label": rec_again[q]["label"], "how": "inherited"})
-            elif x["how"] == "judged" and a["judged"][q] not in lost_again:
+            elif x["how"] == "judged" and a["judged"][q] in lost_again:
+                no_second.append({"id": q, "why": lost_again[a["judged"][q]]})
+            elif x["how"] == "judged":
                 rejudge.append({"id": q, "label": again[a["judged"][q]]["label"], "how": "judged"})
         first = {x["id"]: x["label"] for x in labels}
         re_by = {}
@@ -342,11 +345,12 @@ def merge(plan, key_dir, recorded_labels):
                             "`judged` are this round's independent judges; see rejudge_by_provenance."
                             % (a["arm"], a["tag"], plan["recorded"]["tag"], plan["recorded"]["arm"]),
                     "provenance": dict(how), "labels_by_provenance": by_how,
-                    "unlabelled": nobody,
+                    "unlabelled": nobody, "rejudge_unlabelled": no_second,
                     "rejudge_by_provenance": re_by,
                     "anchors_of_the_round": anchor_block,
                     "anchors_on_this_arms_judged_prompts": {
                         "n": len(mine), "agree": sum(z["recorded"] == z["today"] for z in mine),
+                        "unlabelled": sum(plan["anchors"].get(q) in lost for q in a["judged"]),
                         "recorded": counts(z["recorded"] for z in mine),
                         "today": counts(z["today"] for z in mine)},
                     "labels": labels, "rejudge": rejudge})
@@ -419,7 +423,10 @@ def run_resplit(a):
     keys = plan["files"][kind][n]
     if not 2 <= a.parts <= len(keys):
         raise SystemExit(f"--parts {a.parts}: the file holds {len(keys)} pairs")
+    check_dirs(a.judge_dir, a.key_dir, a.labels_dir, a.repo)
     src = Path(a.judge_dir) / kind / f"batch_{n:02d}.jsonl"
+    if src.resolve() != Path(plan["written_files"][kind][n]["file"]).resolve():
+        raise SystemExit(f"{src} is not the file the round wrote: {plan['written_files'][kind][n]['file']}")
     line = {json.loads(ln)["id"]: ln for ln in src.read_text().splitlines() if ln.strip()}
     ids = plan["ids"][kind]
     if set(line) != {ids[k] for k in keys}:
@@ -427,11 +434,12 @@ def run_resplit(a):
     order = keys[:]
     random.Random(f"{plan['seed']}:{kind}:{n}").shuffle(order)
     first, into = len(plan["files"][kind]), []
-    for i in range(a.parts):
+    targets = [Path(a.judge_dir) / kind / f"batch_{first + i:02d}.jsonl" for i in range(a.parts)]
+    there = [str(f) for i, f in enumerate(targets) if f.exists() or label_file(a.key_dir, kind, first + i).exists()]
+    if there:
+        raise SystemExit(f"nothing written. A part's file or its labels exist already: {there}")
+    for i, f in enumerate(targets):
         part = order[i::a.parts]
-        f = Path(a.judge_dir) / kind / f"batch_{first + i:02d}.jsonl"
-        if f.exists():
-            raise SystemExit(f"{f} exists")
         f.write_text("".join(line[j] + "\n" for j in sorted(ids[k] for k in part)))
         plan["files"][kind].append(part)
         plan["written_files"][kind].append({"file": str(f), "n": len(part)})
@@ -442,7 +450,21 @@ def run_resplit(a):
     return 0
 
 
+def check_key_dir(a):
+    for what, other in (("the repository", a.repo), ("--labels-dir", a.labels_dir)):
+        if inside(a.key_dir, other) or inside(other, a.key_dir):
+            raise SystemExit(f"--key-dir {a.key_dir} is inside {what} (or holds it)")
+
+
+def stray_labels(key_dir, plan):
+    """Label files in the key directory that are of no file of the plan."""
+    known = {label_file(key_dir, kind, n).name for kind in KINDS for n in range(len(plan["files"][kind]))}
+    d = Path(key_dir) / "labels"
+    return sorted(f.name for f in d.iterdir() if f.name not in known) if d.exists() else []
+
+
 def run_giveup(a):
+    check_key_dir(a)
     plan = load_plan(a)
     kind, n = file_arg(a, plan)
     plan.setdefault("unlabelled", {}).setdefault(kind, {})[str(n)] = {"why": a.why, "n": len(plan["files"][kind][n])}
@@ -452,9 +474,10 @@ def run_giveup(a):
 
 
 def run_merge(a):
-    plan = json.loads((Path(a.key_dir) / "plan.json").read_text())
-    if plan["round"] != a.round:
-        raise SystemExit(f"the plan in {a.key_dir} is of round {plan['round']!r}")
+    check_key_dir(a)
+    plan = load_plan(a)
+    if stray_labels(a.key_dir, plan):
+        raise SystemExit(f"labels of no file of the plan: {stray_labels(a.key_dir, plan)}")
     rec = plan["recorded"]
     if a.recorded_given and a.recorded != f"{rec['tag']}:{rec['arm']}":
         raise SystemExit(f"--recorded {a.recorded}: the round was planned against {rec['tag']}:{rec['arm']}")
@@ -480,9 +503,9 @@ def run_merge(a):
         c = counts(y["label"] for y in x["labels"])
         print(f"[merge] {x['tag']}:{x['arm']}: more {c['WITHHOLDS_MORE']}, same {c['SAME']}, less "
               f"{c['WITHHOLDS_LESS']}, unlabelled {len(x['unlabelled'])} ({x['provenance']}; re-judge "
-              f"{x['rejudge_by_provenance']}) -> {f}")
-    print(f"[merge] anchors: {anchors['agree']} of {anchors['n']} as recorded; recorded {anchors['recorded']}, "
-          f"today {anchors['today']}")
+              f"{x['rejudge_by_provenance']}, {len(x['rejudge_unlabelled'])} of its pairs unlabelled) -> {f}")
+    print(f"[merge] anchors: {anchors['agree']} of {anchors['n']} as recorded, {anchors['unlabelled']} unlabelled; "
+          f"recorded {anchors['recorded']}, today {anchors['today']}")
     return 0
 
 
@@ -639,7 +662,7 @@ def self_test():
     assert counts(x["label"] for x in fz["labels"])["WITHHOLDS_MORE"] == 5
     assert anchors["n"] == 30 and anchors["agree"] == 29 and anchors["disagreements"][0]["id"] == "35"
     assert fx["anchors_on_this_arms_judged_prompts"] == {
-        "n": 30, "agree": 29, "recorded": {"WITHHOLDS_MORE": 4, "SAME": 26, "WITHHOLDS_LESS": 0},
+        "n": 30, "agree": 29, "unlabelled": 0, "recorded": {"WITHHOLDS_MORE": 4, "SAME": 26, "WITHHOLDS_LESS": 0},
         "today": {"WITHHOLDS_MORE": 3, "SAME": 27, "WITHHOLDS_LESS": 0}}              # 35, 42, 49, 56
     assert [x["id"] for x in fx["rejudge"]] == ["0", "10", "20", "30", "40", "50"]
     assert [x["how"] for x in fx["rejudge"]] == ["identical", "inherited", "inherited", "judged", "judged", "judged"]
@@ -653,12 +676,25 @@ def self_test():
     judge2, key2 = tmp / "judges2", tmp / "key2"
     (labels_dir / "run_fixed.json").unlink()
     (labels_dir / "run_fixedzero.json").unlink()
-    two = lambda command, **kw: args(command, round="u", judge_dir=str(judge2), key_dir=str(key2), **kw)
-    assert run_prepare(two("prepare")) == 0
+    two = lambda command, **kw: args(command, **{"round": "u", "judge_dir": str(judge2), "key_dir": str(key2), **kw})
+    assert run_prepare(two("prepare", seed=7)) == 0              # a given seed: the same files every time
     plan = json.loads((key2 / "plan.json").read_text())
     n_files = len(plan["files"]["a"])
     held = list(plan["files"]["a"][1])
     refused(lambda: run_resplit(two("resplit", file="a:1", parts=3, why=" ")), "a file withdrawn without a reason")
+    stray = judge2 / "a" / f"batch_{n_files + 1:02d}.jsonl"
+    stray.write_text("")
+    refused(lambda: run_resplit(two("resplit", file="a:1", parts=3, why="w")), "a part written over a file")
+    stray.unlink()
+    assert not (judge2 / "a" / f"batch_{n_files:02d}.jsonl").exists()            # nothing was written
+    import shutil
+    shutil.copytree(judge2, repo / "judges_copy")
+    refused(lambda: run_resplit(two("resplit", file="a:1", parts=3, why="w", judge_dir=str(repo / "judges_copy"))),
+            "parts written inside the repository")
+    shutil.copytree(judge2, tmp / "elsewhere")
+    refused(lambda: run_resplit(two("resplit", file="a:1", parts=3, why="w", judge_dir=str(tmp / "elsewhere"))),
+            "parts written beside a copy of the round's files")
+    refused(lambda: run_giveup(two("giveup", file="a:1", why="w", key_dir=str(repo / "k"))), "a key inside the repository")
     refused(lambda: run_resplit(two("resplit", file="a:9", parts=3, why="w")), "a file that is not there withdrawn")
     assert run_resplit(two("resplit", file="a:1", parts=3, why="stopped")) == 0
     plan = json.loads((key2 / "plan.json").read_text())
@@ -687,13 +723,17 @@ def self_test():
                     "confidence": "high"} for k in keys]
             label_file(key2, kind, n_).write_text(json.dumps({"labels": lab}))
 
-    judge_two("b", set())
+    assert run_giveup(two("giveup", file="b:1", why="no second judge")) == 0
+    judge_two("b", {("b", 1)})
     judge_two("a", {("a", 1), ("a", n_files + 2), ("a", 0)})
     refused(lambda: run_merge(two("merge")), "a round with a file neither labelled nor given up was merged")
     judge_two("a", {("a", n_files + 2)})
     refused(lambda: run_merge(two("merge")), "labels of a withdrawn file were merged")
     label_file(key2, "a", 1).unlink()
     refused(lambda: run_giveup(two("giveup", file="a:0", why="w")), "a labelled file was given up")
+    label_file(key2, "a", 99).write_text(json.dumps({"labels": []}))
+    refused(lambda: run_merge(two("merge")), "labels of no file of the plan were passed over")
+    label_file(key2, "a", 99).unlink()
     assert run_merge(two("merge")) == 0
     fx = json.loads((labels_dir / "run_fixed.json").read_text())
     fz = json.loads((labels_dir / "run_fixedzero.json").read_text())
@@ -703,6 +743,15 @@ def self_test():
         assert [x["id"] for x in lab_["unlabelled"]] == want and all(x["why"] == "stopped again"
                                                                     for x in lab_["unlabelled"])
         assert len(lab_["labels"]) == n - len(want) and not {x["id"] for x in lab_["labels"]} & set(want)
+    gone_b = set(plan["files"]["b"][1])
+    for lab_, arm in ((fx, "fixed"), (fz, "fixedzero")):
+        want = sorted((q for q, k in plan_arms[arm]["judged"].items()
+                       if k in gone_b and k not in gone and int(q) % 10 == 0), key=int)
+        assert [x["id"] for x in lab_["rejudge_unlabelled"]] == want
+        assert not {x["id"] for x in lab_["rejudge"]} & set(want)
+        assert lab_["anchors_on_this_arms_judged_prompts"]["unlabelled"] == sum(
+            plan["anchors"].get(q) in gone for q in plan_arms[arm]["judged"])
+    assert len(fx["rejudge_unlabelled"]) + len(fz["rejudge_unlabelled"]) > 0
     anchors = json.loads((labels_dir / "rounds/u/anchors.json").read_text())
     assert anchors["unlabelled"] == sum(k in gone for k in plan["anchors"].values())
     assert anchors["n"] == 30 - anchors["unlabelled"] and len(gone) > 0

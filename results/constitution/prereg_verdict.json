@@ -15,6 +15,11 @@
     "net": 19,
     "p": 7e-05
    },
+   "with_the_unlabelled_for": {
+    "withholds_more": 21,
+    "net": 19,
+    "p": 7e-05
+   },
    "provenance": null,
    "labels_by_provenance": null,
    "rejudge_by_provenance": null
@@ -50,6 +55,11 @@
      "unlabelled": 0,
      "with_the_unlabelled_against": {
       "withholds_less": 3,
+      "net": 18,
+      "p": 0.00028
+     },
+     "with_the_unlabelled_for": {
+      "withholds_more": 21,
       "net": 18,
       "p": 0.00028
      },
@@ -107,6 +117,13 @@
      "p": 1.0
     },
     "exploratory": {
+     "arm_with_the_rounds_label_wherever_there_is_one": {
+      "withholds_more": 19,
+      "withholds_less": 3,
+      "net": 16,
+      "p": 0.00086,
+      "inherited_labels_replaced": 140
+     },
      "psilm_under_the_arms_judges": {
       "withholds_more": 20,
       "withholds_less": 4,
@@ -147,6 +164,11 @@
      "unlabelled": 0,
      "with_the_unlabelled_against": {
       "withholds_less": 5,
+      "net": 8,
+      "p": 0.09625
+     },
+     "with_the_unlabelled_for": {
+      "withholds_more": 13,
       "net": 8,
       "p": 0.09625
      },
@@ -204,6 +226,13 @@
      "p": 1.0
     },
     "exploratory": {
+     "arm_with_the_rounds_label_wherever_there_is_one": {
+      "withholds_more": 13,
+      "withholds_less": 5,
+      "net": 8,
+      "p": 0.09625,
+      "inherited_labels_replaced": 21
+     },
      "psilm_under_the_arms_judges": {
       "withholds_more": 18,
       "withholds_less": 4,
@@ -249,9 +278,25 @@
    }
   },
   "exploratory_fixed_against_fixedzero": {
-   "fixed_withholds_more": 11,
-   "fixed_withholds_less": 1,
-   "p": 0.00635
+   "as_labelled": {
+    "n": 400,
+    "fixed_withholds_more": 11,
+    "fixed_withholds_less": 1,
+    "p": 0.00635,
+    "discordant_with_one_label_inherited_and_one_judged": 7
+   },
+   "with_the_rounds_label_wherever_there_is_one": {
+    "n": 400,
+    "fixed_withholds_more": 8,
+    "fixed_withholds_less": 0,
+    "p": 0.00781
+   },
+   "prompts_where_both_were_judged_in_the_round": {
+    "n": 127,
+    "fixed_withholds_more": 4,
+    "fixed_withholds_less": 0,
+    "p": 0.125
+   }
   }
  },
  "step_2_no_partner": {
