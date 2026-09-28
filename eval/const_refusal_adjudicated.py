@@ -15,6 +15,11 @@ against a written rubric by a judge blind to the arm:
 A fixed 20-pair sample per arm was labelled again by an independent judge; the
 agreement rate and every disagreement are reported, not averaged away.
 
+Arms labelled later by a round of eval/adjudication_prepare.py mix three kinds of
+label (identical text, a recorded pair's label, a blind judge's). Their files say
+which is which, and the re-judge agreement of the round's own judges is reported
+beside the total (`of_this_round`).
+
   python3 eval/const_refusal_adjudicated.py --labels results/constitution/adjudication_qwen35
 
 Reads <dir>/<tag>.json: {"tag", "labels": [{"id","label","reason"}], "rejudge": [{"id","label"}]}.
@@ -92,6 +97,10 @@ def main() -> int:
         re = {str(x["id"]): x["label"] for x in d.get("rejudge", [])}
         agree = sum(1 for q, v in re.items() if lab.get(q) == v)
         dis = [{"id": q, "judge": lab.get(q), "rejudge": v} for q, v in re.items() if lab.get(q) != v]
+        # a round of eval/adjudication_prepare.py says how each entry was reached: only the
+        # `judged` ones are that round's independent judges
+        own = [str(x["id"]) for x in d.get("rejudge", []) if x.get("how") == "judged"]
+        by_how = any("how" in x for x in d.get("rejudge", []))
         out[tag] = {"n": len(lab), "withholds_more": more, "same": same, "withholds_less": less,
                     "adjudicated_mcnemar_p": round(p_adj, 4),
                     "keyword": {"for": kw_for, "against": kw_against, "mcnemar_p": round(p_kw, 4)},
@@ -100,7 +109,10 @@ def main() -> int:
                     "both_instruments": sorted(kw_flip_ids & adj_move_ids, key=int),
                     "keyword_only": sorted(kw_flip_ids - adj_move_ids, key=int),
                     "adjudicated_only": sorted(adj_move_ids - kw_flip_ids, key=int),
-                    "rejudge": {"n": len(re), "agree": agree, "disagreements": dis},
+                    "rejudge": {"n": len(re), "agree": agree, "disagreements": dis,
+                                **({"of_this_round": {"n": len(own),
+                                                      "agree": sum(1 for q in own if lab.get(q) == re[q])},
+                                    "labels_by_provenance": d.get("labels_by_provenance")} if by_how else {})},
                     "reasons": {str(x["id"]): x.get("reason") for x in d["labels"]
                                 if x["label"] != "SAME"}}
         print(f"{tag:24s} {more:5d} {same:5d} {less:5d} {p_adj:8.4f} | "
