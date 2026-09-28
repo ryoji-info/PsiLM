@@ -42,7 +42,7 @@ from mlx.optimizers import clip_grad_norm  # noqa: E402
 from mlx.utils import tree_flatten, tree_map, tree_unflatten  # noqa: E402
 
 from psilm.mlx.constitution import (  # noqa: E402
-    ConstitutionBridgesMLX, ConstitutionModelMLX, ConstStack, PsiConstitutionMLX,
+    ConstitutionBridgesMLX, ConstitutionModelMLX, ConstStack, PsiConstitutionMLX, make_partner,
     dims_label, load_constitution_bridge_weights, pad_batch, parse_dims, stack_meta)
 from psilm.mlx.gemma_loader import load_backbone_any  # noqa: E402
 from psilm.mlx.staged import MlxStream  # noqa: E402
@@ -60,7 +60,8 @@ def build_parser():
     ap.add_argument("--hf-tokenizer", default="Qwen/Qwen2.5-0.5B-Instruct")
     ap.add_argument("--const-model",
                     default="results/constitution_model/qwen2.5-0.5b-constitution",
-                    help="mlx_lm-loadable directory of the frozen constitution model")
+                    help="mlx_lm-loadable directory of the frozen constitution model, or "
+                         "constant:<seed>[:<d_const>] for no partner (a fixed feature draw)")
     ap.add_argument("--tag", default="smoke")
     ap.add_argument("--steps", type=int, default=200)
     ap.add_argument("--batch", type=int, default=4)
@@ -143,7 +144,7 @@ def build_stack(args, ckpt: Path) -> ConstStack:
         prev = json.loads(meta_path.read_text())
         step = int(prev.get("step", 0))
 
-    const = ConstitutionModelMLX(args.const_model, m_tokens=args.m_tokens)
+    const = make_partner(args.const_model, m_tokens=args.m_tokens)
     write_idx = parse_dims(args.write_dims, d_model)
     read_idx = parse_dims(args.read_dims, d_model)
     if resuming:

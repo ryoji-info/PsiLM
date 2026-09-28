@@ -64,7 +64,7 @@ from eval.bench_common import (  # noqa: E402
     PHYSICS_DATA, REDTEAM_DATA, StagedDecoder, Task, append_jsonl, build_tasks, eos_id_set, estimate_budget,
     format_table, is_refusal, load_backbone, load_gsm8k, load_mmlu, load_physics, load_physics_stack,
     load_redteam, parse_letter, parse_number, read_jsonl, score, sigma_stats, summarize,
-    task_manifest, arm_contentless,
+    task_manifest, arm_contentless, arm_fixed,
 )
 
 
@@ -124,6 +124,10 @@ def parse_args():
                          "the same dataset (a deterministic one-step rotation of the qids in "
                          "sorted order, so no question keeps its own). Same channel, same "
                          "floor, same magnitude distribution, wrong content")
+    ap.add_argument("--fixed-tokens", default=None,
+                    help="what each fixed arm injects in place of the channel's read: "
+                         "<arm>=<tokens.npz>[,<arm>=<tokens.npz>...] from "
+                         "eval/constitution_fixed_tokens.py (each with its .json beside it)")
     ap.add_argument("--base-gen-from", default=None,
                     help="rows.jsonl of an earlier run whose base arm was recorded with --kl: "
                          "its greedy continuations become this run's KL reference, so a "
@@ -424,6 +428,7 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
                              "'pool' is on the legacy 'full' read)")
     if rows:
         print(f"[resume] {len(rows)} rows already done", flush=True)
+    fixed_tokens = load_fixed_tokens(args, arms, rows)       # before any weights load
 
     if args.bridge_kind == "constitution" and "physics" in datasets:
         raise SystemExit(no_physics_message())
@@ -518,8 +523,10 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
                              "share a task cache")
         base_gen = {**borrowed, **base_gen}
         print(f"[kl] {len(borrowed)} base continuations borrowed from {args.base_gen_from}", flush=True)
+    info["fixed_tokens"] = {a: i for a, (_, i) in fixed_tokens.items()}
     if args.kl_rescore:
-        rescore_kl(args, dec, tasks, arms, shuffled_value, base_gen, rows_path, rows, done)
+        rescore_kl(args, dec, tasks, arms, shuffled_value, base_gen, rows_path, rows, done,
+                   fixed_tokens)
         return
     for ti, t in enumerate(tasks):
         for arm in arms:
@@ -532,6 +539,7 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
             # Armed for BOTH the generation and the KL below, and cleared after,
             # so no later arm inherits it.
             dec.set_contentless(arm_contentless(arm), qid=t.qid)
+            dec.set_fixed_tokens(*fixed_tokens.get(arm, (None, None)))
             sub = shuffled_value.get((t.dataset, t.qid)) if shuffled else None
             if shuffled and sub is None:
                 raise SystemExit(f"{arm}: no substitute value for {t.qid} "
@@ -550,6 +558,7 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
                     row["kl"] = dec.kl_to_base(p.ids, base_gen[t.qid], mode, span, floor,
                                                sub_value=sub, pool=args.kl_pool)
             dec.set_contentless(None)
+            dec.set_fixed_tokens(None)
             append_jsonl(rows_path, row)
             rows.append(row)
             done.add(key)
@@ -570,7 +579,60 @@ def do_run(args, tasks, datasets, hf_tok, report_path: Path, rows_path: Path):
     print(f"\nFINAL -> {report_path}", flush=True)
 
 
-def rescore_kl(args, dec, tasks, arms, shuffled_value, base_gen, rows_path: Path, rows, done):
+def load_fixed_tokens(args, arms, rows=()):
+    """{arm: (tokens, id)} for the fixed arms, checked before any model loads: each
+    file against the checkpoint it was made from and against its own record, its
+    shape against the bridges, and against the rows a resumed run already holds."""
+    fixed = [a for a in arms if arm_fixed(a)]
+    if not fixed:
+        return {}
+    given = dict(kv.split("=", 1) for kv in (args.fixed_tokens or "").split(",") if "=" in kv)
+    missing = [a for a in fixed if a not in given]
+    if missing:
+        raise SystemExit(f"no tokens for the arm(s) {missing}: pass --fixed-tokens <arm>=<file>,... "
+                         "(eval/constitution_fixed_tokens.py)")
+    import mlx.core as mx
+    ck = Path(args.ckpt)                      # the meta, where load_constitution_stack finds it
+    meta = (json.loads((ck.parent / "config.json").read_text())["meta"] if ck.suffix == ".safetensors"
+            else json.loads(Path(str(ck) + ".meta").read_text()))
+    ckpt_sha = file_sha256(args.ckpt)
+    if getattr(args, "kl_rescore", None):     # a rescoring answers for the run it rescores
+        rows = read_jsonl(Path(args.kl_rescore))
+    out = {}
+    for arm in fixed:
+        path = Path(given[arm])
+        prov = json.loads(path.with_suffix(".json").read_text())
+        if int(prov["ckpt_step"]) != int(meta["step"]) or prov["ckpt_sha256"] != ckpt_sha:
+            raise SystemExit(f"{path}: made from {prov['ckpt']} at step {prov['ckpt_step']}, which "
+                             f"is not {args.ckpt} (step {meta['step']})")
+        sha = file_sha256(path)
+        if prov.get("tokens_sha256") != sha:
+            raise SystemExit(f"{path}: not the file its record {path.with_suffix('.json')} describes")
+        tokens = mx.load(str(path))["tokens"]
+        want = (1, int(meta["m_tokens"]), int(meta["d_model"]))
+        if tuple(tokens.shape) != want:
+            raise SystemExit(f"{path}: tokens of shape {tuple(tokens.shape)}, the bridges take {want}")
+        ident = f"{prov['kind']}:{sha[:16]}"
+        seen = {(r.get("diag") or {}).get("fixed_tokens") for r in rows if r["arm"] == arm}
+        if seen - {ident}:
+            raise SystemExit(f"{arm}: the rows already written injected {sorted(map(str, seen))}, "
+                             f"this run would inject {ident}; start again with --fresh")
+        out[arm] = (tokens, ident)
+        print(f"[fixed] {arm}: {path} ({prov['kind']} over {prov['n']} prompts of {prov['data']}, "
+              f"{ident})", flush=True)
+    return out
+
+
+def file_sha256(path) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def rescore_kl(args, dec, tasks, arms, shuffled_value, base_gen, rows_path: Path, rows, done,
+               fixed_tokens=()):
     """--kl-rescore: every KL a finished run recorded, recomputed under both reads.
 
     Until 2026-09-22 the teacher-forced pass let the coupling read the prompt AND
@@ -614,8 +676,10 @@ def rescore_kl(args, dec, tasks, arms, shuffled_value, base_gen, rows_path: Path
                              "the continuation the run was measured on")
         t1 = time.time()
         dec.set_contentless(arm_contentless(arm), qid=t.qid)
+        dec.set_fixed_tokens(*dict(fixed_tokens).get(arm, (None, None)))
         both = dec.kl_to_base_pools(p.ids, base_gen[t.qid], mode, p.x0_span, floor, sub_value=sub)
         dec.set_contentless(None)
+        dec.set_fixed_tokens(None)
         row = {"dataset": t.dataset, "qid": t.qid, "arm": arm, "n_prompt": len(p.ids),
                "n_gen": len(base_gen[t.qid]), "kl_recorded": rec,
                "kl_full": both["full"], "kl_prompt": both["prompt"],

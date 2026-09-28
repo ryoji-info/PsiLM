@@ -143,6 +143,10 @@ def arm_spec(arm: str):
         # it into the zeroed arm.
         arm_contentless(arm)                   # validates the seed, raises if bad
         return "psilm", None, False
+    if arm_fixed(arm):
+        # like contentless, a fixed arm WRITES: it is the psilm arm with the tokens
+        # replaced by ones that were computed once, from no prompt of this run
+        return "psilm", None, False
     for prefix, shuffled in (("leaky", False), ("shuffled", True)):
         if arm.startswith(prefix):
             eps = float(arm[len(prefix):])
@@ -150,7 +154,18 @@ def arm_spec(arm: str):
                 raise ValueError(f"{arm}: the floor must be in (0, 1]")
             return "psilm", eps, shuffled
     raise ValueError(f"unknown arm {arm!r} (base, psilm, zeroed, leaky<eps>, "
-                     f"shuffled<eps>, contentless[<seed>])")
+                     f"shuffled<eps>, contentless[<seed>], fixed[<name>])")
+
+
+def arm_fixed(arm: str) -> bool:
+    """'fixed', 'fixedzero', 'fixed<name>': the psilm arm with what the channel
+    reads taken away. The same bridges, gate and write, but the tokens are one
+    stored set, identical for every question (--fixed-tokens <arm>=<file>): the
+    mean over prompts outside the run, or the tokens of a partner fed nothing.
+    The forward bridge, the partner and the reverse bridge are not evaluated. If
+    the psilm arm's behaviour survives, none of the three was doing anything at
+    inference."""
+    return arm.startswith("fixed") and (arm == "fixed" or arm[len("fixed"):].isalnum())
 
 
 def arm_contentless(arm: str):
@@ -649,6 +664,28 @@ class StagedDecoder:
         #: seed of the contentless control, set per arm by the harness and left at
         #: None for every trained arm. Read at the single injection choke point.
         self.contentless = None
+        #: the stored tokens of the fixed arm, set per arm by the harness and left at
+        #: None for every other arm. Read at the single token choke point.
+        self.fixed_tokens = None
+        self.fixed_tokens_id = None
+
+    def set_fixed_tokens(self, tokens, ident=None):
+        """Arm the fixed-token control (None clears it), refusing what cannot be one.
+        `ident` names the stored set in every row the arm writes."""
+        if tokens is None:
+            self.fixed_tokens = self.fixed_tokens_id = None
+            return
+        if self.contentless is not None:
+            raise RuntimeError("a fixed arm and a contentless arm cannot be armed together")
+        phi = getattr(self.coupler, "phi", None)
+        if phi is None or not hasattr(phi, "m_tokens"):
+            raise RuntimeError("a fixed arm needs a constitution coupler; the physics channel's "
+                               "content control is --shuffle-values-from")
+        want = (1, int(phi.m_tokens), int(phi.d_model))
+        if tuple(tokens.shape) != want:
+            raise ValueError(f"fixed tokens have shape {tuple(tokens.shape)}, the bridges take {want}")
+        self.fixed_tokens = tokens
+        self.fixed_tokens_id = ident
 
     def set_contentless(self, seed, qid=None):
         """Arm the contentless control, refusing loudly if the channel cannot honour it.
@@ -665,6 +702,8 @@ class StagedDecoder:
         if seed is None:
             self.contentless = None
             return
+        if self.fixed_tokens is not None:
+            raise RuntimeError("a contentless arm and a fixed arm cannot be armed together")
         if not getattr(self.coupler, "supports_contentless", False):
             raise RuntimeError(
                 f"a contentless arm was requested but {type(self.coupler).__name__} does not "
@@ -727,6 +766,9 @@ class StagedDecoder:
 
     # -- the two pause points, dispatched -----------------------------------
     def _couple_tokens(self, h_prompt, x0_span=None, sub_value=None):
+        if self.fixed_tokens is not None:
+            # nothing of the prompt is read: not the forward bridge, not the partner
+            return self.fixed_tokens, {"fixed_tokens": self.fixed_tokens_id or True}
         if self.coupler is not None:
             return self.coupler.tokens(h_prompt, x0_span, sub_value)
         return self._physics_tokens(h_prompt, x0_span, sub_value)

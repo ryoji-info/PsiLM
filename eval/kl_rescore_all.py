@@ -46,7 +46,7 @@ VALUE_KEYS = ["model", "hf_tokenizer", "ckpt", "fno", "phys_ckpt", "dual_channel
               "physics_data", "redteam_data", "physics_base_protocol", "nonphys_span",
               "max_new_gsm8k", "max_new_mmlu", "max_new_boolq", "max_new_redteam",
               "max_new_physics", "max_new_physics_base", "tasks_cache", "shuffle_values_from",
-              "base_gen_from", "gsm8k_nudge"]
+              "base_gen_from", "gsm8k_nudge", "fixed_tokens"]
 # the one boolean the rebuilt run must share: without it a run recorded past a failing
 # staged-vs-stock parity check (leaky_gemma: relative 1.2e-2, argmax unchanged) exits at startup
 FLAG_KEYS = ["no_parity_check"]
@@ -68,7 +68,9 @@ def discover():
         tag = Path(f).name[:-len("_guardrail_summary.json")]
         if tag.endswith("_klpool"):
             continue
-        if (json.loads(Path(f).read_text()).get("config") or {}).get("kl"):
+        cfg = json.loads(Path(f).read_text()).get("config") or {}
+        # a run recorded on the corrected read has nothing to rescore
+        if cfg.get("kl") and cfg.get("kl_pool", "full") != "prompt":
             found.append(tag)
     return [t for t in FIRST if t in found] + [t for t in found if t not in FIRST]
 

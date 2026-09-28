@@ -225,6 +225,56 @@ class ConstitutionModelMLX:
         return h[:, -self.n_readout:, :]
 
 
+class ConstantPartner:
+    """No partner at all: the features the reverse bridge maps are one fixed draw.
+
+    The control for whether a partner model was ever needed. It has the partner's
+    interface and the partner's width, so the bridges keep their shapes and the
+    trainer, the evaluator and the decoders run unchanged; but features() ignores
+    what the forward bridge read and returns the same M vectors for every prompt.
+    What is left to train is the reverse bridge's map of a constant and the gated
+    write; the forward bridge receives no gradient.
+
+    The draw is a function of the seed alone (an explicit key, never the global
+    RNG), so every chunk of a run and every later load rebuilds the same constant
+    from the spec recorded as const_model: `constant:<seed>[:<d_const>]`.
+    """
+
+    PREFIX = "constant:"
+
+    def __init__(self, spec: str, m_tokens: int = 8):
+        parts = str(spec)[len(self.PREFIX):].split(":")
+        if not str(spec).startswith(self.PREFIX) or not parts[0].isdigit() \
+                or len(parts) > 2 or (len(parts) == 2 and not parts[1].isdigit()):
+            raise ValueError(f"{spec!r}: expected constant:<seed>[:<d_const>]")
+        self.seed = int(parts[0])
+        self.d_const = int(parts[1]) if len(parts) == 2 else 896
+        self.path = f"{self.PREFIX}{self.seed}:{self.d_const}"
+        self.m_tokens = self.n_readout = int(m_tokens)
+        self.emb_rms = 1.0
+        self.model = self.inner = self.tok = None
+        self._feats = mx.random.normal((self.m_tokens, self.d_const), key=mx.random.key(self.seed))
+        mx.eval(self._feats)
+        # recorded with the checkpoint and checked at every load: the bridges were
+        # trained on THIS draw, and a generator that drew differently one day would
+        # otherwise hand them another without a word
+        import hashlib
+        import numpy as np
+        self.sha256 = hashlib.sha256(np.array(self._feats, dtype=np.float32).tobytes()).hexdigest()
+
+    def features(self, soft: mx.array) -> mx.array:
+        """(B, M, d_const), the same for every prompt; `soft` gives the batch size only."""
+        return mx.broadcast_to(self._feats[None], (soft.shape[0],) + tuple(self._feats.shape))
+
+
+def make_partner(spec, m_tokens: int = 8):
+    """The partner a const_model spec names: a model directory or Hub id, or
+    `constant:<seed>[:<d_const>]` for none at all."""
+    if str(spec).startswith(ConstantPartner.PREFIX):
+        return ConstantPartner(spec, m_tokens=m_tokens)
+    return ConstitutionModelMLX(spec, m_tokens=m_tokens)
+
+
 def _encode(tok, text: str) -> List[int]:
     """Plain token ids, no special tokens, whatever kind of tokenizer this is."""
     try:
@@ -779,7 +829,16 @@ def load_constitution_stack(ckpt_path, const_model_path: Optional[str] = None):
     else:
         meta = json.loads(Path(str(ckpt) + ".meta").read_text())
     path = const_model_path or meta["const_model"]
-    const = ConstitutionModelMLX(path, m_tokens=int(meta["m_tokens"]))
+    trained, given = (str(p).startswith(ConstantPartner.PREFIX) for p in (meta["const_model"], path))
+    if trained != given or (trained and ConstantPartner(path).path != ConstantPartner(meta["const_model"]).path):
+        # bridges trained on a constant read nothing a model would give them, and
+        # the reverse: either swap would run, and mean nothing
+        raise ValueError(f"{ckpt}: trained with partner {meta['const_model']!r}, asked to run "
+                         f"with {path!r}")
+    const = make_partner(path, m_tokens=int(meta["m_tokens"]))
+    if meta.get("const_feats_sha256") not in (None, getattr(const, "sha256", None)):
+        raise ValueError(f"{ckpt}: the constant drawn from {path!r} is not the one the bridges "
+                         f"were trained on")
     if const.n_readout != int(meta["m_tokens"]):      # a different suffix tokenization
         raise ValueError(f"{path}: gives {const.n_readout} readout tokens, "
                          f"the checkpoint has {meta['m_tokens']}")
@@ -812,6 +871,8 @@ def stack_meta(bridges: ConstitutionBridgesMLX, const: ConstitutionModelMLX,
             "readout_norm": bridges.fwd.readout_norm,
             "emb_rms": bridges.fwd.emb_rms, "step": int(step),
             "d_hidden": bridges.fwd.mlp1.weight.shape[0]}
+    if isinstance(const, ConstantPartner):
+        meta["const_feats_sha256"] = const.sha256
     if extra:
         meta.update(extra)
     return meta
