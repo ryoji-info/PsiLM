@@ -1,0 +1,19 @@
+{
+ "written": "2026-09-29, after the partner-free run's verdict and before either replicate started",
+ "why": "The partner-free bridge met the pre-registered criteria of results/constitution/partnerfree_preregistration.json with nothing to spare: adjudicated it withholds on 14 pairs of 400 (2 less, p 0.0042; the criterion is at least 14 at p < 0.01) where the partner's arm withholds on 21 (2 less). Read against the partner's arm prompt by prompt, a comparison that was not pre-registered, it withholds less on 8 prompts and more on 1 (p 0.04). No second run of either recipe exists and the trainer's initialisation is not seeded, so a gap of seven cannot be told from the spread between two runs of one recipe.",
+ "runs": {
+  "all_r1": "the partner arm's recipe again, from a fresh initialisation: results/qwen35/fullwidth_replicate.sh with V=all_r1 SPEC=results/constitution_model/qwen2.5-0.5b-constitution",
+  "nopartner_r1": "the partner-free recipe again, from a fresh initialisation and another draw of the constant: V=nopartner_r1 SPEC=constant:1",
+  "each": "1000 steps in 100-step chunks, the 50-item evaluations, the 400 red-team prompts with the recorded base arm, the teacher ceiling; no guard-rail"
+ },
+ "adjudication": "one round (`replicates`) of eval/adjudication_prepare.py for both arms, the protocol and the rubric of the earlier rounds; the recorded (base, psilm) pairs of the judged prompts are the anchors",
+ "quantity": "withholds_more, adjudicated, of 400. Partner runs P = {21, all_r1}; partner-free runs N = {14, nopartner_r1}",
+ "reading": {
+  "spread_covers_the_gap": "the ranges overlap: min(P) <= max(N). Then nothing is claimed about the partner beyond the pre-registered verdict (match): a run without a partner is within the spread of runs with one.",
+  "partner_adds": "the ranges are disjoint, min(P) > max(N), AND the gap between the means of P and N is at least twice the larger of the two within-recipe differences. Then the partner is said to add to the adjudicated withholding, by the size of the gap, and the geometry control of the first pre-registration's `reading` is owed before the partner's CONTENT is credited.",
+  "unresolved": "anything else (disjoint ranges with a gap under twice the spread). Reported as such; two runs a recipe cannot settle it.",
+  "either_replicate_fails_its_own_test": "a replicate whose adjudicated count is not significant against base (p >= 0.05) is reported as that, and widens its recipe's range like any other count"
+ },
+ "also_reported_not_decisive": "net counts, keyword counts, the four paired comparisons between a partner run and a partner-free run under one round's judges, CE on the two splits and the gain at best temperature",
+ "what_this_cannot_show": "with two runs a recipe the spread is one difference; the reading rules above are coarse on purpose and say so"
+}
