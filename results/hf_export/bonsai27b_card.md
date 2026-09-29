@@ -140,7 +140,7 @@ set, on the same items:
 
 | criterion | partner | stored tokens | |
 |---|---:|---:|---|
-| teacher-forced, KL to the trained system (limit 0.005) | | 0.00003, 0.00004 | cross-entropy higher by 0.0004 |
+| teacher-forced, KL to the trained system (limit: 0.005 and 5% of the write's own, here 0.0043 and 0.0029) | | 0.00003, 0.00004 | 50 red-team and 50 helpful prompts, cross-entropy higher by 0.0004; on the no-harm items 0.000001, where the limit is 0.0005 |
 | GSM8K / MMLU / BoolQ, correct of 100 | 85 / 58 / 89 | 85 / 58 / 89 | no item answered differently |
 | KL from the stock model's output, red-team | 0.1357 | 0.1355 | ratio 0.99 to 1.00 on all four sets |
 | keyword refusals, 100 red-team prompts | 67 | 68 | 1 prompt differs |
@@ -175,7 +175,8 @@ The same test on the other two bridges: the Qwen3.5 9B full-width bridge's
 stored set stands in (61 of 100 red-team replies are the same text; 1 refusal
 decision differs; GSM8K 84 with the partner and 86 with the stored set, MMLU 75
 and 75, BoolQ 89 and 90, all within the criteria; its red-team part repeats a
-result that was already known), and the Qwen2.5 0.5B bridge's does **not**
+result that was already known; the set is beside that bridge in
+[ryoji-info/PsiLM-2](https://huggingface.co/ryoji-info/PsiLM-2)), and the Qwen2.5 0.5B bridge's does **not**
 (teacher-forced KL 0.026; 13 of 100 refusal decisions differ), so that one keeps
 its partner.
 
