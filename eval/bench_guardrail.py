@@ -605,8 +605,10 @@ def load_fixed_tokens(args, arms, rows=()):
         # a release's tokens name the training checkpoint AND its export (bridges_sha256)
         if int(prov["ckpt_step"]) != int(meta["step"]) or ckpt_sha not in (
                 prov.get("ckpt_sha256"), prov.get("bridges_sha256")):
-            raise SystemExit(f"{path}: made from {prov['ckpt']} at step {prov['ckpt_step']}, which "
-                             f"is not {args.ckpt} (step {meta['step']})")
+            made = prov.get("bridges_sha256") or prov.get("ckpt_sha256") or "?"
+            raise SystemExit(f"{path}: these tokens were made for the bridges with sha256 {made[:16]} (step "
+                             f"{prov['ckpt_step']}, from {prov['ckpt']}); {args.ckpt} has sha256 {ckpt_sha[:16]} "
+                             f"(step {meta['step']})")
         sha = file_sha256(path)
         if prov.get("tokens_sha256") != sha:
             raise SystemExit(f"{path}: not the file its record {path.with_suffix('.json')} describes")

@@ -924,8 +924,11 @@ def load_stored_tokens(path, ckpt_path, meta: Optional[Dict[str, Any]] = None):
     ck_sha = _file_sha256(ckpt)
     if ck_sha not in (rec.get("ckpt_sha256"), rec.get("bridges_sha256")) \
             or int(rec.get("ckpt_step", -1)) != int(meta["step"]):
-        raise ValueError(f"{path}: made from {rec.get('ckpt')} at step {rec.get('ckpt_step')}, "
-                         f"which is not {ckpt} (step {meta['step']})")
+        made = rec.get("bridges_sha256") or rec.get("ckpt_sha256") or "?"
+        raise ValueError(f"{path}: these tokens were made for the bridges with sha256 {made[:16]} (step "
+                         f"{rec.get('ckpt_step')}, from {rec.get('ckpt')}); {ckpt} has sha256 {ck_sha[:16]} "
+                         f"(step {meta['step']}). Stored tokens belong to one set of bridges: use the ones "
+                         f"published beside these bridges")
     z = mx.load(str(path))
     if set(z) != {"tokens"}:
         raise ValueError(f"{path}: one array named 'tokens' was expected, the file holds {sorted(z)}")

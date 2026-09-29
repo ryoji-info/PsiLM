@@ -108,8 +108,10 @@ def export_tokens(src: Path, out: Path, bridges_sha: str, rec: dict, backbone_na
     if isinstance(new.get("verdict"), dict):             # the verdict travels with the tokens
         new["verdict"] = {**new["verdict"], **{k: shown(new["verdict"][k]) for k in ("report", "criteria")
                                                if k in new["verdict"]}}
-    new.update(ckpt="bridges.safetensors", source_ckpt=shown(rec["ckpt"]),
-               source_tokens_sha256=rec["tokens_sha256"], bridges_sha256=bridges_sha,
+    # each file is named beside the hash that is its own: `ckpt` is the training checkpoint the
+    # tokens were made from, `bridges` its export, which is the file they are published with
+    new.update(ckpt=shown(rec["ckpt"]), bridges="bridges.safetensors", bridges_sha256=bridges_sha,
+               source_tokens_sha256=rec["tokens_sha256"],
                tokens_sha256=hashlib.sha256(st.read_bytes()).hexdigest(),
                format="psilm2-constitution-tokens/v1",
                load_with="psilm.mlx.constitution.load_stored_stack(<this dir>/bridges.safetensors)")
