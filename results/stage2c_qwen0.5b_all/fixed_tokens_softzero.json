@@ -1,0 +1,52 @@
+{
+ "kind": "softzero",
+ "tokens_sha256": "4adf2501e16340be94ab0e3d04b3636ea93bdc7889bcf7380dc9fd50c61dd332",
+ "shape": [
+  1,
+  8,
+  896
+ ],
+ "token_rms": 2.114774,
+ "data": "none: the partner was fed zeros",
+ "n": 0,
+ "sources": [],
+ "ckpt": "results/stage2c_qwen0.5b_all/bridges.npz",
+ "ckpt_step": 2000,
+ "ckpt_sha256": "594b8433faee8b588428cf6529386ed749aef4da19111b7b11bc8d72cb84577f",
+ "model": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+ "const_model": "results/constitution_model/qwen2.5-0.5b-constitution",
+ "l_fwd": 10,
+ "spread_of_the_prompts_own_tokens": {
+  "cosine_to_mean": {
+   "mean": 0.884513,
+   "min": 0.554294
+  },
+  "relative_distance_to_mean": {
+   "mean": 0.485081,
+   "max": 0.994077
+  },
+  "mean_pairwise_cosine": 0.780193,
+  "norm": {
+   "of_the_mean": 171.65686,
+   "mean_of_prompts": 193.86992,
+   "ratio": 0.885423
+  },
+  "token_rms": 2.027506,
+  "softzero": {
+   "relative_distance": 0.601128,
+   "cosine": 0.827667,
+   "varies_with_the_prompt": 0.0
+  },
+  "contrast": {
+   "data": "data/constitution_helpful_test_qwen0.5b.json",
+   "n": 100,
+   "relative_distance": 0.208927,
+   "cosine": 0.983388,
+   "own_relative_distance_to_mean": {
+    "mean": 0.315498,
+    "max": 0.895873
+   }
+  }
+ },
+ "sec": 6.5
+}

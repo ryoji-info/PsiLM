@@ -9,8 +9,18 @@ the safetensors back with ``mx.load`` -- the same call
 ``psilm.mlx.constitution.load_constitution_bridge_weights`` makes -- and
 refuses to finish unless every array is bit-identical to the npz.
 
+With ``--tokens <fixed_tokens_mean.npz>`` the bridge's stored tokens go beside it
+as ``tokens.safetensors`` and ``tokens.json`` (the record of what they were made
+from, which now also names the exported bridges by hash), so that
+``psilm.mlx.constitution.load_stored_stack(<out>/bridges.safetensors)`` runs the
+bridge with no partner model. The export is then loaded back that way and the
+tokens compared bit for bit.
+
   python3 eval/export_constitution_bridge.py --run results/stage2c_qwen35_all \
       --out results/hf_export/psilm2/bridges/qwen3.5-9b/all
+  python3 eval/export_constitution_bridge.py --run results/stage2c_bonsai27b_all \
+      --out results/hf_export/bonsai27b/bridges/all --tokens results/stage2c_bonsai27b_all/fixed_tokens_mean.npz \
+      --backbone-name prism-ml/Ternary-Bonsai-2-27B-mlx-2bit
   python3 eval/export_constitution_bridge.py --all   # every stage2c_* run with a step-1000/2000 checkpoint
 """
 import argparse, glob, hashlib, json, os
@@ -49,7 +59,31 @@ def scrub_meta(meta: dict, backbone_name: str | None) -> dict:
     return out
 
 
-def export(run: Path, out: Path, backbone_name=None):
+def export_tokens(src: Path, out: Path, bridges_sha: str, backbone_name=None):
+    """The stored tokens of a bridge, in the Hugging Face layout, with their record."""
+    rec = json.loads(src.with_suffix(".json").read_text())
+    if hashlib.sha256(src.read_bytes()).hexdigest() != rec["tokens_sha256"]:
+        raise SystemExit(f"{src}: not the file its record describes")
+    t = np.load(src)["tokens"]
+    st = out / "tokens.safetensors"
+    mx.save_safetensors(str(st), {"tokens": mx.array(t)})
+    b = np.array(mx.load(str(st))["tokens"])
+    assert b.dtype == t.dtype and b.shape == t.shape and np.array_equal(b, t), "tokens: round-trip differs"
+    new = scrub_meta(rec, backbone_name)
+    new.update(ckpt="bridges.safetensors", source_ckpt=str(rec["ckpt"]),
+               source_tokens_sha256=rec["tokens_sha256"], bridges_sha256=bridges_sha,
+               tokens_sha256=hashlib.sha256(st.read_bytes()).hexdigest(),
+               format="psilm2-constitution-tokens/v1",
+               load_with="psilm.mlx.constitution.load_stored_stack(<this dir>/bridges.safetensors)")
+    assert str(Path.home()) not in json.dumps(new), "a local path survived the scrub"
+    (out / "tokens.json").write_text(json.dumps(new, indent=1) + "\n")
+    from psilm.mlx.constitution import load_stored_stack
+    coupler, _, _ = load_stored_stack(out / "bridges.safetensors")
+    assert np.array_equal(np.array(coupler.stored), t.astype(np.float32)), "the loaded tokens differ"
+    return new
+
+
+def export(run: Path, out: Path, backbone_name=None, tokens=None):
     npz, meta_f = run / "bridges.npz", run / "bridges.npz.meta"
     z = np.load(npz)
     arrays = {k: z[k] for k in z.files}
@@ -80,6 +114,14 @@ def export(run: Path, out: Path, backbone_name=None):
            "sha256_safetensors": hashlib.sha256(st.read_bytes()).hexdigest(),
            "meta": meta}
     (out / "config.json").write_text(json.dumps(cfg, indent=1) + "\n")
+    if tokens is not None:
+        if kind != "constitution":
+            raise SystemExit("stored tokens belong to a constitution bridge")
+        rec = export_tokens(Path(tokens), out, cfg["sha256_safetensors"], backbone_name)
+        cfg["stored_tokens"] = {"file": "tokens.safetensors", "record": "tokens.json",
+                                "sha256": rec["tokens_sha256"], "kind": rec["kind"], "prompts": rec["n"],
+                                "load_with": rec["load_with"]}
+        (out / "config.json").write_text(json.dumps(cfg, indent=1) + "\n")
     return n_params, st.stat().st_size, cfg["sha256_safetensors"]
 
 
@@ -88,7 +130,10 @@ def main():
     ap.add_argument("--run"); ap.add_argument("--out")
     ap.add_argument("--all", action="store_true", help="every results/stage2c_* run into results/hf_export/psilm2/bridges/<backbone>/<variant>")
     ap.add_argument("--backbone-name", default=None)
+    ap.add_argument("--tokens", default=None, help="the bridge's stored tokens (fixed_tokens_mean.npz), with --run")
     a = ap.parse_args()
+    if a.tokens and a.all:
+        ap.error("--tokens goes with one --run")
     jobs = []
     if a.all:
         for d in sorted(glob.glob("results/stage2c_*")):
@@ -106,12 +151,13 @@ def main():
                 print(f"skip {run.name}: backbone {bk!r} is not part of the ΨLM-2 release")
                 continue
             jobs.append((run, Path("results/hf_export/psilm2/bridges") / BACKBONE_DIR.get(bk, bk) / var,
-                         a.backbone_name or BACKBONE_NAME.get(bk)))
+                         a.backbone_name or BACKBONE_NAME.get(bk), None))
     else:
-        jobs.append((Path(a.run), Path(a.out), a.backbone_name))
-    for run, out, name in jobs:
-        n, size, sha = export(run, out, name)
-        print(f"{run.name:34s} -> {out}  {n/1e6:.2f}M params, {size/1e6:.1f} MB, sha256 {sha[:12]}...  round-trip OK")
+        jobs.append((Path(a.run), Path(a.out), a.backbone_name, a.tokens))
+    for run, out, name, tokens in jobs:
+        n, size, sha = export(run, out, name, tokens)
+        print(f"{run.name:34s} -> {out}  {n/1e6:.2f}M params, {size/1e6:.1f} MB, sha256 {sha[:12]}...  round-trip OK"
+              + ("; stored tokens beside it, loaded back with no partner" if tokens else ""))
     return 0
 
 

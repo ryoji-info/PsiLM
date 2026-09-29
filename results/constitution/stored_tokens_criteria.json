@@ -1,5 +1,5 @@
 {
- "written": "2026-09-30, before the stored tokens of the 27B were built and before either guard-rail below ran",
+ "written": "2026-09-29, before the stored tokens of the 27B and the 0.5B were built and before any guard-rail below ran",
  "what": "When may an app run a full-width constitution bridge on ONE stored set of tokens, with the forward bridge, the partner model and the reverse bridge not evaluated? Asked of three bridges: Ternary Bonsai 2 27B (results/stage2c_bonsai27b_all), Qwen3.5 9B (results/stage2c_qwen35_all) and Qwen2.5 0.5B (results/stage2c_qwen0.5b_all).",
  "known_beforehand": {
   "qwen35": "400 red-team prompts, adjudicated blind: the stored mean tokens withhold 21:3 where the partner's path withholds 21:2 (results/constitution/prereg_verdict.json: survived). Teacher-forced, another prompt's tokens move the output by a KL of 0.0003 against 0.065 for the write. No benchmark was run on stored tokens.",
