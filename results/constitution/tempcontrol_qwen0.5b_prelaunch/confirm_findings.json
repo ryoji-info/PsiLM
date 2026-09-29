@@ -1,0 +1,324 @@
+[
+ {
+  "lens": "rules-code",
+  "result": {
+   "findings": [
+    {
+     "file": "results/constitution/arms_controls.py",
+     "passage": "line 276-277: \"at_best_tau\": {\"share\": round(mm / at(a, \"ce_gain_at_best_tau\"), 4), ...}, \"as_evaluated\": {\"share\": round(mr / at(a, \"ce_gain\"), 4), ...}",
+     "what_is_wrong": "The table divides by the value neurons' gain without a guard. If that gain at the best temperatures, rounded to six decimals, is 0.0 on either split (the share is computed for helpful too), intervals() raises ZeroDivisionError before any json is written. The chain then logs TABLE FAILED after all nine arms are measured. The only way on is a post-run edit to a frozen file, which moves AT and breaks the one-commit rule.",
+     "evidence": "Reproduced three times: confirm_tempcontrol05b/rules_vs_code/cases/k (vn's per-item deltas centred to mean 0), cases/a_mult_on_grid and cases/a_real_on before a 3e-6 offset was added (the narrow arms are the backbone read at 0.8). Each gives 'ZeroDivisionError: float division by zero' at arms_controls.py:276. On real rows it needs |gain(vn)| < 5e-7 on one of the two splits, roughly 1e-4 overall. The helpful split is the likelier one: at 9B the narrow arms' helpful gains at the best temperatures sat in -0.004..+0.004.",
+     "severity": "run_would_fail",
+     "proposed": "arms_controls.py: `v = at(a, \"ce_gain_at_best_tau\"); \"share\": round(mm / v, 4) if v else None` (the same for `at(a, \"ce_gain\")`). tempcontrol_reading.split_reading: `if share is None or not 0 <= share <= 1: return \"outside 0 to 1: not a split\"`. Pre-registration, the_63_to_37_split: add \"a value-neuron gain of 0.000000 gives no share (null)\"."
+    },
+    {
+     "file": "results/constitution/tempcontrol_qwen0.5b_preregistration.json",
+     "passage": "reading.the_63_to_37_split: \"... 'magnitude term not distinguishable from zero at best temperature' (the matched mean keeps no gain)\"; eval/tempcontrol_reading.py:94 `if not matched_ci[0] > 0: return \"magnitude term not distinguishable from zero ...\"`",
+     "what_is_wrong": "The rule's condition ('keeps no gain') covers a matched-mean interval that lies wholly below zero, but its label says 'not distinguishable from zero'. For that case the label is false. This is the defect the first review fixed for arms (finding [2]); it was left in the split's fourth label. The arm rule itself names the below-zero case, so the two rules describe the same situation differently.",
+     "evidence": "cases/i: vn keeps a gain (+0.0032 to +0.0040); C3 survives (+0.0080); matched_mean_gain_ci95 is [-0.004879, -0.004048]; share -1.25. The reading says 'magnitude term not distinguishable from zero at best temperature', while the same file labels each matched draw 'below the backbone at best temperature'. This is plausible at 0.5B: the draws' as-evaluated gains are only 0.009-0.014, and the 9B narrow arms went negative at the best temperatures on helpful (down to -0.0041).",
+     "severity": "reading_not_determined",
+     "proposed": "Rule text: replace the fourth label with \"'magnitude term below the backbone at best temperature' (the matched mean's interval is wholly below zero); 'magnitude term not distinguishable from zero at best temperature' (its interval includes zero)\". Code, split_reading, before line 94: `if matched_ci[1] < 0: return \"magnitude term below the backbone at best temperature\"`. Self-test: `assert split_reading(-1.2, True, [-0.005, -0.004], \"survives\") == \"magnitude term below the backbone at best temperature\"`."
+    },
+    {
+     "file": "eval/tempcontrol_reading.py",
+     "passage": "line 119: \"share_kept\": (round(s[\"ce_gain_at_best_tau\"] / s[\"ce_gain\"], 4) if ...)",
+     "what_is_wrong": "share_kept is recomputed from gains the table has already rounded to six decimals. The table's share_surviving, which the rule names as the same quantity, is computed from the unrounded gains. The two disagree in the fourth decimal, so the reading and the table print different numbers for one quantity.",
+     "evidence": "Table share_surviving against reading share_kept: cases/g vn/helpful 0.1423 vs 0.1422 and plainpartner/helpful 0.1365 vs 0.1366; cases/c_rev2 vn/test 0.033 vs 0.0331; cases/i plainpartner/test 0.0941 vs 0.094 and magmatch/test -0.0961 vs -0.0962.",
+     "severity": "minor",
+     "proposed": "`\"share_kept\": s[\"share_surviving\"]`"
+    },
+    {
+     "file": "eval/tempcontrol_reading.py",
+     "passage": "line 35 SHARE_RECORD = 0.6289; lines 181-184 rec includes 'vn minus magmatch/1/2'; pre-registration contrasts.as_evaluated_again: \"within 0.0005 of the record's (... C1 to C5), and the as-evaluated share of the split within 0.01 of 0.629\"",
+     "what_is_wrong": "The code does not check what the rule says. (1) It tests the share against 0.6289, not 0.629, so it disagrees with the rule for a share in [0.6189, 0.619) or (0.6389, 0.639]. (2) It adds the three per-draw contrasts to the_record_is_reproduced['all']. The rule names only C1 to C5 and the share, so 'all' can be False while every check the rule names passes.",
+     "evidence": "Every constant is the record's: CONTRASTS 0.004032, 0.009631, 0.006761, 0.015720, 0.042135 and PER_DRAW 0.004529, 0.006299, 0.009454, each equal to mean_ce differences in paired_bootstrap_qwen0.5b.json to 6 dp; SHARE_RECORD 0.6289 (record 0.628861). Only the rule's wording differs from the code.",
+     "severity": "minor",
+     "proposed": "Rule text: \"... within 0.0005 of the record's (mean_ce: 0.004032, 0.009631, 0.006761, 0.015720, 0.042135 for C1 to C5, and 0.004529, 0.006299, 0.009454 for gain(vn) minus draws 0, 1, 2), and the as-evaluated share of the split within 0.01 of 0.6289; 'all' holds if all nine do.\""
+    },
+    {
+     "file": "results/constitution/tempcontrol_qwen0.5b_preregistration.json",
+     "passage": "reading.a_contrast (\"for C1, C3, C4 and C5 on the red-team split\") and reading.a_contrast_that_was_a_null (helpful: only contrasts whose as-evaluated interval includes zero); code read() line 135, read_contrast lines 63-64, split_reading lines 96-97",
+     "what_is_wrong": "The code writes labels that no rule defines. (1) On the helpful split, a contrast whose as-evaluated interval in the table excludes zero is labelled survives, does not survive or reverses. This includes C2 there, and is certain to happen for helpful C4 and C5. (2) An as-evaluated difference of exactly 0.000000 gets 'no as-evaluated sign: includes/excludes zero'. (3) The split gets 'outside 0 to 1: not a split' when all three conditions hold but the point is outside [0,1]. Items (2) and (3) cannot happen while every arm is ok: each arm reproduces the evaluator to 0.001 and the base is common, so C3's table sign stays positive. Item (1) will happen.",
+     "evidence": "cases/f_vn helpful: C2 is read 'survives' (as-evaluated interval [0.01, 0.01]). cases/a_real_on: C1, C3 and C4 read 'no as-evaluated sign: includes zero'. cases/c_rev (table's own C3 negative): 'outside 0 to 1: not a split'.",
+     "severity": "minor",
+     "proposed": "Add to a_contrast: \"On the helpful split (reported, not read), a contrast whose as-evaluated interval in the table excludes zero, C2 included, is labelled with these words against the table's own as-evaluated sign on that split. A contrast whose as-evaluated difference in the table is exactly zero has no sign and is labelled 'no as-evaluated sign: includes zero' or '... excludes zero'.\" Add to the_63_to_37_split: \"If all three hold and the share is still outside 0 to 1, it is reported as 'outside 0 to 1: not a split'.\""
+    },
+    {
+     "file": "results/constitution/tempcontrol_qwen0.5b_preregistration.json",
+     "passage": "divergence_from_the_teacher: \"The cross-fitted fraction of that distance removed at the best temperatures is reported beside it\"",
+     "what_is_wrong": "The rule's words leave open which temperatures are meant, and the code decides. The reading copies teacher_ceiling's kl_fraction_at_best_tau, which puts each side at the temperature that minimises its own KL on the other split. That is not the cross-entropy-best temperature, which is the one everywhere else in the rules calls 'the best temperatures' and which the reading reports as temperature_backbone and temperature_coupled.",
+     "evidence": "teacher_ceiling.temperature() takes a separate argmin for key 'kl' (lines 185-193) and computes kl_fraction_at_best_tau from base_kl/psilm_kl at_tau (line 200). In every synthetic set the KL curves bottom at 1.0 while the CE taus are 0.6/0.8, and the reading's kl_fraction_removed_at_best_temperatures (-0.0714) is the value at tau 1.",
+     "severity": "minor",
+     "proposed": "\"... at the best temperatures for that distance (each side at the temperature that minimises its own KL to the teacher on the other split, which need not be its cross-entropy's best) is reported beside it\""
+    },
+    {
+     "file": "eval/tempcontrol_reading.py",
+     "passage": "lines 120-126 (edge flags and in-split temperatures copied, no direction); pre-registration reading.a_best_temperature_at_the_edge_of_the_grid",
+     "what_is_wrong": "The rule states a direction: 'if anything overstated' when the backbone is flagged and the read split's own best temperature is at the same end; 'understated' when the coupled system is. The reading carries the flags and the in-split temperatures but never states the direction. So this rule is not applied by the frozen code and would be applied by hand after the run.",
+     "evidence": "The reading contains no 'overstated' or 'understated' string and no direction field. At 9B no best temperature fell at the edge, so this is unlikely to bite.",
+     "severity": "minor",
+     "proposed": "Per arm and split: `fb, fp = s[\"tau_base_at_edge\"], s[\"tau_psilm_at_edge\"]; \"edge_direction\": None if (fb and fp) else \"the gain is if anything overstated\" if fb and s[\"tau_base_in_split\"] == s[\"tau_base\"] else \"the gain is if anything understated\" if fp and s[\"tau_psilm_in_split\"] == s[\"tau_psilm\"] else None`"
+    },
+    {
+     "file": "eval/tempcontrol_reading.py",
+     "passage": "lines 149-155: draws_whose_interval_excludes_zero_with_the_sign = n_sur; draws_below_the_value_neurons_at_best_temperatures",
+     "what_is_wrong": "If one draw or vn is not ok, the per-draw readings are withheld, but the count beside C3 is still reported as a number. It counts only the read draws, while the rule calls it 'how many of the three'. draws_below_... also compares gains from the not-ok arm. 'Nothing is read from it' is not kept for these two fields.",
+     "evidence": "cases/f_plain (magmatch2 ok:false): the identity sign is 'not read, not ok: magmatch2' as it should be, yet beside_C3 reports draws_whose_interval_excludes_zero_with_the_sign = 2 and draws_below_the_value_neurons_at_best_temperatures = 3.",
+     "severity": "minor",
+     "proposed": "`n_read = f\"{NOT_READ}: {', '.join(hit3)}\" if hit3 else None`, then `\"draws_whose_interval_excludes_zero_with_the_sign\": n_read or n_sur` and the same for draws_below_the_value_neurons_at_best_temperatures."
+    },
+    {
+     "file": "results/constitution/tempcontrol_qwen0.5b_preregistration.json",
+     "passage": "the_rules_as_applied: \"an interval is the 2.5 and 97.5 percentiles of the draws; an interval with zero at one of its ends includes zero\"; arms_controls.ci() rounds each end to six decimals before the reading tests it",
+     "what_is_wrong": "The rule's words leave open whether the zero test uses the unrounded percentiles or the stored ends, and the code decides. Every zero test runs on the ends after rounding to 6 dp. A true end within 5e-7 of zero (e.g. +3e-7) is stored as 0.0 and read as 'includes zero', where the stated rule says it excludes zero.",
+     "evidence": "ci() line 133: `[round(float(lo), 6), round(float(hi), 6)]`; excludes_zero and gain_reading test these stored values. The chance is about 1e-4 per interval, over roughly 18 intervals that are read.",
+     "severity": "minor",
+     "proposed": "Add to the_rules_as_applied: \"each end of an interval is rounded to six decimals, as the table stores it, before it is compared with zero\"."
+    },
+    {
+     "file": "results/constitution/tempcontrol_qwen0.5b_preregistration.json",
+     "passage": "runs.temperatures (\"the script's grid, 0.30 to 1.60 in steps of 0.05\") and reading.an_arm",
+     "what_is_wrong": "This is a disclosure only; the measurement stays as it is. A gain at the best temperatures is the difference of two grid minima. Each lies above its own curve's minimum by up to about curvature x 0.025^2, and a sharpened (flatter) coupled curve loses less to the grid than the backbone. So a bridge that is purely the backbone at another temperature can show a small positive gain. Nothing in the rules says so.",
+     "evidence": "Parabolic fits through the 9B mean curves: the backbone's grid minimum lies 0.00031 (red-team) and 0.00026 (helpful) above its vertex; the bridges' lie 0.00001-0.00036 above. cases/a_mult_between_tight (narrow arms are exactly the backbone at 0.8, backbone optimum 0.625, little item spread) reads vn 'keeps a gain', +0.0001 (+0.0001 to +0.0003), so the small signal reads 'survives'. With realistic item noise (cases/a_real_between) the interval (\u00b10.002) swamps it and the reading is 'not distinguishable from zero'.",
+     "severity": "minor",
+     "proposed": "Add to runs.temperatures: \"A gain at the best temperatures is a difference of grid minima; each lies above its curve's minimum by up to about 0.0003 (at 9B the backbone's lay 0.0003 above on both splits), so an interval that ends within 0.0003 of zero is read as it says, with this said beside it.\""
+    }
+   ],
+   "cases_run": [
+    {
+     "case": "exact / b (dry05b generator's own set, rebuilt in cases/b): vn keeps 0.0040, draws keep 0.0030/0.0020/0.0010, C3 = 0.0020 exact",
+     "outcome": "vn 'keeps a gain'; C3 survives; all 3 per-draw survive; identity 'firm at best temperature'; split '49.5% magnitude, 50.5% identity' with ci95 [0.383, 0.571] (truth 0.4952; analytic inversion about [0.375, 0.574]); the_record_is_reproduced first, False (synthetic).",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "a: narrow arms are the backbone read at 0.8, with item noise averaging zero (cases/a_real_on, a_real_between; 3e-6 offset)",
+     "outcome": "Every narrow arm 'not distinguishable from zero at best temperature' (interval about \u00b10.002); small signal the same; split 'undefined at best temperature' with ci95 [null, null]; identity 'not firm'. C1/C3/C4 read 'no as-evaluated sign' only because the synthetic narrow arms are identical copies.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "a: exactly the backbone at 0.8, no noise (cases/a_mult_on_grid, a_mult_between) and vn gain exactly 0 (cases/k)",
+     "outcome": "The table crashes: ZeroDivisionError at arms_controls.py:276; no table and no reading (finding 1).",
+     "as_the_rules_say": false
+    },
+    {
+     "case": "a: backbone at 0.8, backbone optimum between grid points, tight item spread (cases/a_mult_between_tight)",
+     "outcome": "vn 'keeps a gain' +0.0001 (+0.0001 to +0.0003), so the small signal reads 'survives' for a pure temperature bridge. This is grid resolution (last finding); the rule is applied as written.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "c: vn keeps a small gain, draws keep MORE, as-evaluated C3 positive as in the record (cases/c_rev2)",
+     "outcome": "C3 'reverses'; all per-draw 'reverses'; identity 'not firm at best temperature'; split 'identity term reversed at best temperature', share 2.09 [1.749, 3.011] reported, no split stated.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "c': draws keep slightly more, C3 includes zero (cases/c_zero2)",
+     "outcome": "C3 'does not survive'; identity 'not firm'; split 'identity term not distinguishable from zero at best temperature', share 1.148 [0.853, 1.516].",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "c'': table's own as-evaluated C3 negative (cases/c_rev; cannot happen when every arm is ok)",
+     "outcome": "C3 'survives' against the table's negative sign; identity 'firm'; split 'outside 0 to 1: not a split', a label the rules do not name (finding 5).",
+     "as_the_rules_say": false
+    },
+    {
+     "case": "d: vn's interval wholly below zero (cases/d)",
+     "outcome": "vn 'below the backbone at best temperature'; small signal the same; split 'undefined at best temperature'.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "e: C2 true difference exactly zero with item noise (cases/e0c)",
+     "outcome": "'still indistinguishable' (+0.0000, -0.0020 to +0.0020).",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "e: C2 true positive difference +0.01 plus noise (cases/e_pos)",
+     "outcome": "'the first arm keeps more at the best temperatures' (+0.0078, +0.0058 to +0.0099).",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "e: C2 noise not centred, realised difference -0.0022 (cases/e0)",
+     "outcome": "'the second arm keeps more at the best temperatures' (-0.0042 to -0.0001), correct for the realised sample.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "f: one arm not ok (vn / magmatch1 / all / rand with ok and evaluator false; magmatch2 with only the top-level ok false in cases/f_plain)",
+     "outcome": "The table builds and lists not_ok. The reading keeps every number and ci95. It withholds the arm's label, keeps_a_gain and KL comparison, and every contrast, per-draw contrast and named reading that uses the arm, as 'not read, not ok: <arm>'. C2 is still read when vn is not ok; C1/C4/C5 are still read when a draw is not ok. Exception: beside_C3 still gives a count (2) and draws_below (3) (finding 8).",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "g: two per-draw intervals exclude zero, one does not (cases/g)",
+     "outcome": "C3 survives; identity 'C3 survives, and 2 of the three per-draw intervals exclude zero with the as-evaluated sign'; split still stated '63.1% magnitude, 36.9% identity' [0.561, 0.692], since the rule does not gate the split on the per-draw count.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "i: vn keeps, C3 survives, matched mean wholly below zero (cases/i)",
+     "outcome": "Split 'magnitude term not distinguishable from zero at best temperature', while its matched_mean_gain_ci95 is [-0.0049, -0.0040] (finding 2).",
+     "as_the_rules_say": true
+    }
+   ],
+   "checked_and_right": [
+    "Part 4: the 9B table rebuilt with no --set into scratch (confirm_tempcontrol05b/rules_vs_code/arms_controls_9b.json) is byte-identical to results/constitution/arms_controls.json.",
+    "Part 3: every known_beforehand number equals the eval_test/eval_helpful four-decimal CEs: red-team base 0.9431, gains 0.3586, 0.3683, 0.0182, 0.0222, 0.0603, 0.0137/0.0119/0.0087, 0.0025; helpful 0.7885, 0.5912, 0.5803, 0.7714, 0.7700, 0.7483, 0.7819, 0.7880. magmatch1 and magmatch2 have no eval_helpful.json.",
+    "Part 3: the paired numbers in gains match paired_bootstrap_qwen0.5b.json: C1 +0.0040 [+0.0009, +0.0079]; C2 +0.0096 [-0.0125, +0.0302]; vn-draw0 +0.0045 [+0.0017, +0.0073]; draws 1 and 2 +0.0063 and +0.0095. The spread of the three draws is 0.0025 with ddof=1, which the code also uses. The share is 0.62886 unrounded and 62.82% from 4-dp CEs.",
+    "Part 3: CONTRASTS (0.004032, 0.009631, 0.006761, 0.015720, 0.042135), PER_DRAW (0.004529, 0.006299, 0.009454) and SHARE_RECORD 0.6289 are all the record's mean_ce values. RECORD_TOL 0.0005 and SHARE_TOL 0.01 match the rule (apart from 0.629 against 0.6289, finding 4).",
+    "Quoted context checks: at 9B the full-width red-team gain is 0.094 raw and 0.040 at the best temperatures, and the narrow arms max out at 0.011998. The 0.5B full-width shuffle KL is 0.035 against a write of 0.222.",
+    "an_arm: gain_reading is exactly wholly above / includes (ends inclusive) / wholly below, per arm and split.",
+    "a_contrast on red-team: C1, C3, C4 and C5 are read as differences by name, against the table's own as-evaluated sign, from the interval's side, not the point's. C2 on red-team is read as a null by name, with the three null labels verbatim.",
+    "the_value_neurons_small_signal, the_plain_partners_advantage_of_0.0040 and the_full_width_partner_null are exactly as worded.",
+    "the_identity_sign: 'firm' only if C3 survives and 3 of 3 per-draw survive; otherwise the count; 'not firm' if C3 does not survive or reverses.",
+    "the_63_to_37_split: point share, test-inversion interval over r from -3 to 5 in steps of 0.001 with open ends as null, the as-evaluated share on the same draws, the three gates and the first-label order, and 'not determined' when the interval leaves [0,1]. Only exception: the below-zero wording (finding 2).",
+    "The as-evaluated contrasts use the same draws: resampled() with seed 0 draws the same ie/ip sequence for best_tau_gain and raw_gain.",
+    "Interval convention: np.percentile at 2.5 and 97.5 over 2000 draws of default_rng(0); zero at an end counts as inside, in excludes_zero, gain_reading and share_ci alike.",
+    "the_record_is_reproduced is the first key of the output and the first printed line.",
+    "An arm's 'ok' in the table is the ceiling's ok plus the evaluator reproduced where a run exists; evaluator_run_on is correct for magmatch1/2.",
+    "eval/tempcontrol_reading.py --self-test passes."
+   ],
+   "not_checked": [
+    "eval/teacher_ceiling.py --self-test was not run, because it builds tiny MLX models; the hard rules forbid loading models.",
+    "The chain itself was not executed. Its frozen() logic was read only. The prereg, the reading and the chain are untracked and arms_controls.py is modified, so the chain will refuse to start until the five files are committed together, as designed.",
+    "Whether the real 0.5B arms pass their ok checks, and how closely teacher_ceiling reproduces the evaluator per arm. The argument that the table's as-evaluated signs match the record's when all arms are ok rests on the 0.001 check and a common base.",
+    "Whether the share's set of r can be non-contiguous when vn keeps a gain only barely. The code reports [min, max] of the set.",
+    "Near-exact ties between teacher_ceiling's python sum and numpy's mean in the argmin, which would trip the 2e-5 consistency check. Left to the lens that built the 'tie' generator."
+   ]
+  }
+ },
+ {
+  "lens": "chain",
+  "result": {
+   "findings": [
+    {
+     "file": "results/constitution/tempcontrol_qwen0.5b.sh",
+     "passage": "lines 87-98: `for a in $ARMS; do D=...; S=$(state $D/teacher_ceiling.json); if [ \"$S\" = partial ]; then rm -f $D/teacher_ceiling.json; $PY eval/teacher_ceiling.py ... ; ...` with `frozen` called only at lines 79 (start), 106 (before the table) and 109 (before the reading)",
+     "what_is_wrong": "`frozen` is never checked before an arm is measured. An arm finished, or begun (its rows are resumed), under an earlier launch is also reused without checking that eval/teacher_ceiling.py was the same then. Arms can therefore be measured, wholly or in part, by a measurement that is not the one in the commit the log names, and the chain still reaches TEMPCONTROL COMPLETE. teacher_ceiling's resume id (checkpoint path and mtime, model, partner, excerpt sha, FIRST, TIE_TOL, TAUS) does not include the script, so this can mix within one arm. The measurement's in-repo imports are not in RULES at all: psilm/mlx/constitution.py (4 commits since 2026-09-28, the last today at 02:25 from the parallel stored-token work), bridges.py, model.py, staged.py, gemma_loader.py, qwen35_loader.py, bonsai_loader.py, eval/build_constitution_data.py and eval/bench_common.py. For those, the evaluator-reproduction and teacher_near conditions in ok are a partial guard: a changed forward would mostly make an arm not ok rather than change it silently. A change to teacher_ceiling.py's own temperature or cross-fit code has no such guard.",
+     "evidence": "Sandbox runs of the chain as written, with a stub that marks which version measured each arm:\n(d2c) teacher_ceiling.py was edited while vn ran and reverted while magmatch ran. Result: TEMPCONTROL COMPLETE, rc 0. plainpartner, vn5 and magmatch were measured by the edited script, and the log does not mention it.\n(d2b) teacher_ceiling.py was edited while vn ran and left edited. The remaining 6 arms were measured by the edited script, and the chain stopped only at the table ('PREREQ eval/teacher_ceiling.py is not committed as it is here'). After `git checkout -- eval/teacher_ceiling.py` the relaunch skipped all nine arms and reached COMPLETE, with those 6 arms in the table.\n(ffix) The chain crashed at vn with 30 rows written. teacher_ceiling.py was then changed and committed, and the chain relaunched. all and allplain were kept from the old script. vn resumed its 30 old rows and added 170 rows from the new one. The run reached COMPLETE under the new commit's 'the rules as applied are commit' line.\nThis needs a change to the measurement during the loop (about 30 min) or between a crash and its relaunch. That is unlikely, but other sessions are editing this repository today.",
+     "severity": "wrong_numbers",
+     "proposed": "Insert at the top of the loop body, in place of lines 88-89 (tested as scratchpad/confirm_tempcontrol05b/chain_stub/tempcontrol_qwen0.5b.patched.sh):\n```\n  frozen || exit 1                    # no arm is measured unless the rules are as at $AT\n  D=results/stage2c_qwen0.5b_$a\n  # an arm begun under another commit is resumed or kept only if the measurement is the same\n  if [ -e $D/teacher_ceiling.rows.jsonl ] || [ -e $D/teacher_ceiling.json ]; then\n    [ -s $D/teacher_ceiling.commit ] && git diff --quiet \"$(cat $D/teacher_ceiling.commit)\" \"$AT\" -- eval/teacher_ceiling.py \\\n      || { step \"PREREQ $a was begun under another eval/teacher_ceiling.py ($(cat $D/teacher_ceiling.commit 2>/dev/null))\"; exit 1; }\n  else\n    echo \"$AT\" > $D/teacher_ceiling.commit\n  fi\n  S=$(state $D/teacher_ceiling.json)\n```\nResults in the sandbox:\n- In-order run: COMPLETE, with a reading byte-identical to the unpatched chain's.\n- d2c: stops before plainpartner, no arm is measured by the edited script, and the lock is released.\n- ffix: 'PREREQ all was begun under another eval/teacher_ceiling.py (<old commit>)'.\n- An unrelated commit before the relaunch: the chain proceeds, skips all and allplain, resumes vn and reaches COMPLETE.\n\nNone of the nine directories holds rows yet, so every arm gets its .commit file. Optionally, add to the same per-arm check `git diff --quiet \"$AT\" -- eval/build_constitution_data.py eval/bench_common.py psilm/mlx/constitution.py psilm/mlx/bridges.py psilm/mlx/model.py psilm/mlx/staged.py psilm/mlx/gemma_loader.py psilm/mlx/qwen35_loader.py psilm/mlx/bonsai_loader.py`, or at least put `git diff --stat $AT -- <those>` into each CEILING line."
+    },
+    {
+     "file": "results/constitution/tempcontrol_qwen0.5b.sh",
+     "passage": "frozen(): `git cat-file -e \"$AT:$f\" 2>/dev/null && git diff --quiet \"$AT\" -- \"$f\"`",
+     "what_is_wrong": "The repository has core.filemode=true, so a mode-only change to any of the five files after the commit (for example `chmod +x` on the chain) counts as a difference. The chain then refuses to start. It is loud, measures nothing and releases the lock, so it is only a nuisance.",
+     "evidence": "Sandbox case d1d: chmod +x on the committed chain before launch gave 'PREREQ results/constitution/tempcontrol_qwen0.5b.sh is not committed as it is here', TEMPCONTROL ENDED rc=1, an empty lock directory and no stub calls. The real chain is 644 now and is launched with /bin/bash, so it needs no execute bit.",
+     "severity": "minor",
+     "proposed": "No change is needed if the files are committed as they are and nobody chmods them afterwards. Otherwise use `git -c core.fileMode=false diff --quiet \"$AT\" -- \"$f\"`."
+    }
+   ],
+   "cases_run": [
+    {
+     "case": "(a) everything in order: sandbox git repo (the chain changed only in `cd` and PY; LOCK left relative, so after the cd it is inside the sandbox), committed, copy launched from outside the tree with `nohup /bin/bash <copy> > out 2>&1`",
+     "outcome": "Log: WAITING, 'the rules as applied are commit 9e27dd2 ...', START, 9 CEILING lines (ok True), READING lines, TEMPCONTROL COMPLETE; chain exit 0. out was empty. arms_controls_qwen0.5b.json/.txt, tempcontrol_qwen0.5b_reading.json/.txt and the self-test log were written, and the lock directory is empty. The table equals dry05b/exact's except for the 'partner' field (real .meta files), and the reading is identical (0 of 572 leaves differ). The stub got `--ckpt results/stage2c_qwen0.5b_<arm>/bridges.npz --data data/constitution_test_qwen0.5b.json,data/constitution_helpful_test_qwen0.5b.json --n 100` with HF_HUB_OFFLINE=1 and HF_HOME set. Whole run: 2.8 s.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(b) magmatch1 not ok (complete json, ok false, exit 1); then a relaunch",
+     "outcome": "'CEILING NOT OK: magmatch1 (reported as not ok; nothing is read from it)', then 'CEILING magmatch1: ok False | ...'. The chain went on to magmatch2 and rand and reached TEMPCONTROL COMPLETE (exit 0). Table not_ok=['magmatch1']. The reading gives magmatch1 'not read, not ok'. C3, 'vn minus magmatch1', the_identity_sign and the_63_to_37_split read 'not read, not ok: magmatch1'. C1, C2, C4, C5, the small signal and vn minus magmatch/magmatch2 are still read. On relaunch only the two self-tests ran (the not-ok arm was not re-measured) and the reading was byte-identical.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(b2) vn and rand not ok",
+     "outcome": "Two CEILING NOT OK lines, then COMPLETE. C1, C3, C4 ('not read, not ok: rand, vn'), C5, the three per-draw contrasts, the small signal, the identity sign and the split are withheld. C2 is still read, and the numbers are kept.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(c1) crash on vn: 30 rows, no json, exit 2",
+     "outcome": "'CEILING FAILED: vn rc=2 state=partial (results/stage2c_qwen0.5b_vn/teacher_ceiling.log)', 'TEMPCONTROL ENDED rc=1'; chain exit 1. The lock directory is empty and later arms were not run.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(c2) exit 1 with a partial json (one split only, ok true) on rand",
+     "outcome": "'CEILING FAILED: rand rc=1 state=partial', and the json was moved to teacher_ceiling.failed.json. ENDED rc=1, lock released.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(c3) exit 1 with no json (SystemExit refusal, as the identity check or a Python traceback gives) on all, the first arm",
+     "outcome": "'CEILING FAILED: all rc=1 state=partial', ENDED rc=1, lock released, nothing else measured.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(c4) exit 1 after writing a complete ok json, on magmatch2",
+     "outcome": "'CEILING FAILED: magmatch2 rc=1 state=ok', json moved to .failed.json, ENDED rc=1, lock released. On relaunch magmatch2 was re-run (200 rows resumed), then rand was measured, and the run reached COMPLETE with a table identical to (a).",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(d1) a rule file changed after the commit, before launch: the reading edited; the pre-registration edited and staged; arms_controls.py deleted; the repository chain edited by one character; the chain chmod +x; the edit committed as a new HEAD",
+     "outcome": "The first four and the chmod stop at the first frozen (after gpu_wait and the file checks, before the self-tests) with 'PREREQ <file> is not committed as it is here', TEMPCONTROL ENDED rc=1, 0 stub calls and the lock released. The chmod stopping the run is minor finding 2. A committed edit becomes the new AT and the run completes, as designed.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(d2a) arms_controls.py edited while the stub slept in vn",
+     "outcome": "While vn ran, the lock pid was the chain's and pgrep's GPU pattern showed the stub process. The loop measured all nine arms, then the frozen before the table gave 'PREREQ results/constitution/arms_controls.py is not committed as it is here', ENDED rc=1, lock released, no table.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(d5) the reading edited while the table was being built (the sandbox's committed arms_controls sleeps 6 s)",
+     "outcome": "The frozen before the reading gave 'PREREQ eval/tempcontrol_reading.py is not committed as it is here'. The table was written and the reading was not. ENDED rc=1, lock released.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(d2b) eval/teacher_ceiling.py edited while vn ran and left edited; then git checkout and relaunch",
+     "outcome": "plainpartner through rand (6 arms) were measured by the edited script. The chain stopped only at the table with PREREQ. After the revert, the relaunch skipped all nine arms as complete and reached TEMPCONTROL COMPLETE with those 6 arms in the table (finding 1).",
+     "as_the_rules_say": false
+    },
+    {
+     "case": "(d2c) eval/teacher_ceiling.py edited while vn ran and reverted while magmatch ran",
+     "outcome": "TEMPCONTROL COMPLETE, rc 0. plainpartner, vn5 and magmatch were measured by the edited script, and the log does not show it (finding 1). With the proposed patch (case Pd2c) the chain stops before plainpartner and the lock is released.",
+     "as_the_rules_say": false
+    },
+    {
+     "case": "(d3) an unrelated commit during the loop",
+     "outcome": "COMPLETE. frozen compares against AT, not HEAD.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(d4) SIGTERM to the chain while vn runs",
+     "outcome": "bash deferred the trap until vn's teacher_ceiling finished (its json was complete), then exited 143: 'TEMPCONTROL ENDED rc=143', lock released. A relaunch would skip vn. Killing the chain alone does not stop the running measurement.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(e) the running copy differs from the committed chain: one character in a comment, or one extra trailing newline",
+     "outcome": "Both stop at the first frozen with 'PREREQ the running copy <path> is not the committed chain', ENDED rc=1, 0 stub calls, lock released. For comparison, launching the repository's chain itself, or the copy through a relative symlink from another directory, passes and reaches COMPLETE.",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(f) relaunch after (c1) with the stub repaired",
+     "outcome": "all and allplain were not called (skipped as complete, their CEILING lines logged again). vn resumed its 30 rows and added 170. plainpartner through rand were measured. COMPLETE, with the table and reading byte-identical to (a). Relaunches after (c2) and (c4) also completed with tables identical to (a).",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(f-fix) crash at vn, then eval/teacher_ceiling.py changed and committed, then relaunch",
+     "outcome": "COMPLETE. all and allplain come from the old script, and vn from 30 old rows plus 170 new ones (finding 1). With the patch: 'PREREQ all was begun under another eval/teacher_ceiling.py (<old commit>)'. With an unrelated commit instead of a fix, the patched chain proceeds and completes.",
+     "as_the_rules_say": false
+    },
+    {
+     "case": "(g) vn's rows file already holds 30 rows of another run id, with altered numbers",
+     "outcome": "The stub appended 200 rows (230 in the file). arms_controls kept only the json's id, and the table is byte-identical to (a).",
+     "as_the_rules_say": true
+    },
+    {
+     "case": "(lock) a stale lock of a dead pid; a lock held by a live pid for 20 s; a GPU program `.venv/bin/python eval/constitution_compress.py` running for 20 s with no lock",
+     "outcome": "Stale lock: 'stale GPU lock of <pid> removed', then COMPLETE in 3 s. Live pid: the chain waited and removed the lock at the next 60-s poll after the pid ended, then COMPLETE (63 s). GPU program: pgrep's pattern matched the relative-interpreter command line, the chain waited until it ended, then COMPLETE (63 s). The lock directory was empty afterwards in all three.",
+     "as_the_rules_say": true
+    }
+   ],
+   "checked_and_right": [
+    "The chain parsed and ran correctly under /bin/bash 3.2.57, as the sandbox runs showed. This covers the multi-line DONE program passed as \"$DONE\"; state() with `|| echo partial` for a missing or unreadable json; and the CEILING line's nested $(...) with single-quoted Python inside double quotes. `local rc=$?` in bye gives the real status (1, 143). The EXIT trap does not fire in the $(...) subshells: no spurious ENDED lines and the lock is kept during the loop. Under nohup, SIGHUP stays ignored. Unquoted $LOCK, $LOG, $D, $TE and $HE are safe because the repository path has no spaces. SELF is quoted and resolves for absolute, relative and symlinked launches.",
+    "The three frozen calls work as the rules say. At the start (after gpu_wait) frozen stops on an edited, staged or deleted rule file or a differing running copy. Before the table and before the reading it stops on a rule file edited meanwhile. Every PREREQ, CEILING FAILED and TERM exit releases the lock and writes TEMPCONTROL ENDED rc=N.",
+    "Outcome classification: rc 0 with ok is ok. rc 1 with a complete json and ok false is not ok: the arm is logged, kept and not re-measured on relaunch. Anything else stops the chain with CEILING FAILED and moves any json to .failed.json: rc 2, rc 1 with no json, rc 1 with a partial json, rc 1 with a complete ok json. A Python crash exits 1 but leaves no json, because the chain deletes it first, so it is classed as partial and fails correctly.",
+    "Relaunch skips complete arms (ok or not ok), resumes a crashed arm's rows and gives the same table and reading. arms_controls.curves() drops rows of another run id.",
+    "Real preconditions. Untracked now and to be committed: eval/tempcontrol_reading.py, results/constitution/tempcontrol_qwen0.5b.sh and results/constitution/tempcontrol_qwen0.5b_preregistration.json. Modified and to be committed: results/constitution/arms_controls.py (+170/-8 against HEAD). eval/teacher_ceiling.py is tracked and unmodified since a0bf4a9 (2026-09-28), the version that made the 9B control. None of the five is gitignored, there is no .gitattributes, and all five are mode 644. Once they are committed, the running copy is cp'd from the committed chain and nobody chmods, `frozen` passes.",
+    "Imports: eval/teacher_ceiling.py imports eval/bench_common.py, eval/build_constitution_data.py and psilm/mlx/{constitution,bridges,model,staged,gemma_loader,qwen35_loader,bonsai_loader}.py, all tracked and clean. arms_controls.py imports only numpy, and the reading only the standard library. eval/const_refusal_mcnemar.py is not needed. Nothing the run needs is untracked. The other dirty files (results/hf_export/*) are unrelated.",
+    "Data and run directories: the four files the chain tests exist and are non-empty, with 100 items in each test split. All nine run directories hold a non-empty bridges.npz and .meta. None holds a teacher_ceiling.json, rows file or .failed.json, so the run starts clean. eval_test.json (n=100, matching data stem) exists for all nine and eval_helpful.json for all but magmatch1 and magmatch2, so the evaluator check applies exactly where the pre-registration says. results/qwen35 exists (the lock's mkdir needs it), no lock is held, no GPU program is running, and the lock path and GPU pattern match the other chains'.",
+    "Offline resolution. All nine .meta files name the backbone mlx-community/Qwen2.5-0.5B-Instruct-4bit, the tokenizer Qwen/Qwen2.5-0.5B-Instruct and data qwen0.5b. Partners are the local results/constitution_model/qwen2.5-0.5b-constitution (7 arms; gitignored, present, model.safetensors 988 MB plus tokenizer) or Qwen/Qwen2.5-0.5B-Instruct (allplain and plainpartner). With HF_HUB_OFFLINE=1 and that HF_HOME, mlx_lm's resolver gives snapshot a5339a4 for the backbone (model.safetensors 278 MB, config, tokenizer.json, tokenizer_config, vocab, merges, special/added tokens) and 7ae5576 for the Qwen repo (model.safetensors 988 MB plus tokenizer files). All symlinks resolve to non-empty blobs, and AutoTokenizer loads offline. The identity check inputs pass: excerpt sha256 equals the stats file's, prefix tokens are 3391 = 3391, model ids are equal and the data tag matches. The recent 0.5B compress (Sep 28) and stored-token (Sep 30) runs went through the same loaders offline and reproduced the evaluator's CEs to about 4e-5. One aside: huggingface_hub.snapshot_download(local_files_only=True) WITHOUT allow_patterns calls the mlx-community snapshot incomplete (.gitattributes and README.md missing). This does not matter, because mlx_lm passes allow_patterns.",
+    "Both self-tests the chain runs pass in this environment: eval/teacher_ceiling.py --self-test (tiny random models on the CPU, 2.5 s) and eval/tempcontrol_reading.py --self-test.",
+    "Run time, for information. At 9B each arm took about 13.5 min (100 items at 7.2 s mean per item, from the rows' 'sec'). The 27B took 16.8 s per item. The 0.5B compress runs at 0.55 s per item against 5.6 s for the same job at 9B, and 0.5B continuations are shorter (mean 57 tokens red-team, 116 helpful, against 118 at 9B). That suggests 0.6 to 1.0 s per item, and 1800 items for 9 arms \u00d7 2 splits \u00d7 100. Per-arm overhead is small: load, prefill, re-decoding 4 items, and about 1 s of pure-Python summaries per split (measured). The estimate is 3 to 5 min per arm and about 25 to 45 min for the whole chain if the GPU is free. The table and reading add a few seconds. If per-tau vocabulary work does not shrink with the model, allow up to about 1 h."
+   ],
+   "not_checked": [
+    "Nothing was measured. Whether ok holds at 0.5B (teacher_near \u2265 0.97, forwards_agree, the evaluator reproduction) and the real time per item are unknown until the run.",
+    "The stub does not reproduce the real script's torn-line repair or its id computation. I checked those by reading the code; teacher_ceiling's own self-test covers the torn line.",
+    "The 'GPU BUSY' log line, written after 10 minutes of waiting, was not exercised. Two copies of this chain started in the same second (a race on mkdir of the lock) was checked only by reading the code.",
+    "The reading and table rules themselves, beyond what passes through the chain (withholding for not-ok arms, byte-identity with the dry run), belong to the other lenses.",
+    "Disclosure: outside the sandbox I ran the real eval/teacher_ceiling.py --self-test (random tiny models, CPU, no checkpoint, no weights). I loaded the Qwen2.5 tokenizer offline and called mlx_lm's snapshot resolver (no weights loaded). All of this ran from the scratch directory with PYTHONDONTWRITEBYTECODE=1. A `find -newer` over the repository shows no file written by me. All sandbox work is under /private/tmp/claude-501/-Users-rxiii/26c75c8e-376c-4746-8737-4c73082cb28c/scratchpad/confirm_tempcontrol05b/chain_stub/: stub_teacher_ceiling.py, mk_sandbox.sh, run_case.sh, drive_d2.sh, drive_lock.sh, tempcontrol_qwen0.5b.patched.sh, and cases/<case>/{repo,launch,ctl,out}."
+   ]
+  }
+ }
+]
