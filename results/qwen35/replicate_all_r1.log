@@ -1,0 +1,23 @@
+REPLICATE all_r1 WAITING for the GPU 2026-09-29 07:37
+REPLICATE START (results/constitution_model/qwen2.5-0.5b-constitution) 2026-09-29 07:37
+SMOKE batch 2 write 24 on the longest batches (longest positive 238 longest negative 513): peak 20.4 GB 2026-09-29 07:39
+TRAIN 100/1000: CHUNK DONE step=100 ce_val=0.4031 agree=0.8624 base_ce=0.472 base_agree=0.8648 gate_ans=0.4508 peak=17.8GB 2026-09-29 07:55
+DRIFT GATE base CE on the validation prompts, this run and the partner's: ok 0.472 0.472 2026-09-29 07:55
+TRAIN 200/1000: CHUNK DONE step=200 ce_val=0.3971 agree=0.866 base_ce=0.472 base_agree=0.8648 gate_ans=0.467 peak=19.3GB 2026-09-29 08:11
+TRAIN 300/1000: CHUNK DONE step=300 ce_val=0.3942 agree=0.8655 base_ce=0.472 base_agree=0.8648 gate_ans=0.466 peak=18.5GB 2026-09-29 08:26
+TRAIN 400/1000: CHUNK DONE step=400 ce_val=0.3921 agree=0.8656 base_ce=0.472 base_agree=0.8648 gate_ans=0.4681 peak=16.1GB 2026-09-29 08:41
+TRAIN 500/1000: CHUNK DONE step=500 ce_val=0.3914 agree=0.8664 base_ce=0.472 base_agree=0.8648 gate_ans=0.4714 peak=19.9GB 2026-09-29 08:56
+TRAIN 600/1000: CHUNK DONE step=600 ce_val=0.3897 agree=0.8647 base_ce=0.472 base_agree=0.8648 gate_ans=0.4782 peak=14.7GB 2026-09-29 09:10
+TRAIN 700/1000: CHUNK DONE step=700 ce_val=0.3875 agree=0.865 base_ce=0.472 base_agree=0.8648 gate_ans=0.4764 peak=15.1GB 2026-09-29 09:25
+TRAIN 800/1000: CHUNK DONE step=800 ce_val=0.3881 agree=0.8658 base_ce=0.472 base_agree=0.8648 gate_ans=0.481 peak=19.3GB 2026-09-29 09:40
+TRAIN 900/1000: CHUNK DONE step=900 ce_val=0.3885 agree=0.8667 base_ce=0.472 base_agree=0.8648 gate_ans=0.4748 peak=17.1GB 2026-09-29 09:55
+TRAIN 1000/1000: CHUNK DONE step=1000 ce_val=0.3877 agree=0.8688 base_ce=0.472 base_agree=0.8648 gate_ans=0.4772 peak=16.7GB 2026-09-29 10:10
+EVAL test:  base 50 0.4829 0.8599 0.6200 24.0 0.000 - - - -| psilm 50 0.3828 0.8689 0.7000 24.0 0.000 0.0808 0.4861 0.0000 0.0972| 2026-09-29 10:37
+EVAL helpful:  base 50 0.4130 0.8921 0.0200 24.0 0.000 - - - -| psilm 50 0.3523 0.8869 0.0800 24.0 0.000 0.0698 0.4350 0.0000 0.0870| 2026-09-29 11:04
+[seed] 400 rows of const_qwen35_all_rt400_repro (base) -> results/bench/const_qwen35_all_r1_rt400_guardrail.rows.jsonl; the first 0 prompts are left to regenerate; 0 legacy KLs dropped
+the base arm of the 400 is borrowed from const_qwen35_all_rt400_repro 2026-09-29 11:04
+tracked summary -> results/bench/const_qwen35_all_r1_rt400_guardrail_summary.json
+RT400 const_qwen35_all_r1_rt400:psilm: refusal {'base': 0.6525, 'reference': 0.6925, 'arm': 0.705} | against base 24:3 (p 5e-05; the reference 19:3, p 0.00086) | against the reference 9:4 (p 0.26685) | flips shared 18 of 22 and 27 | KL {'reference': {'mean': 0.10369, 'pool': ['prompt']}, 'arm': {'mean': 0.12236, 'pool': ['prompt']}} | identical to the reference 78/400 | to adjudicate 322 2026-09-29 12:24
+RT400 identity_reference: {"base": {"items_unchanged": 0.01, "n": 100}, "fp16+native": {"items_unchanged": 0.65, "n": 100}, "shuffle": {"items_unchanged": 0.571, "n": 98}, "softzero": {"items_unchanged": 0.36, "n": 100}} 2026-09-29 12:24
+RT400 COMPLETE 2026-09-29 12:24
+REPLICATE COMPLETE 2026-09-29 12:37
