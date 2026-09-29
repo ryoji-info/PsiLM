@@ -149,5 +149,19 @@
    }
   }
  },
- "sec": 6.5
+ "sec": 6.5,
+ "verdict": {
+  "verdict": "does_not",
+  "criteria_met": {
+   "teacher_forced": false,
+   "benchmarks": true,
+   "gate": false,
+   "divergence": true,
+   "refusal": false
+  },
+  "report": "results/constitution/stored_tokens_qwen0.5b.json",
+  "criteria": "results/constitution/stored_tokens_criteria.json",
+  "tokens_sha256": "366d7e708dff8ae0cff0311c0ac6e61fe712db7aca3ec6f8da5963b10747dc43",
+  "run": "const_qwen0.5b_all_stored"
+ }
 }

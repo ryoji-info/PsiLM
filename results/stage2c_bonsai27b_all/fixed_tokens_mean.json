@@ -1,13 +1,13 @@
 {
  "kind": "mean",
- "tokens_sha256": "e39ac1c3e075b30c03849f0feb87ee3ac1b329a8575c7cba60adea8c3a1ae812",
+ "tokens_sha256": "3b4f5482091ee9065b61d35464f1b76316940ffa1521228aeb4f03f297894ce4",
  "shape": [
   1,
   8,
-  4096
+  5120
  ],
- "token_rms": 1.506218,
- "data": "data/constitution_val_qwen35.json",
+ "token_rms": 1.535037,
+ "data": "data/constitution_val_bonsai27b.json",
  "n": 100,
  "sources": [
   "hh:harmless-base:train:7834",
@@ -111,45 +111,45 @@
   "hh:harmless-base:train:14859",
   "hh:harmless-base:train:63"
  ],
- "ckpt": "results/stage2c_qwen35_all/bridges.npz",
+ "ckpt": "results/stage2c_bonsai27b_all/bridges.npz",
  "ckpt_step": 1000,
- "ckpt_sha256": "32d54c55a908ca4b5046b952e0decd117e27bf0bd03a0599fabedc042588e192",
- "model": "/Users/rxiii/Documents/huggingface/qwen3.5-9b-mlx",
- "const_model": "results/constitution_model/qwen2.5-0.5b-constitution",
- "l_fwd": 13,
+ "ckpt_sha256": "359896007fb0dc600380e14df9c4fe28ee1bb8d4edce3fd77447749efa7df609",
+ "model": "/Users/rxiii/Documents/huggingface/hub/models--prism-ml--Ternary-Bonsai-2-27B-mlx-2bit/snapshots/3f926b415992eaa2ae9dd7b573706494d6bbf787",
+ "const_model": "/Users/rxiii/Documents/GitHub/PsiLM/results/constitution_model/qwen2.5-0.5b-constitution",
+ "l_fwd": 26,
  "spread_of_the_prompts_own_tokens": {
   "cosine_to_mean": {
-   "mean": 0.995924,
-   "min": 0.773743
+   "mean": 0.953564,
+   "min": 0.766134
   },
   "relative_distance_to_mean": {
-   "mean": 0.064058,
-   "max": 0.8965
+   "mean": 0.260795,
+   "max": 0.741407
   },
-  "mean_pairwise_cosine": 0.99179,
+  "mean_pairwise_cosine": 0.908503,
   "norm": {
-   "of_the_mean": 272.65463,
-   "mean_of_prompts": 274.02087,
-   "ratio": 0.995014
+   "of_the_mean": 310.66971,
+   "mean_of_prompts": 326.71631,
+   "ratio": 0.950885
   },
-  "token_rms": 1.506218,
+  "token_rms": 1.535037,
   "softzero": {
-   "relative_distance": 0.957636,
-   "cosine": 0.729007,
+   "relative_distance": 0.27495,
+   "cosine": 0.962691,
    "varies_with_the_prompt": 0.0
   },
   "contrast": {
-   "data": "data/constitution_helpful_test_qwen35.json",
+   "data": "data/constitution_helpful_test_bonsai27b.json",
    "n": 100,
-   "relative_distance": 0.01042,
-   "cosine": 0.999946,
+   "relative_distance": 0.365696,
+   "cosine": 0.934816,
    "own_relative_distance_to_mean": {
-    "mean": 0.050798,
-    "max": 0.121966
+    "mean": 0.394551,
+    "max": 0.524621
    }
   }
  },
- "sec": 43.7,
+ "sec": 115.6,
  "verdict": {
   "verdict": "stands_in",
   "criteria_met": {
@@ -159,9 +159,9 @@
    "divergence": true,
    "refusal": true
   },
-  "report": "results/constitution/stored_tokens_qwen35.json",
+  "report": "results/constitution/stored_tokens_bonsai27b.json",
   "criteria": "results/constitution/stored_tokens_criteria.json",
-  "tokens_sha256": "e39ac1c3e075b30c03849f0feb87ee3ac1b329a8575c7cba60adea8c3a1ae812",
-  "run": "const_qwen35_all_stored"
+  "tokens_sha256": "3b4f5482091ee9065b61d35464f1b76316940ffa1521228aeb4f03f297894ce4",
+  "run": "const_bonsai27b_all_stored"
  }
 }

@@ -602,7 +602,9 @@ def load_fixed_tokens(args, arms, rows=()):
     for arm in fixed:
         path = Path(given[arm])
         prov = json.loads(path.with_suffix(".json").read_text())
-        if int(prov["ckpt_step"]) != int(meta["step"]) or prov["ckpt_sha256"] != ckpt_sha:
+        # a release's tokens name the training checkpoint AND its export (bridges_sha256)
+        if int(prov["ckpt_step"]) != int(meta["step"]) or ckpt_sha not in (
+                prov.get("ckpt_sha256"), prov.get("bridges_sha256")):
             raise SystemExit(f"{path}: made from {prov['ckpt']} at step {prov['ckpt_step']}, which "
                              f"is not {args.ckpt} (step {meta['step']})")
         sha = file_sha256(path)

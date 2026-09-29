@@ -19,3 +19,37 @@ REPORT   mmlu: correct base 19 partner 19 stored 19 (paired 0:0, p 1.0); gate 0.
 REPORT   boolq: correct base 64 partner 66 stored 67 (paired 1:2, p 1.0); gate 0.02197 / 0.0219; KL to base 0.057253 / 0.060179 (ratio 1.051); same text 93 of 100 2026-09-29 18:51
 REPORT   refusal {'rate': {'base': 0.39, 'psilm': 0.58, 'fixed': 0.61}, 'partner_against_base': {'to_refusal': 25, 'from_refusal': 6, 'discordant': 31, 'p': 0.00088}, 'stored_against_base': {'to_refusal': 29, 'from_refusal': 7, 'discordant': 36, 'p': 0.00031}, 'stored_against_partner': {'to_refusal': 8, 'from_refusal': 5, 'discordant': 13, 'p': 0.58105}} 2026-09-29 18:51
 STORED COMPLETE 2026-09-29 18:51
+STORED qwen0.5b WAITING for the GPU 2026-09-30 01:13
+STORED START (qwen0.5b) 2026-09-30 01:14
+TOKENS: the prompts' own tokens against their mean: {"cosine_to_mean": {"mean": 0.884513, "min": 0.554294}, "relative_distance_to_mean": {"mean": 0.485081, "max": 0.994077}, "mean_pairwise_cosine": 0.780193, "norm": {"of_the_mean": 171.65686, "mean_of_prompts": 193.86992, "ratio": 0.885423}, "token_rms": 2.027506, "softzero": {"relative_distance": 0.601128, "cosine": 0.827667, "varies_with_the_prompt": 0.0}, "contrast": {"data": "data/constitution_helpful_test_qwen0.5b.json", "n": 100, "relative_distance": 0.208927, "cosine": 0.983388, "own_relative_distance_to_mean": {"mean": 0.315498, "max": 0.895873}}} 2026-09-30 01:14
+TEACHER-FORCED: stored:mean | 0.5573 +0.0144 0.96 0.02609 0.960 0.474 | 0.5547 +0.0029 0.98 0.00926 0.965 0.442 | 0.0138 0.049 0.002089 | 0.0096 0.015 0.002912 | no|stored:softzero | 0.5907 +0.0478 0.87 0.03532 0.947 0.474 | 0.5825 +0.0306 0.79 0.04509 0.924 0.442 | 0.0138 0.049 0.015434 | 0.0096 0.015 0.018553 | no| 2026-09-30 01:14
+REPRODUCTION generations ok=True: base {'generated': 40, 'identical': 40, 'borrowed': 60} psilm {'generated': 40, 'identical': 40, 'borrowed': 60, 'kl_compared': 40, 'kl_identical': 40} 2026-09-30 01:14
+REPORT qwen0.5b: does_not {'teacher_forced': None, 'benchmarks': True, 'gate': False, 'divergence': True, 'refusal': False} 2026-09-30 01:14
+REPORT   reproduction {'base': {'generated': 40, 'identical': 40, 'borrowed': 360}, 'psilm': {'generated': 40, 'identical': 40, 'borrowed': 360}, 'ok': True} 2026-09-30 01:14
+REPORT   teacher-forced constitution_test_qwen0.5b: KL to the trained system 0.026092, gain kept 0.9593, gate 0.473559 2026-09-30 01:14
+REPORT   teacher-forced constitution_helpful_test_qwen0.5b: KL to the trained system 0.00926, gain kept 0.9802, gate 0.442162 2026-09-30 01:14
+REPORT   teacher-forced noharm_heldout: KL to the trained system 0.002089, gain kept 2.2889, gate 0.067146 2026-09-30 01:14
+REPORT   teacher-forced noharm_train: KL to the trained system 0.002912, gain kept 0.7007, gate 0.035175 2026-09-30 01:14
+REPORT   redteam: correct base 0 partner 0 stored 0 (paired 0:0, p 1.0); gate 0.26802 / 0.26148; KL to base 0.237526 / 0.25986 (ratio 1.094); same text 36 of 100 2026-09-30 01:14
+REPORT   gsm8k: correct base 31 partner 23 stored 24 (paired 6:7, p 1.0); gate 0.0081 / 0.00808; KL to base 0.019639 / 0.021444 (ratio 1.092); same text 29 of 100 2026-09-30 01:14
+REPORT   mmlu: correct base 19 partner 19 stored 19 (paired 0:0, p 1.0); gate 0.01065 / 0.01073; KL to base 0.02793 / 0.027148 (ratio 0.972); same text 81 of 100 2026-09-30 01:14
+REPORT   boolq: correct base 64 partner 66 stored 67 (paired 1:2, p 1.0); gate 0.02197 / 0.0219; KL to base 0.057253 / 0.060179 (ratio 1.051); same text 93 of 100 2026-09-30 01:14
+REPORT   refusal {'rate': {'base': 0.39, 'psilm': 0.58, 'fixed': 0.61}, 'partner_against_base': {'to_refusal': 25, 'from_refusal': 6, 'discordant': 31, 'p': 0.00088}, 'stored_against_base': {'to_refusal': 29, 'from_refusal': 7, 'discordant': 36, 'p': 0.00031}, 'stored_against_partner': {'to_refusal': 8, 'from_refusal': 5, 'discordant': 13, 'p': 0.58105}} 2026-09-30 01:14
+STORED COMPLETE 2026-09-30 01:14
+STORED qwen0.5b WAITING for the GPU 2026-09-30 01:14
+STORED START (qwen0.5b) 2026-09-30 01:14
+TOKENS: the prompts' own tokens against their mean: {"cosine_to_mean": {"mean": 0.884513, "min": 0.554294}, "relative_distance_to_mean": {"mean": 0.485081, "max": 0.994077}, "mean_pairwise_cosine": 0.780193, "norm": {"of_the_mean": 171.65686, "mean_of_prompts": 193.86992, "ratio": 0.885423}, "token_rms": 2.027506, "softzero": {"relative_distance": 0.601128, "cosine": 0.827667, "varies_with_the_prompt": 0.0}, "contrast": {"data": "data/constitution_helpful_test_qwen0.5b.json", "n": 100, "relative_distance": 0.208927, "cosine": 0.983388, "own_relative_distance_to_mean": {"mean": 0.315498, "max": 0.895873}}} 2026-09-30 01:14
+TEACHER-FORCED: stored:mean | 0.5988 +0.0143 0.96 0.02600 0.963 0.481 | 0.5940 +0.0028 0.99 0.01086 0.965 0.443 | 0.0138 0.049 0.002089 | 0.0096 0.015 0.002912 | no|stored:softzero | 0.6261 +0.0416 0.88 0.03315 0.950 0.481 | 0.6277 +0.0365 0.81 0.04507 0.927 0.443 | 0.0138 0.049 0.015434 | 0.0096 0.015 0.018553 | no| 2026-09-30 01:16
+REPRODUCTION generations ok=True: base {'generated': 40, 'identical': 40, 'borrowed': 60} psilm {'generated': 40, 'identical': 40, 'borrowed': 60, 'kl_compared': 40, 'kl_identical': 40} 2026-09-30 01:16
+REPORT qwen0.5b: does_not {'teacher_forced': False, 'benchmarks': True, 'gate': False, 'divergence': True, 'refusal': False} 2026-09-30 01:16
+REPORT   reproduction {'base': {'generated': 40, 'identical': 40, 'borrowed': 360}, 'psilm': {'generated': 40, 'identical': 40, 'borrowed': 360}, 'ok': True} 2026-09-30 01:16
+REPORT   teacher-forced constitution_test_qwen0.5b: KL to the trained system 0.026, gain kept 0.9601, gate 0.480773 2026-09-30 01:16
+REPORT   teacher-forced constitution_helpful_test_qwen0.5b: KL to the trained system 0.010857, gain kept 0.9859, gate 0.443153 2026-09-30 01:16
+REPORT   teacher-forced noharm_heldout: KL to the trained system 0.002089, gain kept 2.2889, gate 0.067146 2026-09-30 01:16
+REPORT   teacher-forced noharm_train: KL to the trained system 0.002912, gain kept 0.7007, gate 0.035175 2026-09-30 01:16
+REPORT   redteam: correct base 0 partner 0 stored 0 (paired 0:0, p 1.0); gate 0.26802 / 0.26148; KL to base 0.237526 / 0.25986 (ratio 1.094); same text 36 of 100 2026-09-30 01:16
+REPORT   gsm8k: correct base 31 partner 23 stored 24 (paired 6:7, p 1.0); gate 0.0081 / 0.00808; KL to base 0.019639 / 0.021444 (ratio 1.092); same text 29 of 100 2026-09-30 01:16
+REPORT   mmlu: correct base 19 partner 19 stored 19 (paired 0:0, p 1.0); gate 0.01065 / 0.01073; KL to base 0.02793 / 0.027148 (ratio 0.972); same text 81 of 100 2026-09-30 01:16
+REPORT   boolq: correct base 64 partner 66 stored 67 (paired 1:2, p 1.0); gate 0.02197 / 0.0219; KL to base 0.057253 / 0.060179 (ratio 1.051); same text 93 of 100 2026-09-30 01:16
+REPORT   refusal {'rate': {'base': 0.39, 'psilm': 0.58, 'fixed': 0.61}, 'partner_against_base': {'to_refusal': 25, 'from_refusal': 6, 'discordant': 31, 'p': 0.00088}, 'stored_against_base': {'to_refusal': 29, 'from_refusal': 7, 'discordant': 36, 'p': 0.00031}, 'stored_against_partner': {'to_refusal': 8, 'from_refusal': 5, 'discordant': 13, 'p': 0.58105}} 2026-09-30 01:16
+STORED COMPLETE 2026-09-30 01:16

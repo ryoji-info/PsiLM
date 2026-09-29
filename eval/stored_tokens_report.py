@@ -25,6 +25,9 @@ A criterion that could not be computed (a gate or a KL that a row does not hold,
 teacher-forced run whose evaluator check could not be made) is neither met nor
 failed: it is None, and a verdict with a None in it and no failure is
 `not_run_in_full`.
+
+Means are kept to more decimals than they are printed with, and every criterion is
+applied to those: a ratio of two KLs rounded to six decimals is off in its third.
 """
 import argparse
 import json
@@ -37,6 +40,22 @@ from const_refusal_mcnemar import mcnemar_exact   # noqa: E402
 
 BENCHMARKS = ("gsm8k", "mmlu", "boolq")
 ITEMS, GATE_OFF, GATE_RT, KL_RATIO, DISCORDANT = 3, 0.01, 0.02, 1.5, 4
+
+#: what a reader of the verdict has to know about what the criteria can and cannot show
+NOTES = [
+    "gate: the gate is computed from the backbone's stream at the write layer and not from the tokens "
+    "(psilm/mlx/constitution.py, MaskedGatedCrossAttentionMLX). At a prompt's positions the stored-token "
+    "arm's gate is the partner path's by construction, and the two differ only where the generated text "
+    "does. T4 and the gate terms of T5 cannot fail for a stored set: what the teacher-forced criterion "
+    "tests is T1, T2 and the KL term of T5. A gate criterion that fails, fails in both arms alike and "
+    "says that the bridge's gate opens on benchmark items, with or without its partner.",
+    "other stored sets: `teacher_forced.other_stored_sets` holds the zero-fed set's KLs to the trained "
+    "system. Where that set is as close as the mean set, the verdict says that this write takes little "
+    "from its tokens, not that the mean set is a particular one.",
+    "borrowed rows: the partner path's and the base's benchmark rows, and their red-team rows after the "
+    "40th, are the recorded run's. `reproduction` says whether the first 40 red-team prompts, generated "
+    "again, were the recorded generations; no benchmark item was generated again.",
+]
 
 
 def read_rows(path):
@@ -86,9 +105,9 @@ def dataset_block(d, ref="psilm", arm="fixed"):
         kl = [rows[q]["kl"]["mean"] for q in qids if rows[q].get("kl")]
         out[name] = {"correct": sum(ans[name][q][1] for q in qids),
                      "parsed": sum(ans[name][q][0] is not None for q in qids),
-                     "gate": (round(mean(gate_of(rows[q]) for q in qids), 5)
+                     "gate": (round(mean(gate_of(rows[q]) for q in qids), 7)
                               if name != "base" and all(gate_of(rows[q]) is not None for q in qids) else None),
-                     "kl_to_base": round(mean(kl), 6) if len(kl) == len(qids) else None,
+                     "kl_to_base": round(mean(kl), 9) if len(kl) == len(qids) else None,
                      "kl_pool": sorted({rows[q]["kl"].get("pool", "full") for q in qids if rows[q].get("kl")}),
                      "mean_tokens": round(mean(rows[q]["n_gen"] for q in qids), 1)}
     only_ref = sum(ans[ref][q][1] and not ans[arm][q][1] for q in qids)
@@ -145,7 +164,7 @@ def verdict(teacher, blocks, refusal):
     gates = [b[a]["gate"] for b in blocks.values() for a in ("psilm", "fixed")]
     c["gate"] = None if any(g is None for g in gates) else (
         all(b["fixed"]["gate"] < GATE_OFF for b in bench)
-        and round(abs(blocks["redteam"]["fixed"]["gate"] - blocks["redteam"]["psilm"]["gate"]), 5) <= GATE_RT)
+        and round(abs(blocks["redteam"]["fixed"]["gate"] - blocks["redteam"]["psilm"]["gate"]), 7) <= GATE_RT)
     ratios = {ds: (b["fixed"]["kl_to_base"] / b["psilm"]["kl_to_base"]
                    if b["fixed"]["kl_to_base"] is not None and b["psilm"]["kl_to_base"] else None)
               for ds, b in blocks.items()}
@@ -189,6 +208,16 @@ def run(a):
     met, ratios = verdict(teacher, blocks, refusal)
     rec = reproduction(rows, read_rows(Path(a.bench_dir) / f"{a.recorded}_guardrail.rows.jsonl"))
     tok = json.loads((run_dir / "fixed_tokens_mean.json").read_text())
+    # the three files answer for ONE set of tokens, or there is nothing to report
+    ident = f"{tok['kind']}:{tok['tokens_sha256'][:16]}"
+    seen = {(r.get("diag") or {}).get("fixed_tokens") for r in rows if r["arm"] == "fixed"}
+    if seen != {ident}:
+        raise SystemExit(f"the rows of arm fixed injected {sorted(map(str, seen))}; the record beside the "
+                         f"bridges is of {ident}")
+    if teacher is not None:
+        tf_id = ((teacher.get("stored_tokens") or {}).get("stored:mean") or {}).get("id")
+        if tf_id != ident:
+            raise SystemExit(f"{tf}: its stored:mean is {tf_id}; the record beside the bridges is of {ident}")
     out = {"name": a.name, "criteria": a.criteria, "criteria_written": crit["written"],
            "criteria_text": crit["criteria"], "run": a.tag, "recorded": a.recorded,
            "tokens": {k: tok[k] for k in ("kind", "tokens_sha256", "shape", "token_rms", "data", "n", "ckpt",
@@ -196,6 +225,8 @@ def run(a):
                "spread": tok["spread_of_the_prompts_own_tokens"]},
            "reproduction": rec, "teacher_forced": teacher, "datasets": blocks, "refusal": refusal,
            "kl_ratio_stored_to_partner": ratios, "criteria_met": met, "verdict": overall(met),
+           "tokens_named_by": {"guardrail_rows": ident, "teacher_forced": ident if teacher is not None else None},
+           "notes": NOTES,
            "reproduction_note": None if rec["ok"] else
            "the recorded run is not regenerated token for token: read the arms within this run only"}
     dest = Path(a.out or f"results/constitution/stored_tokens_{a.name}.json")
@@ -233,6 +264,8 @@ def self_test():
              "text_truncated": True,                        # these rows' answers are the stored ones
              "sigma": None if arm == "base" else {"all_mean": gate, "gen_mean": 9.0},
              "kl": None if arm == "base" else {"mean": kl, "pool": "prompt"}}
+        if arm == "fixed":
+            r["diag"] = {"fixed_tokens": "mean:a"}
         if borrowed:
             r["borrowed_from"] = "rec"
         return r
@@ -314,7 +347,8 @@ def self_test():
          "ckpt": "c", "ckpt_step": 1000, "ckpt_sha256": "b", "spread_of_the_prompts_own_tokens": {}}))
     cell = {"kl": 1e-4, "gain_retained": 1.0, "gate_cont": 0.5}
     (tmp / "run/stored_tokens.json").write_text(json.dumps(
-        {"ok": True, "thresholds": {}, "stored_tokens": {}, "evaluator_checks_missing": [],
+        {"ok": True, "thresholds": {}, "stored_tokens": {"stored:mean": {"id": "mean:a"}},
+         "evaluator_checks_missing": [],
          "evaluator_checks": {"a": {"reproduced": True}, "b": {"reproduced": True}}, "variants": [
             {"variant": "fp32+native", "s": cell}, {"variant": "base", "s": {"kl": 0.08}},
             {"variant": "stored:mean", "s": cell, **teacher}, {"variant": "stored:softzero", "s": cell}]}))
@@ -325,6 +359,34 @@ def self_test():
     assert o["verdict"] == "stands_in" and o["reproduction"]["ok"] and o["teacher_forced"]["s"]["kl"] == 1e-4
     rec_v = json.loads((tmp / "run/fixed_tokens_mean.json").read_text())["verdict"]
     assert rec_v["verdict"] == "stands_in" and rec_v["tokens_sha256"] == "a" and rec_v["run"] == "t"
+    assert o["tokens_named_by"] == {"guardrail_rows": "mean:a", "teacher_forced": "mean:a"} and o["notes"]
+    # rows, or a teacher-forced run, of another set of tokens: nothing is reported
+    other = json.loads((tmp / "run/stored_tokens.json").read_text())
+    other["stored_tokens"]["stored:mean"]["id"] = "mean:b"
+    keep = (tmp / "run/stored_tokens.json").read_text()
+    (tmp / "run/stored_tokens.json").write_text(json.dumps(other))
+    for case in ("teacher", "rows"):
+        if case == "rows":
+            (tmp / "run/stored_tokens.json").write_text(keep)
+            (tmp / "bench/t_guardrail.rows.jsonl").write_text("".join(
+                json.dumps({**x, "diag": {"fixed_tokens": "mean:b"}} if x["arm"] == "fixed" and x["qid"] == "mmlu:7"
+                           else x) + "\n" for x in good))
+        try:
+            run(a)
+        except SystemExit as e:
+            assert "mean:b" in str(e), e
+        else:
+            raise AssertionError(f"tokens of another set were reported ({case})")
+    (tmp / "bench/t_guardrail.rows.jsonl").write_text("".join(json.dumps(x) + "\n" for x in good))
+    # a ratio is taken from the means, not from their printed rounding
+    fine = rows(kl=0.0000014)
+    for r_ in fine:
+        if r_["arm"] == "psilm" and r_["dataset"] != "redteam":
+            r_["kl"] = {"mean": 0.0000016, "pool": "prompt"}
+    dd = by_arm(fine)
+    rt = verdict(teacher, {ds: dataset_block(dd[ds]) for ds in ("redteam",) + BENCHMARKS},
+                 refusal_block(dd["redteam"]))[1]
+    assert rt["gsm8k"] == 0.875, rt                         # 1.4/1.6; from six decimals it is 0.5
     (tmp / "run/stored_tokens.json").unlink()
     run(argparse.Namespace(**{**vars(a), "no_record": True}))
     assert json.loads((tmp / "out.json").read_text())["verdict"] == "not_run_in_full"

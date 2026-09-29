@@ -1,0 +1,52 @@
+{
+ "kind": "softzero",
+ "tokens_sha256": "0084c9ecbbf26a905a823cf2612082d9e2cff23ba8c2d08deb8d63b9118d398c",
+ "shape": [
+  1,
+  8,
+  5120
+ ],
+ "token_rms": 1.403012,
+ "data": "none: the partner was fed zeros",
+ "n": 0,
+ "sources": [],
+ "ckpt": "results/stage2c_bonsai27b_all/bridges.npz",
+ "ckpt_step": 1000,
+ "ckpt_sha256": "359896007fb0dc600380e14df9c4fe28ee1bb8d4edce3fd77447749efa7df609",
+ "model": "/Users/rxiii/Documents/huggingface/hub/models--prism-ml--Ternary-Bonsai-2-27B-mlx-2bit/snapshots/3f926b415992eaa2ae9dd7b573706494d6bbf787",
+ "const_model": "/Users/rxiii/Documents/GitHub/PsiLM/results/constitution_model/qwen2.5-0.5b-constitution",
+ "l_fwd": 26,
+ "spread_of_the_prompts_own_tokens": {
+  "cosine_to_mean": {
+   "mean": 0.953564,
+   "min": 0.766134
+  },
+  "relative_distance_to_mean": {
+   "mean": 0.260795,
+   "max": 0.741407
+  },
+  "mean_pairwise_cosine": 0.908503,
+  "norm": {
+   "of_the_mean": 310.66971,
+   "mean_of_prompts": 326.71631,
+   "ratio": 0.950885
+  },
+  "token_rms": 1.535037,
+  "softzero": {
+   "relative_distance": 0.27495,
+   "cosine": 0.962691,
+   "varies_with_the_prompt": 0.0
+  },
+  "contrast": {
+   "data": "data/constitution_helpful_test_bonsai27b.json",
+   "n": 100,
+   "relative_distance": 0.365696,
+   "cosine": 0.934816,
+   "own_relative_distance_to_mean": {
+    "mean": 0.394551,
+    "max": 0.524621
+   }
+  }
+ },
+ "sec": 115.6
+}
