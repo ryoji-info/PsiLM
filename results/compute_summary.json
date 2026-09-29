@@ -1,10 +1,10 @@
 {
  "totals": {
-  "training_h": 294.9,
-  "evals_h": 21.8,
-  "guardrails_h": 88.4,
+  "training_h": 309.0,
+  "evals_h": 28.2,
+  "guardrails_h": 102.1,
   "rescores_h": 29.3,
-  "total_h": 434.4
+  "total_h": 468.6
  },
  "training": {
   "stage1": 12.51,
@@ -23,6 +23,11 @@
   "stage2b_gemma12b_2b": 20.95,
   "stage2b_loop2": 4.16,
   "stage2b_v2": 2.52,
+  "stage2c_bonsai27b_all": 7.07,
+  "stage2c_bonsai27b_longb1l48": 0.02,
+  "stage2c_bonsai27b_longb1l56": 0.01,
+  "stage2c_bonsai27b_longb2l48": 0.04,
+  "stage2c_bonsai27b_timeb2l48": 0.04,
   "stage2c_qwen0.5b_all": 0.93,
   "stage2c_qwen0.5b_allplain": 0.98,
   "stage2c_qwen0.5b_magmatch": 0.96,
@@ -33,12 +38,18 @@
   "stage2c_qwen0.5b_vn": 0.93,
   "stage2c_qwen0.5b_vn5": 0.93,
   "stage2c_qwen35_all": 7.17,
+  "stage2c_qwen35_all_r1": 2.35,
+  "stage2c_qwen35_all_r1_long": 0.01,
   "stage2c_qwen35_allplain": 7.47,
   "stage2c_qwen35_match0": 7.06,
   "stage2c_qwen35_match1": 7.16,
   "stage2c_qwen35_match2": 7.06,
   "stage2c_qwen35_match205": 7.15,
   "stage2c_qwen35_match41": 7.45,
+  "stage2c_qwen35_nopartner": 2.3,
+  "stage2c_qwen35_nopartner_long": 0.01,
+  "stage2c_qwen35_nopartner_r1": 2.28,
+  "stage2c_qwen35_nopartner_r1_long": 0.01,
   "stage2c_qwen35_vn": 7.28,
   "stage2c_qwen35_vn10e": 7.05,
   "stage2c_qwen35_vn10ebot": 7.04,
@@ -50,6 +61,8 @@
   "stage2d_gemma12b_2d": 26.28
  },
  "evals": {
+  "results/stage2c_bonsai27b_all/eval_helpful.log": 1.839,
+  "results/stage2c_bonsai27b_all/eval_test.log": 1.856,
   "results/stage2c_qwen0.5b_all/eval_helpful.log": 0.135,
   "results/stage2c_qwen0.5b_all/eval_test.log": 0.119,
   "results/stage2c_qwen0.5b_allplain/eval_helpful.log": 0.136,
@@ -68,6 +81,8 @@
   "results/stage2c_qwen0.5b_vn5/eval_test.log": 0.132,
   "results/stage2c_qwen35_all/eval_helpful.log": 0.69,
   "results/stage2c_qwen35_all/eval_test.log": 0.694,
+  "results/stage2c_qwen35_all_r1/eval_helpful.log": 0.449,
+  "results/stage2c_qwen35_all_r1/eval_test.log": 0.453,
   "results/stage2c_qwen35_allplain/eval_helpful.log": 0.703,
   "results/stage2c_qwen35_allplain/eval_test.log": 0.703,
   "results/stage2c_qwen35_match0/eval_test.log": 1.106,
@@ -80,6 +95,10 @@
   "results/stage2c_qwen35_match205/eval_test.log": 0.684,
   "results/stage2c_qwen35_match41/eval_helpful.log": 0.702,
   "results/stage2c_qwen35_match41/eval_test.log": 0.696,
+  "results/stage2c_qwen35_nopartner/eval_helpful.log": 0.441,
+  "results/stage2c_qwen35_nopartner/eval_test.log": 0.445,
+  "results/stage2c_qwen35_nopartner_r1/eval_helpful.log": 0.441,
+  "results/stage2c_qwen35_nopartner_r1/eval_test.log": 0.445,
   "results/stage2c_qwen35_vn/eval_helpful.log": 0.704,
   "results/stage2c_qwen35_vn/eval_test.log": 0.701,
   "results/stage2c_qwen35_vn10e/eval_helpful.log": 0.704,
@@ -94,6 +113,7 @@
   "results/stage2c_qwen35_vn5e/eval_test.log": 0.705
  },
  "guardrails": {
+  "const_bonsai27b_all": 6.67,
   "const_qwen0.5b_all": 0.33,
   "const_qwen0.5b_allplain": 0.29,
   "const_qwen0.5b_magmatch": 0.3,
@@ -102,6 +122,8 @@
   "const_qwen0.5b_vn5": 0.34,
   "const_qwen0.5b_vn": 0.34,
   "const_qwen35_all": 2.84,
+  "const_qwen35_all_r1_rt400": 0.98,
+  "const_qwen35_all_rt400_fixed": 2.32,
   "const_qwen35_all_rt400": 5.71,
   "const_qwen35_allplain_rt400": 3.2,
   "const_qwen35_match0_rg": 0.92,
@@ -109,6 +131,9 @@
   "const_qwen35_match205": 2.84,
   "const_qwen35_match2_rg": 0.91,
   "const_qwen35_match41": 2.87,
+  "const_qwen35_nopartner": 1.77,
+  "const_qwen35_nopartner_r1_rt400": 0.97,
+  "const_qwen35_nopartner_rt400": 0.94,
   "const_qwen35_vn10e": 2.8,
   "const_qwen35_vn10e_rt400": 3.98,
   "const_qwen35_vn10ebot": 2.85,
@@ -306,6 +331,75 @@
    "dual_qwen35_both": 0.7,
    "dual_qwen35_phys": 0.7,
    "guardrail_qwen35": 0.77
+  }
+ },
+ "psilm2_followup": {
+  "scope": "after the campaign, 2026-09-28/29: the partner-free bridge and the two replicates, their evaluations, the stored-token and partner-free guard-rails (generated rows only), the teacher ceilings and the content controls of the 9B arms",
+  "not_counted": "model loading, self-tests, the building of the stored tokens, and the judges (language-model agents, not run on this machine's GPU)",
+  "totals": {
+   "training_h": 7.0,
+   "evals_h": 2.7,
+   "guardrails_h": 7.2,
+   "ceilings_h": 3.2,
+   "controls_h": 2.1,
+   "total_h": 22.2
+  },
+  "training": {
+   "stage2c_qwen35_all_r1": 2.35,
+   "stage2c_qwen35_all_r1_long": 0.01,
+   "stage2c_qwen35_nopartner": 2.3,
+   "stage2c_qwen35_nopartner_long": 0.01,
+   "stage2c_qwen35_nopartner_r1": 2.28,
+   "stage2c_qwen35_nopartner_r1_long": 0.01
+  },
+  "evals": {
+   "results/stage2c_qwen35_all_r1/eval_helpful.log": 0.449,
+   "results/stage2c_qwen35_all_r1/eval_test.log": 0.453,
+   "results/stage2c_qwen35_nopartner/eval_helpful.log": 0.441,
+   "results/stage2c_qwen35_nopartner/eval_test.log": 0.445,
+   "results/stage2c_qwen35_nopartner_r1/eval_helpful.log": 0.441,
+   "results/stage2c_qwen35_nopartner_r1/eval_test.log": 0.445
+  },
+  "guardrails": {
+   "const_qwen35_all_r1_rt400": 0.98,
+   "const_qwen35_all_rt400_fixed": 2.32,
+   "const_qwen35_nopartner": 1.77,
+   "const_qwen35_nopartner_r1_rt400": 0.97,
+   "const_qwen35_nopartner_rt400": 0.94,
+   "const_qwen35_all_rt400_repro": 0.22
+  },
+  "ceilings": {
+   "stage2c_qwen35_all": 0.2,
+   "stage2c_qwen35_all_r1": 0.195,
+   "stage2c_qwen35_allplain": 0.201,
+   "stage2c_qwen35_match0": 0.202,
+   "stage2c_qwen35_match1": 0.202,
+   "stage2c_qwen35_match2": 0.198,
+   "stage2c_qwen35_match205": 0.196,
+   "stage2c_qwen35_match41": 0.203,
+   "stage2c_qwen35_nopartner": 0.201,
+   "stage2c_qwen35_nopartner_r1": 0.202,
+   "stage2c_qwen35_vn": 0.202,
+   "stage2c_qwen35_vn10e": 0.202,
+   "stage2c_qwen35_vn10ebot": 0.202,
+   "stage2c_qwen35_vn1e": 0.203,
+   "stage2c_qwen35_vn5": 0.2,
+   "stage2c_qwen35_vn5e": 0.204
+  },
+  "controls": {
+   "stage2c_qwen35_vn10e": 0.15,
+   "stage2c_qwen35_vn10ebot": 0.167,
+   "stage2c_qwen35_vn1e": 0.167,
+   "stage2c_qwen35_vn5e": 0.167,
+   "stage2c_qwen35_match41": 0.167,
+   "stage2c_qwen35_match205": 0.167,
+   "stage2c_qwen35_allplain": 0.167,
+   "stage2c_qwen35_vn": 0.167,
+   "stage2c_qwen35_vn5": 0.15,
+   "stage2c_qwen35_match0": 0.167,
+   "stage2c_qwen35_match1": 0.167,
+   "stage2c_qwen35_match2": 0.167,
+   "stage2c_qwen35_all": 0.164
   }
  },
  "excluded": "value-neuron collection and probes, data building, 0.5B ablations, the partner fine-tune"
