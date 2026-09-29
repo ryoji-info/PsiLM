@@ -1,0 +1,6500 @@
+{
+ "written": "2026-09-30, AFTER the run. Nothing here is a reading and no reading is changed: the readings are results/constitution/tempcontrol_qwen0.5b_reading.json, as posed by results/constitution/tempcontrol_qwen0.5b_preregistration.json (commit 32aee47). This is what is said beside them.",
+ "from": "the rows of the run (results/stage2c_qwen0.5b_<arm>/teacher_ceiling.rows.jsonl) and the table's own draws: numpy default_rng(0), 2000 draws, the read split's items and then the other split's. Labels are the pre-registration's words; applied to anything but the cross-fitted gains they describe, they are not readings.",
+ "reproduces_the_table": {
+  "largest_difference_of_an_interval_end": 0.0,
+  "holds": true
+ },
+ "temperatures_chosen": {
+  "test": {
+   "chosen_on": "helpful",
+   "backbone": {
+    "0.5": 10,
+    "0.55": 126,
+    "0.6": 585,
+    "0.65": 893,
+    "0.7": 340,
+    "0.75": 43,
+    "0.8": 3
+   },
+   "all": {
+    "0.65": 1,
+    "0.7": 217,
+    "0.75": 1207,
+    "0.8": 550,
+    "0.85": 25
+   },
+   "allplain": {
+    "0.65": 5,
+    "0.7": 461,
+    "0.75": 1225,
+    "0.8": 296,
+    "0.85": 13
+   },
+   "vn": {
+    "0.5": 1,
+    "0.55": 75,
+    "0.6": 433,
+    "0.65": 916,
+    "0.7": 500,
+    "0.75": 72,
+    "0.8": 3
+   },
+   "plainpartner": {
+    "0.5": 1,
+    "0.55": 76,
+    "0.6": 436,
+    "0.65": 928,
+    "0.7": 489,
+    "0.75": 67,
+    "0.8": 3
+   },
+   "vn5": {
+    "0.55": 45,
+    "0.6": 310,
+    "0.65": 874,
+    "0.7": 629,
+    "0.75": 132,
+    "0.8": 10
+   },
+   "magmatch": {
+    "0.5": 11,
+    "0.55": 136,
+    "0.6": 605,
+    "0.65": 878,
+    "0.7": 327,
+    "0.75": 41,
+    "0.8": 2
+   },
+   "magmatch1": {
+    "0.5": 11,
+    "0.55": 135,
+    "0.6": 593,
+    "0.65": 879,
+    "0.7": 336,
+    "0.75": 43,
+    "0.8": 3
+   },
+   "magmatch2": {
+    "0.5": 11,
+    "0.55": 131,
+    "0.6": 601,
+    "0.65": 878,
+    "0.7": 336,
+    "0.75": 40,
+    "0.8": 3
+   },
+   "rand": {
+    "0.5": 11,
+    "0.55": 128,
+    "0.6": 587,
+    "0.65": 892,
+    "0.7": 337,
+    "0.75": 42,
+    "0.8": 3
+   }
+  },
+  "helpful": {
+   "chosen_on": "test",
+   "backbone": {
+    "0.7": 10,
+    "0.75": 243,
+    "0.8": 1042,
+    "0.85": 662,
+    "0.9": 43
+   },
+   "all": {
+    "0.75": 56,
+    "0.8": 1001,
+    "0.85": 919,
+    "0.9": 24
+   },
+   "allplain": {
+    "0.75": 1,
+    "0.8": 154,
+    "0.85": 1106,
+    "0.9": 709,
+    "0.95": 30
+   },
+   "vn": {
+    "0.7": 5,
+    "0.75": 121,
+    "0.8": 840,
+    "0.85": 916,
+    "0.9": 118
+   },
+   "plainpartner": {
+    "0.7": 5,
+    "0.75": 131,
+    "0.8": 871,
+    "0.85": 895,
+    "0.9": 98
+   },
+   "vn5": {
+    "0.7": 6,
+    "0.75": 176,
+    "0.8": 942,
+    "0.85": 808,
+    "0.9": 68
+   },
+   "magmatch": {
+    "0.7": 14,
+    "0.75": 309,
+    "0.8": 1091,
+    "0.85": 561,
+    "0.9": 25
+   },
+   "magmatch1": {
+    "0.7": 12,
+    "0.75": 289,
+    "0.8": 1062,
+    "0.85": 605,
+    "0.9": 32
+   },
+   "magmatch2": {
+    "0.7": 13,
+    "0.75": 299,
+    "0.8": 1077,
+    "0.85": 584,
+    "0.9": 27
+   },
+   "rand": {
+    "0.7": 12,
+    "0.75": 260,
+    "0.8": 1051,
+    "0.85": 639,
+    "0.9": 38
+   }
+  }
+ },
+ "modes": {
+  "test": {
+   "vn": {
+    "variance_between_temperature_pairs": 0.9157,
+    "coupled_at_the_backbones_temperature": {
+     "draws": 1501,
+     "mean": 0.008013,
+     "below_zero": 2,
+     "p2.5": 0.002946,
+     "p97.5": 0.012311
+    },
+    "coupled_one_step_above": {
+     "draws": 499,
+     "mean": 0.033158,
+     "below_zero": 0,
+     "p2.5": 0.017967,
+     "p97.5": 0.054245
+    },
+    "coupled_one_step_below": {
+     "draws": 0
+    },
+    "other": 0
+   },
+   "plainpartner": {
+    "variance_between_temperature_pairs": 0.8707,
+    "coupled_at_the_backbones_temperature": {
+     "draws": 1527,
+     "mean": 0.013494,
+     "below_zero": 0,
+     "p2.5": 0.007363,
+     "p97.5": 0.019774
+    },
+    "coupled_one_step_above": {
+     "draws": 473,
+     "mean": 0.038841,
+     "below_zero": 0,
+     "p2.5": 0.020705,
+     "p97.5": 0.062067
+    },
+    "coupled_one_step_below": {
+     "draws": 0
+    },
+    "other": 0
+   },
+   "magmatch": {
+    "variance_between_temperature_pairs": 0.8428,
+    "coupled_at_the_backbones_temperature": {
+     "draws": 1937,
+     "mean": 0.018203,
+     "below_zero": 0,
+     "p2.5": 0.014414,
+     "p97.5": 0.022505
+    },
+    "coupled_one_step_above": {
+     "draws": 0
+    },
+    "coupled_one_step_below": {
+     "draws": 63,
+     "mean": -0.007058,
+     "below_zero": 50,
+     "p2.5": -0.028482,
+     "p97.5": 0.007295
+    },
+    "other": 0
+   },
+   "magmatch1": {
+    "variance_between_temperature_pairs": 0.8532,
+    "coupled_at_the_backbones_temperature": {
+     "draws": 1967,
+     "mean": 0.014561,
+     "below_zero": 0,
+     "p2.5": 0.01155,
+     "p97.5": 0.01792
+    },
+    "coupled_one_step_above": {
+     "draws": 0
+    },
+    "coupled_one_step_below": {
+     "draws": 33,
+     "mean": -0.016218,
+     "below_zero": 33,
+     "p2.5": -0.040097,
+     "p97.5": -0.001387
+    },
+    "other": 0
+   },
+   "magmatch2": {
+    "variance_between_temperature_pairs": 0.8505,
+    "coupled_at_the_backbones_temperature": {
+     "draws": 1961,
+     "mean": 0.012418,
+     "below_zero": 0,
+     "p2.5": 0.009658,
+     "p97.5": 0.015759
+    },
+    "coupled_one_step_above": {
+     "draws": 0
+    },
+    "coupled_one_step_below": {
+     "draws": 39,
+     "mean": -0.013582,
+     "below_zero": 38,
+     "p2.5": -0.030864,
+     "p97.5": -0.000144
+    },
+    "other": 0
+   },
+   "rand": {
+    "variance_between_temperature_pairs": 0.9346,
+    "coupled_at_the_backbones_temperature": {
+     "draws": 1986,
+     "mean": 0.003521,
+     "below_zero": 0,
+     "p2.5": 0.002361,
+     "p97.5": 0.004797
+    },
+    "coupled_one_step_above": {
+     "draws": 0
+    },
+    "coupled_one_step_below": {
+     "draws": 14,
+     "mean": -0.026647,
+     "below_zero": 14,
+     "p2.5": -0.052102,
+     "p97.5": -0.010175
+    },
+    "other": 0
+   },
+   "all": {
+    "variance_between_temperature_pairs": 0.1698
+   },
+   "allplain": {
+    "variance_between_temperature_pairs": 0.1542
+   },
+   "vn5": {
+    "variance_between_temperature_pairs": 0.5632
+   },
+   "C1_plain_partner_at_nine": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1968,
+     "mean": 0.005441,
+     "below_zero": 58,
+     "p2.5": -0.000137,
+     "p97.5": 0.012292
+    },
+    "otherwise": {
+     "draws": 32,
+     "mean": -0.009523,
+     "below_zero": 29,
+     "p2.5": -0.035136,
+     "p97.5": 0.042218
+    }
+   },
+   "C2_plain_partner_at_full_width": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1446,
+     "mean": -0.004158,
+     "below_zero": 850,
+     "p2.5": -0.035021,
+     "p97.5": 0.021371
+    },
+    "otherwise": {
+     "draws": 554,
+     "mean": -0.0115,
+     "below_zero": 424,
+     "p2.5": -0.043266,
+     "p97.5": 0.018996
+    }
+   },
+   "C3_identity_at_nine": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1434,
+     "mean": -0.006919,
+     "below_zero": 1432,
+     "p2.5": -0.012909,
+     "p97.5": -0.001936
+    },
+    "otherwise": {
+     "draws": 566,
+     "mean": 0.016929,
+     "below_zero": 8,
+     "p2.5": 0.001767,
+     "p97.5": 0.036098
+    }
+   },
+   "C4_value_neurons_against_random": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1487,
+     "mean": 0.004528,
+     "below_zero": 47,
+     "p2.5": -0.000358,
+     "p97.5": 0.008502
+    },
+    "otherwise": {
+     "draws": 513,
+     "mean": 0.02967,
+     "below_zero": 0,
+     "p2.5": 0.015117,
+     "p97.5": 0.05012
+    }
+   },
+   "C5_width": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1544,
+     "mean": 0.047286,
+     "below_zero": 0,
+     "p2.5": 0.029317,
+     "p97.5": 0.070372
+    },
+    "otherwise": {
+     "draws": 456,
+     "mean": 0.070017,
+     "below_zero": 0,
+     "p2.5": 0.043721,
+     "p97.5": 0.105466
+    }
+   },
+   "vn minus magmatch": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1438,
+     "mean": -0.010011,
+     "below_zero": 1438,
+     "p2.5": -0.016408,
+     "p97.5": -0.004572
+    },
+    "otherwise": {
+     "draws": 562,
+     "mean": 0.014513,
+     "below_zero": 7,
+     "p2.5": 0.001897,
+     "p97.5": 0.0341
+    }
+   },
+   "vn minus magmatch1": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1468,
+     "mean": -0.006435,
+     "below_zero": 1465,
+     "p2.5": -0.012382,
+     "p97.5": -0.001672
+    },
+    "otherwise": {
+     "draws": 532,
+     "mean": 0.018636,
+     "below_zero": 0,
+     "p2.5": 0.005042,
+     "p97.5": 0.038759
+    }
+   },
+   "vn minus magmatch2": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1462,
+     "mean": -0.00429,
+     "below_zero": 1396,
+     "p2.5": -0.010086,
+     "p97.5": 0.000721
+    },
+    "otherwise": {
+     "draws": 538,
+     "mean": 0.020491,
+     "below_zero": 0,
+     "p2.5": 0.007001,
+     "p97.5": 0.039832
+    }
+   }
+  },
+  "helpful": {
+   "vn": {
+    "variance_between_temperature_pairs": 0.9386,
+    "coupled_at_the_backbones_temperature": {
+     "draws": 1464,
+     "mean": 0.010783,
+     "below_zero": 0,
+     "p2.5": 0.007852,
+     "p97.5": 0.013581
+    },
+    "coupled_one_step_above": {
+     "draws": 536,
+     "mean": -0.004607,
+     "below_zero": 495,
+     "p2.5": -0.010674,
+     "p97.5": 0.002501
+    },
+    "coupled_one_step_below": {
+     "draws": 0
+    },
+    "other": 0
+   },
+   "plainpartner": {
+    "variance_between_temperature_pairs": 0.9311,
+    "coupled_at_the_backbones_temperature": {
+     "draws": 1535,
+     "mean": 0.012281,
+     "below_zero": 0,
+     "p2.5": 0.009588,
+     "p97.5": 0.014957
+    },
+    "coupled_one_step_above": {
+     "draws": 465,
+     "mean": -0.00302,
+     "below_zero": 369,
+     "p2.5": -0.00961,
+     "p97.5": 0.004994
+    },
+    "coupled_one_step_below": {
+     "draws": 0
+    },
+    "other": 0
+   },
+   "magmatch": {
+    "variance_between_temperature_pairs": 0.9528,
+    "coupled_at_the_backbones_temperature": {
+     "draws": 1789,
+     "mean": 0.006593,
+     "below_zero": 0,
+     "p2.5": 0.005104,
+     "p97.5": 0.00833
+    },
+    "coupled_one_step_above": {
+     "draws": 0
+    },
+    "coupled_one_step_below": {
+     "draws": 211,
+     "mean": 0.022677,
+     "below_zero": 0,
+     "p2.5": 0.015231,
+     "p97.5": 0.028383
+    },
+    "other": 0
+   },
+   "magmatch1": {
+    "variance_between_temperature_pairs": 0.9471,
+    "coupled_at_the_backbones_temperature": {
+     "draws": 1871,
+     "mean": 0.005586,
+     "below_zero": 0,
+     "p2.5": 0.004392,
+     "p97.5": 0.00692
+    },
+    "coupled_one_step_above": {
+     "draws": 0
+    },
+    "coupled_one_step_below": {
+     "draws": 129,
+     "mean": 0.021673,
+     "below_zero": 0,
+     "p2.5": 0.01345,
+     "p97.5": 0.0276
+    },
+    "other": 0
+   },
+   "magmatch2": {
+    "variance_between_temperature_pairs": 0.9589,
+    "coupled_at_the_backbones_temperature": {
+     "draws": 1828,
+     "mean": 0.00392,
+     "below_zero": 0,
+     "p2.5": 0.002856,
+     "p97.5": 0.005187
+    },
+    "coupled_one_step_above": {
+     "draws": 0
+    },
+    "coupled_one_step_below": {
+     "draws": 172,
+     "mean": 0.020054,
+     "below_zero": 0,
+     "p2.5": 0.012551,
+     "p97.5": 0.026
+    },
+    "other": 0
+   },
+   "rand": {
+    "variance_between_temperature_pairs": 0.9611,
+    "coupled_at_the_backbones_temperature": {
+     "draws": 1946,
+     "mean": 0.000665,
+     "below_zero": 0,
+     "p2.5": 0.00027,
+     "p97.5": 0.001151
+    },
+    "coupled_one_step_above": {
+     "draws": 0
+    },
+    "coupled_one_step_below": {
+     "draws": 54,
+     "mean": 0.01702,
+     "below_zero": 0,
+     "p2.5": 0.00748,
+     "p97.5": 0.023138
+    },
+    "other": 0
+   },
+   "all": {
+    "variance_between_temperature_pairs": 0.1233
+   },
+   "allplain": {
+    "variance_between_temperature_pairs": 0.0839
+   },
+   "vn5": {
+    "variance_between_temperature_pairs": 0.8433
+   },
+   "C1_plain_partner_at_nine": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1919,
+     "mean": 0.001515,
+     "below_zero": 12,
+     "p2.5": 0.000259,
+     "p97.5": 0.002949
+    },
+    "otherwise": {
+     "draws": 81,
+     "mean": 0.01509,
+     "below_zero": 5,
+     "p2.5": -0.01586,
+     "p97.5": 0.02291
+    }
+   },
+   "C2_plain_partner_at_full_width": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 413,
+     "mean": 0.012604,
+     "below_zero": 6,
+     "p2.5": 0.000563,
+     "p97.5": 0.025299
+    },
+    "otherwise": {
+     "draws": 1587,
+     "mean": 0.006582,
+     "below_zero": 308,
+     "p2.5": -0.008011,
+     "p97.5": 0.023773
+    }
+   },
+   "C3_identity_at_nine": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1253,
+     "mean": 0.005335,
+     "below_zero": 1,
+     "p2.5": 0.002176,
+     "p97.5": 0.008093
+    },
+    "otherwise": {
+     "draws": 747,
+     "mean": -0.009167,
+     "below_zero": 713,
+     "p2.5": -0.015104,
+     "p97.5": 0.000953
+    }
+   },
+   "C4_value_neurons_against_random": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1410,
+     "mean": 0.010109,
+     "below_zero": 0,
+     "p2.5": 0.007257,
+     "p97.5": 0.012812
+    },
+    "otherwise": {
+     "draws": 590,
+     "mean": -0.005339,
+     "below_zero": 562,
+     "p2.5": -0.011005,
+     "p97.5": 0.001673
+    }
+   },
+   "C5_width": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1729,
+     "mean": 0.017164,
+     "below_zero": 0,
+     "p2.5": 0.013274,
+     "p97.5": 0.021624
+    },
+    "otherwise": {
+     "draws": 271,
+     "mean": 0.030963,
+     "below_zero": 1,
+     "p2.5": 0.019879,
+     "p97.5": 0.039003
+    }
+   },
+   "vn minus magmatch": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1253,
+     "mean": 0.004117,
+     "below_zero": 17,
+     "p2.5": 0.000446,
+     "p97.5": 0.007111
+    },
+    "otherwise": {
+     "draws": 747,
+     "mean": -0.011272,
+     "below_zero": 746,
+     "p2.5": -0.016066,
+     "p97.5": -0.005307
+    }
+   },
+   "vn minus magmatch1": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1335,
+     "mean": 0.005156,
+     "below_zero": 1,
+     "p2.5": 0.002011,
+     "p97.5": 0.007797
+    },
+    "otherwise": {
+     "draws": 665,
+     "mean": -0.010246,
+     "below_zero": 663,
+     "p2.5": -0.015845,
+     "p97.5": -0.003681
+    }
+   },
+   "vn minus magmatch2": {
+    "its_arms_at_one_coupled_temperature": {
+     "draws": 1292,
+     "mean": 0.006813,
+     "below_zero": 0,
+     "p2.5": 0.003712,
+     "p97.5": 0.009616
+    },
+    "otherwise": {
+     "draws": 708,
+     "mean": -0.008617,
+     "below_zero": 701,
+     "p2.5": -0.0136,
+     "p97.5": -0.002358
+    }
+   }
+  }
+ },
+ "one_temperature": {
+  "test": {
+   "what": "the backbone and the coupled system both read at the one temperature; items of the read split resampled on the table's draws",
+   "the_cross_fitted_temperature_of_the_backbone": 0.65,
+   "where_the_interval_lies": {
+    "C1_plain_partner_at_nine": {
+     "above": [
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [
+      0.5,
+      0.55,
+      0.6,
+      0.65
+     ],
+     "below": []
+    },
+    "C2_plain_partner_at_full_width": {
+     "above": [],
+     "includes zero": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "below": []
+    },
+    "C3_identity_at_nine": {
+     "above": [
+      0.95,
+      1.0
+     ],
+     "includes zero": [
+      0.75,
+      0.8,
+      0.85,
+      0.9
+     ],
+     "below": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7
+     ]
+    },
+    "C4_value_neurons_against_random": {
+     "above": [
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [
+      0.5,
+      0.55,
+      0.6
+     ],
+     "below": []
+    },
+    "C5_width": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "vn minus magmatch": {
+     "above": [
+      1.0
+     ],
+     "includes zero": [
+      0.85,
+      0.9,
+      0.95
+     ],
+     "below": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8
+     ]
+    },
+    "vn minus magmatch1": {
+     "above": [
+      0.95,
+      1.0
+     ],
+     "includes zero": [
+      0.75,
+      0.8,
+      0.85,
+      0.9
+     ],
+     "below": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7
+     ]
+    },
+    "vn minus magmatch2": {
+     "above": [
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [
+      0.7,
+      0.75,
+      0.8
+     ],
+     "below": [
+      0.5,
+      0.55,
+      0.6,
+      0.65
+     ]
+    },
+    "all": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "allplain": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "vn": {
+     "above": [
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [
+      0.5
+     ],
+     "below": []
+    },
+    "plainpartner": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "vn5": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "magmatch": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "magmatch1": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "magmatch2": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "rand": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    }
+   },
+   "at": {
+    "0.5": {
+     "arms": {
+      "all": {
+       "gain": 0.393119,
+       "ci95": [
+        0.277603,
+        0.525454
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.371909,
+       "ci95": [
+        0.254502,
+        0.508854
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.004552,
+       "ci95": [
+        -0.001099,
+        0.010363
+       ],
+       "label": "not distinguishable from zero at best temperature"
+      },
+      "plainpartner": {
+       "gain": 0.011385,
+       "ci95": [
+        0.003949,
+        0.019936
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.06079,
+       "ci95": [
+        0.036414,
+        0.090294
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.021977,
+       "ci95": [
+        0.017789,
+        0.026626
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.017249,
+       "ci95": [
+        0.013605,
+        0.020969
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.015324,
+       "ci95": [
+        0.012152,
+        0.019043
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.004313,
+       "ci95": [
+        0.002873,
+        0.005868
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.006832,
+       "ci95": [
+        -0.000627,
+        0.015717
+       ],
+       "draws_below_zero": 77,
+       "label": "does not survive"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": -0.021209,
+       "ci95": [
+        -0.067417,
+        0.02027
+       ],
+       "draws_below_zero": 1656,
+       "label": "still indistinguishable"
+      },
+      "C3_identity_at_nine": {
+       "difference": -0.013631,
+       "ci95": [
+        -0.019276,
+        -0.008548
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.00024,
+       "ci95": [
+        -0.004726,
+        0.005115
+       ],
+       "draws_below_zero": 920,
+       "label": "does not survive"
+      },
+      "C5_width": {
+       "difference": 0.056238,
+       "ci95": [
+        0.03265,
+        0.084938
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": -0.017424,
+       "ci95": [
+        -0.023416,
+        -0.011938
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      },
+      "vn minus magmatch1": {
+       "difference": -0.012696,
+       "ci95": [
+        -0.018388,
+        -0.007718
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      },
+      "vn minus magmatch2": {
+       "difference": -0.010772,
+       "ci95": [
+        -0.016445,
+        -0.005637
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      }
+     },
+     "split": {
+      "magnitude_share": 3.9943,
+      "ci95": [
+       1.881,
+       null
+      ],
+      "matched_mean_gain": 0.018183,
+      "matched_mean_gain_ci95": [
+       0.014642,
+       0.022013
+      ],
+      "label": "undefined at best temperature"
+     },
+     "identity_sign": "not firm at best temperature",
+     "value_neurons_small_signal": "not distinguishable from zero at best temperature"
+    },
+    "0.55": {
+     "arms": {
+      "all": {
+       "gain": 0.375262,
+       "ci95": [
+        0.270164,
+        0.495134
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.357858,
+       "ci95": [
+        0.250698,
+        0.482342
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.005717,
+       "ci95": [
+        0.000754,
+        0.010879
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.011958,
+       "ci95": [
+        0.005266,
+        0.019658
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.058226,
+       "ci95": [
+        0.036062,
+        0.084973
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.020315,
+       "ci95": [
+        0.01652,
+        0.024523
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.016076,
+       "ci95": [
+        0.01278,
+        0.019425
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.014063,
+       "ci95": [
+        0.011144,
+        0.017437
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.003977,
+       "ci95": [
+        0.002669,
+        0.005393
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.006241,
+       "ci95": [
+        -0.000472,
+        0.014218
+       ],
+       "draws_below_zero": 68,
+       "label": "does not survive"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": -0.017404,
+       "ci95": [
+        -0.059066,
+        0.020151
+       ],
+       "draws_below_zero": 1595,
+       "label": "still indistinguishable"
+      },
+      "C3_identity_at_nine": {
+       "difference": -0.011101,
+       "ci95": [
+        -0.016109,
+        -0.00659
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.00174,
+       "ci95": [
+        -0.002693,
+        0.006056
+       ],
+       "draws_below_zero": 447,
+       "label": "does not survive"
+      },
+      "C5_width": {
+       "difference": 0.052509,
+       "ci95": [
+        0.03111,
+        0.07836
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": -0.014599,
+       "ci95": [
+        -0.019964,
+        -0.009711
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      },
+      "vn minus magmatch1": {
+       "difference": -0.010359,
+       "ci95": [
+        -0.015499,
+        -0.005908
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      },
+      "vn minus magmatch2": {
+       "difference": -0.008347,
+       "ci95": [
+        -0.013458,
+        -0.003719
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      }
+     },
+     "split": {
+      "magnitude_share": 2.9419,
+      "ci95": [
+       1.657,
+       null
+      ],
+      "matched_mean_gain": 0.016818,
+      "matched_mean_gain_ci95": [
+       0.013642,
+       0.020261
+      ],
+      "label": "identity term reversed at best temperature"
+     },
+     "identity_sign": "not firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.6": {
+     "arms": {
+      "all": {
+       "gain": 0.362377,
+       "ci95": [
+        0.266128,
+        0.471814
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.348434,
+       "ci95": [
+        0.249773,
+        0.463034
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.00689,
+       "ci95": [
+        0.002486,
+        0.011475
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.012652,
+       "ci95": [
+        0.006548,
+        0.01964
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.056476,
+       "ci95": [
+        0.036305,
+        0.080838
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.018958,
+       "ci95": [
+        0.015521,
+        0.022795
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.015129,
+       "ci95": [
+        0.012093,
+        0.018187
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.013023,
+       "ci95": [
+        0.010355,
+        0.016083
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.003697,
+       "ci95": [
+        0.002497,
+        0.00499
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.005762,
+       "ci95": [
+        -0.000284,
+        0.012966
+       ],
+       "draws_below_zero": 62,
+       "label": "does not survive"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": -0.013943,
+       "ci95": [
+        -0.052188,
+        0.020272
+       ],
+       "draws_below_zero": 1544,
+       "label": "still indistinguishable"
+      },
+      "C3_identity_at_nine": {
+       "difference": -0.008814,
+       "ci95": [
+        -0.013393,
+        -0.004783
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.003193,
+       "ci95": [
+        -0.000785,
+        0.007012
+       ],
+       "draws_below_zero": 102,
+       "label": "does not survive"
+      },
+      "C5_width": {
+       "difference": 0.049587,
+       "ci95": [
+        0.029988,
+        0.07301
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": -0.012069,
+       "ci95": [
+        -0.016858,
+        -0.007639
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      },
+      "vn minus magmatch1": {
+       "difference": -0.008239,
+       "ci95": [
+        -0.01291,
+        -0.004239
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      },
+      "vn minus magmatch2": {
+       "difference": -0.006133,
+       "ci95": [
+        -0.010795,
+        -0.001924
+       ],
+       "draws_below_zero": 1997,
+       "label": "reverses"
+      }
+     },
+     "split": {
+      "magnitude_share": 2.2792,
+      "ci95": [
+       1.45,
+       null
+      ],
+      "matched_mean_gain": 0.015703,
+      "matched_mean_gain_ci95": [
+       0.01279,
+       0.018853
+      ],
+      "label": "identity term reversed at best temperature"
+     },
+     "identity_sign": "not firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.65": {
+     "arms": {
+      "all": {
+       "gain": 0.353409,
+       "ci95": [
+        0.264862,
+        0.453915
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.342683,
+       "ci95": [
+        0.251172,
+        0.448014
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.008086,
+       "ci95": [
+        0.00407,
+        0.012166
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.013459,
+       "ci95": [
+        0.007911,
+        0.019835
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.055386,
+       "ci95": [
+        0.03673,
+        0.077793
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.017837,
+       "ci95": [
+        0.014651,
+        0.021354
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.01436,
+       "ci95": [
+        0.011562,
+        0.017162
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.012153,
+       "ci95": [
+        0.009693,
+        0.014972
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.003461,
+       "ci95": [
+        0.002358,
+        0.004647
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.005373,
+       "ci95": [
+        -0.000164,
+        0.011909
+       ],
+       "draws_below_zero": 57,
+       "label": "does not survive"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": -0.010725,
+       "ci95": [
+        -0.046046,
+        0.020661
+       ],
+       "draws_below_zero": 1459,
+       "label": "still indistinguishable"
+      },
+      "C3_identity_at_nine": {
+       "difference": -0.006697,
+       "ci95": [
+        -0.010898,
+        -0.003024
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.004625,
+       "ci95": [
+        0.001114,
+        0.008039
+       ],
+       "draws_below_zero": 16,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.0473,
+       "ci95": [
+        0.02925,
+        0.068804
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": -0.009751,
+       "ci95": [
+        -0.014091,
+        -0.005802
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      },
+      "vn minus magmatch1": {
+       "difference": -0.006274,
+       "ci95": [
+        -0.010564,
+        -0.002667
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      },
+      "vn minus magmatch2": {
+       "difference": -0.004067,
+       "ci95": [
+        -0.008321,
+        -0.000223
+       ],
+       "draws_below_zero": 1967,
+       "label": "reverses"
+      }
+     },
+     "split": {
+      "magnitude_share": 1.8283,
+      "ci95": [
+       1.269,
+       3.528
+      ],
+      "matched_mean_gain": 0.014783,
+      "matched_mean_gain_ci95": [
+       0.012111,
+       0.017668
+      ],
+      "label": "identity term reversed at best temperature"
+     },
+     "identity_sign": "not firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.7": {
+     "arms": {
+      "all": {
+       "gain": 0.347618,
+       "ci95": [
+        0.265859,
+        0.440303
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.339942,
+       "ci95": [
+        0.255783,
+        0.437775
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.009318,
+       "ci95": [
+        0.0057,
+        0.012981
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.014372,
+       "ci95": [
+        0.009323,
+        0.020186
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.054846,
+       "ci95": [
+        0.037641,
+        0.075536
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.016902,
+       "ci95": [
+        0.013944,
+        0.020132
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.013734,
+       "ci95": [
+        0.011112,
+        0.016331
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.011418,
+       "ci95": [
+        0.009157,
+        0.014024
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.003258,
+       "ci95": [
+        0.002225,
+        0.00436
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.005053,
+       "ci95": [
+        9e-06,
+        0.011082
+       ],
+       "draws_below_zero": 50,
+       "label": "survives"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": -0.007676,
+       "ci95": [
+        -0.039962,
+        0.02127
+       ],
+       "draws_below_zero": 1353,
+       "label": "still indistinguishable"
+      },
+      "C3_identity_at_nine": {
+       "difference": -0.0047,
+       "ci95": [
+        -0.008541,
+        -0.001369
+       ],
+       "draws_below_zero": 1999,
+       "label": "reverses"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.00606,
+       "ci95": [
+        0.002909,
+        0.009195
+       ],
+       "draws_below_zero": 1,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.045528,
+       "ci95": [
+        0.028811,
+        0.06549
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": -0.007584,
+       "ci95": [
+        -0.011553,
+        -0.003991
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      },
+      "vn minus magmatch1": {
+       "difference": -0.004416,
+       "ci95": [
+        -0.008318,
+        -0.001071
+       ],
+       "draws_below_zero": 1996,
+       "label": "reverses"
+      },
+      "vn minus magmatch2": {
+       "difference": -0.0021,
+       "ci95": [
+        -0.005953,
+        0.001441
+       ],
+       "draws_below_zero": 1769,
+       "label": "does not survive"
+      }
+     },
+     "split": {
+      "magnitude_share": 1.5044,
+      "ci95": [
+       1.111,
+       2.421
+      ],
+      "matched_mean_gain": 0.014018,
+      "matched_mean_gain_ci95": [
+       0.011531,
+       0.016679
+      ],
+      "label": "identity term reversed at best temperature"
+     },
+     "identity_sign": "not firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.75": {
+     "arms": {
+      "all": {
+       "gain": 0.344481,
+       "ci95": [
+        0.268489,
+        0.430004
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.339743,
+       "ci95": [
+        0.261613,
+        0.431188
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.010599,
+       "ci95": [
+        0.00733,
+        0.013898
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.01539,
+       "ci95": [
+        0.010759,
+        0.020799
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.054782,
+       "ci95": [
+        0.038705,
+        0.073934
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.016117,
+       "ci95": [
+        0.013345,
+        0.0191
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.013226,
+       "ci95": [
+        0.010778,
+        0.015622
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.010793,
+       "ci95": [
+        0.00869,
+        0.013216
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.003084,
+       "ci95": [
+        0.002116,
+        0.004111
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.004791,
+       "ci95": [
+        0.000145,
+        0.010387
+       ],
+       "draws_below_zero": 44,
+       "label": "survives"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": -0.004738,
+       "ci95": [
+        -0.035167,
+        0.022072
+       ],
+       "draws_below_zero": 1225,
+       "label": "still indistinguishable"
+      },
+      "C3_identity_at_nine": {
+       "difference": -0.002779,
+       "ci95": [
+        -0.006342,
+        0.000299
+       ],
+       "draws_below_zero": 1909,
+       "label": "does not survive"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.007516,
+       "ci95": [
+        0.004588,
+        0.010308
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.044183,
+       "ci95": [
+        0.028738,
+        0.06295
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": -0.005518,
+       "ci95": [
+        -0.009224,
+        -0.002181
+       ],
+       "draws_below_zero": 2000,
+       "label": "reverses"
+      },
+      "vn minus magmatch1": {
+       "difference": -0.002627,
+       "ci95": [
+        -0.006219,
+        0.00047
+       ],
+       "draws_below_zero": 1888,
+       "label": "does not survive"
+      },
+      "vn minus magmatch2": {
+       "difference": -0.000194,
+       "ci95": [
+        -0.003746,
+        0.003041
+       ],
+       "draws_below_zero": 1077,
+       "label": "does not survive"
+      }
+     },
+     "split": {
+      "magnitude_share": 1.2622,
+      "ci95": [
+       0.979,
+       1.834
+      ],
+      "matched_mean_gain": 0.013378,
+      "matched_mean_gain_ci95": [
+       0.01107,
+       0.015851
+      ],
+      "label": "identity term not distinguishable from zero at best temperature"
+     },
+     "identity_sign": "not firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.8": {
+     "arms": {
+      "all": {
+       "gain": 0.343619,
+       "ci95": [
+        0.272614,
+        0.422567
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.341752,
+       "ci95": [
+        0.268764,
+        0.426927
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.011942,
+       "ci95": [
+        0.008994,
+        0.014974
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.016516,
+       "ci95": [
+        0.012238,
+        0.021538
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.055143,
+       "ci95": [
+        0.040276,
+        0.072979
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.015455,
+       "ci95": [
+        0.012823,
+        0.018264
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.012815,
+       "ci95": [
+        0.010494,
+        0.015069
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.010257,
+       "ci95": [
+        0.008257,
+        0.012529
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.002932,
+       "ci95": [
+        0.002021,
+        0.003896
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.004575,
+       "ci95": [
+        0.000303,
+        0.009755
+       ],
+       "draws_below_zero": 34,
+       "label": "survives"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": -0.001867,
+       "ci95": [
+        -0.030387,
+        0.023389
+       ],
+       "draws_below_zero": 1065,
+       "label": "still indistinguishable"
+      },
+      "C3_identity_at_nine": {
+       "difference": -0.000901,
+       "ci95": [
+        -0.004255,
+        0.00197
+       ],
+       "draws_below_zero": 1427,
+       "label": "does not survive"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.00901,
+       "ci95": [
+        0.006311,
+        0.011525
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.043201,
+       "ci95": [
+        0.028817,
+        0.060757
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": -0.003513,
+       "ci95": [
+        -0.007033,
+        -0.000383
+       ],
+       "draws_below_zero": 1977,
+       "label": "reverses"
+      },
+      "vn minus magmatch1": {
+       "difference": -0.000874,
+       "ci95": [
+        -0.004223,
+        0.001998
+       ],
+       "draws_below_zero": 1386,
+       "label": "does not survive"
+      },
+      "vn minus magmatch2": {
+       "difference": 0.001685,
+       "ci95": [
+        -0.001633,
+        0.00465
+       ],
+       "draws_below_zero": 299,
+       "label": "does not survive"
+      }
+     },
+     "split": {
+      "magnitude_share": 1.0754,
+      "ci95": [
+       0.858,
+       1.455
+      ],
+      "matched_mean_gain": 0.012842,
+      "matched_mean_gain_ci95": [
+       0.010665,
+       0.015148
+      ],
+      "label": "identity term not distinguishable from zero at best temperature"
+     },
+     "identity_sign": "not firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.85": {
+     "arms": {
+      "all": {
+       "gain": 0.344765,
+       "ci95": [
+        0.278205,
+        0.418349
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.345741,
+       "ci95": [
+        0.277066,
+        0.425538
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.013359,
+       "ci95": [
+        0.010644,
+        0.016082
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.017755,
+       "ci95": [
+        0.013807,
+        0.022394
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.055894,
+       "ci95": [
+        0.042012,
+        0.072466
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.014895,
+       "ci95": [
+        0.012401,
+        0.017548
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.012489,
+       "ci95": [
+        0.010274,
+        0.014609
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.009796,
+       "ci95": [
+        0.007881,
+        0.011933
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.0028,
+       "ci95": [
+        0.001933,
+        0.00371
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.004396,
+       "ci95": [
+        0.000461,
+        0.009128
+       ],
+       "draws_below_zero": 26,
+       "label": "survives"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.000975,
+       "ci95": [
+        -0.025716,
+        0.024709
+       ],
+       "draws_below_zero": 900,
+       "label": "still indistinguishable"
+      },
+      "C3_identity_at_nine": {
+       "difference": 0.000966,
+       "ci95": [
+        -0.002115,
+        0.003664
+       ],
+       "draws_below_zero": 497,
+       "label": "does not survive"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.01056,
+       "ci95": [
+        0.008054,
+        0.01288
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.042534,
+       "ci95": [
+        0.02908,
+        0.058897
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": -0.001535,
+       "ci95": [
+        -0.004903,
+        0.001434
+       ],
+       "draws_below_zero": 1672,
+       "label": "does not survive"
+      },
+      "vn minus magmatch1": {
+       "difference": 0.000871,
+       "ci95": [
+        -0.002279,
+        0.003559
+       ],
+       "draws_below_zero": 526,
+       "label": "does not survive"
+      },
+      "vn minus magmatch2": {
+       "difference": 0.003563,
+       "ci95": [
+        0.000461,
+        0.006341
+       ],
+       "draws_below_zero": 21,
+       "label": "survives"
+      }
+     },
+     "split": {
+      "magnitude_share": 0.9277,
+      "ci95": [
+       0.755,
+       1.192
+      ],
+      "matched_mean_gain": 0.012393,
+      "matched_mean_gain_ci95": [
+       0.01034,
+       0.01455
+      ],
+      "label": "identity term not distinguishable from zero at best temperature"
+     },
+     "identity_sign": "not firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.9": {
+     "arms": {
+      "all": {
+       "gain": 0.347731,
+       "ci95": [
+        0.285213,
+        0.416601
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.351552,
+       "ci95": [
+        0.286849,
+        0.426631
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.014867,
+       "ci95": [
+        0.012302,
+        0.017344
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.019116,
+       "ci95": [
+        0.015402,
+        0.023446
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.057016,
+       "ci95": [
+        0.043865,
+        0.072426
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.014421,
+       "ci95": [
+        0.012039,
+        0.016934
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.012235,
+       "ci95": [
+        0.01013,
+        0.014242
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.009399,
+       "ci95": [
+        0.007596,
+        0.011427
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.002684,
+       "ci95": [
+        0.001855,
+        0.003548
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.004249,
+       "ci95": [
+        0.000629,
+        0.008646
+       ],
+       "draws_below_zero": 22,
+       "label": "survives"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.003821,
+       "ci95": [
+        -0.020917,
+        0.026038
+       ],
+       "draws_below_zero": 684,
+       "label": "still indistinguishable"
+      },
+      "C3_identity_at_nine": {
+       "difference": 0.002848,
+       "ci95": [
+        -9.4e-05,
+        0.005391
+       ],
+       "draws_below_zero": 56,
+       "label": "does not survive"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.012183,
+       "ci95": [
+        0.009896,
+        0.014341
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.042149,
+       "ci95": [
+        0.029533,
+        0.057472
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": 0.000446,
+       "ci95": [
+        -0.002756,
+        0.003287
+       ],
+       "draws_below_zero": 755,
+       "label": "does not survive"
+      },
+      "vn minus magmatch1": {
+       "difference": 0.002632,
+       "ci95": [
+        -0.000359,
+        0.00523
+       ],
+       "draws_below_zero": 82,
+       "label": "does not survive"
+      },
+      "vn minus magmatch2": {
+       "difference": 0.005468,
+       "ci95": [
+        0.002601,
+        0.008028
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      }
+     },
+     "split": {
+      "magnitude_share": 0.8084,
+      "ci95": [
+       0.667,
+       1.008
+      ],
+      "matched_mean_gain": 0.012018,
+      "matched_mean_gain_ci95": [
+       0.010079,
+       0.014052
+      ],
+      "label": "identity term not distinguishable from zero at best temperature"
+     },
+     "identity_sign": "not firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.95": {
+     "arms": {
+      "all": {
+       "gain": 0.352391,
+       "ci95": [
+        0.293229,
+        0.417294
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.359089,
+       "ci95": [
+        0.298091,
+        0.430143
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.01648,
+       "ci95": [
+        0.014122,
+        0.0187
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.020609,
+       "ci95": [
+        0.017088,
+        0.024655
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.058501,
+       "ci95": [
+        0.046148,
+        0.073011
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.014022,
+       "ci95": [
+        0.011781,
+        0.016411
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.012047,
+       "ci95": [
+        0.01003,
+        0.013961
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.009056,
+       "ci95": [
+        0.007326,
+        0.010974
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.002583,
+       "ci95": [
+        0.001792,
+        0.003408
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.004129,
+       "ci95": [
+        0.000772,
+        0.008293
+       ],
+       "draws_below_zero": 15,
+       "label": "survives"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.006698,
+       "ci95": [
+        -0.016752,
+        0.027796
+       ],
+       "draws_below_zero": 507,
+       "label": "still indistinguishable"
+      },
+      "C3_identity_at_nine": {
+       "difference": 0.004772,
+       "ci95": [
+        0.001988,
+        0.007203
+       ],
+       "draws_below_zero": 1,
+       "label": "survives"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.013897,
+       "ci95": [
+        0.011767,
+        0.015972
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.042021,
+       "ci95": [
+        0.030179,
+        0.056544
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": 0.002458,
+       "ci95": [
+        -0.000552,
+        0.00518
+       ],
+       "draws_below_zero": 111,
+       "label": "does not survive"
+      },
+      "vn minus magmatch1": {
+       "difference": 0.004433,
+       "ci95": [
+        0.001647,
+        0.006948
+       ],
+       "draws_below_zero": 2,
+       "label": "survives"
+      },
+      "vn minus magmatch2": {
+       "difference": 0.007424,
+       "ci95": [
+        0.004736,
+        0.009898
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      }
+     },
+     "split": {
+      "magnitude_share": 0.7104,
+      "ci95": [
+       0.593,
+       0.861
+      ],
+      "matched_mean_gain": 0.011708,
+      "matched_mean_gain_ci95": [
+       0.00985,
+       0.013635
+      ],
+      "label": "71.0% magnitude, 29.0% identity"
+     },
+     "identity_sign": "C3 survives, and 2 of the three per-draw intervals exclude zero with the as-evaluated sign",
+     "value_neurons_small_signal": "survives"
+    },
+    "1.0": {
+     "arms": {
+      "all": {
+       "gain": 0.358671,
+       "ci95": [
+        0.302579,
+        0.41979
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.368302,
+       "ci95": [
+        0.310191,
+        0.436014
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.018216,
+       "ci95": [
+        0.016034,
+        0.020327
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.022248,
+       "ci95": [
+        0.018907,
+        0.026055
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.060352,
+       "ci95": [
+        0.048841,
+        0.074055
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.013687,
+       "ci95": [
+        0.011552,
+        0.015956
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.011917,
+       "ci95": [
+        0.010003,
+        0.013753
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.008762,
+       "ci95": [
+        0.007118,
+        0.01057
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.002496,
+       "ci95": [
+        0.001736,
+        0.00328
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.004032,
+       "ci95": [
+        0.00087,
+        0.0079
+       ],
+       "draws_below_zero": 9,
+       "label": "survives"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.009631,
+       "ci95": [
+        -0.012316,
+        0.029748
+       ],
+       "draws_below_zero": 352,
+       "label": "still indistinguishable"
+      },
+      "C3_identity_at_nine": {
+       "difference": 0.006761,
+       "ci95": [
+        0.004146,
+        0.00911
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.01572,
+       "ci95": [
+        0.013748,
+        0.017658
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.042135,
+       "ci95": [
+        0.030958,
+        0.055938
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": 0.004529,
+       "ci95": [
+        0.001645,
+        0.00714
+       ],
+       "draws_below_zero": 1,
+       "label": "survives"
+      },
+      "vn minus magmatch1": {
+       "difference": 0.006299,
+       "ci95": [
+        0.003611,
+        0.008743
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch2": {
+       "difference": 0.009454,
+       "ci95": [
+        0.006892,
+        0.01186
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      }
+     },
+     "split": {
+      "magnitude_share": 0.6289,
+      "ci95": [
+       0.528,
+       0.749
+      ],
+      "matched_mean_gain": 0.011455,
+      "matched_mean_gain_ci95": [
+       0.009689,
+       0.0133
+      ],
+      "label": "62.9% magnitude, 37.1% identity"
+     },
+     "identity_sign": "firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    }
+   }
+  },
+  "helpful": {
+   "what": "the backbone and the coupled system both read at the one temperature; items of the read split resampled on the table's draws",
+   "the_cross_fitted_temperature_of_the_backbone": 0.8,
+   "where_the_interval_lies": {
+    "C1_plain_partner_at_nine": {
+     "above": [
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [
+      0.5,
+      0.55,
+      0.6,
+      0.65
+     ],
+     "below": []
+    },
+    "C2_plain_partner_at_full_width": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "C3_identity_at_nine": {
+     "above": [
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [
+      0.6,
+      0.65,
+      0.7
+     ],
+     "below": [
+      0.5,
+      0.55
+     ]
+    },
+    "C4_value_neurons_against_random": {
+     "above": [
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [
+      0.5,
+      0.55
+     ],
+     "below": []
+    },
+    "C5_width": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "vn minus magmatch": {
+     "above": [
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [
+      0.6,
+      0.65,
+      0.7,
+      0.75
+     ],
+     "below": [
+      0.5,
+      0.55
+     ]
+    },
+    "vn minus magmatch1": {
+     "above": [
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [
+      0.6,
+      0.65,
+      0.7
+     ],
+     "below": [
+      0.5,
+      0.55
+     ]
+    },
+    "vn minus magmatch2": {
+     "above": [
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [
+      0.55,
+      0.6,
+      0.65
+     ],
+     "below": [
+      0.5
+     ]
+    },
+    "all": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "allplain": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "vn": {
+     "above": [
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [
+      0.5,
+      0.55
+     ],
+     "below": []
+    },
+    "plainpartner": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "vn5": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "magmatch": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "magmatch1": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "magmatch2": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    },
+    "rand": {
+     "above": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      1.0
+     ],
+     "includes zero": [],
+     "below": []
+    }
+   },
+   "at": {
+    "0.5": {
+     "arms": {
+      "all": {
+       "gain": 0.079272,
+       "ci95": [
+        0.000858,
+        0.174855
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.100872,
+       "ci95": [
+        0.019304,
+        0.200128
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.001096,
+       "ci95": [
+        -0.00236,
+        0.004772
+       ],
+       "label": "not distinguishable from zero at best temperature"
+      },
+      "plainpartner": {
+       "gain": 0.003245,
+       "ci95": [
+        0.000147,
+        0.006653
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.010126,
+       "ci95": [
+        0.003506,
+        0.018094
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.007808,
+       "ci95": [
+        0.005414,
+        0.010763
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.006317,
+       "ci95": [
+        0.004507,
+        0.008307
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.004803,
+       "ci95": [
+        0.003076,
+        0.007039
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.001078,
+       "ci95": [
+        0.000444,
+        0.001863
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.002149,
+       "ci95": [
+        -0.000315,
+        0.00503
+       ],
+       "draws_below_zero": 97,
+       "label": "does not survive"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.021599,
+       "ci95": [
+        0.000279,
+        0.04638
+       ],
+       "draws_below_zero": 49,
+       "label": "survives"
+      },
+      "C3_identity_at_nine": {
+       "difference": -0.005213,
+       "ci95": [
+        -0.00938,
+        -0.001498
+       ],
+       "draws_below_zero": 1996,
+       "label": "reverses"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 1.8e-05,
+       "ci95": [
+        -0.003261,
+        0.003335
+       ],
+       "draws_below_zero": 944,
+       "label": "does not survive"
+      },
+      "C5_width": {
+       "difference": 0.00903,
+       "ci95": [
+        0.003367,
+        0.016387
+       ],
+       "draws_below_zero": 1,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": -0.006712,
+       "ci95": [
+        -0.011584,
+        -0.002548
+       ],
+       "draws_below_zero": 1998,
+       "label": "reverses"
+      },
+      "vn minus magmatch1": {
+       "difference": -0.005221,
+       "ci95": [
+        -0.009087,
+        -0.001636
+       ],
+       "draws_below_zero": 1996,
+       "label": "reverses"
+      },
+      "vn minus magmatch2": {
+       "difference": -0.003707,
+       "ci95": [
+        -0.007766,
+        -8e-06
+       ],
+       "draws_below_zero": 1950,
+       "label": "reverses"
+      }
+     },
+     "split": {
+      "magnitude_share": 5.7564,
+      "ci95": [
+       null,
+       null
+      ],
+      "matched_mean_gain": 0.00631,
+      "matched_mean_gain_ci95": [
+       0.004545,
+       0.008436
+      ],
+      "label": "undefined at best temperature"
+     },
+     "identity_sign": "not firm at best temperature",
+     "value_neurons_small_signal": "not distinguishable from zero at best temperature"
+    },
+    "0.55": {
+     "arms": {
+      "all": {
+       "gain": 0.088321,
+       "ci95": [
+        0.017636,
+        0.174729
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.107832,
+       "ci95": [
+        0.033997,
+        0.19806
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.002597,
+       "ci95": [
+        -0.000514,
+        0.005901
+       ],
+       "label": "not distinguishable from zero at best temperature"
+      },
+      "plainpartner": {
+       "gain": 0.004585,
+       "ci95": [
+        0.001823,
+        0.007606
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.012642,
+       "ci95": [
+        0.006653,
+        0.019848
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.007405,
+       "ci95": [
+        0.005238,
+        0.010068
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.006023,
+       "ci95": [
+        0.004374,
+        0.007854
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.00453,
+       "ci95": [
+        0.002974,
+        0.006534
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.000974,
+       "ci95": [
+        0.000401,
+        0.001684
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.001988,
+       "ci95": [
+        -0.000198,
+        0.004549
+       ],
+       "draws_below_zero": 74,
+       "label": "does not survive"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.019511,
+       "ci95": [
+        0.00025,
+        0.042051
+       ],
+       "draws_below_zero": 48,
+       "label": "survives"
+      },
+      "C3_identity_at_nine": {
+       "difference": -0.003389,
+       "ci95": [
+        -0.007092,
+        -7.9e-05
+       ],
+       "draws_below_zero": 1955,
+       "label": "reverses"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.001623,
+       "ci95": [
+        -0.001318,
+        0.004598
+       ],
+       "draws_below_zero": 248,
+       "label": "does not survive"
+      },
+      "C5_width": {
+       "difference": 0.010045,
+       "ci95": [
+        0.004926,
+        0.016679
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": -0.004808,
+       "ci95": [
+        -0.009181,
+        -0.001033
+       ],
+       "draws_below_zero": 1990,
+       "label": "reverses"
+      },
+      "vn minus magmatch1": {
+       "difference": -0.003426,
+       "ci95": [
+        -0.006893,
+        -0.000221
+       ],
+       "draws_below_zero": 1963,
+       "label": "reverses"
+      },
+      "vn minus magmatch2": {
+       "difference": -0.001933,
+       "ci95": [
+        -0.005583,
+        0.00132
+       ],
+       "draws_below_zero": 1729,
+       "label": "does not survive"
+      }
+     },
+     "split": {
+      "magnitude_share": 2.3049,
+      "ci95": [
+       1.015,
+       null
+      ],
+      "matched_mean_gain": 0.005986,
+      "matched_mean_gain_ci95": [
+       0.004388,
+       0.007891
+      ],
+      "label": "undefined at best temperature"
+     },
+     "identity_sign": "not firm at best temperature",
+     "value_neurons_small_signal": "not distinguishable from zero at best temperature"
+    },
+    "0.6": {
+     "arms": {
+      "all": {
+       "gain": 0.097928,
+       "ci95": [
+        0.033942,
+        0.176636
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.115709,
+       "ci95": [
+        0.048564,
+        0.198068
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.004071,
+       "ci95": [
+        0.001216,
+        0.007042
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.00593,
+       "ci95": [
+        0.003429,
+        0.008606
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.015216,
+       "ci95": [
+        0.009779,
+        0.02168
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.007103,
+       "ci95": [
+        0.005137,
+        0.009538
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.005813,
+       "ci95": [
+        0.004301,
+        0.007522
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.004322,
+       "ci95": [
+        0.002897,
+        0.006143
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.000889,
+       "ci95": [
+        0.000365,
+        0.001535
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.001859,
+       "ci95": [
+        -0.000124,
+        0.004154
+       ],
+       "draws_below_zero": 64,
+       "label": "does not survive"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.017781,
+       "ci95": [
+        0.000319,
+        0.038039
+       ],
+       "draws_below_zero": 47,
+       "label": "survives"
+      },
+      "C3_identity_at_nine": {
+       "difference": -0.001675,
+       "ci95": [
+        -0.005016,
+        0.001259
+       ],
+       "draws_below_zero": 1711,
+       "label": "does not survive"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.003182,
+       "ci95": [
+        0.000529,
+        0.005852
+       ],
+       "draws_below_zero": 20,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.011145,
+       "ci95": [
+        0.00651,
+        0.017138
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": -0.003032,
+       "ci95": [
+        -0.006972,
+        0.000342
+       ],
+       "draws_below_zero": 1906,
+       "label": "does not survive"
+      },
+      "vn minus magmatch1": {
+       "difference": -0.001742,
+       "ci95": [
+        -0.004873,
+        0.001131
+       ],
+       "draws_below_zero": 1728,
+       "label": "does not survive"
+      },
+      "vn minus magmatch2": {
+       "difference": -0.000251,
+       "ci95": [
+        -0.003532,
+        0.002717
+       ],
+       "draws_below_zero": 1081,
+       "label": "does not survive"
+      }
+     },
+     "split": {
+      "magnitude_share": 1.4115,
+      "ci95": [
+       0.807,
+       4.801
+      ],
+      "matched_mean_gain": 0.005746,
+      "matched_mean_gain_ci95": [
+       0.004284,
+       0.007474
+      ],
+      "label": "identity term not distinguishable from zero at best temperature"
+     },
+     "identity_sign": "not firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.65": {
+     "arms": {
+      "all": {
+       "gain": 0.1081,
+       "ci95": [
+        0.049308,
+        0.180219
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.124431,
+       "ci95": [
+        0.062506,
+        0.200526
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.005543,
+       "ci95": [
+        0.002926,
+        0.008263
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.007296,
+       "ci95": [
+        0.005031,
+        0.0097
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.01787,
+       "ci95": [
+        0.013014,
+        0.023784
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.00688,
+       "ci95": [
+        0.005061,
+        0.009108
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.005673,
+       "ci95": [
+        0.004265,
+        0.007267
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.004162,
+       "ci95": [
+        0.002842,
+        0.005826
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.000818,
+       "ci95": [
+        0.000336,
+        0.001411
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.001753,
+       "ci95": [
+        -3.4e-05,
+        0.003804
+       ],
+       "draws_below_zero": 54,
+       "label": "does not survive"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.016331,
+       "ci95": [
+        0.000429,
+        0.034687
+       ],
+       "draws_below_zero": 42,
+       "label": "survives"
+      },
+      "C3_identity_at_nine": {
+       "difference": -2.9e-05,
+       "ci95": [
+        -0.003074,
+        0.002607
+       ],
+       "draws_below_zero": 974,
+       "label": "does not survive"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.004724,
+       "ci95": [
+        0.002325,
+        0.007134
+       ],
+       "draws_below_zero": 1,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.012327,
+       "ci95": [
+        0.008121,
+        0.017803
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": -0.001337,
+       "ci95": [
+        -0.004877,
+        0.001798
+       ],
+       "draws_below_zero": 1543,
+       "label": "does not survive"
+      },
+      "vn minus magmatch1": {
+       "difference": -0.000131,
+       "ci95": [
+        -0.002912,
+        0.002433
+       ],
+       "draws_below_zero": 988,
+       "label": "does not survive"
+      },
+      "vn minus magmatch2": {
+       "difference": 0.00138,
+       "ci95": [
+        -0.001581,
+        0.004062
+       ],
+       "draws_below_zero": 305,
+       "label": "does not survive"
+      }
+     },
+     "split": {
+      "magnitude_share": 1.0053,
+      "ci95": [
+       0.657,
+       1.932
+      ],
+      "matched_mean_gain": 0.005572,
+      "matched_mean_gain_ci95": [
+       0.004217,
+       0.007164
+      ],
+      "label": "identity term not distinguishable from zero at best temperature"
+     },
+     "identity_sign": "not firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.7": {
+     "arms": {
+      "all": {
+       "gain": 0.118853,
+       "ci95": [
+        0.064359,
+        0.185197
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.133959,
+       "ci95": [
+        0.07643,
+        0.204974
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.007031,
+       "ci95": [
+        0.004639,
+        0.009532
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.008697,
+       "ci95": [
+        0.00666,
+        0.010872
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.020623,
+       "ci95": [
+        0.016132,
+        0.026026
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.006719,
+       "ci95": [
+        0.005048,
+        0.00879
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.005591,
+       "ci95": [
+        0.004257,
+        0.007086
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.004042,
+       "ci95": [
+        0.002817,
+        0.005565
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.000758,
+       "ci95": [
+        0.000312,
+        0.001307
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.001665,
+       "ci95": [
+        5.9e-05,
+        0.003509
+       ],
+       "draws_below_zero": 45,
+       "label": "survives"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.015106,
+       "ci95": [
+        0.000724,
+        0.032342
+       ],
+       "draws_below_zero": 42,
+       "label": "survives"
+      },
+      "C3_identity_at_nine": {
+       "difference": 0.001581,
+       "ci95": [
+        -0.001183,
+        0.004024
+       ],
+       "draws_below_zero": 205,
+       "label": "does not survive"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.006273,
+       "ci95": [
+        0.00408,
+        0.008466
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.013591,
+       "ci95": [
+        0.009687,
+        0.018581
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": 0.000312,
+       "ci95": [
+        -0.002918,
+        0.003201
+       ],
+       "draws_below_zero": 809,
+       "label": "does not survive"
+      },
+      "vn minus magmatch1": {
+       "difference": 0.001441,
+       "ci95": [
+        -0.001059,
+        0.003773
+       ],
+       "draws_below_zero": 233,
+       "label": "does not survive"
+      },
+      "vn minus magmatch2": {
+       "difference": 0.00299,
+       "ci95": [
+        0.000314,
+        0.00541
+       ],
+       "draws_below_zero": 31,
+       "label": "survives"
+      }
+     },
+     "split": {
+      "magnitude_share": 0.7752,
+      "ci95": [
+       0.544,
+       1.241
+      ],
+      "matched_mean_gain": 0.005451,
+      "matched_mean_gain_ci95": [
+       0.004188,
+       0.006924
+      ],
+      "label": "identity term not distinguishable from zero at best temperature"
+     },
+     "identity_sign": "not firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.75": {
+     "arms": {
+      "all": {
+       "gain": 0.130212,
+       "ci95": [
+        0.079616,
+        0.191151
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.144279,
+       "ci95": [
+        0.089991,
+        0.210815
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.008554,
+       "ci95": [
+        0.006404,
+        0.01084
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.010145,
+       "ci95": [
+        0.008279,
+        0.012127
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.023493,
+       "ci95": [
+        0.019444,
+        0.028474
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.006612,
+       "ci95": [
+        0.005013,
+        0.008544
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.005557,
+       "ci95": [
+        0.004297,
+        0.006965
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.003954,
+       "ci95": [
+        0.002809,
+        0.00535
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.000707,
+       "ci95": [
+        0.000289,
+        0.001218
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.001591,
+       "ci95": [
+        0.000147,
+        0.003268
+       ],
+       "draws_below_zero": 29,
+       "label": "survives"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.014067,
+       "ci95": [
+        0.00103,
+        0.030164
+       ],
+       "draws_below_zero": 36,
+       "label": "survives"
+      },
+      "C3_identity_at_nine": {
+       "difference": 0.00318,
+       "ci95": [
+        0.000628,
+        0.005413
+       ],
+       "draws_below_zero": 18,
+       "label": "survives"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.007847,
+       "ci95": [
+        0.005842,
+        0.009843
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.014939,
+       "ci95": [
+        0.011346,
+        0.019533
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": 0.001942,
+       "ci95": [
+        -0.001006,
+        0.004599
+       ],
+       "draws_below_zero": 176,
+       "label": "does not survive"
+      },
+      "vn minus magmatch1": {
+       "difference": 0.002997,
+       "ci95": [
+        0.000713,
+        0.005122
+       ],
+       "draws_below_zero": 19,
+       "label": "survives"
+      },
+      "vn minus magmatch2": {
+       "difference": 0.0046,
+       "ci95": [
+        0.002179,
+        0.006804
+       ],
+       "draws_below_zero": 1,
+       "label": "survives"
+      }
+     },
+     "split": {
+      "magnitude_share": 0.6283,
+      "ci95": [
+       0.462,
+       0.903
+      ],
+      "matched_mean_gain": 0.005374,
+      "matched_mean_gain_ci95": [
+       0.004186,
+       0.006746
+      ],
+      "label": "62.8% magnitude, 37.2% identity"
+     },
+     "identity_sign": "C3 survives, and 2 of the three per-draw intervals exclude zero with the as-evaluated sign",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.8": {
+     "arms": {
+      "all": {
+       "gain": 0.142206,
+       "ci95": [
+        0.095357,
+        0.198717
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.155392,
+       "ci95": [
+        0.103945,
+        0.217262
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.010125,
+       "ci95": [
+        0.008144,
+        0.012216
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.011652,
+       "ci95": [
+        0.009909,
+        0.013519
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.026497,
+       "ci95": [
+        0.022769,
+        0.031138
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.006549,
+       "ci95": [
+        0.005071,
+        0.008356
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.005567,
+       "ci95": [
+        0.004359,
+        0.006916
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.003893,
+       "ci95": [
+        0.002824,
+        0.00519
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.000663,
+       "ci95": [
+        0.000272,
+        0.001143
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.001527,
+       "ci95": [
+        0.00023,
+        0.003012
+       ],
+       "draws_below_zero": 17,
+       "label": "survives"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.013186,
+       "ci95": [
+        0.001043,
+        0.028144
+       ],
+       "draws_below_zero": 30,
+       "label": "survives"
+      },
+      "C3_identity_at_nine": {
+       "difference": 0.004788,
+       "ci95": [
+        0.002396,
+        0.006877
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.009461,
+       "ci95": [
+        0.007581,
+        0.011319
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.016372,
+       "ci95": [
+        0.013055,
+        0.020612
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": 0.003575,
+       "ci95": [
+        0.000847,
+        0.006003
+       ],
+       "draws_below_zero": 18,
+       "label": "survives"
+      },
+      "vn minus magmatch1": {
+       "difference": 0.004558,
+       "ci95": [
+        0.0024,
+        0.006535
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch2": {
+       "difference": 0.006232,
+       "ci95": [
+        0.003958,
+        0.008273
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      }
+     },
+     "split": {
+      "magnitude_share": 0.5271,
+      "ci95": [
+       0.402,
+       0.714
+      ],
+      "matched_mean_gain": 0.005336,
+      "matched_mean_gain_ci95": [
+       0.004214,
+       0.006625
+      ],
+      "label": "52.7% magnitude, 47.3% identity"
+     },
+     "identity_sign": "firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.85": {
+     "arms": {
+      "all": {
+       "gain": 0.154872,
+       "ci95": [
+        0.111346,
+        0.207696
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.167311,
+       "ci95": [
+        0.119061,
+        0.22511
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.011757,
+       "ci95": [
+        0.009899,
+        0.013658
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.013229,
+       "ci95": [
+        0.011558,
+        0.014968
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.029653,
+       "ci95": [
+        0.02613,
+        0.033963
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.006527,
+       "ci95": [
+        0.005129,
+        0.008229
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.005615,
+       "ci95": [
+        0.004461,
+        0.006918
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.003856,
+       "ci95": [
+        0.002867,
+        0.005055
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.000625,
+       "ci95": [
+        0.000259,
+        0.001081
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.001472,
+       "ci95": [
+        0.000285,
+        0.002827
+       ],
+       "draws_below_zero": 10,
+       "label": "survives"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.012439,
+       "ci95": [
+        0.001151,
+        0.026311
+       ],
+       "draws_below_zero": 28,
+       "label": "survives"
+      },
+      "C3_identity_at_nine": {
+       "difference": 0.006424,
+       "ci95": [
+        0.004234,
+        0.008326
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.011132,
+       "ci95": [
+        0.009374,
+        0.012866
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.017896,
+       "ci95": [
+        0.014806,
+        0.021814
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": 0.00523,
+       "ci95": [
+        0.002691,
+        0.007498
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch1": {
+       "difference": 0.006142,
+       "ci95": [
+        0.004131,
+        0.007934
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch2": {
+       "difference": 0.007901,
+       "ci95": [
+        0.005781,
+        0.009823
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      }
+     },
+     "split": {
+      "magnitude_share": 0.4536,
+      "ci95": [
+       0.355,
+       0.589
+      ],
+      "matched_mean_gain": 0.005333,
+      "matched_mean_gain_ci95": [
+       0.004259,
+       0.006529
+      ],
+      "label": "45.4% magnitude, 54.6% identity"
+     },
+     "identity_sign": "firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.9": {
+     "arms": {
+      "all": {
+       "gain": 0.168253,
+       "ci95": [
+        0.126723,
+        0.217866
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.180065,
+       "ci95": [
+        0.134713,
+        0.235081
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.013464,
+       "ci95": [
+        0.011708,
+        0.015213
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.014886,
+       "ci95": [
+        0.013317,
+        0.01649
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.03298,
+       "ci95": [
+        0.029579,
+        0.036957
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.00654,
+       "ci95": [
+        0.005204,
+        0.008148
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.005699,
+       "ci95": [
+        0.004592,
+        0.006942
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.003841,
+       "ci95": [
+        0.002921,
+        0.004954
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.000592,
+       "ci95": [
+        0.000245,
+        0.001023
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.001422,
+       "ci95": [
+        0.000335,
+        0.002635
+       ],
+       "draws_below_zero": 8,
+       "label": "survives"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.011812,
+       "ci95": [
+        0.001179,
+        0.025088
+       ],
+       "draws_below_zero": 25,
+       "label": "survives"
+      },
+      "C3_identity_at_nine": {
+       "difference": 0.008104,
+       "ci95": [
+        0.006068,
+        0.00995
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.012872,
+       "ci95": [
+        0.011214,
+        0.014466
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.019516,
+       "ci95": [
+        0.016659,
+        0.023218
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": 0.006924,
+       "ci95": [
+        0.004509,
+        0.009047
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch1": {
+       "difference": 0.007765,
+       "ci95": [
+        0.005863,
+        0.009476
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch2": {
+       "difference": 0.009623,
+       "ci95": [
+        0.007641,
+        0.011447
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      }
+     },
+     "split": {
+      "magnitude_share": 0.3981,
+      "ci95": [
+       0.318,
+       0.499
+      ],
+      "matched_mean_gain": 0.00536,
+      "matched_mean_gain_ci95": [
+       0.004331,
+       0.006511
+      ],
+      "label": "39.8% magnitude, 60.2% identity"
+     },
+     "identity_sign": "firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "0.95": {
+     "arms": {
+      "all": {
+       "gain": 0.182396,
+       "ci95": [
+        0.143238,
+        0.22932
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.193688,
+       "ci95": [
+        0.150773,
+        0.246328
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.015258,
+       "ci95": [
+        0.01362,
+        0.016881
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.016635,
+       "ci95": [
+        0.015145,
+        0.018169
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.036497,
+       "ci95": [
+        0.033247,
+        0.040192
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.006587,
+       "ci95": [
+        0.005334,
+        0.008107
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.005815,
+       "ci95": [
+        0.004753,
+        0.007
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.003846,
+       "ci95": [
+        0.002979,
+        0.004889
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.000563,
+       "ci95": [
+        0.000233,
+        0.000981
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.001377,
+       "ci95": [
+        0.000382,
+        0.002478
+       ],
+       "draws_below_zero": 4,
+       "label": "survives"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.011291,
+       "ci95": [
+        0.001422,
+        0.023784
+       ],
+       "draws_below_zero": 23,
+       "label": "survives"
+      },
+      "C3_identity_at_nine": {
+       "difference": 0.009842,
+       "ci95": [
+        0.007891,
+        0.011593
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.014695,
+       "ci95": [
+        0.01314,
+        0.016181
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.021239,
+       "ci95": [
+        0.018567,
+        0.024747
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": 0.008672,
+       "ci95": [
+        0.006365,
+        0.010694
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch1": {
+       "difference": 0.009443,
+       "ci95": [
+        0.007642,
+        0.011081
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch2": {
+       "difference": 0.011412,
+       "ci95": [
+        0.009546,
+        0.013141
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      }
+     },
+     "split": {
+      "magnitude_share": 0.355,
+      "ci95": [
+       0.288,
+       0.438
+      ],
+      "matched_mean_gain": 0.005416,
+      "matched_mean_gain_ci95": [
+       0.004427,
+       0.00651
+      ],
+      "label": "35.5% magnitude, 64.5% identity"
+     },
+     "identity_sign": "firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    },
+    "1.0": {
+     "arms": {
+      "all": {
+       "gain": 0.197357,
+       "ci95": [
+        0.160391,
+        0.241162
+       ],
+       "label": "keeps a gain"
+      },
+      "allplain": {
+       "gain": 0.208225,
+       "ci95": [
+        0.167002,
+        0.258614
+       ],
+       "label": "keeps a gain"
+      },
+      "vn": {
+       "gain": 0.017154,
+       "ci95": [
+        0.015609,
+        0.01866
+       ],
+       "label": "keeps a gain"
+      },
+      "plainpartner": {
+       "gain": 0.01849,
+       "ci95": [
+        0.016997,
+        0.019929
+       ],
+       "label": "keeps a gain"
+      },
+      "vn5": {
+       "gain": 0.040226,
+       "ci95": [
+        0.037062,
+        0.043749
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch": {
+       "gain": 0.006665,
+       "ci95": [
+        0.005457,
+        0.008111
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch1": {
+       "gain": 0.005964,
+       "ci95": [
+        0.004934,
+        0.007095
+       ],
+       "label": "keeps a gain"
+      },
+      "magmatch2": {
+       "gain": 0.00387,
+       "ci95": [
+        0.003044,
+        0.004862
+       ],
+       "label": "keeps a gain"
+      },
+      "rand": {
+       "gain": 0.000537,
+       "ci95": [
+        0.000222,
+        0.000939
+       ],
+       "label": "keeps a gain"
+      }
+     },
+     "contrasts": {
+      "C1_plain_partner_at_nine": {
+       "difference": 0.001336,
+       "ci95": [
+        0.000427,
+        0.002347
+       ],
+       "draws_below_zero": 2,
+       "label": "survives"
+      },
+      "C2_plain_partner_at_full_width": {
+       "difference": 0.010868,
+       "ci95": [
+        0.001487,
+        0.022839
+       ],
+       "draws_below_zero": 23,
+       "label": "survives"
+      },
+      "C3_identity_at_nine": {
+       "difference": 0.011654,
+       "ci95": [
+        0.009808,
+        0.013336
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C4_value_neurons_against_random": {
+       "difference": 0.016616,
+       "ci95": [
+        0.015123,
+        0.018064
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "C5_width": {
+       "difference": 0.023072,
+       "ci95": [
+        0.020512,
+        0.026401
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch": {
+       "difference": 0.010489,
+       "ci95": [
+        0.008304,
+        0.012434
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch1": {
+       "difference": 0.01119,
+       "ci95": [
+        0.009439,
+        0.012764
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      },
+      "vn minus magmatch2": {
+       "difference": 0.013284,
+       "ci95": [
+        0.011512,
+        0.01498
+       ],
+       "draws_below_zero": 0,
+       "label": "survives"
+      }
+     },
+     "split": {
+      "magnitude_share": 0.3206,
+      "ci95": [
+       0.263,
+       0.39
+      ],
+      "matched_mean_gain": 0.0055,
+      "matched_mean_gain_ci95": [
+       0.004557,
+       0.006533
+      ],
+      "label": "32.1% magnitude, 67.9% identity"
+     },
+     "identity_sign": "firm at best temperature",
+     "value_neurons_small_signal": "survives"
+    }
+   }
+  }
+ },
+ "in_split": {
+  "test": {
+   "what": "reported beside the cross-fit by the pre-registration, which reads nothing from it; the temperatures are chosen on the items they are scored on, in each draw again, with no correction for that choice",
+   "arms": {
+    "all": {
+     "gain": 0.343619,
+     "ci95": [
+      0.271084,
+      0.418325
+     ],
+     "label": "keeps a gain"
+    },
+    "allplain": {
+     "gain": 0.344514,
+     "ci95": [
+      0.269739,
+      0.4261
+     ],
+     "label": "keeps a gain"
+    },
+    "vn": {
+     "gain": 0.012133,
+     "ci95": [
+      0.009289,
+      0.015504
+     ],
+     "label": "keeps a gain"
+    },
+    "plainpartner": {
+     "gain": 0.016529,
+     "ci95": [
+      0.011966,
+      0.022461
+     ],
+     "label": "keeps a gain"
+    },
+    "vn5": {
+     "gain": 0.055143,
+     "ci95": [
+      0.040334,
+      0.072425
+     ],
+     "label": "keeps a gain"
+    },
+    "magmatch": {
+     "gain": 0.015455,
+     "ci95": [
+      0.012937,
+      0.017729
+     ],
+     "label": "keeps a gain"
+    },
+    "magmatch1": {
+     "gain": 0.012815,
+     "ci95": [
+      0.010578,
+      0.014755
+     ],
+     "label": "keeps a gain"
+    },
+    "magmatch2": {
+     "gain": 0.010257,
+     "ci95": [
+      0.008312,
+      0.012075
+     ],
+     "label": "keeps a gain"
+    },
+    "rand": {
+     "gain": 0.002932,
+     "ci95": [
+      0.002004,
+      0.003822
+     ],
+     "label": "keeps a gain"
+    }
+   },
+   "contrasts": {
+    "C1_plain_partner_at_nine": {
+     "difference": 0.004396,
+     "ci95": [
+      0.00032,
+      0.009167
+     ],
+     "draws_below_zero": 35,
+     "label": "survives"
+    },
+    "C2_plain_partner_at_full_width": {
+     "difference": 0.000895,
+     "ci95": [
+      -0.024415,
+      0.024541
+     ],
+     "draws_below_zero": 920,
+     "label": "still indistinguishable"
+    },
+    "C3_identity_at_nine": {
+     "difference": -0.000709,
+     "ci95": [
+      -0.002893,
+      0.002131
+     ],
+     "draws_below_zero": 1142,
+     "label": "does not survive"
+    },
+    "C4_value_neurons_against_random": {
+     "difference": 0.009201,
+     "ci95": [
+      0.006746,
+      0.012249
+     ],
+     "draws_below_zero": 0,
+     "label": "survives"
+    },
+    "C5_width": {
+     "difference": 0.043009,
+     "ci95": [
+      0.028853,
+      0.058894
+     ],
+     "draws_below_zero": 0,
+     "label": "survives"
+    },
+    "vn minus magmatch": {
+     "difference": -0.003321,
+     "ci95": [
+      -0.005585,
+      -0.000291
+     ],
+     "draws_below_zero": 1969,
+     "label": "reverses"
+    },
+    "vn minus magmatch1": {
+     "difference": -0.000682,
+     "ci95": [
+      -0.003073,
+      0.002251
+     ],
+     "draws_below_zero": 1100,
+     "label": "does not survive"
+    },
+    "vn minus magmatch2": {
+     "difference": 0.001876,
+     "ci95": [
+      -0.000362,
+      0.004905
+     ],
+     "draws_below_zero": 89,
+     "label": "does not survive"
+    }
+   },
+   "split": {
+    "magnitude_share": 1.0584,
+    "ci95": [
+     0.856,
+     1.295
+    ],
+    "matched_mean_gain": 0.012842,
+    "matched_mean_gain_ci95": [
+     0.010763,
+     0.014696
+    ],
+    "label": "identity term not distinguishable from zero at best temperature"
+   },
+   "identity_sign": "not firm at best temperature",
+   "value_neurons_small_signal": "survives"
+  },
+  "helpful": {
+   "what": "reported beside the cross-fit by the pre-registration, which reads nothing from it; the temperatures are chosen on the items they are scored on, in each draw again, with no correction for that choice",
+   "arms": {
+    "all": {
+     "gain": 0.117716,
+     "ci95": [
+      0.047091,
+      0.191132
+     ],
+     "label": "keeps a gain"
+    },
+    "allplain": {
+     "gain": 0.131783,
+     "ci95": [
+      0.058582,
+      0.208723
+     ],
+     "label": "keeps a gain"
+    },
+    "vn": {
+     "gain": 0.005543,
+     "ci95": [
+      0.002063,
+      0.008643
+     ],
+     "label": "keeps a gain"
+    },
+    "plainpartner": {
+     "gain": 0.007296,
+     "ci95": [
+      0.003619,
+      0.010687
+     ],
+     "label": "keeps a gain"
+    },
+    "vn5": {
+     "gain": 0.01787,
+     "ci95": [
+      0.010785,
+      0.025827
+     ],
+     "label": "keeps a gain"
+    },
+    "magmatch": {
+     "gain": 0.00688,
+     "ci95": [
+      0.005151,
+      0.008845
+     ],
+     "label": "keeps a gain"
+    },
+    "magmatch1": {
+     "gain": 0.005673,
+     "ci95": [
+      0.004287,
+      0.00722
+     ],
+     "label": "keeps a gain"
+    },
+    "magmatch2": {
+     "gain": 0.004162,
+     "ci95": [
+      0.002902,
+      0.00561
+     ],
+     "label": "keeps a gain"
+    },
+    "rand": {
+     "gain": 0.000818,
+     "ci95": [
+      0.000375,
+      0.001403
+     ],
+     "label": "keeps a gain"
+    }
+   },
+   "contrasts": {
+    "C1_plain_partner_at_nine": {
+     "difference": 0.001753,
+     "ci95": [
+      -5.1e-05,
+      0.003548
+     ],
+     "draws_below_zero": 58,
+     "label": "does not survive"
+    },
+    "C2_plain_partner_at_full_width": {
+     "difference": 0.014067,
+     "ci95": [
+      0.001136,
+      0.028742
+     ],
+     "draws_below_zero": 35,
+     "label": "survives"
+    },
+    "C3_identity_at_nine": {
+     "difference": -2.9e-05,
+     "ci95": [
+      -0.003002,
+      0.002527
+     ],
+     "draws_below_zero": 1081,
+     "label": "does not survive"
+    },
+    "C4_value_neurons_against_random": {
+     "difference": 0.004724,
+     "ci95": [
+      0.00147,
+      0.007491
+     ],
+     "draws_below_zero": 3,
+     "label": "survives"
+    },
+    "C5_width": {
+     "difference": 0.012327,
+     "ci95": [
+      0.007297,
+      0.01869
+     ],
+     "draws_below_zero": 0,
+     "label": "survives"
+    },
+    "vn minus magmatch": {
+     "difference": -0.001337,
+     "ci95": [
+      -0.004447,
+      0.001541
+     ],
+     "draws_below_zero": 1673,
+     "label": "does not survive"
+    },
+    "vn minus magmatch1": {
+     "difference": -0.000131,
+     "ci95": [
+      -0.00363,
+      0.002797
+     ],
+     "draws_below_zero": 1097,
+     "label": "does not survive"
+    },
+    "vn minus magmatch2": {
+     "difference": 0.00138,
+     "ci95": [
+      -0.001413,
+      0.00395
+     ],
+     "draws_below_zero": 351,
+     "label": "does not survive"
+    }
+   },
+   "split": {
+    "magnitude_share": 1.0053,
+    "ci95": [
+     0.685,
+     2.36
+    ],
+    "matched_mean_gain": 0.005572,
+    "matched_mean_gain_ci95": [
+     0.004303,
+     0.006944
+    ],
+    "label": "identity term not distinguishable from zero at best temperature"
+   },
+   "identity_sign": "not firm at best temperature",
+   "value_neurons_small_signal": "survives"
+  }
+ },
+ "curves": {
+  "test": {
+   "curves": {
+    "backbone": {
+     "grid_temperature": 0.8,
+     "grid_minimum": 0.908867,
+     "vertex_temperature": 0.81409,
+     "vertex_value": 0.908644,
+     "grid_minimum_above_the_vertex": 0.000223,
+     "one_step_down": 0.004393,
+     "one_step_up": 0.001226
+    },
+    "all": {
+     "grid_temperature": 0.8,
+     "grid_minimum": 0.565248,
+     "vertex_temperature": 0.82389,
+     "vertex_value": 0.564836,
+     "grid_minimum_above_the_vertex": 0.000412,
+     "one_step_down": 0.003532,
+     "one_step_up": 8e-05
+    },
+    "allplain": {
+     "grid_temperature": 0.85,
+     "grid_minimum": 0.564353,
+     "vertex_temperature": 0.86714,
+     "vertex_value": 0.56416,
+     "grid_minimum_above_the_vertex": 0.000193,
+     "one_step_down": 0.002762,
+     "one_step_up": 0.000515
+    },
+    "vn": {
+     "grid_temperature": 0.85,
+     "grid_minimum": 0.896734,
+     "vertex_temperature": 0.82691,
+     "vertex_value": 0.8962,
+     "grid_minimum_above_the_vertex": 0.000534,
+     "one_step_down": 0.000192,
+     "one_step_up": 0.004818
+    },
+    "plainpartner": {
+     "grid_temperature": 0.85,
+     "grid_minimum": 0.892338,
+     "vertex_temperature": 0.82513,
+     "vertex_value": 0.891722,
+     "grid_minimum_above_the_vertex": 0.000616,
+     "one_step_down": 1.3e-05,
+     "one_step_up": 0.004965
+    },
+    "vn5": {
+     "grid_temperature": 0.8,
+     "grid_minimum": 0.853725,
+     "vertex_temperature": 0.82046,
+     "vertex_value": 0.853287,
+     "grid_minimum_above_the_vertex": 0.000438,
+     "one_step_down": 0.004754,
+     "one_step_up": 0.000475
+    },
+    "magmatch": {
+     "grid_temperature": 0.8,
+     "grid_minimum": 0.893413,
+     "vertex_temperature": 0.80881,
+     "vertex_value": 0.893327,
+     "grid_minimum_above_the_vertex": 8.6e-05,
+     "one_step_down": 0.003731,
+     "one_step_up": 0.001786
+    },
+    "magmatch1": {
+     "grid_temperature": 0.8,
+     "grid_minimum": 0.896052,
+     "vertex_temperature": 0.81098,
+     "vertex_value": 0.895919,
+     "grid_minimum_above_the_vertex": 0.000133,
+     "one_step_down": 0.003983,
+     "one_step_up": 0.001553
+    },
+    "magmatch2": {
+     "grid_temperature": 0.8,
+     "grid_minimum": 0.89861,
+     "vertex_temperature": 0.80979,
+     "vertex_value": 0.898504,
+     "grid_minimum_above_the_vertex": 0.000106,
+     "one_step_down": 0.003858,
+     "one_step_up": 0.001687
+    },
+    "rand": {
+     "grid_temperature": 0.8,
+     "grid_minimum": 0.905935,
+     "vertex_temperature": 0.81287,
+     "vertex_value": 0.90575,
+     "grid_minimum_above_the_vertex": 0.000186,
+     "one_step_down": 0.004242,
+     "one_step_up": 0.001358
+    }
+   },
+   "largest_grid_minimum_above_its_vertex": 0.000616,
+   "gain_from_the_vertices": {
+    "all": 0.343808,
+    "allplain": 0.344484,
+    "vn": 0.012444,
+    "plainpartner": 0.016922,
+    "vn5": 0.055357,
+    "magmatch": 0.015317,
+    "magmatch1": 0.012725,
+    "magmatch2": 0.01014,
+    "rand": 0.002894
+   },
+   "the_cross_fit_costs": {
+    "backbone": 0.03331,
+    "all": 0.00353,
+    "allplain": 0.00917,
+    "vn": 0.03736,
+    "plainpartner": 0.03638,
+    "vn5": 0.03307,
+    "magmatch": 0.03093,
+    "magmatch1": 0.03177,
+    "magmatch2": 0.03141,
+    "rand": 0.03278
+   },
+   "one_step_of_the_grid_at_the_cross_fitted_temperature": {
+    "backbone": {
+     "down": 0.027007,
+     "up": -0.018159
+    },
+    "all": {
+     "down": 0.007619,
+     "up": -0.003532
+    },
+    "allplain": {
+     "down": 0.010557,
+     "up": -0.006403
+    },
+    "vn": {
+     "down": 0.028203,
+     "up": -0.019391
+    },
+    "plainpartner": {
+     "down": 0.027813,
+     "up": -0.019071
+    },
+    "vn5": {
+     "down": 0.025917,
+     "up": -0.017619
+    },
+    "magmatch": {
+     "down": 0.025886,
+     "up": -0.017223
+    },
+    "magmatch1": {
+     "down": 0.026238,
+     "up": -0.017532
+    },
+    "magmatch2": {
+     "down": 0.026137,
+     "up": -0.017424
+    },
+    "rand": {
+     "down": 0.02677,
+     "up": -0.017956
+    }
+   }
+  },
+  "helpful": {
+   "curves": {
+    "backbone": {
+     "grid_temperature": 0.65,
+     "grid_minimum": 0.673153,
+     "vertex_temperature": 0.64154,
+     "vertex_value": 0.673072,
+     "grid_minimum_above_the_vertex": 8.1e-05,
+     "one_step_down": 0.001879,
+     "one_step_up": 0.0038
+    },
+    "all": {
+     "grid_temperature": 0.75,
+     "grid_minimum": 0.555437,
+     "vertex_temperature": 0.76089,
+     "vertex_value": 0.555349,
+     "grid_minimum_above_the_vertex": 8.8e-05,
+     "one_step_down": 0.002663,
+     "one_step_up": 0.001047
+    },
+    "allplain": {
+     "grid_temperature": 0.75,
+     "grid_minimum": 0.54137,
+     "vertex_temperature": 0.74786,
+     "vertex_value": 0.541366,
+     "grid_minimum_above_the_vertex": 3e-06,
+     "one_step_down": 0.001624,
+     "one_step_up": 0.001928
+    },
+    "vn": {
+     "grid_temperature": 0.65,
+     "grid_minimum": 0.667611,
+     "vertex_temperature": 0.65459,
+     "vertex_value": 0.667587,
+     "grid_minimum_above_the_vertex": 2.4e-05,
+     "one_step_down": 0.003351,
+     "one_step_up": 0.002311
+    },
+    "plainpartner": {
+     "grid_temperature": 0.65,
+     "grid_minimum": 0.665858,
+     "vertex_temperature": 0.65375,
+     "vertex_value": 0.665842,
+     "grid_minimum_above_the_vertex": 1.6e-05,
+     "one_step_down": 0.003245,
+     "one_step_up": 0.002399
+    },
+    "vn5": {
+     "grid_temperature": 0.65,
+     "grid_minimum": 0.655283,
+     "vertex_temperature": 0.66562,
+     "vertex_value": 0.655011,
+     "grid_minimum_above_the_vertex": 0.000272,
+     "one_step_down": 0.004533,
+     "one_step_up": 0.001047
+    },
+    "magmatch": {
+     "grid_temperature": 0.65,
+     "grid_minimum": 0.666273,
+     "vertex_temperature": 0.63974,
+     "vertex_value": 0.666155,
+     "grid_minimum_above_the_vertex": 0.000118,
+     "one_step_down": 0.001655,
+     "one_step_up": 0.00396
+    },
+    "magmatch1": {
+     "grid_temperature": 0.65,
+     "grid_minimum": 0.66748,
+     "vertex_temperature": 0.64047,
+     "vertex_value": 0.667378,
+     "grid_minimum_above_the_vertex": 0.000102,
+     "one_step_down": 0.001739,
+     "one_step_up": 0.003883
+    },
+    "magmatch2": {
+     "grid_temperature": 0.65,
+     "grid_minimum": 0.668991,
+     "vertex_temperature": 0.64024,
+     "vertex_value": 0.668884,
+     "grid_minimum_above_the_vertex": 0.000107,
+     "one_step_down": 0.001719,
+     "one_step_up": 0.00392
+    },
+    "rand": {
+     "grid_temperature": 0.65,
+     "grid_minimum": 0.672335,
+     "vertex_temperature": 0.64095,
+     "vertex_value": 0.672242,
+     "grid_minimum_above_the_vertex": 9.3e-05,
+     "one_step_down": 0.001808,
+     "one_step_up": 0.00386
+    }
+   },
+   "largest_grid_minimum_above_its_vertex": 0.000272,
+   "gain_from_the_vertices": {
+    "all": 0.117723,
+    "allplain": 0.131706,
+    "vn": 0.005485,
+    "plainpartner": 0.00723,
+    "vn5": 0.018061,
+    "magmatch": 0.006917,
+    "magmatch1": 0.005694,
+    "magmatch2": 0.004188,
+    "rand": 0.00083
+   },
+   "the_cross_fit_costs": {
+    "backbone": 0.02554,
+    "all": 0.00104,
+    "allplain": 0.00702,
+    "vn": 0.03633,
+    "plainpartner": 0.03661,
+    "vn5": 0.01691,
+    "magmatch": 0.02587,
+    "magmatch1": 0.02564,
+    "magmatch2": 0.02581,
+    "rand": 0.0257
+   },
+   "one_step_of_the_grid_at_the_cross_fitted_temperature": {
+    "backbone": {
+     "down": -0.013041,
+     "up": 0.017007
+    },
+    "all": {
+     "down": -0.001047,
+     "up": 0.004341
+    },
+    "allplain": {
+     "down": -0.005087,
+     "up": 0.00797
+    },
+    "vn": {
+     "down": -0.015375,
+     "up": 0.019017
+    },
+    "plainpartner": {
+     "down": -0.015431,
+     "up": 0.019066
+    },
+    "vn5": {
+     "down": -0.010037,
+     "up": 0.013851
+    },
+    "magmatch": {
+     "down": -0.013103,
+     "up": 0.01703
+    },
+    "magmatch1": {
+     "down": -0.013031,
+     "up": 0.016959
+    },
+    "magmatch2": {
+     "down": -0.013102,
+     "up": 0.017044
+    },
+    "rand": {
+     "down": -0.013085,
+     "up": 0.017045
+    }
+   }
+  }
+ },
+ "the_backbone_alone": {
+  "test": {
+   "cross_entropy_as_evaluated": 0.943135,
+   "best_temperature": 0.8,
+   "cross_entropy_at_it": 0.908867,
+   "gain_from_temperature": 0.034268,
+   "over_each_arms_gain_as_evaluated": {
+    "all": 0.0955,
+    "allplain": 0.093,
+    "vn": 1.8812,
+    "plainpartner": 1.5403,
+    "vn5": 0.5678,
+    "magmatch": 2.5037,
+    "magmatch1": 2.8755,
+    "magmatch2": 3.9109,
+    "rand": 13.729
+   },
+   "temperatures_at_which_it_is_at_or_below_the_arm_as_evaluated": {
+    "all": [],
+    "allplain": [],
+    "vn": [
+     0.7,
+     0.75,
+     0.8,
+     0.85,
+     0.9
+    ],
+    "plainpartner": [
+     0.75,
+     0.8,
+     0.85,
+     0.9
+    ],
+    "vn5": [],
+    "magmatch": [
+     0.7,
+     0.75,
+     0.8,
+     0.85,
+     0.9,
+     0.95
+    ],
+    "magmatch1": [
+     0.7,
+     0.75,
+     0.8,
+     0.85,
+     0.9,
+     0.95
+    ],
+    "magmatch2": [
+     0.7,
+     0.75,
+     0.8,
+     0.85,
+     0.9,
+     0.95
+    ],
+    "rand": [
+     0.7,
+     0.75,
+     0.8,
+     0.85,
+     0.9,
+     0.95
+    ]
+   }
+  },
+  "helpful": {
+   "cross_entropy_as_evaluated": 0.788517,
+   "best_temperature": 0.65,
+   "cross_entropy_at_it": 0.673153,
+   "gain_from_temperature": 0.115363,
+   "over_each_arms_gain_as_evaluated": {
+    "all": 0.5845,
+    "allplain": 0.554,
+    "vn": 6.7252,
+    "plainpartner": 6.2392,
+    "vn5": 2.8679,
+    "magmatch": 17.3088,
+    "magmatch1": 19.3433,
+    "magmatch2": 29.8097,
+    "rand": 214.8295
+   },
+   "temperatures_at_which_it_is_at_or_below_the_arm_as_evaluated": {
+    "all": [],
+    "allplain": [],
+    "vn": [
+     0.4,
+     0.45,
+     0.5,
+     0.55,
+     0.6,
+     0.65,
+     0.7,
+     0.75,
+     0.8,
+     0.85,
+     0.9,
+     0.95
+    ],
+    "plainpartner": [
+     0.45,
+     0.5,
+     0.55,
+     0.6,
+     0.65,
+     0.7,
+     0.75,
+     0.8,
+     0.85,
+     0.9,
+     0.95
+    ],
+    "vn5": [
+     0.45,
+     0.5,
+     0.55,
+     0.6,
+     0.65,
+     0.7,
+     0.75,
+     0.8,
+     0.85,
+     0.9
+    ],
+    "magmatch": [
+     0.4,
+     0.45,
+     0.5,
+     0.55,
+     0.6,
+     0.65,
+     0.7,
+     0.75,
+     0.8,
+     0.85,
+     0.9,
+     0.95
+    ],
+    "magmatch1": [
+     0.4,
+     0.45,
+     0.5,
+     0.55,
+     0.6,
+     0.65,
+     0.7,
+     0.75,
+     0.8,
+     0.85,
+     0.9,
+     0.95
+    ],
+    "magmatch2": [
+     0.4,
+     0.45,
+     0.5,
+     0.55,
+     0.6,
+     0.65,
+     0.7,
+     0.75,
+     0.8,
+     0.85,
+     0.9,
+     0.95
+    ],
+    "rand": [
+     0.4,
+     0.45,
+     0.5,
+     0.55,
+     0.6,
+     0.65,
+     0.7,
+     0.75,
+     0.8,
+     0.85,
+     0.9,
+     0.95
+    ]
+   }
+  }
+ },
+ "other_draws": {
+  "test": {
+   "seed 1": {
+    "all": [
+     0.285581,
+     0.507063
+    ],
+    "allplain": [
+     0.276587,
+     0.503383
+    ],
+    "vn": [
+     0.002938,
+     0.043805
+    ],
+    "plainpartner": [
+     0.007518,
+     0.051335
+    ],
+    "vn5": [
+     0.039657,
+     0.105448
+    ],
+    "magmatch": [
+     -0.000446,
+     0.022605
+    ],
+    "magmatch1": [
+     0.010871,
+     0.018028
+    ],
+    "magmatch2": [
+     0.008677,
+     0.015927
+    ],
+    "rand": [
+     0.002251,
+     0.004923
+    ],
+    "C1_plain_partner_at_nine": [
+     -0.001369,
+     0.012351
+    ],
+    "C2_plain_partner_at_full_width": [
+     -0.039231,
+     0.022953
+    ],
+    "C3_identity_at_nine": [
+     -0.012685,
+     0.028048
+    ],
+    "C4_value_neurons_against_random": [
+     -0.00029,
+     0.040839
+    ],
+    "C5_width": [
+     0.029931,
+     0.091307
+    ],
+    "vn minus magmatch": [
+     -0.01637,
+     0.02561
+    ],
+    "vn minus magmatch1": [
+     -0.012109,
+     0.029694
+    ],
+    "vn minus magmatch2": [
+     -0.010272,
+     0.031054
+    ]
+   },
+   "seed 2": {
+    "all": [
+     0.283754,
+     0.503079
+    ],
+    "allplain": [
+     0.272603,
+     0.491352
+    ],
+    "vn": [
+     0.003138,
+     0.044781
+    ],
+    "plainpartner": [
+     0.007717,
+     0.051913
+    ],
+    "vn5": [
+     0.039308,
+     0.106722
+    ],
+    "magmatch": [
+     -0.003071,
+     0.022634
+    ],
+    "magmatch1": [
+     0.010927,
+     0.017987
+    ],
+    "magmatch2": [
+     0.002332,
+     0.015946
+    ],
+    "rand": [
+     0.002164,
+     0.004898
+    ],
+    "C1_plain_partner_at_nine": [
+     -0.001072,
+     0.012332
+    ],
+    "C2_plain_partner_at_full_width": [
+     -0.039991,
+     0.022062
+    ],
+    "C3_identity_at_nine": [
+     -0.012625,
+     0.028626
+    ],
+    "C4_value_neurons_against_random": [
+     -9.7e-05,
+     0.041562
+    ],
+    "C5_width": [
+     0.030298,
+     0.090244
+    ],
+    "vn minus magmatch": [
+     -0.015983,
+     0.025396
+    ],
+    "vn minus magmatch1": [
+     -0.012128,
+     0.029672
+    ],
+    "vn minus magmatch2": [
+     -0.009928,
+     0.031637
+    ]
+   },
+   "seed 0, 10000 draws": {
+    "all": [
+     0.283271,
+     0.504709
+    ],
+    "allplain": [
+     0.27534,
+     0.498313
+    ],
+    "vn": [
+     0.003388,
+     0.044974
+    ],
+    "plainpartner": [
+     0.007781,
+     0.051786
+    ],
+    "vn5": [
+     0.039536,
+     0.105472
+    ],
+    "magmatch": [
+     -0.001597,
+     0.022536
+    ],
+    "magmatch1": [
+     0.010534,
+     0.017894
+    ],
+    "magmatch2": [
+     0.001073,
+     0.015801
+    ],
+    "rand": [
+     0.002235,
+     0.004875
+    ],
+    "C1_plain_partner_at_nine": [
+     -0.00111,
+     0.012469
+    ],
+    "C2_plain_partner_at_full_width": [
+     -0.039253,
+     0.022987
+    ],
+    "C3_identity_at_nine": [
+     -0.012356,
+     0.028453
+    ],
+    "C4_value_neurons_against_random": [
+     0.000163,
+     0.041408
+    ],
+    "C5_width": [
+     0.030275,
+     0.08995
+    ],
+    "vn minus magmatch": [
+     -0.015957,
+     0.025355
+    ],
+    "vn minus magmatch1": [
+     -0.01177,
+     0.029639
+    ],
+    "vn minus magmatch2": [
+     -0.009682,
+     0.031505
+    ]
+   },
+   "as_in_the_table": {
+    "all": [
+     0.284995,
+     0.507398
+    ],
+    "allplain": [
+     0.277116,
+     0.502395
+    ],
+    "vn": [
+     0.003416,
+     0.045317
+    ],
+    "plainpartner": [
+     0.007715,
+     0.05203
+    ],
+    "vn5": [
+     0.038745,
+     0.104758
+    ],
+    "magmatch": [
+     0.000122,
+     0.0225
+    ],
+    "magmatch1": [
+     0.010954,
+     0.017906
+    ],
+    "magmatch2": [
+     0.008783,
+     0.015756
+    ],
+    "rand": [
+     0.002309,
+     0.004796
+    ],
+    "C1_plain_partner_at_nine": [
+     -0.000913,
+     0.012337
+    ],
+    "C2_plain_partner_at_full_width": [
+     -0.038259,
+     0.021211
+    ],
+    "C3_identity_at_nine": [
+     -0.012414,
+     0.029744
+    ],
+    "C4_value_neurons_against_random": [
+     0.000123,
+     0.041847
+    ],
+    "C5_width": [
+     0.029953,
+     0.089486
+    ],
+    "vn minus magmatch": [
+     -0.015982,
+     0.026132
+    ],
+    "vn minus magmatch1": [
+     -0.011869,
+     0.030665
+    ],
+    "vn minus magmatch2": [
+     -0.00977,
+     0.032176
+    ]
+   },
+   "whose_side_of_zero_changes": [
+    "C4_value_neurons_against_random",
+    "magmatch"
+   ]
+  },
+  "helpful": {
+   "seed 1": {
+    "all": [
+     0.093077,
+     0.202739
+    ],
+    "allplain": [
+     0.096667,
+     0.217765
+    ],
+    "vn": [
+     -0.008942,
+     0.013378
+    ],
+    "plainpartner": [
+     -0.007541,
+     0.014766
+    ],
+    "vn5": [
+     0.009801,
+     0.033475
+    ],
+    "magmatch": [
+     0.005057,
+     0.024895
+    ],
+    "magmatch1": [
+     0.004332,
+     0.022906
+    ],
+    "magmatch2": [
+     0.002862,
+     0.022194
+    ],
+    "rand": [
+     0.000262,
+     0.008796
+    ],
+    "C1_plain_partner_at_nine": [
+     0.000221,
+     0.015723
+    ],
+    "C2_plain_partner_at_full_width": [
+     -0.007364,
+     0.024351
+    ],
+    "C3_identity_at_nine": [
+     -0.013998,
+     0.007857
+    ],
+    "C4_value_neurons_against_random": [
+     -0.009482,
+     0.012571
+    ],
+    "C5_width": [
+     0.013172,
+     0.035155
+    ],
+    "vn minus magmatch": [
+     -0.015215,
+     0.006893
+    ],
+    "vn minus magmatch1": [
+     -0.014376,
+     0.007637
+    ],
+    "vn minus magmatch2": [
+     -0.012607,
+     0.009259
+    ]
+   },
+   "seed 2": {
+    "all": [
+     0.095976,
+     0.203869
+    ],
+    "allplain": [
+     0.097905,
+     0.217762
+    ],
+    "vn": [
+     -0.009202,
+     0.013328
+    ],
+    "plainpartner": [
+     -0.007823,
+     0.014522
+    ],
+    "vn5": [
+     0.009199,
+     0.033144
+    ],
+    "magmatch": [
+     0.005066,
+     0.02532
+    ],
+    "magmatch1": [
+     0.004363,
+     0.022432
+    ],
+    "magmatch2": [
+     0.00288,
+     0.021918
+    ],
+    "rand": [
+     0.000266,
+     0.001505
+    ],
+    "C1_plain_partner_at_nine": [
+     0.000224,
+     0.013833
+    ],
+    "C2_plain_partner_at_full_width": [
+     -0.006756,
+     0.023815
+    ],
+    "C3_identity_at_nine": [
+     -0.014003,
+     0.007778
+    ],
+    "C4_value_neurons_against_random": [
+     -0.009688,
+     0.012554
+    ],
+    "C5_width": [
+     0.013382,
+     0.035281
+    ],
+    "vn minus magmatch": [
+     -0.015188,
+     0.006823
+    ],
+    "vn minus magmatch1": [
+     -0.014464,
+     0.007558
+    ],
+    "vn minus magmatch2": [
+     -0.01272,
+     0.009288
+    ]
+   },
+   "seed 0, 10000 draws": {
+    "all": [
+     0.092227,
+     0.20323
+    ],
+    "allplain": [
+     0.095495,
+     0.216242
+    ],
+    "vn": [
+     -0.008916,
+     0.01334
+    ],
+    "plainpartner": [
+     -0.007502,
+     0.014729
+    ],
+    "vn5": [
+     0.009513,
+     0.033366
+    ],
+    "magmatch": [
+     0.005095,
+     0.024947
+    ],
+    "magmatch1": [
+     0.004374,
+     0.02262
+    ],
+    "magmatch2": [
+     0.002873,
+     0.021889
+    ],
+    "rand": [
+     0.000271,
+     0.0105
+    ],
+    "C1_plain_partner_at_nine": [
+     0.000248,
+     0.015765
+    ],
+    "C2_plain_partner_at_full_width": [
+     -0.007441,
+     0.023769
+    ],
+    "C3_identity_at_nine": [
+     -0.014016,
+     0.007849
+    ],
+    "C4_value_neurons_against_random": [
+     -0.009552,
+     0.012557
+    ],
+    "C5_width": [
+     0.013121,
+     0.035737
+    ],
+    "vn minus magmatch": [
+     -0.015199,
+     0.006901
+    ],
+    "vn minus magmatch1": [
+     -0.014489,
+     0.007613
+    ],
+    "vn minus magmatch2": [
+     -0.012585,
+     0.009368
+    ]
+   },
+   "as_in_the_table": {
+    "all": [
+     0.093095,
+     0.203784
+    ],
+    "allplain": [
+     0.097127,
+     0.217594
+    ],
+    "vn": [
+     -0.00895,
+     0.013345
+    ],
+    "plainpartner": [
+     -0.007354,
+     0.014785
+    ],
+    "vn5": [
+     0.009758,
+     0.033369
+    ],
+    "magmatch": [
+     0.005125,
+     0.025103
+    ],
+    "magmatch1": [
+     0.004395,
+     0.022947
+    ],
+    "magmatch2": [
+     0.002875,
+     0.021951
+    ],
+    "rand": [
+     0.000272,
+     0.010332
+    ],
+    "C1_plain_partner_at_nine": [
+     0.000244,
+     0.015707
+    ],
+    "C2_plain_partner_at_full_width": [
+     -0.007174,
+     0.024373
+    ],
+    "C3_identity_at_nine": [
+     -0.014037,
+     0.00782
+    ],
+    "C4_value_neurons_against_random": [
+     -0.009544,
+     0.012535
+    ],
+    "C5_width": [
+     0.013393,
+     0.035466
+    ],
+    "vn minus magmatch": [
+     -0.015178,
+     0.00685
+    ],
+    "vn minus magmatch1": [
+     -0.014433,
+     0.007601
+    ],
+    "vn minus magmatch2": [
+     -0.012572,
+     0.00936
+    ]
+   },
+   "whose_side_of_zero_changes": []
+  }
+ },
+ "named": {
+  "the_value_neurons_small_signal": {
+   "as_posed": "survives",
+   "in_split": "survives",
+   "at_one_temperature": {
+    "0.5": "not distinguishable from zero at best temperature",
+    "0.55": "survives",
+    "0.6": "survives",
+    "0.65": "survives",
+    "0.7": "survives",
+    "0.75": "survives",
+    "0.8": "survives",
+    "0.85": "survives",
+    "0.9": "survives",
+    "0.95": "survives",
+    "1.0": "survives"
+   }
+  },
+  "the_plain_partners_advantage_of_0.0040": {
+   "as_posed": "does not survive",
+   "in_split": "survives",
+   "at_one_temperature": {
+    "0.5": "does not survive",
+    "0.55": "does not survive",
+    "0.6": "does not survive",
+    "0.65": "does not survive",
+    "0.7": "survives",
+    "0.75": "survives",
+    "0.8": "survives",
+    "0.85": "survives",
+    "0.9": "survives",
+    "0.95": "survives",
+    "1.0": "survives"
+   }
+  },
+  "the_full_width_partner_null": {
+   "as_posed": "still indistinguishable",
+   "in_split": "still indistinguishable",
+   "at_one_temperature": {
+    "0.5": "still indistinguishable",
+    "0.55": "still indistinguishable",
+    "0.6": "still indistinguishable",
+    "0.65": "still indistinguishable",
+    "0.7": "still indistinguishable",
+    "0.75": "still indistinguishable",
+    "0.8": "still indistinguishable",
+    "0.85": "still indistinguishable",
+    "0.9": "still indistinguishable",
+    "0.95": "still indistinguishable",
+    "1.0": "still indistinguishable"
+   }
+  },
+  "the_identity_sign": {
+   "as_posed": "not firm at best temperature",
+   "in_split": "not firm at best temperature",
+   "at_one_temperature": {
+    "0.5": "not firm at best temperature",
+    "0.55": "not firm at best temperature",
+    "0.6": "not firm at best temperature",
+    "0.65": "not firm at best temperature",
+    "0.7": "not firm at best temperature",
+    "0.75": "not firm at best temperature",
+    "0.8": "not firm at best temperature",
+    "0.85": "not firm at best temperature",
+    "0.9": "not firm at best temperature",
+    "0.95": "C3 survives, and 2 of the three per-draw intervals exclude zero with the as-evaluated sign",
+    "1.0": "firm at best temperature"
+   }
+  },
+  "the_63_to_37_split": {
+   "as_posed": "identity term not distinguishable from zero at best temperature",
+   "in_split": "identity term not distinguishable from zero at best temperature",
+   "at_one_temperature": {
+    "0.5": "undefined at best temperature",
+    "0.55": "identity term reversed at best temperature",
+    "0.6": "identity term reversed at best temperature",
+    "0.65": "identity term reversed at best temperature",
+    "0.7": "identity term reversed at best temperature",
+    "0.75": "identity term not distinguishable from zero at best temperature",
+    "0.8": "identity term not distinguishable from zero at best temperature",
+    "0.85": "identity term not distinguishable from zero at best temperature",
+    "0.9": "identity term not distinguishable from zero at best temperature",
+    "0.95": "71.0% magnitude, 29.0% identity",
+    "1.0": "62.9% magnitude, 37.1% identity"
+   }
+  },
+  "C4_value_neurons_against_random": {
+   "as_posed": "survives",
+   "in_split": "survives",
+   "at_one_temperature": {
+    "0.5": "does not survive",
+    "0.55": "does not survive",
+    "0.6": "does not survive",
+    "0.65": "survives",
+    "0.7": "survives",
+    "0.75": "survives",
+    "0.8": "survives",
+    "0.85": "survives",
+    "0.9": "survives",
+    "0.95": "survives",
+    "1.0": "survives"
+   }
+  },
+  "C5_width": {
+   "as_posed": "survives",
+   "in_split": "survives",
+   "at_one_temperature": {
+    "0.5": "survives",
+    "0.55": "survives",
+    "0.6": "survives",
+    "0.65": "survives",
+    "0.7": "survives",
+    "0.75": "survives",
+    "0.8": "survives",
+    "0.85": "survives",
+    "0.9": "survives",
+    "0.95": "survives",
+    "1.0": "survives"
+   }
+  },
+  "full_width_gain": {
+   "as_posed": "keeps a gain",
+   "in_split": "keeps a gain",
+   "at_one_temperature": {
+    "0.5": "keeps a gain",
+    "0.55": "keeps a gain",
+    "0.6": "keeps a gain",
+    "0.65": "keeps a gain",
+    "0.7": "keeps a gain",
+    "0.75": "keeps a gain",
+    "0.8": "keeps a gain",
+    "0.85": "keeps a gain",
+    "0.9": "keeps a gain",
+    "0.95": "keeps a gain",
+    "1.0": "keeps a gain"
+   }
+  }
+ }
+}

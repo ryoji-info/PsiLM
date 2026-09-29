@@ -1,0 +1,1116 @@
+{
+ "what": "temperature control (eval/teacher_ceiling.py, cross-fitted across the two splits) for every 0.5B constitution arm; 100 items per split",
+ "preregistration": "results/constitution/tempcontrol_qwen0.5b_preregistration.json",
+ "intervals": "paired bootstrap over items, 2000 draws; both splits are resampled, so the choice of the temperatures is inside the interval; every arm and every contrast on the same draws",
+ "contrasts": "difference and ci95 are at the best temperatures; as_evaluated is the same contrast at temperature 1 on the same draws",
+ "not_ok": [],
+ "tau_at_edge": [],
+ "contrasts_at_best_tau": [
+  {
+   "split": "test",
+   "arm": "plainpartner",
+   "minus": [
+    "vn"
+   ],
+   "difference": 0.005373,
+   "ci95": [
+    -0.000913,
+    0.012337
+   ],
+   "as_evaluated": {
+    "difference": 0.004032,
+    "ci95": [
+     0.00087,
+     0.0079
+    ]
+   },
+   "gain_draws_below_zero": 0.0435
+  },
+  {
+   "split": "test",
+   "arm": "allplain",
+   "minus": [
+    "all"
+   ],
+   "difference": -0.004738,
+   "ci95": [
+    -0.038259,
+    0.021211
+   ],
+   "as_evaluated": {
+    "difference": 0.009631,
+    "ci95": [
+     -0.012316,
+     0.029748
+    ]
+   },
+   "gain_draws_below_zero": 0.637
+  },
+  {
+   "split": "test",
+   "arm": "vn",
+   "minus": [
+    "magmatch",
+    "magmatch1",
+    "magmatch2"
+   ],
+   "difference": -0.006697,
+   "ci95": [
+    -0.012414,
+    0.029744
+   ],
+   "as_evaluated": {
+    "difference": 0.006761,
+    "ci95": [
+     0.004146,
+     0.00911
+    ]
+   },
+   "gain_draws_below_zero": 0.72,
+   "magnitude_share": {
+    "at_best_tau": {
+     "share": 1.8283,
+     "ci95": [
+      0.303,
+      4.424
+     ]
+    },
+    "as_evaluated": {
+     "share": 0.6289,
+     "ci95": [
+      0.528,
+      0.749
+     ]
+    },
+    "matched_mean_gain": 0.014783,
+    "matched_mean_gain_ci95": [
+     0.005522,
+     0.018583
+    ],
+    "interval": "the r for which the interval of (matched mean gain - r * the first arm's gain) includes zero, r from -3 to 5 in steps of 0.001; null is an open end"
+   }
+  },
+  {
+   "split": "test",
+   "arm": "vn",
+   "minus": [
+    "rand"
+   ],
+   "difference": 0.004625,
+   "ci95": [
+    0.000123,
+    0.041847
+   ],
+   "as_evaluated": {
+    "difference": 0.01572,
+    "ci95": [
+     0.013748,
+     0.017658
+    ]
+   },
+   "gain_draws_below_zero": 0.0235
+  },
+  {
+   "split": "test",
+   "arm": "vn5",
+   "minus": [
+    "vn"
+   ],
+   "difference": 0.0473,
+   "ci95": [
+    0.029953,
+    0.089486
+   ],
+   "as_evaluated": {
+    "difference": 0.042135,
+    "ci95": [
+     0.030958,
+     0.055938
+    ]
+   },
+   "gain_draws_below_zero": 0.0
+  },
+  {
+   "split": "test",
+   "arm": "vn",
+   "minus": [
+    "magmatch"
+   ],
+   "difference": -0.009751,
+   "ci95": [
+    -0.015982,
+    0.026132
+   ],
+   "as_evaluated": {
+    "difference": 0.004529,
+    "ci95": [
+     0.001645,
+     0.00714
+    ]
+   },
+   "gain_draws_below_zero": 0.7225
+  },
+  {
+   "split": "test",
+   "arm": "vn",
+   "minus": [
+    "magmatch1"
+   ],
+   "difference": -0.006274,
+   "ci95": [
+    -0.011869,
+    0.030665
+   ],
+   "as_evaluated": {
+    "difference": 0.006299,
+    "ci95": [
+     0.003611,
+     0.008743
+    ]
+   },
+   "gain_draws_below_zero": 0.7325
+  },
+  {
+   "split": "test",
+   "arm": "vn",
+   "minus": [
+    "magmatch2"
+   ],
+   "difference": -0.004067,
+   "ci95": [
+    -0.00977,
+    0.032176
+   ],
+   "as_evaluated": {
+    "difference": 0.009454,
+    "ci95": [
+     0.006892,
+     0.01186
+    ]
+   },
+   "gain_draws_below_zero": 0.698
+  },
+  {
+   "split": "helpful",
+   "arm": "plainpartner",
+   "minus": [
+    "vn"
+   ],
+   "difference": 0.001472,
+   "ci95": [
+    0.000244,
+    0.015707
+   ],
+   "as_evaluated": {
+    "difference": 0.001336,
+    "ci95": [
+     0.000427,
+     0.002347
+    ]
+   },
+   "gain_draws_below_zero": 0.0085
+  },
+  {
+   "split": "helpful",
+   "arm": "allplain",
+   "minus": [
+    "all"
+   ],
+   "difference": 0.008098,
+   "ci95": [
+    -0.007174,
+    0.024373
+   ],
+   "as_evaluated": {
+    "difference": 0.010868,
+    "ci95": [
+     0.001487,
+     0.022839
+    ]
+   },
+   "gain_draws_below_zero": 0.157
+  },
+  {
+   "split": "helpful",
+   "arm": "vn",
+   "minus": [
+    "magmatch",
+    "magmatch1",
+    "magmatch2"
+   ],
+   "difference": -0.010586,
+   "ci95": [
+    -0.014037,
+    0.00782
+   ],
+   "as_evaluated": {
+    "difference": 0.011654,
+    "ci95": [
+     0.009808,
+     0.013336
+    ]
+   },
+   "gain_draws_below_zero": 0.357,
+   "magnitude_share": {
+    "at_best_tau": {
+     "share": -1.0164,
+     "ci95": [
+      null,
+      null
+     ]
+    },
+    "as_evaluated": {
+     "share": 0.3206,
+     "ci95": [
+      0.263,
+      0.39
+     ]
+    },
+    "matched_mean_gain": 0.005336,
+    "matched_mean_gain_ci95": [
+     0.004264,
+     0.022533
+    ],
+    "interval": "the r for which the interval of (matched mean gain - r * the first arm's gain) includes zero, r from -3 to 5 in steps of 0.001; null is an open end"
+   }
+  },
+  {
+   "split": "helpful",
+   "arm": "vn",
+   "minus": [
+    "rand"
+   ],
+   "difference": -0.005913,
+   "ci95": [
+    -0.009544,
+    0.012535
+   ],
+   "as_evaluated": {
+    "difference": 0.016616,
+    "ci95": [
+     0.015123,
+     0.018064
+    ]
+   },
+   "gain_draws_below_zero": 0.281
+  },
+  {
+   "split": "helpful",
+   "arm": "vn5",
+   "minus": [
+    "vn"
+   ],
+   "difference": 0.031747,
+   "ci95": [
+    0.013393,
+    0.035466
+   ],
+   "as_evaluated": {
+    "difference": 0.023072,
+    "ci95": [
+     0.020512,
+     0.026401
+    ]
+   },
+   "gain_draws_below_zero": 0.0005
+  },
+  {
+   "split": "helpful",
+   "arm": "vn",
+   "minus": [
+    "magmatch"
+   ],
+   "difference": -0.011799,
+   "ci95": [
+    -0.015178,
+    0.00685
+   ],
+   "as_evaluated": {
+    "difference": 0.010489,
+    "ci95": [
+     0.008304,
+     0.012434
+    ]
+   },
+   "gain_draws_below_zero": 0.3815
+  },
+  {
+   "split": "helpful",
+   "arm": "vn",
+   "minus": [
+    "magmatch1"
+   ],
+   "difference": -0.010817,
+   "ci95": [
+    -0.014433,
+    0.007601
+   ],
+   "as_evaluated": {
+    "difference": 0.01119,
+    "ci95": [
+     0.009439,
+     0.012764
+    ]
+   },
+   "gain_draws_below_zero": 0.332
+  },
+  {
+   "split": "helpful",
+   "arm": "vn",
+   "minus": [
+    "magmatch2"
+   ],
+   "difference": -0.009143,
+   "ci95": [
+    -0.012572,
+    0.00936
+   ],
+   "as_evaluated": {
+    "difference": 0.013284,
+    "ci95": [
+     0.011512,
+     0.01498
+    ]
+   },
+   "gain_draws_below_zero": 0.3505
+  }
+ ],
+ "arms": [
+  {
+   "arm": "all",
+   "what": "full width, fine-tuned partner",
+   "n_write": 896,
+   "inj_cap": 0.2,
+   "partner": "results/constitution_model/qwen2.5-0.5b-constitution",
+   "step": 2000,
+   "ceiling_ok": true,
+   "controls_ok": null,
+   "evaluator_reproduced": true,
+   "evaluator_run_on": [
+    "helpful",
+    "test"
+   ],
+   "greedy_decode_diverged": 0,
+   "test": {
+    "base_ce": 0.94314,
+    "teacher_ce": 0.52514,
+    "psilm_ce": 0.58446,
+    "ce_gain": 0.358671,
+    "ce_gain_ci95": [
+     0.3001,
+     0.4253
+    ],
+    "tau_base": 0.65,
+    "tau_psilm": 0.75,
+    "base_ce_at_tau": 0.94218,
+    "psilm_ce_at_tau": 0.56878,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.8,
+    "tau_psilm_in_split": 0.8,
+    "ce_gain_at_in_split_tau": 0.34362,
+    "crossfit_cost_base": 0.03331,
+    "crossfit_cost_psilm": 0.00353,
+    "ce_gain_at_best_tau": 0.373395,
+    "share_surviving": 1.0411,
+    "kl_teacher_base": 0.44696,
+    "kl_teacher_psilm": 0.50267,
+    "kl_fraction": -0.1247,
+    "kl_fraction_at_best_tau": 0.2072,
+    "items_psilm_below_teacher": 65,
+    "ce_gain_at_best_tau_ci95": [
+     0.284995,
+     0.507398
+    ]
+   },
+   "helpful": {
+    "base_ce": 0.78852,
+    "teacher_ce": 0.57055,
+    "psilm_ce": 0.59116,
+    "ce_gain": 0.197357,
+    "ce_gain_ci95": [
+     0.1603,
+     0.2414
+    ],
+    "tau_base": 0.8,
+    "tau_psilm": 0.8,
+    "base_ce_at_tau": 0.69869,
+    "psilm_ce_at_tau": 0.55648,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.65,
+    "tau_psilm_in_split": 0.75,
+    "ce_gain_at_in_split_tau": 0.11771,
+    "crossfit_cost_base": 0.02554,
+    "crossfit_cost_psilm": 0.00104,
+    "ce_gain_at_best_tau": 0.142206,
+    "share_surviving": 0.7206,
+    "kl_teacher_base": 0.23606,
+    "kl_teacher_psilm": 0.42288,
+    "kl_fraction": -0.7914,
+    "kl_fraction_at_best_tau": -0.1603,
+    "items_psilm_below_teacher": 72,
+    "ce_gain_at_best_tau_ci95": [
+     0.093095,
+     0.203784
+    ]
+   }
+  },
+  {
+   "arm": "allplain",
+   "what": "full width, plain partner",
+   "n_write": 896,
+   "inj_cap": 0.2,
+   "partner": "Qwen/Qwen2.5-0.5B-Instruct",
+   "step": 2000,
+   "ceiling_ok": true,
+   "controls_ok": null,
+   "evaluator_reproduced": true,
+   "evaluator_run_on": [
+    "helpful",
+    "test"
+   ],
+   "greedy_decode_diverged": 0,
+   "test": {
+    "base_ce": 0.94314,
+    "teacher_ce": 0.52514,
+    "psilm_ce": 0.57483,
+    "ce_gain": 0.368302,
+    "ce_gain_ci95": [
+     0.3063,
+     0.435
+    ],
+    "tau_base": 0.65,
+    "tau_psilm": 0.75,
+    "base_ce_at_tau": 0.94218,
+    "psilm_ce_at_tau": 0.57352,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.8,
+    "tau_psilm_in_split": 0.85,
+    "ce_gain_at_in_split_tau": 0.34452,
+    "crossfit_cost_base": 0.03331,
+    "crossfit_cost_psilm": 0.00917,
+    "ce_gain_at_best_tau": 0.368657,
+    "share_surviving": 1.001,
+    "kl_teacher_base": 0.44696,
+    "kl_teacher_psilm": 0.54757,
+    "kl_fraction": -0.2251,
+    "kl_fraction_at_best_tau": 0.189,
+    "items_psilm_below_teacher": 68,
+    "ce_gain_at_best_tau_ci95": [
+     0.277116,
+     0.502395
+    ]
+   },
+   "helpful": {
+    "base_ce": 0.78852,
+    "teacher_ce": 0.57055,
+    "psilm_ce": 0.58029,
+    "ce_gain": 0.208225,
+    "ce_gain_ci95": [
+     0.1666,
+     0.2581
+    ],
+    "tau_base": 0.8,
+    "tau_psilm": 0.85,
+    "base_ce_at_tau": 0.69869,
+    "psilm_ce_at_tau": 0.54839,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.65,
+    "tau_psilm_in_split": 0.75,
+    "ce_gain_at_in_split_tau": 0.13178,
+    "crossfit_cost_base": 0.02554,
+    "crossfit_cost_psilm": 0.00702,
+    "ce_gain_at_best_tau": 0.150304,
+    "share_surviving": 0.7218,
+    "kl_teacher_base": 0.23606,
+    "kl_teacher_psilm": 0.4171,
+    "kl_fraction": -0.767,
+    "kl_fraction_at_best_tau": -0.1462,
+    "items_psilm_below_teacher": 75,
+    "ce_gain_at_best_tau_ci95": [
+     0.097127,
+     0.217594
+    ]
+   }
+  },
+  {
+   "arm": "vn",
+   "what": "value neurons, top 9",
+   "n_write": 9,
+   "inj_cap": 0.2,
+   "partner": "results/constitution_model/qwen2.5-0.5b-constitution",
+   "step": 2000,
+   "ceiling_ok": true,
+   "controls_ok": null,
+   "evaluator_reproduced": true,
+   "evaluator_run_on": [
+    "helpful",
+    "test"
+   ],
+   "greedy_decode_diverged": 0,
+   "test": {
+    "base_ce": 0.94314,
+    "teacher_ce": 0.52514,
+    "psilm_ce": 0.92492,
+    "ce_gain": 0.018216,
+    "ce_gain_ci95": [
+     0.016,
+     0.0204
+    ],
+    "tau_base": 0.65,
+    "tau_psilm": 0.65,
+    "base_ce_at_tau": 0.94218,
+    "psilm_ce_at_tau": 0.93409,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.8,
+    "tau_psilm_in_split": 0.85,
+    "ce_gain_at_in_split_tau": 0.01214,
+    "crossfit_cost_base": 0.03331,
+    "crossfit_cost_psilm": 0.03736,
+    "ce_gain_at_best_tau": 0.008086,
+    "share_surviving": 0.4439,
+    "kl_teacher_base": 0.44696,
+    "kl_teacher_psilm": 0.45608,
+    "kl_fraction": -0.0204,
+    "kl_fraction_at_best_tau": -0.0065,
+    "items_psilm_below_teacher": 14,
+    "ce_gain_at_best_tau_ci95": [
+     0.003416,
+     0.045317
+    ]
+   },
+   "helpful": {
+    "base_ce": 0.78852,
+    "teacher_ce": 0.57055,
+    "psilm_ce": 0.77136,
+    "ce_gain": 0.017154,
+    "ce_gain_ci95": [
+     0.0156,
+     0.0186
+    ],
+    "tau_base": 0.8,
+    "tau_psilm": 0.85,
+    "base_ce_at_tau": 0.69869,
+    "psilm_ce_at_tau": 0.70394,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.65,
+    "tau_psilm_in_split": 0.65,
+    "ce_gain_at_in_split_tau": 0.00554,
+    "crossfit_cost_base": 0.02554,
+    "crossfit_cost_psilm": 0.03633,
+    "ce_gain_at_best_tau": -0.00525,
+    "share_surviving": -0.3061,
+    "kl_teacher_base": 0.23606,
+    "kl_teacher_psilm": 0.24395,
+    "kl_fraction": -0.0335,
+    "kl_fraction_at_best_tau": 0.008,
+    "items_psilm_below_teacher": 22,
+    "ce_gain_at_best_tau_ci95": [
+     -0.00895,
+     0.013345
+    ]
+   }
+  },
+  {
+   "arm": "plainpartner",
+   "what": "value neurons, top 9, plain partner",
+   "n_write": 9,
+   "inj_cap": 0.2,
+   "partner": "Qwen/Qwen2.5-0.5B-Instruct",
+   "step": 2000,
+   "ceiling_ok": true,
+   "controls_ok": null,
+   "evaluator_reproduced": true,
+   "evaluator_run_on": [
+    "helpful",
+    "test"
+   ],
+   "greedy_decode_diverged": 0,
+   "test": {
+    "base_ce": 0.94314,
+    "teacher_ce": 0.52514,
+    "psilm_ce": 0.92089,
+    "ce_gain": 0.022248,
+    "ce_gain_ci95": [
+     0.019,
+     0.026
+    ],
+    "tau_base": 0.65,
+    "tau_psilm": 0.65,
+    "base_ce_at_tau": 0.94218,
+    "psilm_ce_at_tau": 0.92872,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.8,
+    "tau_psilm_in_split": 0.85,
+    "ce_gain_at_in_split_tau": 0.01653,
+    "crossfit_cost_base": 0.03331,
+    "crossfit_cost_psilm": 0.03638,
+    "ce_gain_at_best_tau": 0.013459,
+    "share_surviving": 0.6049,
+    "kl_teacher_base": 0.44696,
+    "kl_teacher_psilm": 0.45334,
+    "kl_fraction": -0.0143,
+    "kl_fraction_at_best_tau": 0.0,
+    "items_psilm_below_teacher": 14,
+    "ce_gain_at_best_tau_ci95": [
+     0.007715,
+     0.05203
+    ]
+   },
+   "helpful": {
+    "base_ce": 0.78852,
+    "teacher_ce": 0.57055,
+    "psilm_ce": 0.77003,
+    "ce_gain": 0.01849,
+    "ce_gain_ci95": [
+     0.0169,
+     0.0199
+    ],
+    "tau_base": 0.8,
+    "tau_psilm": 0.85,
+    "base_ce_at_tau": 0.69869,
+    "psilm_ce_at_tau": 0.70247,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.65,
+    "tau_psilm_in_split": 0.65,
+    "ce_gain_at_in_split_tau": 0.00729,
+    "crossfit_cost_base": 0.02554,
+    "crossfit_cost_psilm": 0.03661,
+    "ce_gain_at_best_tau": -0.003778,
+    "share_surviving": -0.2043,
+    "kl_teacher_base": 0.23606,
+    "kl_teacher_psilm": 0.24261,
+    "kl_fraction": -0.0278,
+    "kl_fraction_at_best_tau": 0.0135,
+    "items_psilm_below_teacher": 22,
+    "ce_gain_at_best_tau_ci95": [
+     -0.007354,
+     0.014785
+    ]
+   }
+  },
+  {
+   "arm": "vn5",
+   "what": "value neurons, top 45",
+   "n_write": 45,
+   "inj_cap": 0.2,
+   "partner": "results/constitution_model/qwen2.5-0.5b-constitution",
+   "step": 2000,
+   "ceiling_ok": true,
+   "controls_ok": null,
+   "evaluator_reproduced": true,
+   "evaluator_run_on": [
+    "helpful",
+    "test"
+   ],
+   "greedy_decode_diverged": 0,
+   "test": {
+    "base_ce": 0.94314,
+    "teacher_ce": 0.52514,
+    "psilm_ce": 0.88278,
+    "ce_gain": 0.060352,
+    "ce_gain_ci95": [
+     0.0494,
+     0.0736
+    ],
+    "tau_base": 0.65,
+    "tau_psilm": 0.65,
+    "base_ce_at_tau": 0.94218,
+    "psilm_ce_at_tau": 0.88679,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.8,
+    "tau_psilm_in_split": 0.8,
+    "ce_gain_at_in_split_tau": 0.05515,
+    "crossfit_cost_base": 0.03331,
+    "crossfit_cost_psilm": 0.03307,
+    "ce_gain_at_best_tau": 0.055386,
+    "share_surviving": 0.9177,
+    "kl_teacher_base": 0.44696,
+    "kl_teacher_psilm": 0.44249,
+    "kl_fraction": 0.01,
+    "kl_fraction_at_best_tau": 0.0565,
+    "items_psilm_below_teacher": 14,
+    "ce_gain_at_best_tau_ci95": [
+     0.038745,
+     0.104758
+    ]
+   },
+   "helpful": {
+    "base_ce": 0.78852,
+    "teacher_ce": 0.57055,
+    "psilm_ce": 0.74829,
+    "ce_gain": 0.040226,
+    "ce_gain_ci95": [
+     0.0367,
+     0.0435
+    ],
+    "tau_base": 0.8,
+    "tau_psilm": 0.8,
+    "base_ce_at_tau": 0.69869,
+    "psilm_ce_at_tau": 0.67219,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.65,
+    "tau_psilm_in_split": 0.65,
+    "ce_gain_at_in_split_tau": 0.01787,
+    "crossfit_cost_base": 0.02554,
+    "crossfit_cost_psilm": 0.01691,
+    "ce_gain_at_best_tau": 0.026497,
+    "share_surviving": 0.6587,
+    "kl_teacher_base": 0.23606,
+    "kl_teacher_psilm": 0.25118,
+    "kl_fraction": -0.0641,
+    "kl_fraction_at_best_tau": 0.0043,
+    "items_psilm_below_teacher": 33,
+    "ce_gain_at_best_tau_ci95": [
+     0.009758,
+     0.033369
+    ]
+   }
+  },
+  {
+   "arm": "magmatch",
+   "what": "magnitude-matched random 9, draw 0",
+   "n_write": 9,
+   "inj_cap": 0.2,
+   "partner": "results/constitution_model/qwen2.5-0.5b-constitution",
+   "step": 2000,
+   "ceiling_ok": true,
+   "controls_ok": null,
+   "evaluator_reproduced": true,
+   "evaluator_run_on": [
+    "helpful",
+    "test"
+   ],
+   "greedy_decode_diverged": 0,
+   "test": {
+    "base_ce": 0.94314,
+    "teacher_ce": 0.52514,
+    "psilm_ce": 0.92945,
+    "ce_gain": 0.013687,
+    "ce_gain_ci95": [
+     0.0115,
+     0.016
+    ],
+    "tau_base": 0.65,
+    "tau_psilm": 0.65,
+    "base_ce_at_tau": 0.94218,
+    "psilm_ce_at_tau": 0.92434,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.8,
+    "tau_psilm_in_split": 0.8,
+    "ce_gain_at_in_split_tau": 0.01546,
+    "crossfit_cost_base": 0.03331,
+    "crossfit_cost_psilm": 0.03093,
+    "ce_gain_at_best_tau": 0.017837,
+    "share_surviving": 1.3032,
+    "kl_teacher_base": 0.44696,
+    "kl_teacher_psilm": 0.4388,
+    "kl_fraction": 0.0182,
+    "kl_fraction_at_best_tau": 0.0196,
+    "items_psilm_below_teacher": 8,
+    "ce_gain_at_best_tau_ci95": [
+     0.000122,
+     0.0225
+    ]
+   },
+   "helpful": {
+    "base_ce": 0.78852,
+    "teacher_ce": 0.57055,
+    "psilm_ce": 0.78185,
+    "ce_gain": 0.006665,
+    "ce_gain_ci95": [
+     0.0055,
+     0.008
+    ],
+    "tau_base": 0.8,
+    "tau_psilm": 0.8,
+    "base_ce_at_tau": 0.69869,
+    "psilm_ce_at_tau": 0.69214,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.65,
+    "tau_psilm_in_split": 0.65,
+    "ce_gain_at_in_split_tau": 0.00688,
+    "crossfit_cost_base": 0.02554,
+    "crossfit_cost_psilm": 0.02587,
+    "ce_gain_at_best_tau": 0.006549,
+    "share_surviving": 0.9826,
+    "kl_teacher_base": 0.23606,
+    "kl_teacher_psilm": 0.23365,
+    "kl_fraction": 0.0102,
+    "kl_fraction_at_best_tau": 0.0149,
+    "items_psilm_below_teacher": 11,
+    "ce_gain_at_best_tau_ci95": [
+     0.005125,
+     0.025103
+    ]
+   }
+  },
+  {
+   "arm": "magmatch1",
+   "what": "magnitude-matched random 9, draw 1",
+   "n_write": 9,
+   "inj_cap": 0.2,
+   "partner": "results/constitution_model/qwen2.5-0.5b-constitution",
+   "step": 2000,
+   "ceiling_ok": true,
+   "controls_ok": null,
+   "evaluator_reproduced": true,
+   "evaluator_run_on": [
+    "test"
+   ],
+   "greedy_decode_diverged": 0,
+   "test": {
+    "base_ce": 0.94314,
+    "teacher_ce": 0.52514,
+    "psilm_ce": 0.93122,
+    "ce_gain": 0.011917,
+    "ce_gain_ci95": [
+     0.0101,
+     0.0138
+    ],
+    "tau_base": 0.65,
+    "tau_psilm": 0.65,
+    "base_ce_at_tau": 0.94218,
+    "psilm_ce_at_tau": 0.92782,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.8,
+    "tau_psilm_in_split": 0.8,
+    "ce_gain_at_in_split_tau": 0.01282,
+    "crossfit_cost_base": 0.03331,
+    "crossfit_cost_psilm": 0.03177,
+    "ce_gain_at_best_tau": 0.01436,
+    "share_surviving": 1.205,
+    "kl_teacher_base": 0.44696,
+    "kl_teacher_psilm": 0.44213,
+    "kl_fraction": 0.0108,
+    "kl_fraction_at_best_tau": 0.0129,
+    "items_psilm_below_teacher": 8,
+    "ce_gain_at_best_tau_ci95": [
+     0.010954,
+     0.017906
+    ]
+   },
+   "helpful": {
+    "base_ce": 0.78852,
+    "teacher_ce": 0.57055,
+    "psilm_ce": 0.78255,
+    "ce_gain": 0.005964,
+    "ce_gain_ci95": [
+     0.0049,
+     0.007
+    ],
+    "tau_base": 0.8,
+    "tau_psilm": 0.8,
+    "base_ce_at_tau": 0.69869,
+    "psilm_ce_at_tau": 0.69312,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.65,
+    "tau_psilm_in_split": 0.65,
+    "ce_gain_at_in_split_tau": 0.00567,
+    "crossfit_cost_base": 0.02554,
+    "crossfit_cost_psilm": 0.02564,
+    "ce_gain_at_best_tau": 0.005567,
+    "share_surviving": 0.9334,
+    "kl_teacher_base": 0.23606,
+    "kl_teacher_psilm": 0.23481,
+    "kl_fraction": 0.0053,
+    "kl_fraction_at_best_tau": 0.011,
+    "items_psilm_below_teacher": 11,
+    "ce_gain_at_best_tau_ci95": [
+     0.004395,
+     0.022947
+    ]
+   }
+  },
+  {
+   "arm": "magmatch2",
+   "what": "magnitude-matched random 9, draw 2",
+   "n_write": 9,
+   "inj_cap": 0.2,
+   "partner": "results/constitution_model/qwen2.5-0.5b-constitution",
+   "step": 2000,
+   "ceiling_ok": true,
+   "controls_ok": null,
+   "evaluator_reproduced": true,
+   "evaluator_run_on": [
+    "test"
+   ],
+   "greedy_decode_diverged": 0,
+   "test": {
+    "base_ce": 0.94314,
+    "teacher_ce": 0.52514,
+    "psilm_ce": 0.93437,
+    "ce_gain": 0.008762,
+    "ce_gain_ci95": [
+     0.0071,
+     0.0105
+    ],
+    "tau_base": 0.65,
+    "tau_psilm": 0.65,
+    "base_ce_at_tau": 0.94218,
+    "psilm_ce_at_tau": 0.93002,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.8,
+    "tau_psilm_in_split": 0.8,
+    "ce_gain_at_in_split_tau": 0.01026,
+    "crossfit_cost_base": 0.03331,
+    "crossfit_cost_psilm": 0.03141,
+    "ce_gain_at_best_tau": 0.012153,
+    "share_surviving": 1.387,
+    "kl_teacher_base": 0.44696,
+    "kl_teacher_psilm": 0.44113,
+    "kl_fraction": 0.013,
+    "kl_fraction_at_best_tau": 0.0135,
+    "items_psilm_below_teacher": 8,
+    "ce_gain_at_best_tau_ci95": [
+     0.008783,
+     0.015756
+    ]
+   },
+   "helpful": {
+    "base_ce": 0.78852,
+    "teacher_ce": 0.57055,
+    "psilm_ce": 0.78465,
+    "ce_gain": 0.00387,
+    "ce_gain_ci95": [
+     0.0031,
+     0.0048
+    ],
+    "tau_base": 0.8,
+    "tau_psilm": 0.8,
+    "base_ce_at_tau": 0.69869,
+    "psilm_ce_at_tau": 0.6948,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.65,
+    "tau_psilm_in_split": 0.65,
+    "ce_gain_at_in_split_tau": 0.00416,
+    "crossfit_cost_base": 0.02554,
+    "crossfit_cost_psilm": 0.02581,
+    "ce_gain_at_best_tau": 0.003893,
+    "share_surviving": 1.006,
+    "kl_teacher_base": 0.23606,
+    "kl_teacher_psilm": 0.2342,
+    "kl_fraction": 0.0079,
+    "kl_fraction_at_best_tau": 0.0102,
+    "items_psilm_below_teacher": 11,
+    "ce_gain_at_best_tau_ci95": [
+     0.002875,
+     0.021951
+    ]
+   }
+  },
+  {
+   "arm": "rand",
+   "what": "random 9",
+   "n_write": 9,
+   "inj_cap": 0.2,
+   "partner": "results/constitution_model/qwen2.5-0.5b-constitution",
+   "step": 2000,
+   "ceiling_ok": true,
+   "controls_ok": null,
+   "evaluator_reproduced": true,
+   "evaluator_run_on": [
+    "helpful",
+    "test"
+   ],
+   "greedy_decode_diverged": 0,
+   "test": {
+    "base_ce": 0.94314,
+    "teacher_ce": 0.52514,
+    "psilm_ce": 0.94064,
+    "ce_gain": 0.002496,
+    "ce_gain_ci95": [
+     0.0018,
+     0.0033
+    ],
+    "tau_base": 0.65,
+    "tau_psilm": 0.65,
+    "base_ce_at_tau": 0.94218,
+    "psilm_ce_at_tau": 0.93872,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.8,
+    "tau_psilm_in_split": 0.8,
+    "ce_gain_at_in_split_tau": 0.00293,
+    "crossfit_cost_base": 0.03331,
+    "crossfit_cost_psilm": 0.03278,
+    "ce_gain_at_best_tau": 0.003461,
+    "share_surviving": 1.3866,
+    "kl_teacher_base": 0.44696,
+    "kl_teacher_psilm": 0.44509,
+    "kl_fraction": 0.0042,
+    "kl_fraction_at_best_tau": 0.0043,
+    "items_psilm_below_teacher": 8,
+    "ce_gain_at_best_tau_ci95": [
+     0.002309,
+     0.004796
+    ]
+   },
+   "helpful": {
+    "base_ce": 0.78852,
+    "teacher_ce": 0.57055,
+    "psilm_ce": 0.78798,
+    "ce_gain": 0.000537,
+    "ce_gain_ci95": [
+     0.0002,
+     0.0009
+    ],
+    "tau_base": 0.8,
+    "tau_psilm": 0.8,
+    "base_ce_at_tau": 0.69869,
+    "psilm_ce_at_tau": 0.69803,
+    "tau_at_edge": false,
+    "tau_base_at_edge": false,
+    "tau_psilm_at_edge": false,
+    "tau_base_in_split": 0.65,
+    "tau_psilm_in_split": 0.65,
+    "ce_gain_at_in_split_tau": 0.00082,
+    "crossfit_cost_base": 0.02554,
+    "crossfit_cost_psilm": 0.0257,
+    "ce_gain_at_best_tau": 0.000663,
+    "share_surviving": 1.2343,
+    "kl_teacher_base": 0.23606,
+    "kl_teacher_psilm": 0.2356,
+    "kl_fraction": 0.0019,
+    "kl_fraction_at_best_tau": 0.0018,
+    "items_psilm_below_teacher": 10,
+    "ce_gain_at_best_tau_ci95": [
+     0.000272,
+     0.010332
+    ]
+   }
+  }
+ ]
+}

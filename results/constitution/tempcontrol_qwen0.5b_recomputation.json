@@ -1,0 +1,360 @@
+{
+ "what": "the temperature control at 0.5B recomputed by three independent checkers after the run, each with code of its own written from the pre-registration's words: the table from the rows; the reading from the rules, and whether the run was what it says it was; what the intervals are made of. No model was loaded and nothing was measured again.",
+ "when": "2026-09-30, after the run of 08:13 to 08:37",
+ "agrees": {
+  "table": true,
+  "reading": true,
+  "intervals": true
+ },
+ "the_chains_log": [
+  "TEMPCONTROL WAITING for the GPU 2026-09-30 08:13",
+  "the rules as applied are commit 32aee47 2026-09-30T08:13:02+09:00 2026-09-30 08:13",
+  "TEMPCONTROL START 2026-09-30 08:13",
+  "CEILING all: ok True | test gain 0.3587, at best temperatures +0.3734 | helpful_test gain 0.1974, at best temperatures +0.1422 2026-09-30 08:16",
+  "CEILING allplain: ok True | test gain 0.3683, at best temperatures +0.3687 | helpful_test gain 0.2082, at best temperatures +0.1503 2026-09-30 08:18",
+  "CEILING vn: ok True | test gain 0.0182, at best temperatures +0.0081 | helpful_test gain 0.0171, at best temperatures -0.0053 2026-09-30 08:21",
+  "CEILING plainpartner: ok True | test gain 0.0222, at best temperatures +0.0135 | helpful_test gain 0.0185, at best temperatures -0.0038 2026-09-30 08:24",
+  "CEILING vn5: ok True | test gain 0.0604, at best temperatures +0.0554 | helpful_test gain 0.0402, at best temperatures +0.0265 2026-09-30 08:26",
+  "CEILING magmatch: ok True | test gain 0.0137, at best temperatures +0.0178 | helpful_test gain 0.0067, at best temperatures +0.0066 2026-09-30 08:29",
+  "CEILING magmatch1: ok True | test gain 0.0119, at best temperatures +0.0144 | helpful_test gain 0.0060, at best temperatures +0.0056 2026-09-30 08:32",
+  "CEILING magmatch2: ok True | test gain 0.0088, at best temperatures +0.0122 | helpful_test gain 0.0039, at best temperatures +0.0039 2026-09-30 08:35",
+  "CEILING rand: ok True | test gain 0.0025, at best temperatures +0.0035 | helpful_test gain 0.0005, at best temperatures +0.0007 2026-09-30 08:37",
+  "READING the record is reproduced: True 2026-09-30 08:37",
+  "READING all           red-team: gain 0.3587 as evaluated, +0.3734 at best temperatures (+0.2850 to +0.5074): keeps a gain; KL to the teacher 0.5027 (backbone 0.4470) 2026-09-30 08:37",
+  "READING allplain      red-team: gain 0.3683 as evaluated, +0.3687 at best temperatures (+0.2771 to +0.5024): keeps a gain; KL to the teacher 0.5476 (backbone 0.4470) 2026-09-30 08:37",
+  "READING vn            red-team: gain 0.0182 as evaluated, +0.0081 at best temperatures (+0.0034 to +0.0453): keeps a gain; KL to the teacher 0.4561 (backbone 0.4470) 2026-09-30 08:37",
+  "READING plainpartner  red-team: gain 0.0222 as evaluated, +0.0135 at best temperatures (+0.0077 to +0.0520): keeps a gain; KL to the teacher 0.4533 (backbone 0.4470) 2026-09-30 08:37",
+  "READING vn5           red-team: gain 0.0604 as evaluated, +0.0554 at best temperatures (+0.0387 to +0.1048): keeps a gain; KL to the teacher 0.4425 (backbone 0.4470) 2026-09-30 08:37",
+  "READING magmatch      red-team: gain 0.0137 as evaluated, +0.0178 at best temperatures (+0.0001 to +0.0225): keeps a gain; KL to the teacher 0.4388 (backbone 0.4470) 2026-09-30 08:37",
+  "READING magmatch1     red-team: gain 0.0119 as evaluated, +0.0144 at best temperatures (+0.0110 to +0.0179): keeps a gain; KL to the teacher 0.4421 (backbone 0.4470) 2026-09-30 08:37",
+  "READING magmatch2     red-team: gain 0.0088 as evaluated, +0.0122 at best temperatures (+0.0088 to +0.0158): keeps a gain; KL to the teacher 0.4411 (backbone 0.4470) 2026-09-30 08:37",
+  "READING rand          red-team: gain 0.0025 as evaluated, +0.0035 at best temperatures (+0.0023 to +0.0048): keeps a gain; KL to the teacher 0.4451 (backbone 0.4470) 2026-09-30 08:37",
+  "READING C1_plain_partner_at_nine: does not survive (+0.0054, -0.0009 to +0.0123; as evaluated +0.0040, the record +0.0040) 2026-09-30 08:37",
+  "READING C2_plain_partner_at_full_width: still indistinguishable (-0.0047, -0.0383 to +0.0212; as evaluated +0.0096, the record +0.0096) 2026-09-30 08:37",
+  "READING C3_identity_at_nine: does not survive (-0.0067, -0.0124 to +0.0297; as evaluated +0.0068, the record +0.0068) 2026-09-30 08:37",
+  "READING C4_value_neurons_against_random: survives (+0.0046, +0.0001 to +0.0418; as evaluated +0.0157, the record +0.0157) 2026-09-30 08:37",
+  "READING C5_width: survives (+0.0473, +0.0300 to +0.0895; as evaluated +0.0421, the record +0.0421) 2026-09-30 08:37",
+  "READING   vn minus magmatch: does not survive (-0.0098, -0.0160 to +0.0261) 2026-09-30 08:37",
+  "READING   vn minus magmatch1: does not survive (-0.0063, -0.0119 to +0.0307) 2026-09-30 08:37",
+  "READING   vn minus magmatch2: does not survive (-0.0041, -0.0098 to +0.0322) 2026-09-30 08:37",
+  "READING {\"the_value_neurons_small_signal\": \"survives\", \"the_plain_partners_advantage_of_0.0040\": \"does not survive\", \"the_full_width_partner_null\": \"still indistinguishable\", \"the_identity_sign\": \"not firm at best temperature\", \"the_63_to_37_split\": {\"magnitude_share\": 1.8283, \"ci95\": [0.303, 4.424], \"matched_mean_gain\": 0.014783, \"matched_mean_gain_ci95\": [0.005522, 0.018583], \"matched_mean_gain_ends_within_the_grids_resolution_of_zero\": false, \"as_evaluated\": {\"share\": 0.6289, \"ci95\": [0.528, 0.749]}, \"reading\": \"identity term not distinguishable from zero at best temperature\"}} 2026-09-30 08:37",
+  "TEMPCONTROL COMPLETE 2026-09-30 08:37"
+ ],
+ "checkers": [
+  {
+   "lens": "table",
+   "result": {
+    "agrees": true,
+    "tolerance": "Intervals: exact equality of both ends at six decimals (all 36 arm intervals, 32 contrast intervals, 2 matched-mean intervals and 4 share intervals are equal). Gains and contrasts: equality at six decimals, except one helpful-split contrast that is 1e-6 off because the table rounds before it subtracts. Fields stored at 4 or 5 decimals: equality at the stored precision, or a difference that comes from computing with values already rounded to 5 decimals. The largest unrounded difference in any field is 5.9e-5, on the helpful-split share at best temperature (-1.0164586 against -1.0164). The record is taken as reproduced within 0.0005, as the pre-registration says.",
+    "max_abs_difference": 5.87e-05,
+    "findings": [
+     {
+      "what": "The C4 reading on the red-team split ('survives') depends on the draw. With seed 0 and 2000 draws the interval at the best temperatures is [0.000123, 0.041847]. With seed 1 it is [-0.000290, 0.040839] and with seed 2 it is [-0.000097, 0.041562]; both include zero, so C4 would read 'does not survive'. With seed 0 and 10000 draws it is [0.000163, 0.041408], which survives. The pre-registration fixes seed 0 and 2000 draws, so the reading as applied follows the rule correctly. It also gets the pre-registered flag for an interval ending within 0.0004 of zero.",
+      "where": "results/constitution/arms_controls_qwen0.5b.json contrasts_at_best_tau[split=test, arm=vn, minus=[rand]]",
+      "evidence": "My own bootstrap, default_rng(seed), per read split, read-split indices first. Seed 0 with 2000 draws reproduces the table exactly. The seed 1, seed 2 and 10000-draw runs are in scratchpad/recompute05b/table/boot_s{1,2}_n2000_A.json and boot_s0_n10000_A.json.",
+      "severity": "note"
+     },
+     {
+      "what": "Matched draw 0's own gain on the red-team split at the best temperatures ('keeps a gain', lower end 0.000122, flagged within 0.0004) also depends on the draw. Every other arm gain, contrast, matched-mean gain and share label keeps its side of zero and its side of plus and minus 0.0004 across seeds 0, 1, 2 and the 10000-draw run.",
+      "where": "arms_controls_qwen0.5b.json arms[magmatch].test.ce_gain_at_best_tau_ci95",
+      "evidence": "Seed 0, 2000 draws: [0.000122, 0.0225]. Seed 1: [-0.000446, 0.022605]. Seed 2: [-0.003071, 0.022634]. Seed 0, 10000 draws: [-0.001597, 0.022536]. The matched mean stays above zero in every run (lowest lower end 0.002443), so the 63/37 label ('identity term not distinguishable from zero at best temperature') does not change.",
+      "severity": "note"
+     },
+     {
+      "what": "The table's draw order is: a fresh default_rng(0) for each read split, and in each draw the read split's 100 indices before the other split's. Items are sorted by source. My program matches all of this exactly. Other readings of the words give different intervals. Continuing one rng across the two splits changes only the helpful split. Sharing one (test, helpful) draw between both read splits also changes only the helpful split. Drawing the other split first, or drawing all indices as matrices, changes both splits by up to 0.0097. Under those orders C4 on the red-team split stays above zero (lower ends 0.000063 to 0.000205), but matched draw 0's red-team gain includes zero. Under other-split-first, matched draw 2's red-team gain gets the within-0.0004 flag (lower end 0.00026).",
+      "where": "results/constitution/arms_controls.py resampled() (read after my recomputation), lines 106-112",
+      "evidence": "Of my schemes, only A (per split rng, read then other) gives a maximum interval-end difference of 0.0. Scheme B: 0.001599. Scheme C: 0.008855. Scheme D: 0.008855. Scheme E: 0.004658. Schemes F and G: 0.008523 and 0.009673.",
+      "severity": "note"
+     },
+     {
+      "what": "On the helpful split the table computes the contrast 'difference' and the magnitude share from gains it has already rounded to six decimals. The as-evaluated contrasts and all intervals use unrounded values. This moves one contrast by 1e-6 and one share by 1e-4 in its fourth decimal. Neither is on the read split, and neither changes a label.",
+      "where": "arms_controls.py lines 252-259 and 273-277; table contrasts_at_best_tau[helpful, vn minus magmatch] and magnitude_share (helpful)",
+      "evidence": "vn minus matched draw 0 on helpful: unrounded -0.0117995007, which is -0.011800 at six decimals; the table has -0.011799. Helpful share at best temperature: unrounded -1.0164587, which is -1.0165; the table has -1.0164. The red-team share is 1.8283 either way (unrounded 1.8282669).",
+      "severity": "note"
+     },
+     {
+      "what": "The table's per-arm 'ce_gain_ci95' is not from the table's paired draws. It is copied from teacher_ceiling.json's own bootstrap: Python random.Random(0), one split resampled, order statistics, 4 decimals. The header says 'every arm and every contrast on the same draws'. My own implementation of that rule reproduces all 18 values exactly. The as-evaluated gain intervals from the table's own paired draws differ from them by up to 0.0055, and no side of zero changes.",
+      "where": "arms_controls.py line 170 (ce_gain_ci95: a['ci95']['ce_gain']); eval/teacher_ceiling.py bootstrap() lines 141-150",
+      "evidence": "Full-width arm, red-team split: the field has [0.3001, 0.4253]; the paired draws give [0.302579, 0.41979]. All 18 paired as-evaluated intervals lie above zero, as do the copied ones.",
+      "severity": "note"
+     },
+     {
+      "what": "Several fields stored at 5 decimals are computed from values teacher_ceiling.json had already rounded to 5 decimals, so they differ from the rows' unrounded values beyond their stored precision: crossfit_cost_base/psilm, ce_gain_at_in_split_tau and kl_fraction_at_best_tau. Nothing is read from these fields.",
+      "where": "arms_controls.py lines 176-183; teacher_ceiling.py line 200",
+      "evidence": "crossfit_cost_base: 0.03331 against unrounded 0.0333083. crossfit_cost_psilm: up to 8.45e-6 off. ce_gain_at_in_split_tau: 6 of 18 differ at 5 decimals (all helpful 0.11771 against 0.1177159). kl_fraction_at_best_tau: vn helpful 0.008 against 0.0079475; magmatch2 test 0.0135 against 0.013551; magmatch2 helpful 0.0102 against 0.010147.",
+      "severity": "note"
+     },
+     {
+      "what": "On the helpful split the magnitude share's confidence set at the best temperatures is not an interval. It is two rays, [-3, -0.534] and [0.384, 5], with -0.533 to 0.383 excluded. The table reports [null, null], which is correct under the rule's 'open end' wording but hides the gap. The helpful split is reported, not read.",
+      "where": "arms_controls_qwen0.5b.json contrasts_at_best_tau[helpful, C3].magnitude_share.at_best_tau.ci95",
+      "evidence": "My r-grid scan (r from -3 to 5, step 0.001) includes 7084 of 8001 r values and excludes one contiguous run from -0.533 to 0.383. The value neurons' helpful gain interval includes zero ([-0.00895, 0.013345]), which is why the set splits in two.",
+      "severity": "note"
+     },
+     {
+      "what": "'The three matched draws keep MORE than the value neurons at the best temperatures' holds only for the point estimates. None of the three per-draw intervals excludes zero, and C3's point estimate (-0.006697) lies near the lower end of its own interval [-0.012414, 0.029744], because the bootstrap distribution is lopsided by the temperature re-choice.",
+      "where": "tempcontrol_qwen0.5b_reading summary as given in the task; table contrasts_at_best_tau[test, vn minus each magmatch]",
+      "evidence": "On the red-team split at the best temperatures, vn minus each matched draw is -0.009751 [-0.015982, 0.026132], -0.006274 [-0.011869, 0.030665] and -0.004067 [-0.00977, 0.032176]. The share of draws below zero is 0.7225, 0.7325 and 0.698; for C3 it is 0.72.",
+      "severity": "note"
+     }
+    ],
+    "facts": [
+     "Every arm's teacher_ceiling.rows.jsonl holds 200 rows, all carrying the id of that arm's teacher_ceiling.json. All 200 were kept (100 per split, 100 distinct sources per split), and after sorting by source the nine arms have the same sources in the same order. The backbone's per-item curves are identical across the nine arms (max difference 0.0), and 'ce' equals 'ce@1.0' exactly. The grid has 27 temperatures, 0.30 to 1.60 in steps of 0.05.",
+     "Red-team split, full width (all): gain as evaluated 0.358671. Cross-fitted temperatures: backbone 0.65, coupled 0.75. Gain at those temperatures 0.373395, 95% [0.284995, 0.507398], share kept 1.0411. In-split temperatures 0.80/0.80 with gain 0.343619.",
+     "Red-team split, nine value neurons (vn): gain as evaluated 0.018216. Cross-fitted temperatures 0.65/0.65. Gain at best temperatures 0.008086, 95% [0.003416, 0.045317], share kept 0.4439. In-split temperatures 0.80/0.85 with gain 0.012133.",
+     "Red-team split, the other arms (as evaluated, then at best temperatures with 95% interval): allplain 0.368302, 0.368657 [0.277116, 0.502395]; plainpartner 0.022248, 0.013459 [0.007715, 0.05203]; vn5 0.060352, 0.055386 [0.038745, 0.104758]; magmatch 0.013687, 0.017837 [0.000122, 0.0225]; magmatch1 0.011917, 0.014360 [0.010954, 0.017906]; magmatch2 0.008762, 0.012153 [0.008783, 0.015756]; rand 0.002496, 0.003461 [0.002309, 0.004796]. No best temperature lies at an edge of the grid.",
+     "Red-team contrasts at the best temperatures, with the same contrast at temperature 1 on the same draws in brackets: C1 +0.005373 [-0.000913, 0.012337] (+0.004032 [0.00087, 0.0079]); C2 -0.004738 [-0.038259, 0.021211] (+0.009631 [-0.012316, 0.029748]); C3 -0.006697 [-0.012414, 0.029744] (+0.006761 [0.004146, 0.00911]); C4 +0.004625 [0.000123, 0.041847] (+0.015720 [0.013748, 0.017658]); C5 +0.047300 [0.029953, 0.089486] (+0.042135 [0.030958, 0.055938]).",
+     "Red-team, vn minus each matched draw at the best temperatures: -0.009751 [-0.015982, 0.026132], -0.006274 [-0.011869, 0.030665] and -0.004067 [-0.00977, 0.032176]. As evaluated: +0.004529, +0.006299, +0.009454. Standard deviation of the three draws' gains: 0.002495 as evaluated and 0.002866 at the best temperatures.",
+     "Red-team magnitude share at the best temperatures: 1.8283 (unrounded 1.8282669), 95% [0.303, 4.424], from a matched mean gain of 0.014783 [0.005522, 0.018583]. As evaluated: 0.6289 (unrounded 0.628860), 95% [0.528, 0.749].",
+     "Helpful split at the best temperatures (as evaluated in brackets): all 0.142206 [0.093095, 0.203784] (0.197357); vn -0.005250 [-0.00895, 0.013345] (0.017154); plainpartner -0.003778 [-0.007354, 0.014785] (0.018490). Helpful share at best temperatures is -1.0165 unrounded (table -1.0164) with both ends open; as evaluated 0.3206 [0.263, 0.39].",
+     "Every one of those numbers equals arms_controls_qwen0.5b.json to six decimals, including both ends of every interval, the gain_draws_below_zero fractions and the share intervals. The exceptions are the rounding-order items listed in the findings.",
+     "Rows against the evaluator's own runs: the largest |CE from rows minus evaluator CE (4 dp)| is 0.000049 over the 16 arm-split pairs that have a run; as-evaluated gains lie within 0.000071 of the differences of the evaluator's 4-dp CEs. Against paired_bootstrap_qwen0.5b.json, mean CEs agree to 2.5e-8, per-item CEs (file order) to 5.6e-7, and the eight as-evaluated contrasts equal the record's to six decimals (0.004032, 0.009631, 0.006761, 0.015720, 0.042135, 0.004529, 0.006299, 0.009454).",
+     "Readings that depend on the draw, among seed 0/2000, seed 1/2000, seed 2/2000 and seed 0/10000: red-team C4, whose lower end is 0.000123, -0.000290, -0.000097 and 0.000163 in those runs; and matched draw 0's own red-team gain at the best temperatures, whose lower end is 0.000122, -0.000446, -0.003071 and -0.001597. No other arm gain or contrast changes its side of zero or of 0.0004 in those runs."
+    ],
+    "checked": [
+     "The whole pre-registration file was read before any code was written. My own program (scratchpad/recompute05b/table/load.py, table.py) was written from its words. arms_controls.py was not imported or copied; I read it only afterwards, to explain differences in draw order and rounding.",
+     "Row counts, id filter, per-split counts, uniqueness and ordering of sources across all nine arms.",
+     "Per arm and split: gain as evaluated; cross-fitted best temperatures of each side; gain at those temperatures; in-split best temperatures and the gain there; cross-fit costs; share kept; edge flags; teacher CE; KL fields; items_psilm_below_teacher. All were compared with the table field by field at its stored precision.",
+     "Paired bootstrap (default_rng(0), 2000 draws, both splits resampled, temperatures re-chosen on the resampled other split, every arm on the same draw): all 18 arm intervals, 16 contrast intervals at best temperatures, 16 as evaluated, gain_draws_below_zero, matched-mean intervals. All are exactly equal to the table.",
+     "The magnitude-share inversion over r from -3 to 5 in steps of 0.001, at best temperatures and as evaluated, on both splits. It equals the table, and I checked whether each r-set is contiguous.",
+     "Six alternative draw orders (schemes B-G), to identify which reading of the words the table uses and how large the order-only differences are.",
+     "Seeds 1 and 2 with 2000 draws, and seed 0 with 10000 draws: which intervals change side of zero or of plus or minus 0.0004, or gain or lose the within-0.0004 flag.",
+     "As-evaluated gains against eval_test.json and eval_helpful.json for 16 arm-split pairs; as-evaluated contrasts, mean CEs and per-item CEs against paired_bootstrap_qwen0.5b.json.",
+     "The table's ce_gain_ci95 field, recomputed from the rows by my own implementation of the rule stated in teacher_ceiling.py's bootstrap(). All 18 equal.",
+     "That nothing was written in the repository: no file there is newer than my first scratch file, and git status shows only pre-existing changes."
+    ],
+    "not_checked": [
+     "The reading file tempcontrol_qwen0.5b_reading.json/.txt, the labels it assigns, and the .txt rendering of the table were not opened. The reading's claims were checked only as the task summarised them, against my numbers.",
+     "The chain log, the commit guard in tempcontrol_qwen0.5b.sh, and whether the committed files were unchanged during the run. teacher_ceiling.commit holds 32aee47b… for all nine arms, but I did not verify the imports' hashes.",
+     "The measurement-side ok checks in teacher_ceiling.json (prompt rebuilt, forwards agree, teacher argmax within 0.25 logits, greedy re-decode). These cannot be recomputed without running a model, so none was run.",
+     "The first24 span, and the KL temperature choices beyond the fact that the derived KL fields match at stored precision.",
+     "A bootstrap with items in file order rather than sorted by source, and any seed other than 0, 1 and 2.",
+     "The paper's and the cards' sentences."
+    ]
+   }
+  },
+  {
+   "lens": "reading",
+   "result": {
+    "agrees": true,
+    "tolerance": "Labels, booleans and counts must match exactly. Numbers are compared at the table's six-decimal rounding (at most 5e-7); shares at their four-decimal rounding. I rebuilt the point gains from the rows files and compared them with the table: the largest difference was 4.97e-7. I compared the reading with my own rule application at 649 leaves. Every label, boolean and number matched exactly. The only non-zero gap was one of my own cross-checks: the share recomputed from the four-decimal-rounded mean gain differs by 7.8e-5, which is rounding. Recomputing the share from the six-decimal gains the table uses gives exactly 1.8283.",
+    "max_abs_difference": 4.97e-07,
+    "findings": [
+     {
+      "what": "The reading gives the beside-C3 items and the 63/37 split for the red-team split only. The helpful split's per-draw contrasts, the two counts, the standard deviation and the split reading are not reported, although the table holds their numbers.",
+      "where": "eval/tempcontrol_reading.py lines 166-192 (READ only); results/constitution/tempcontrol_qwen0.5b_reading.json has no helpful entries under beside_C3 or the_63_to_37_split",
+      "evidence": "contrasts.split says 'the helpful split is reported beside it'. contrasts.C3 says the per-draw items are 'reported beside it', and reading.a_contrast names the helpful split only 'for a contrast'. The rule text is unclear on whether these items are due on the helpful split, and the code chose not to report them. By the rules they would be: per-draw vn-magmatch -0.011799 [-0.015178, 0.00685], vn-magmatch1 -0.010817 [-0.014433, 0.007601], vn-magmatch2 -0.009143 [-0.012572, 0.00936], each 'does not survive'; 0 intervals exclude zero with the sign; 0 draws below vn at best temperatures (3 as evaluated); SD 0.001343 at best temperatures and 0.001454 as evaluated (ddof=1). The split: 'undefined at best temperature' (vn helpful [-0.00895, 0.013345] keeps no gain); share -1.0164; interval open at both ends; matched mean 0.005336 [0.004264, 0.022533]; as evaluated 0.3206 [0.263, 0.39]. No named reading changes, because those are all on the red-team split.",
+      "severity": "note"
+     },
+     {
+      "what": "'How many draws lie below the value neurons' is not defined by the rules: which temperature, whether points or intervals, and which split. The code counts point gains at the best temperatures on the red-team split.",
+      "where": "eval/tempcontrol_reading.py line 181-182; reading beside_C3.draws_below_the_value_neurons_at_best_temperatures = 0",
+      "evidence": "At the best temperatures the draws' gains are 0.017837, 0.014360 and 0.012153 against vn's 0.008086, so 0 lie below. As evaluated (0.013687, 0.011917, 0.008762 against 0.018216) the count is 3. Counted by per-draw interval it is 0, since no interval excludes zero. The helpful split gives the same: 0 at best temperatures, 3 as evaluated.",
+      "severity": "note"
+     },
+     {
+      "what": "The summary sentence 'the three matched draws keeping MORE than the value neurons at the best temperatures' holds for point estimates only. By the rules' own interval reading, no draw is distinguishable from the value neurons.",
+      "where": "task summary / reading beside_C3",
+      "evidence": "The per-draw contrasts at best temperatures are -0.009751 [-0.015982, +0.026132], -0.006274 [-0.011869, +0.030665] and -0.004067 [-0.009770, +0.032176]. All three are 'does not survive'. The share of bootstrap draws below zero is 0.7225, 0.7325 and 0.698. C3 is -0.006697 [-0.012414, +0.029744].",
+      "severity": "note"
+     },
+     {
+      "what": "The rules do not give the ddof or the temperature for the standard deviation of the three draws' gains. The code uses ddof=1 at both the best temperatures and temperature 1. The pre-registration's 'standard deviation 0.0025 as evaluated' implies ddof=1.",
+      "where": "eval/tempcontrol_reading.py line 177; reading beside_C3.sd_of_the_draws_gains",
+      "evidence": "With ddof=1: 0.002866 at best temperatures and 0.002495 as evaluated. With ddof=0: 0.002340 and 0.002037. The pre-registration's 0.0025 matches only ddof=1.",
+      "severity": "note"
+     },
+     {
+      "what": "The table computes the magnitude share from gains already rounded to six decimals. The rule does not say which. share_kept, by contrast, is stated to use unrounded gains.",
+      "where": "results/constitution/arms_controls.py lines 252 and 272-277",
+      "evidence": "Red-team: 1.828262 from rounded gains and 1.828267 from unrounded row gains; both print as 1.8283. Helpful: -1.016444 from rounded gains, printed -1.0164; unrounded gives -1.016459, which would print -1.0165. The helpful share is in the table only, not in the reading.",
+      "severity": "note"
+     },
+     {
+      "what": "The ok check says '97% of positions', but the code takes the item mean of each item's share of near positions. It is not weighted by position.",
+      "where": "eval/teacher_ceiling.py lines 153-161 and 346",
+      "evidence": "On these rows it makes no difference: both give 1.000000 for every arm and split (5719 positions on the red-team split, 11589 on the helpful split).",
+      "severity": "note"
+     },
+     {
+      "what": "The code applies the 'ends within 0.0004 of zero' flag only to intervals at the best temperatures, and treats 'within' as <=. The rule states neither restriction explicitly, though its paragraph is about gains at the best temperatures.",
+      "where": "eval/tempcontrol_reading.py near_zero, lines 50-53",
+      "evidence": "No end lies at exactly 0.0004, so <= versus < changes nothing. Flagging as-evaluated intervals too would add one flag: rand helpful as evaluated [0.0002, 0.0009]. The closest as-evaluated contrast end, C1 helpful at 0.000427, stays unflagged.",
+      "severity": "note"
+     },
+     {
+      "what": "teacher_ceiling.py drops the evaluator check without a flag when an eval file exists but its n or data stem does not match. It was not triggered in this run.",
+      "where": "eval/teacher_ceiling.py lines 348-356",
+      "evidence": "16 of the 18 arm-splits carry the evaluator check. The two without it, magmatch1 and magmatch2 on the helpful split, have no eval_helpful.json at all, as the pre-registration expects.",
+      "severity": "note"
+     }
+    ],
+    "facts": [
+     "The first thing the reading states is whether the record is reproduced: all nine record checks hold. The table's as-evaluated contrasts equal the pre-registration's record values exactly (difference 0.000000): C1 +0.004032, C2 +0.009631, C3 +0.006761, C4 +0.015720, C5 +0.042135, vn-magmatch +0.004529, vn-magmatch1 +0.006299, vn-magmatch2 +0.009454. Against the unrounded record (paired_bootstrap_qwen0.5b.json mean_ce), the largest difference is 4.76e-7. The as-evaluated share is 0.6289 against 0.6289 (unrounded record 0.628861).",
+     "Named reading, the value neurons' small signal: 'survives'. The nine value neurons keep 0.008086 on the red-team split at the best temperatures, 95% [0.003416, 0.045317], against 0.018216 as evaluated (share kept 0.4439).",
+     "Named reading, the plain partner's advantage of 0.0040: 'does not survive'. C1 at the best temperatures is +0.005373, 95% [-0.000913, +0.012337]; as evaluated it is +0.004032 [+0.000870, +0.007900].",
+     "Named reading, the full-width partner null: 'still indistinguishable'. C2 is read as a null: -0.004738, 95% [-0.038259, +0.021211]; as evaluated +0.009631 [-0.012316, +0.029748].",
+     "Named reading, the identity sign: 'not firm at best temperature'. C3 is -0.006697, 95% [-0.012414, +0.029744], so it does not survive against the as-evaluated +0.006761 [+0.004146, +0.009110]. 0 of the 3 per-draw intervals exclude zero with the as-evaluated sign.",
+     "Named reading, the 63/37 split: 'identity term not distinguishable from zero at best temperature'. The share is 1.8283 with interval [0.303, 4.424], and it may not be stated as a split: the value neurons keep a gain (yes), the matched mean 0.014783 [0.005522, 0.018583] keeps a gain (yes), but C3 does not survive. As evaluated the share is 0.6289 [0.528, 0.749]. The helpful split, which the reading omits, would be 'undefined at best temperature' with share -1.0164 and an interval open at both ends.",
+     "Arm labels, red-team split: all eight other arms 'keeps a gain'. all 0.373395 [0.284995, 0.507398]; allplain 0.368657 [0.277116, 0.502395]; vn 0.008086 [0.003416, 0.045317]; plainpartner 0.013459 [0.007715, 0.052030]; vn5 0.055386 [0.038745, 0.104758]; magmatch 0.017837 [0.000122, 0.022500]; magmatch1 0.014360 [0.010954, 0.017906]; magmatch2 0.012153 [0.008783, 0.015756]; rand 0.003461 [0.002309, 0.004796].",
+     "Arm labels, helpful split: vn -0.005250 [-0.008950, 0.013345] and plainpartner -0.003778 [-0.007354, 0.014785] are 'not distinguishable from zero at best temperature'. The rest 'keep a gain': all 0.142206 [0.093095, 0.203784]; allplain 0.150304 [0.097127, 0.217594]; vn5 0.026497 [0.009758, 0.033369]; magmatch 0.006549 [0.005125, 0.025103]; magmatch1 0.005567 [0.004395, 0.022947]; magmatch2 0.003893 [0.002875, 0.021951]; rand 0.000663 [0.000272, 0.010332].",
+     "C4 and C5 on the red-team split, both read as differences: C4 'survives' at +0.004625 [+0.000123, +0.041847] and carries the flag for ending within 0.0004 of zero; as evaluated +0.015720. C5 'survives' at +0.047300 [+0.029953, +0.089486]; as evaluated +0.042135.",
+     "Contrasts on the helpful split (reported, not read): every as-evaluated interval excludes zero, so all are read as differences. C1 'survives' at +0.001472 [+0.000244, +0.015707] and is flagged. C2 'does not survive' at +0.008098 [-0.007174, +0.024373]. C3 'does not survive' at -0.010586 [-0.014037, +0.007820]. C4 'does not survive' at -0.005913 [-0.009544, +0.012535]. C5 'survives' at +0.031747 [+0.013393, +0.035466].",
+     "Beside C3 on the red-team split: vn-magmatch -0.009751 [-0.015982, +0.026132], vn-magmatch1 -0.006274 [-0.011869, +0.030665] and vn-magmatch2 -0.004067 [-0.009770, +0.032176] are each 'does not survive'. Counts: 0 intervals exclude zero with the sign, and 0 draws lie below the value neurons at the best temperatures (3 as evaluated). The standard deviation of the draws' gains is 0.002866 at the best temperatures and 0.002495 as evaluated (ddof=1).",
+     "Four flags end within 0.0004 of zero: magmatch's red-team gain (lower end 0.000122), rand's helpful gain (0.000272), C4 on the red-team split (0.000123) and C1 on the helpful split (0.000244). The matched mean's gain is not flagged on either split.",
+     "No best temperature lies at an end of the grid (0.30 or 1.60) for any arm, split, span, CE or KL curve, cross-fitted or in-split. The cross-fitted CE temperatures run 0.65 to 0.85, so at_the_grids_edge states no direction anywhere.",
+     "share_kept (gain at best temperatures over gain as evaluated), red-team / helpful: all 1.0411/0.7206, allplain 1.0010/0.7218, vn 0.4439/-0.3061, plainpartner 0.6049/-0.2043, vn5 0.9177/0.6587, magmatch 1.3032/0.9826, magmatch1 1.2050/0.9334, magmatch2 1.3870/1.0060, rand 1.3866/1.2343.",
+     "KL to the teacher at temperature 1 against the backbone (0.44696 red-team, 0.23606 helpful). On the red-team split the arm is nearer the teacher for vn5 0.44249, magmatch 0.43880, magmatch1 0.44213, magmatch2 0.44113 and rand 0.44509. It is not nearer for all 0.50267, allplain 0.54757, vn 0.45608 and plainpartner 0.45334. On the helpful split it is nearer only for magmatch 0.23365, magmatch1 0.23481, magmatch2 0.23420 and rand 0.23560. The fractions removed at the best temperatures are as in the table (red-team: all 0.2072, allplain 0.1890, vn -0.0065, plainpartner 0.0000, vn5 0.0565, magmatch 0.0196, magmatch1 0.0129, magmatch2 0.0135, rand 0.0043).",
+     "Point gains rebuilt from the rows files match the table: cross-fitted temperatures red-team 0.65 for the backbone and 0.75 for the all/allplain coupled systems (0.65 for the others), helpful 0.80 for the backbone and 0.80/0.85 for the coupled systems. Every arm's gain at the best temperatures and at temperature 1 agrees with the table to at most 4.97e-7.",
+     "The per-item red-team cross-entropies in the rows reproduce the record's per_item_ce for every arm and for the base to at most 5.61e-7.",
+     "Loading eval/tempcontrol_reading.py in memory and running read() on the table (nothing written) gives exactly the JSON on disk, results/constitution/tempcontrol_qwen0.5b_reading.json.",
+     "The run: every arm's teacher_ceiling.commit holds 32aee47b1d6c6536b2b3bb0168c6af32169687d3. HEAD is that commit. The chain log records 'the rules as applied are commit 32aee47 2026-09-30T08:13:02+09:00' and has no PREREQ, FAILED or NOT OK line. Each .commit was written at the arm's start (08:13:21 to 08:35:00) and each result at its end (08:16:03 to 08:37:42).",
+     "All 16 files the chain names are present at commit 32aee47 and unchanged in the working tree: the 5 rule files and the 11 USES imports. git diff --quiet exits 0 with and without core.fileMode=false, and the blob hashes are equal. eval/__init__.py does not exist (namespace package). The only modified tracked files are results/hf_export/psilm2_card.md and upload_psilm2_tokens.py, which are neither rules nor imports.",
+     "Every teacher_ceiling.json says ok true. Each holds both splits with n = 100, carries temperature_crossfit, and has every identity boolean true.",
+     "Check value 1, the share of positions where the stored token is the teacher's argmax or within 0.25 logits: 1.000000 on every arm and split, per position and as item mean (threshold 0.97). The strict argmax share per position is 0.997377 on the red-team split (5719 positions) and 0.996462 on the helpful split (11589 positions).",
+     "Check value 2, the difference of the two base forwards (staged minus stock): 0.000000 on every arm and split in the JSON, and exactly 0 per item in the rows (threshold 0.002).",
+     "Check value 3, the difference from the evaluator's cross-entropy, run minus evaluator's four-decimal value. Base: +0.000040 on the red-team split and +0.000020 on the helpful split, for every arm. psilm, red-team / helpful: all -0.000040/-0.000040, allplain +0.000030/-0.000010, vn +0.000020/-0.000040, plainpartner -0.000010/+0.000030, vn5 -0.000020/-0.000010, magmatch +0.000050/-0.000050, magmatch1 +0.000020/none, magmatch2 -0.000030/none, rand +0.000040/-0.000020. The largest absolute value is 0.000050 (threshold 0.001). magmatch1 and magmatch2 have no helpful evaluator file, as pre-registered.",
+     "Each rows file holds 200 rows, all carrying the result's id: 100 per split, with 100 distinct sources per split. Each arm's log has 20 progress lines, so all 200 rows were computed in this run and none were resumed.",
+     "The logs: each arm's teacher_ceiling.log has 26 lines, with 0 tracebacks, 0 error lines, 0 warnings, 0 skipped, 0 retried and 0 torn-line lines, and ends 'TEACHER-CEILING OK'. The chain log has 0 such lines. The self-test log has 1 [WARN] line, produced by the self-test's own deliberately torn fixture file.",
+     "The greedy re-decode of the first two items of each split: 0 of 4 items diverged in each of the nine arms (first_divergence null for every item)."
+    ],
+    "checked": [
+     "I read every key of the pre-registration and applied its rules with my own program, scratchpad/recompute05b/reading/my_reading.py, written from the rule text without importing eval/tempcontrol_reading.py. It covers the arm labels on both splits; C1-C5 on both splits, each read as a difference or a null by the rule's words; the per-draw contrasts; the counts; the SD; the five named readings; the split's label, share, interval and whether it may be stated; the flags; the grid-edge direction; share_kept; the KL comparison; and the nine record checks, recomputed from the record's mean_ce.",
+     "I compared tempcontrol_qwen0.5b_reading.json leaf by leaf with my values and the table's (compare.py, 649 leaves): no difference in any label, boolean or number.",
+     "I ran eval/tempcontrol_reading.py's read() in memory on the table: its output equals the file on disk.",
+     "I rebuilt the cross-fitted point gains and the gains at temperature 1 from the rows files: they match the table to within 4.97e-7. The per-item red-team CEs match the record's per_item_ce to within 5.61e-7.",
+     "I checked the table's per-arm temperatures, grid-edge flags, KL and cross-fit costs against each teacher_ceiling.json: they are equal, and there is no at_edge flag anywhere in any JSON.",
+     "Git: the commit id, the 9 .commit files, and cat-file plus diff --quiet (with and without fileMode, plus blob hash) for the 16 files the chain names.",
+     "Each teacher_ceiling.json: ok, the splits, n, identity booleans, the check values (near share per position and item mean, base-stock difference in the JSON and the unrounded rows, evaluator differences) and the greedy re-decode count.",
+     "Each rows file: row counts, the id, rows per split and distinct sources. Each log: counts of tracebacks, warnings, errors, skipped, retried and torn lines, and the kinds of lines present (counts only). The chain log and the self-test log.",
+     "arms_controls.py's share and interval code, read to find where the share's rounding comes from."
+    ],
+    "not_checked": [
+     "The bootstrap intervals (the gains' and contrasts' ci95 at the best temperatures and as evaluated, the share intervals [0.303, 4.424] and [0.528, 0.749], and the matched-mean intervals) were not recomputed. I took them from the table as given, and every label that depends on them rests on the table's intervals.",
+     "kl_fraction_at_best_tau was not recomputed from per-temperature KL rows. I only checked it equal to teacher_ceiling.json.",
+     "That frozen() passed before each arm is inferred only from the absence of PREREQ lines and the chain continuing. The runtime cmp of the launched copy against the committed chain cannot be re-verified now.",
+     "The identity checks (excerpt sha256, prefix tokens, model) were read as booleans from the JSON, not recomputed. The checkpoints (bridges.npz) were not checked against those the record was evaluated from.",
+     "The as-evaluated arm intervals ce_gain_ci95 (four-decimal, from teacher_ceiling.py's own random.Random bootstrap) were not recomputed.",
+     "Nothing was measured and no model was loaded, per the hard rules. No prompt or generated text was read or printed; the log lines were classified by pattern only."
+    ]
+   }
+  },
+  {
+   "lens": "intervals",
+   "result": {
+    "agrees": true,
+    "tolerance": "1e-6 on the table's six-decimal fields (points, interval ends, as-evaluated interval ends); 1e-5 on the five-decimal fields that eval/teacher_ceiling.py writes (in-split gains, cross-fit costs). Largest difference found: 9.999999999992654e-07 on the six-decimal fields and 8e-06 on the five-decimal fields.",
+    "max_abs_difference": 8e-06,
+    "findings": [
+     {
+      "what": "At 0.5B the cross-fit's premise, that a best temperature carries over from one split to the other, fails. Each nine-coordinate arm's cross-fitted interval therefore mixes two discrete events: the coupled temperature chosen on the other split either equals the backbone's or is one grid step away from it. The interval measures how likely that one-step mismatch is, not how uncertain the gain is from item sampling.",
+      "where": "results/constitution/arms_controls_qwen0.5b.json ce_gain_at_best_tau_ci95 (every nine-coordinate arm, both splits); preregistration runs.temperatures",
+      "evidence": "The backbone's parabola vertices are at tau 0.81409 on red-team and 0.64154 on helpful, 0.17255 apart. The cross-fit costs the backbone 0.033308 on red-team and 0.025537 on helpful. At the cross-fitted temperature, one grid step moves the read split's curves by 0.017223 to 0.028203 on red-team and 0.013031 to 0.019066 on helpful. The (backbone tau, coupled tau) pair explains this share of the draws' variance: red-team vn 0.9157, plainpartner 0.8707, magmatch 0.8428, magmatch1 0.8532, magmatch2 0.8505, rand 0.9346; helpful 0.9386, 0.9311, 0.9528, 0.9471, 0.9589, 0.9611. For comparison, all is 0.1698 and 0.1233. Red-team vn: 1501 draws have the coupled temperature equal to the backbone's, mean +0.008013; 499 have it one step above, mean +0.033158. The upper end +0.045317 falls in the one-step mode.",
+      "severity": "badly_posed"
+     },
+     {
+      "what": "The grid-resolution flag (0.0004, from 9B) does not describe how finely a cross-fitted gain is resolved at 0.5B. At 0.5B the in-split grid error also exceeds 0.0004 for some curves and contrasts.",
+      "where": "eval/tempcontrol_reading.py GRID = 0.0004; preregistration runs.temperatures",
+      "evidence": "The cross-fitted gains are not taken at minima of the read split's curves. The backbone sits 0.033308 above its own grid minimum on red-team (83.3 times 0.0004) and 0.025537 above on helpful (63.8 times). One grid step at the cross-fitted temperature is 32.6 to 70.5 times 0.0004. In-split, the grid minimum lies above the three-point parabola vertex by up to 0.000616 (plainpartner, red-team). Four of ten red-team curves exceed 0.0004: all 0.000412, vn 0.000534, plainpartner 0.000616, vn5 0.000438. The backbone's excess is 0.000223 on red-team and 0.000081 on helpful. Grid-minus-vertex for red-team contrasts: vn-magmatch -0.000448, vn-magmatch2 -0.000428, C3 -0.000426, vn-magmatch1 -0.000401. Gains stay under the threshold, with a maximum of 0.000393. Given the curvature, the worst case (vertex at a half step) is up to 0.000710.",
+      "severity": "badly_posed"
+     },
+     {
+      "what": "C3, the identity sign and the 63/37 split are read 'at best temperature', but C3 has no temperature-free sign at 0.5B. Held at one common temperature, it reverses at low temperatures and survives only at 0.95 and 1.00. The cross-fitted 'does not survive' mixes a mode that reverses outright with a mode that survives. At the cross-fitted temperature itself, 0.65, C3 reverses.",
+      "where": "tempcontrol_qwen0.5b_reading.json contrasts.C3_identity_at_nine.test, named.the_identity_sign, named.the_63_to_37_split",
+      "evidence": "Red-team C3 with both sides at one common temperature: -0.013631 at 0.50, -0.011101, -0.008814, -0.006697 at 0.65, -0.004700, -0.002779, -0.000901, +0.000966, +0.002848, +0.004772 at 0.95, +0.006761 at 1.00. Its interval excludes zero below at 5 temperatures (0.50 to 0.70), includes zero at 4 (0.75 to 0.90) and excludes above at 2 (0.95, 1.00). At the common temperature 0.65, which gives the cross-fitted point, C3 is -0.006697 [-0.010898, -0.003024]. In 71.70% of the draws, vn and all three matched draws chose the same coupled temperature; 1432 of those 1434 draws are below zero, with percentiles -0.012909 and -0.001936. In the other 28.30%, vn chose one step above the matched draws, with means +0.007421 to +0.027965. Split labels at the common temperatures: 'undefined' at 0.50; 'identity term reversed' from 0.55 to 0.70; 'not distinguishable' from 0.75 to 0.90; '71.0% magnitude, 29.0% identity' at 0.95; '62.9% magnitude, 37.1% identity' at 1.00. The identity sign is 'firm' only at 1.00.",
+      "severity": "badly_posed"
+     },
+     {
+      "what": "Two labels sit exactly on the 2.5% percentile cut: C4 on red-team ('survives') and magmatch on red-team ('keeps a gain').",
+      "where": "arms_controls_qwen0.5b.json C4 test ci95 [0.000123, 0.041847]; magmatch test ci95 [0.000122, 0.0225]",
+      "evidence": "C4: 47 of 2000 draws (2.35%) are below zero, all with vn and rand at the backbone's temperature (22 at 0.55, 19 at 0.60, 6 at 0.65). The upper end comes from draws with vn one step above rand, with means +0.018201 to +0.040894. magmatch: exactly 50 of 2000 draws (2.50%) are below zero, all among the 63 draws whose coupled temperature was chosen one step below the backbone's (mean -0.007058). Its same-step draws alone have percentiles +0.014414 and +0.022505.",
+      "severity": "note"
+     },
+     {
+      "what": "C1 (the plain partner's advantage) depends on which temperature is read. The red-team cross-fitted temperature, 0.65, is the highest common temperature at which C1 does not survive.",
+      "where": "reading C1_plain_partner_at_nine test",
+      "evidence": "At common temperatures, C1 does not survive from 0.50 to 0.65 (at 0.65: +0.005373 [-0.000164, +0.011909]) and survives from 0.70 to 1.00. In-split it survives, +0.004396 [+0.000320, +0.009167]. Its point is positive at every common temperature (+0.004032 to +0.006832). In 98.40% of the draws plainpartner and vn chose the same coupled temperature, and the between-group share of C1's variance is only 0.4665. C1's cross-fitted interval therefore comes mostly from item sampling at temperatures between 0.55 and 0.75.",
+      "severity": "note"
+     },
+     {
+      "what": "On helpful (reported, not read), the cross-fitted points of vn and plainpartner come from a one-step mismatch in the full-sample temperature choice: backbone 0.80, coupled 0.85. That mismatch alone turns a positive gain negative. It also produces C4's 'does not survive' and C2's 'does not survive' on helpful.",
+      "where": "arms_controls_qwen0.5b.json helpful vn, plainpartner; reading contrasts helpful",
+      "evidence": "vn on helpful: cross-fitted -0.005250 [-0.008950, +0.013345]; with both sides at 0.80, +0.010125 [+0.008144, +0.012216]; in-split +0.005543 [+0.002063, +0.008643]. vn's step on helpful from 0.80 to 0.85 is 0.015375. On helpful, C4 is +0.009461 [+0.007581, +0.011319] at 0.80 and +0.004724 [+0.001470, +0.007491] in-split. C2 on helpful is above zero at all 11 common temperatures and survives in-split, +0.014067 [+0.001136, +0.028742].",
+      "severity": "note"
+     },
+     {
+      "what": "The full-width arm's cross-fitted gain exceeds its in-split gain because the cross-fit costs the backbone roughly ten times what it costs the coupled system. That is why the red-team share kept is above 1.",
+      "where": "arms_controls_qwen0.5b.json all test share_surviving 1.0411",
+      "evidence": "On red-team the cross-fit costs the backbone 0.03331 and the full-width coupled system 0.00353. The cross-fitted gain is 0.373395; the in-split gain is 0.343619, which is 0.9580 of the as-evaluated 0.358671. On helpful the costs are 0.02554 and 0.00104; the cross-fitted gain is 0.142206 and the in-split gain 0.117716.",
+      "severity": "note"
+     },
+     {
+      "what": "The task framing says the backbone's cross-fit cost is several times the gain of any nine-coordinate arm. On red-team that holds for vn but not for the matched draws.",
+      "where": "task framing (ii)",
+      "evidence": "0.033308 is 4.1192 times vn's cross-fitted gain (0.008086) but only 1.8674 times magmatch's (0.017837). On helpful, 0.025537 is 3.8994 times magmatch's 0.006549.",
+      "severity": "note"
+     },
+     {
+      "what": "The table and the reading reproduce exactly from the rows. No number and no label was found wrong as posed.",
+      "where": "results/constitution/arms_controls_qwen0.5b.json, tempcontrol_qwen0.5b_reading.json",
+      "evidence": "Every point, interval end and as-evaluated interval end matches within 1e-6. Labels recomputed with the pre-registered words on both splits match the reading's labels exactly. The code files show no diff from 32aee47.",
+      "severity": "note"
+     }
+    ],
+    "facts": [
+     "Reproduction: independent code reading the rows files (filtered to each teacher_ceiling.json id, items sorted by source) with numpy default_rng(0), 2000 draws, read-split indices drawn first, reproduces every gain, contrast, 95% interval and as-evaluated interval of arms_controls_qwen0.5b.json to within 1e-6. The in-split gains and cross-fit costs match to within 8e-6. The backbone's curves are identical, to 0.0, in all nine arms' rows.",
+     "Red-team split, 2000 draws, cross-fitted temperature chosen on the resampled helpful split. Backbone at 0.50/0.55/0.60/0.65/0.70/0.75/0.80: 10/126/585/893/340/43/3 draws. Coupled systems: vn 1/75/433/916/500/72/3; plainpartner 1/76/436/928/489/67/3; magmatch 11/136/605/878/327/41/2; magmatch1 11/135/593/879/336/43/3; magmatch2 11/131/601/878/336/40/3; rand 11/128/587/892/337/42/3. vn5 at 0.55 to 0.80: 45/310/874/629/132/10. all at 0.65 to 0.85: 1/217/1207/550/25. allplain at 0.65 to 0.85: 5/461/1225/296/13.",
+     "Helpful split, 2000 draws, temperature chosen on the resampled red-team split. Backbone at 0.70/0.75/0.80/0.85/0.90: 10/243/1042/662/43 draws. Coupled systems: vn 5/121/840/916/118; plainpartner 5/131/871/895/98; magmatch 14/309/1091/561/25; magmatch1 12/289/1062/605/32; magmatch2 13/299/1077/584/27; rand 12/260/1051/639/38; vn5 6/176/942/808/68. all at 0.75 to 0.90: 56/1001/919/24. allplain at 0.75 to 0.95: 1/154/1106/709/30.",
+     "The draws' gains of the nine-coordinate arms are bimodal, and the modes are the (backbone temperature, coupled temperature) pairs. Whether the coupled temperature equals the backbone's or sits one grid step away explains this share of the draws' variance: red-team vn 0.9157, plainpartner 0.8707, magmatch 0.8428, magmatch1 0.8532, magmatch2 0.8505, rand 0.9346; helpful 0.9386, 0.9311, 0.9528, 0.9471, 0.9589, 0.9611. For all and allplain it is 0.1698 and 0.1542 on red-team.",
+     "Red-team, draws where the coupled temperature equals the backbone's (same step) versus one step away. vn: 1501 same step, mean +0.008013; 499 one step above, mean +0.033158. plainpartner: 1527 same, +0.013494; 473 above, +0.038841. magmatch: 1937 same, +0.018203; 63 one step below, -0.007058. magmatch1: 1967 same, +0.014561; 33 below, -0.016218. magmatch2: 1961 same, +0.012418; 39 below, -0.013582. rand: 1986 same, +0.003521; 14 below, -0.026647.",
+     "Helpful, same step versus one step away. vn: 1464 same step, mean +0.010783; 536 one step above, mean -0.004607. plainpartner: 1535 same, +0.012281; 465 above, -0.003020. magmatch: 1789 same, +0.006593; 211 one step below, +0.022677. magmatch1: 1871 same, +0.005586; 129 below, +0.021673. magmatch2: 1828 same, +0.003920; 172 below, +0.020054. rand: 1946 same, +0.000665; 54 below, +0.017020.",
+     "Red-team joint patterns occurring in more than 1% of draws. Each lists the share of draws, then the mean gains of vn/plainpartner/magmatch/magmatch1/magmatch2/rand, then the mean C1/C3/C4. (1) Every coupled temperature equal to the backbone's 0.65: 33.60%; +0.008208/+0.013405/+0.017851/+0.014340/+0.012139/+0.003466; C1 +0.005197, C3 -0.006569, C4 +0.004742. (2) All at 0.60: 17.80%; +0.006857/+0.012930/+0.019032/+0.015138/+0.013149/+0.003693; +0.006073, -0.008916, +0.003164. (3) All at 0.70: 14.75%; +0.009227/+0.014343/+0.016901/+0.013765/+0.011452/+0.003248; +0.005116, -0.004812, +0.005979. (4) Backbone 0.60, vn and plainpartner 0.65, the rest 0.60: 10.25%; +0.035095/+0.040520/+0.018971/+0.015065/+0.013032/+0.003671; +0.005425, +0.019405, +0.031423. (5) Backbone 0.65, vn and plainpartner 0.70, the rest 0.65: 8.65%; +0.027711/+0.033003/+0.017998/+0.014318/+0.012197/+0.003491; +0.005292, +0.012873, +0.024220. (6) All at 0.55: 3.25%; +0.005087/+0.011614/+0.020346/+0.016102/+0.014198/+0.004021; +0.006528, -0.011795, +0.001065. (7) Backbone 0.55, vn and plainpartner 0.60, the rest 0.55: 2.95%; +0.045298/+0.051267/+0.020441/+0.016047/+0.013910/+0.003984; +0.005968, +0.028500, +0.041314. (8) All at 0.75: 2.00%; +0.010823/+0.015742/+0.016176/+0.013073/+0.010669/+0.003069; +0.004920, -0.002483, +0.007753. (9) Backbone 0.70, vn and plainpartner 0.75, the rest 0.70: 1.20%; +0.021703/+0.025613/+0.017161/+0.013861/+0.011562/+0.003441; +0.003909, +0.007509, +0.018262. These nine patterns cover 94.45% of draws; 38 patterns occur in all.",
+     "Helpful joint patterns occurring in more than 1% of draws, in the same format. (1) All at 0.80: 32.05%; +0.010189/+0.011745/+0.006581/+0.005588/+0.003920/+0.000683; C1 +0.001556, C3 +0.004826, C4 +0.009506. (2) All at 0.85: 23.35%; +0.011748/+0.013206/+0.006532/+0.005593/+0.003859/+0.000625; +0.001459, +0.006419, +0.011123. (3) Backbone 0.80, vn and plainpartner 0.85, the rest 0.80: 14.30%; -0.004911/-0.003423/+0.006605/+0.005578/+0.003957/+0.000670; +0.001487, -0.010291, -0.005581. (4) Backbone 0.75, vn and plainpartner 0.80, the rest 0.75: 5.75%; -0.002351/-0.000766/+0.006778/+0.005643/+0.004076/+0.000750; +0.001585, -0.007850, -0.003101. (5) All at 0.75: 5.50%; +0.008798/+0.010472/+0.006775/+0.005675/+0.004074/+0.000750; +0.001674, +0.003290, +0.008048. (6) Backbone 0.85, vn and plainpartner 0.90, the rest 0.85: 2.70%; vn -0.007177, plainpartner -0.005720; C3 -0.012480, C4 -0.007803. (7) Backbone 0.80, vn 0.85, the rest 0.80: 2.15%; vn -0.005335, plainpartner +0.011449; C1 +0.016783. (8) Backbone, vn, plainpartner and rand at 0.85, the three matched draws at 0.80: 2.00%; matched +0.023522/+0.022547/+0.020883; C3 -0.010505. Six further patterns fall between 1.05% and 1.45%. The 14 patterns cover 95.50% of draws; 30 occur in all.",
+     "In words, (i) on red-team: the value neurons' +0.0081 is the same-step mode at 0.65. Draws with the same step alone span +0.002946 to +0.012311, and the upper end +0.045317 comes from the 24.95% of draws in which vn's coupled temperature was chosen one step above the backbone's. magmatch's +0.0178 is also a same-step value; its same-step draws span +0.014414 to +0.022505. Its lower end +0.000122 comes from the 63 draws (3.15%) whose coupled temperature was one step below the backbone's; 50 of them are below zero, exactly 2.50% of 2000.",
+     "C4 on red-team: 47 of 2000 draws (2.35%) are below zero, all with vn and rand at the backbone's temperature (22 at 0.55, 19 at 0.60, 6 at 0.65). Among the 74.35% of draws in which vn and rand chose the same coupled temperature, the percentiles are -0.000358 and +0.008502. The upper end +0.041847 comes from draws with vn one step above rand, with means +0.018201 to +0.040894.",
+     "C3 on red-team: in the 71.70% of draws where vn and all three matched draws chose one coupled temperature, 1432 of 1434 draws are below zero, with 2.5/97.5 percentiles -0.012909 and -0.001936. In the remaining draws, vn is one step above the matched draws, and the group means run from +0.007421 to +0.027965. The table's interval [-0.012414, +0.029744] is the union of these two modes; the between-group share of variance is 0.9283.",
+     "On red-team, the cross-fitted point of every nine-coordinate arm and of C1, C3, C4 and C5 is its value with both sides at the common temperature 0.65, because every one of them picks 0.65 on the full helpful split. At 0.65, with items resampled: vn +0.008086 [+0.004070, +0.012166]; plainpartner +0.013459 [+0.007911, +0.019835]; magmatch +0.017837 [+0.014651, +0.021354]; magmatch1 +0.014360 [+0.011562, +0.017162]; magmatch2 +0.012153 [+0.009693, +0.014972]; rand +0.003461 [+0.002358, +0.004647]. Contrasts: C1 +0.005373 [-0.000164, +0.011909], does not survive; C3 -0.006697 [-0.010898, -0.003024], reverses; C4 +0.004625 [+0.001114, +0.008039], survives; C5 +0.047300 [+0.029250, +0.068804], survives; C2 -0.010725 [-0.046046, +0.020661], still indistinguishable.",
+     "Red-team, both sides held at each common temperature from 0.50 to 1.00 (11 values; the backbone's cross-fitted 0.65 is among them). C1 excludes zero on the positive side at 7 (0.70 to 1.00) and includes zero at 4 (0.50 to 0.65). C2 includes zero at all 11. C3 excludes zero below at 5 (0.50 to 0.70), includes zero at 4 (0.75 to 0.90) and excludes zero above at 2 (0.95, 1.00). C4 excludes zero above at 8 (0.65 to 1.00) and includes zero at 3 (0.50 to 0.60). C5 excludes zero above at all 11. vn minus magmatch: below at 7 (0.50 to 0.80), includes zero at 3, above at 1 (1.00). vn minus magmatch1: below at 5, includes zero at 4, above at 2. vn minus magmatch2: below at 4 (0.50 to 0.65), includes zero at 3, above at 4 (0.85 to 1.00).",
+     "Red-team, as the common temperature falls from 1.00 to 0.50, the value neurons' gain falls monotonically from +0.018216 to +0.004552. Over the same range the matched mean gain rises from +0.011455 to +0.018183 and C3 falls from +0.006761 to -0.013631. vn keeps a gain at 10 of 11 common temperatures; at 0.50 it is +0.004552 [-0.001099, +0.010363]. Every other arm keeps a gain at all 11.",
+     "Helpful, both sides at each common temperature from 0.50 to 1.00. C1 is above zero at 7 (0.70 to 1.00) and includes zero at 4. C2 is above zero at all 11 (+0.010868 to +0.021599). C3 is below zero at 2 (0.50, 0.55), includes zero at 3 (0.60 to 0.70) and is above zero at 6 (0.75 to 1.00). C4 is above zero at 9 (0.60 to 1.00) and includes zero at 2. C5 is above zero at all 11. vn keeps a gain at 9 of 11 (0.60 to 1.00). At helpful's cross-fitted backbone temperature, 0.80: vn +0.010125 [+0.008144, +0.012216]; C1 +0.001527 [+0.000230, +0.003012]; C3 +0.004788 [+0.002396, +0.006877]; C4 +0.009461 [+0.007581, +0.011319].",
+     "The named readings, worded as pre-registered, applied at each red-team common temperature. Value neurons' small signal: survives from 0.55 to 1.00; not distinguishable from zero at 0.50. C1: does not survive from 0.50 to 0.65; survives from 0.70 to 1.00. C2: still indistinguishable at all 11. Identity sign: not firm from 0.50 to 0.90; at 0.95, 'C3 survives, and 2 of the three per-draw intervals exclude zero'; firm only at 1.00. 63/37 split: 'undefined' at 0.50; 'identity term reversed' from 0.55 to 0.70; 'identity term not distinguishable' from 0.75 to 0.90; '71.0% magnitude, 29.0% identity' at 0.95 (share 0.7104 [0.593, 0.861]); '62.9% magnitude, 37.1% identity' at 1.00 (0.6289 [0.528, 0.749]).",
+     "Red-team mean cross-entropy curves: grid minimum, then three-point parabola vertex tau and value, then how far the grid minimum lies above the vertex. Backbone 0.80, vertex 0.81409 at 0.908644, 0.000223 above. all 0.80, 0.82389 at 0.564836, 0.000412. allplain 0.85, 0.86714 at 0.564160, 0.000193. vn 0.85, 0.82691 at 0.896200, 0.000534. plainpartner 0.85, 0.82513 at 0.891722, 0.000616. vn5 0.80, 0.82046 at 0.853287, 0.000438. magmatch 0.80, 0.80881 at 0.893327, 0.000086. magmatch1 0.80, 0.81098 at 0.895919, 0.000133. magmatch2 0.80, 0.80979 at 0.898504, 0.000106. rand 0.80, 0.81287 at 0.905750, 0.000186.",
+     "Helpful curves, in the same format. Backbone 0.65, vertex 0.64154 at 0.673072, 0.000081 above. all 0.75, 0.76089 at 0.555349, 0.000088. allplain 0.75, 0.74786 at 0.541366, 0.000003. vn 0.65, 0.65459 at 0.667587, 0.000024. plainpartner 0.65, 0.65375 at 0.665842, 0.000016. vn5 0.65, 0.66562 at 0.655011, 0.000272. magmatch 0.65, 0.63974 at 0.666155, 0.000118. magmatch1 0.65, 0.64047 at 0.667378, 0.000102. magmatch2 0.65, 0.64024 at 0.668884, 0.000107. rand 0.65, 0.64095 at 0.672242, 0.000093. The backbone's two vertices are 0.17255 apart.",
+     "In-split gains computed from the vertex values, both sides at their own vertex. Red-team: all 0.343808, allplain 0.344484, vn 0.012444, plainpartner 0.016922, vn5 0.055357, magmatch 0.015317, magmatch1 0.012725, magmatch2 0.010140, rand 0.002894. Helpful: 0.117723, 0.131706, 0.005485, 0.007230, 0.018061, 0.006917, 0.005694, 0.004188, 0.000830. The grid-based gains differ from these by at most 0.000393 (plainpartner, red-team).",
+     "Grid resolution at 0.5B against the rules' 0.0004. A grid minimum lies above its parabola vertex by up to 0.000616; 4 of 10 red-team curves exceed 0.0004 and none on helpful (maximum 0.000272). The backbone's excess is 0.000223 and 0.000081, against the rules' 0.0003. In-split contrasts on red-team exceed 0.0004: vn-magmatch -0.000448, vn-magmatch2 -0.000428, C3 -0.000426, vn-magmatch1 -0.000401. With the curvature seen at 0.5B, the worst case (vertex at a half step) is up to 0.000710.",
+     "The resolution that matters for the cross-fitted gains is a different quantity. At the cross-fitted temperature, one grid step moves the read split's curves by 0.017223 to 0.028203 on red-team; the backbone moves +0.027007 going down to 0.60 and -0.018159 going up to 0.70. On helpful the move is 0.013031 to 0.019066. That is 32.6 to 70.5 times 0.0004. The cross-fit itself costs the backbone 0.033308 on red-team and 0.025537 on helpful. It costs the nine-coordinate coupled systems 0.030926 to 0.037355 on red-team and 0.025643 to 0.036611 on helpful.",
+     "The backbone's own gain from temperature (its cross-entropy at 1.00 minus at its in-split best) is 0.943135 - 0.908867 = 0.034268 on red-team (tau 0.80) and 0.788517 - 0.673153 = 0.115363 on helpful (tau 0.65). As a multiple of each arm's as-evaluated gain, red-team: all 0.0955, allplain 0.0930, vn 1.8812, plainpartner 1.5402, vn5 0.5678, magmatch 2.5036, magmatch1 2.8755, magmatch2 3.9110, rand 13.7298. Helpful: all 0.5845, allplain 0.5540, vn 6.7253, plainpartner 6.2392, vn5 2.8679, magmatch 17.3084, magmatch1 19.3435, magmatch2 29.8097, rand 214.6717.",
+     "With no bridge, the backbone alone reaches or beats the as-evaluated cross-entropy of the value-neuron arm (0.924919) at every grid temperature from 0.70 to 0.90 on red-team. The same holds for plainpartner from 0.75 to 0.90 and for the matched and random arms from 0.70 to 0.95; it does not for vn5, all or allplain. On helpful it reaches vn's 0.771363 from 0.40 to 0.95. At the cross-fitted temperature, the backbone's gain from temperature is only 0.000959 on red-team (tau 0.65) and 0.089827 on helpful (tau 0.80).",
+     "In-split on red-team (both sides at their own in-split best temperature, re-chosen on each resample): all +0.343619 [+0.271084, +0.418325]; allplain +0.344514 [+0.269739, +0.426100]; vn +0.012133 [+0.009289, +0.015504]; plainpartner +0.016529 [+0.011966, +0.022461]; vn5 +0.055143 [+0.040334, +0.072425]; magmatch +0.015455 [+0.012937, +0.017729]; magmatch1 +0.012815 [+0.010578, +0.014755]; magmatch2 +0.010257 [+0.008312, +0.012075]; rand +0.002932 [+0.002004, +0.003822]. All nine are 'keeps a gain', the same labels as the cross-fit.",
+     "In-split contrasts on red-team: C1 +0.004396 [+0.000320, +0.009167], survives (cross-fitted: does not survive). C2 +0.000895 [-0.024415, +0.024541], still indistinguishable. C3 -0.000709 [-0.002893, +0.002131], does not survive. C4 +0.009201 [+0.006746, +0.012249], survives. C5 +0.043009 [+0.028853, +0.058894], survives. vn minus magmatch -0.003321 [-0.005585, -0.000291], reverses (cross-fitted: does not survive). vn minus magmatch1 -0.000682 [-0.003073, +0.002251] and vn minus magmatch2 +0.001876 [-0.000362, +0.004905] do not survive. The in-split magnitude share is 1.0584 [0.856, 1.295], labelled 'identity term not distinguishable from zero at best temperature'; the cross-fitted share is 1.8283 [0.303, 4.424]. In-split, C1's lower end +0.000320 and vn minus magmatch's upper end -0.000291 each lie within 0.0004 of zero.",
+     "In-split on helpful (reported, not read), where the labels differ from the cross-fit. vn +0.005543 [+0.002063, +0.008643] keeps a gain; cross-fitted it is -0.005250 [-0.008950, +0.013345], not distinguishable. plainpartner +0.007296 [+0.003619, +0.010687] keeps a gain; cross-fitted, not distinguishable. C1 +0.001753 [-0.000051, +0.003548] does not survive; cross-fitted it survives. C2 +0.014067 [+0.001136, +0.028742] survives; cross-fitted it does not. C4 +0.004724 [+0.001470, +0.007491] survives; cross-fitted it does not. C3 (-0.000029 [-0.003002, +0.002527]) and C5 (+0.012327 [+0.007297, +0.018690]) carry the same labels both ways.",
+     "On helpful, the cross-fitted points of vn and plainpartner are taken with the backbone at 0.80 and the coupled system at 0.85. A single step from 0.80 to 0.85 in vn's helpful curve is 0.015375, which accounts for the whole move from +0.010125 (both sides at 0.80) to -0.005250.",
+     "The full-width arm's red-team share kept of 1.0411 comes from the asymmetric cross-fit cost: 0.03331 for the backbone against 0.00353 for the coupled system. The in-split gain is 0.343619, 0.9580 of the as-evaluated 0.358671. With both sides at one common temperature, the full-width gain ranges from +0.343619 (0.80) to +0.393119 (0.50) and keeps a gain at all 11.",
+     "Holding in the same direction on red-team. Value neurons' signal: yes cross-fitted, yes in-split, yes at 10 of 11 common temperatures, not distinguishable at 0.50. C1: no cross-fitted, yes in-split, yes at 0.70 to 1.00, no at 0.50 to 0.65; it hangs on the choice. C2 null: holds cross-fitted, in-split and at all 11. Identity sign: not firm cross-fitted and in-split; at common temperatures C3 reverses at 0.50 to 0.70 and survives only at 0.95 to 1.00, and the sign is firm only at 1.00; it hangs on the temperature. 63/37 split: 'not distinguishable' cross-fitted and in-split, but 'reversed' at 0.55 to 0.70 and stated as a split only at 0.95 and 1.00; it hangs on the temperature. C4: survives cross-fitted (with 47 of 2000 draws below zero), in-split and at 8 of 11. C5: survives everywhere. Full-width arm: keeps a gain everywhere.",
+     "Badly posed at 0.5B, in numbers. (1) The cross-fit assumes each split's best temperatures carry to the other, but the backbone's vertices are 0.81409 and 0.64154. Each cross-fitted gain is therefore read 0.15 away from the read split's minimum, where one grid step is worth 0.013 to 0.028, and 84% to 96% of each nine-coordinate arm's bootstrap variance is the discrete one-step temperature mismatch. (2) The 0.0004 grid-resolution flag is 32 to 83 times smaller than those step and cross-fit costs, and at 0.5B it is exceeded even in-split (0.000616 per curve; 0.000448 per contrast). (3) C3 and everything read from it (the identity sign, the 63/37 split) change sign with the common temperature, from -0.013631 at 0.50 to +0.006761 at 1.00. The cross-fitted 'does not survive' mixes a reversing mode (71.70% of draws) with a surviving one (28.30%), and at the cross-fitted temperature 0.65 alone C3 reverses: -0.006697 [-0.010898, -0.003024]."
+    ],
+    "checked": [
+     "Read the whole pre-registration (results/constitution/tempcontrol_qwen0.5b_preregistration.json), results/constitution/arms_controls.py and eval/tempcontrol_reading.py, plus the temperature() function of eval/teacher_ceiling.py (lines 150-210). git diff against 32aee47 shows no change to any of the five rule files.",
+     "Rows files: each of the 9 arms has 200 rows, and every teacher_ceiling.commit reads 32aee47. Rows were filtered to the run id and sorted by source exactly as arms_controls.curves does. The item order is identical across arms, and the backbone's curves are identical across arms (maximum difference 0.0).",
+     "Reproduced every cross-fitted point, every interval, every contrast and every as-evaluated interval of arms_controls_qwen0.5b.json with default_rng(0) and 2000 draws, read split's indices drawn first: maximum difference 1e-6. The in-split gains and cross-fit costs match within 8e-6.",
+     "Recomputed the labels with the pre-registration's words for every arm and contrast on both splits. They match tempcontrol_qwen0.5b_reading.json, including the helpful split's null/difference choice (read from the as-evaluated interval).",
+     "Item 1: temperature counts per grid value for the backbone and each arm; pair and joint-pattern tables; between-pair variance shares; histograms; tail composition of the vn, magmatch, C3 and C4 intervals.",
+     "Item 2: gains and C1 to C5, plus the three per-draw contrasts, with paired-bootstrap intervals at each common temperature from 0.50 to 1.00 on both splits, on the table's own draws. The named readings are applied at each.",
+     "Item 3: three-point parabola vertices of all 20 curves; vertex-based in-split gains and contrasts; grid-minus-vertex errors; curvature worst case.",
+     "Item 4: the backbone's temperature gain against each arm's as-evaluated gain, per split; the grid temperatures at which the backbone alone reaches each arm's cross-entropy at 1.00.",
+     "Item 5: in-split bootstrap (temperatures re-chosen on each resample of the same split), labels and named readings, compared with the cross-fitted labels.",
+     "Nothing was written under the repository (find -newer shows only .git, touched by git status). Scripts and outputs are in /private/tmp/claude-501/-Users-rxiii/26c75c8e-376c-4746-8737-4c73082cb28c/scratchpad/recompute05b/intervals (common.py, t0_t1.py, t2_t5.py, t6_extra.py, t7_named_common.py and their .json)."
+    ],
+    "not_checked": [
+     "Whether the per-item cross-entropies in the rows are correct: nothing was re-measured and no model was loaded. The ok checks in teacher_ceiling.json (stored-token agreement, stock/staged agreement, evaluator reproduction to 0.001, excerpt checks) were not re-verified beyond reading the table's flags.",
+     "I did not open results/constitution/paired_bootstrap_qwen0.5b.json or eval_test.json / eval_helpful.json. I only confirmed that the as-evaluated contrasts recomputed from the rows (+0.004032, +0.009631, +0.006761, +0.015720, +0.042135; per-draw +0.004529, +0.006299, +0.009454) equal the values the pre-registration and the reading code state for the record.",
+     "KL fields, kl_fraction, divergence_from_the_teacher, the first24 span and the greedy re-decode were not recomputed.",
+     "The 9B figures (0.0004 and 0.0003 grid excess, 0.040 of 0.094) were not checked.",
+     "The vertex is a three-point parabola through the grid minimum; I did not check it against a denser or wider fit.",
+     "The within-mode percentiles (for example, same-step draws only) are descriptive conditional quantiles, not intervals.",
+     "The in-split intervals choose temperatures on the same resampled items, with no correction for that selection.",
+     "I did not test whether other seeds or draw counts would move the two labels that sit on the 2.5% cut (C4 and magmatch on red-team)."
+    ]
+   }
+  }
+ ]
+}

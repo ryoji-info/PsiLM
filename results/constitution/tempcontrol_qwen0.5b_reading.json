@@ -1,0 +1,873 @@
+{
+ "the_record_is_reproduced": {
+  "all": true,
+  "C1_plain_partner_at_nine": true,
+  "C2_plain_partner_at_full_width": true,
+  "C3_identity_at_nine": true,
+  "C4_value_neurons_against_random": true,
+  "C5_width": true,
+  "vn minus magmatch": true,
+  "vn minus magmatch1": true,
+  "vn minus magmatch2": true,
+  "the_split_as_evaluated": true
+ },
+ "named": {
+  "the_value_neurons_small_signal": "survives",
+  "the_plain_partners_advantage_of_0.0040": "does not survive",
+  "the_full_width_partner_null": "still indistinguishable",
+  "the_identity_sign": "not firm at best temperature",
+  "the_63_to_37_split": {
+   "magnitude_share": 1.8283,
+   "ci95": [
+    0.303,
+    4.424
+   ],
+   "matched_mean_gain": 0.014783,
+   "matched_mean_gain_ci95": [
+    0.005522,
+    0.018583
+   ],
+   "matched_mean_gain_ends_within_the_grids_resolution_of_zero": false,
+   "as_evaluated": {
+    "share": 0.6289,
+    "ci95": [
+     0.528,
+     0.749
+    ]
+   },
+   "reading": "identity term not distinguishable from zero at best temperature"
+  }
+ },
+ "table": "results/constitution/arms_controls_qwen0.5b.json",
+ "preregistration": "results/constitution/tempcontrol_qwen0.5b_preregistration.json",
+ "split_read": "test",
+ "not_ok": [],
+ "arms": {
+  "all": {
+   "what": "full width, fine-tuned partner",
+   "n_write": 896,
+   "ok": true,
+   "greedy_redecode_diverged_on": 0,
+   "test": {
+    "gain_as_evaluated": 0.358671,
+    "gain_at_best_temperatures": 0.373395,
+    "ci95": [
+     0.284995,
+     0.507398
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": 1.0411,
+    "temperature_backbone": 0.65,
+    "temperature_coupled": 0.75,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.8,
+     "temperature_coupled": 0.8,
+     "gain": 0.34362,
+     "the_cross_fit_costs_the_backbone": 0.03331,
+     "the_cross_fit_costs_the_coupled_system": 0.00353
+    },
+    "kl_teacher_backbone": 0.44696,
+    "kl_teacher_arm": 0.50267,
+    "arm_is_nearer_the_teacher_than_the_backbone": false,
+    "kl_fraction_removed_at_best_temperatures": 0.2072
+   },
+   "helpful": {
+    "gain_as_evaluated": 0.197357,
+    "gain_at_best_temperatures": 0.142206,
+    "ci95": [
+     0.093095,
+     0.203784
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": 0.7206,
+    "temperature_backbone": 0.8,
+    "temperature_coupled": 0.8,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.65,
+     "temperature_coupled": 0.75,
+     "gain": 0.11771,
+     "the_cross_fit_costs_the_backbone": 0.02554,
+     "the_cross_fit_costs_the_coupled_system": 0.00104
+    },
+    "kl_teacher_backbone": 0.23606,
+    "kl_teacher_arm": 0.42288,
+    "arm_is_nearer_the_teacher_than_the_backbone": false,
+    "kl_fraction_removed_at_best_temperatures": -0.1603
+   }
+  },
+  "allplain": {
+   "what": "full width, plain partner",
+   "n_write": 896,
+   "ok": true,
+   "greedy_redecode_diverged_on": 0,
+   "test": {
+    "gain_as_evaluated": 0.368302,
+    "gain_at_best_temperatures": 0.368657,
+    "ci95": [
+     0.277116,
+     0.502395
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": 1.001,
+    "temperature_backbone": 0.65,
+    "temperature_coupled": 0.75,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.8,
+     "temperature_coupled": 0.85,
+     "gain": 0.34452,
+     "the_cross_fit_costs_the_backbone": 0.03331,
+     "the_cross_fit_costs_the_coupled_system": 0.00917
+    },
+    "kl_teacher_backbone": 0.44696,
+    "kl_teacher_arm": 0.54757,
+    "arm_is_nearer_the_teacher_than_the_backbone": false,
+    "kl_fraction_removed_at_best_temperatures": 0.189
+   },
+   "helpful": {
+    "gain_as_evaluated": 0.208225,
+    "gain_at_best_temperatures": 0.150304,
+    "ci95": [
+     0.097127,
+     0.217594
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": 0.7218,
+    "temperature_backbone": 0.8,
+    "temperature_coupled": 0.85,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.65,
+     "temperature_coupled": 0.75,
+     "gain": 0.13178,
+     "the_cross_fit_costs_the_backbone": 0.02554,
+     "the_cross_fit_costs_the_coupled_system": 0.00702
+    },
+    "kl_teacher_backbone": 0.23606,
+    "kl_teacher_arm": 0.4171,
+    "arm_is_nearer_the_teacher_than_the_backbone": false,
+    "kl_fraction_removed_at_best_temperatures": -0.1462
+   }
+  },
+  "vn": {
+   "what": "value neurons, top 9",
+   "n_write": 9,
+   "ok": true,
+   "greedy_redecode_diverged_on": 0,
+   "test": {
+    "gain_as_evaluated": 0.018216,
+    "gain_at_best_temperatures": 0.008086,
+    "ci95": [
+     0.003416,
+     0.045317
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": 0.4439,
+    "temperature_backbone": 0.65,
+    "temperature_coupled": 0.65,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.8,
+     "temperature_coupled": 0.85,
+     "gain": 0.01214,
+     "the_cross_fit_costs_the_backbone": 0.03331,
+     "the_cross_fit_costs_the_coupled_system": 0.03736
+    },
+    "kl_teacher_backbone": 0.44696,
+    "kl_teacher_arm": 0.45608,
+    "arm_is_nearer_the_teacher_than_the_backbone": false,
+    "kl_fraction_removed_at_best_temperatures": -0.0065
+   },
+   "helpful": {
+    "gain_as_evaluated": 0.017154,
+    "gain_at_best_temperatures": -0.00525,
+    "ci95": [
+     -0.00895,
+     0.013345
+    ],
+    "reading": "not distinguishable from zero at best temperature",
+    "keeps_a_gain": false,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": -0.3061,
+    "temperature_backbone": 0.8,
+    "temperature_coupled": 0.85,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.65,
+     "temperature_coupled": 0.65,
+     "gain": 0.00554,
+     "the_cross_fit_costs_the_backbone": 0.02554,
+     "the_cross_fit_costs_the_coupled_system": 0.03633
+    },
+    "kl_teacher_backbone": 0.23606,
+    "kl_teacher_arm": 0.24395,
+    "arm_is_nearer_the_teacher_than_the_backbone": false,
+    "kl_fraction_removed_at_best_temperatures": 0.008
+   }
+  },
+  "plainpartner": {
+   "what": "value neurons, top 9, plain partner",
+   "n_write": 9,
+   "ok": true,
+   "greedy_redecode_diverged_on": 0,
+   "test": {
+    "gain_as_evaluated": 0.022248,
+    "gain_at_best_temperatures": 0.013459,
+    "ci95": [
+     0.007715,
+     0.05203
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": 0.6049,
+    "temperature_backbone": 0.65,
+    "temperature_coupled": 0.65,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.8,
+     "temperature_coupled": 0.85,
+     "gain": 0.01653,
+     "the_cross_fit_costs_the_backbone": 0.03331,
+     "the_cross_fit_costs_the_coupled_system": 0.03638
+    },
+    "kl_teacher_backbone": 0.44696,
+    "kl_teacher_arm": 0.45334,
+    "arm_is_nearer_the_teacher_than_the_backbone": false,
+    "kl_fraction_removed_at_best_temperatures": 0.0
+   },
+   "helpful": {
+    "gain_as_evaluated": 0.01849,
+    "gain_at_best_temperatures": -0.003778,
+    "ci95": [
+     -0.007354,
+     0.014785
+    ],
+    "reading": "not distinguishable from zero at best temperature",
+    "keeps_a_gain": false,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": -0.2043,
+    "temperature_backbone": 0.8,
+    "temperature_coupled": 0.85,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.65,
+     "temperature_coupled": 0.65,
+     "gain": 0.00729,
+     "the_cross_fit_costs_the_backbone": 0.02554,
+     "the_cross_fit_costs_the_coupled_system": 0.03661
+    },
+    "kl_teacher_backbone": 0.23606,
+    "kl_teacher_arm": 0.24261,
+    "arm_is_nearer_the_teacher_than_the_backbone": false,
+    "kl_fraction_removed_at_best_temperatures": 0.0135
+   }
+  },
+  "vn5": {
+   "what": "value neurons, top 45",
+   "n_write": 45,
+   "ok": true,
+   "greedy_redecode_diverged_on": 0,
+   "test": {
+    "gain_as_evaluated": 0.060352,
+    "gain_at_best_temperatures": 0.055386,
+    "ci95": [
+     0.038745,
+     0.104758
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": 0.9177,
+    "temperature_backbone": 0.65,
+    "temperature_coupled": 0.65,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.8,
+     "temperature_coupled": 0.8,
+     "gain": 0.05515,
+     "the_cross_fit_costs_the_backbone": 0.03331,
+     "the_cross_fit_costs_the_coupled_system": 0.03307
+    },
+    "kl_teacher_backbone": 0.44696,
+    "kl_teacher_arm": 0.44249,
+    "arm_is_nearer_the_teacher_than_the_backbone": true,
+    "kl_fraction_removed_at_best_temperatures": 0.0565
+   },
+   "helpful": {
+    "gain_as_evaluated": 0.040226,
+    "gain_at_best_temperatures": 0.026497,
+    "ci95": [
+     0.009758,
+     0.033369
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": 0.6587,
+    "temperature_backbone": 0.8,
+    "temperature_coupled": 0.8,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.65,
+     "temperature_coupled": 0.65,
+     "gain": 0.01787,
+     "the_cross_fit_costs_the_backbone": 0.02554,
+     "the_cross_fit_costs_the_coupled_system": 0.01691
+    },
+    "kl_teacher_backbone": 0.23606,
+    "kl_teacher_arm": 0.25118,
+    "arm_is_nearer_the_teacher_than_the_backbone": false,
+    "kl_fraction_removed_at_best_temperatures": 0.0043
+   }
+  },
+  "magmatch": {
+   "what": "magnitude-matched random 9, draw 0",
+   "n_write": 9,
+   "ok": true,
+   "greedy_redecode_diverged_on": 0,
+   "test": {
+    "gain_as_evaluated": 0.013687,
+    "gain_at_best_temperatures": 0.017837,
+    "ci95": [
+     0.000122,
+     0.0225
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": true,
+    "share_kept": 1.3032,
+    "temperature_backbone": 0.65,
+    "temperature_coupled": 0.65,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.8,
+     "temperature_coupled": 0.8,
+     "gain": 0.01546,
+     "the_cross_fit_costs_the_backbone": 0.03331,
+     "the_cross_fit_costs_the_coupled_system": 0.03093
+    },
+    "kl_teacher_backbone": 0.44696,
+    "kl_teacher_arm": 0.4388,
+    "arm_is_nearer_the_teacher_than_the_backbone": true,
+    "kl_fraction_removed_at_best_temperatures": 0.0196
+   },
+   "helpful": {
+    "gain_as_evaluated": 0.006665,
+    "gain_at_best_temperatures": 0.006549,
+    "ci95": [
+     0.005125,
+     0.025103
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": 0.9826,
+    "temperature_backbone": 0.8,
+    "temperature_coupled": 0.8,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.65,
+     "temperature_coupled": 0.65,
+     "gain": 0.00688,
+     "the_cross_fit_costs_the_backbone": 0.02554,
+     "the_cross_fit_costs_the_coupled_system": 0.02587
+    },
+    "kl_teacher_backbone": 0.23606,
+    "kl_teacher_arm": 0.23365,
+    "arm_is_nearer_the_teacher_than_the_backbone": true,
+    "kl_fraction_removed_at_best_temperatures": 0.0149
+   }
+  },
+  "magmatch1": {
+   "what": "magnitude-matched random 9, draw 1",
+   "n_write": 9,
+   "ok": true,
+   "greedy_redecode_diverged_on": 0,
+   "test": {
+    "gain_as_evaluated": 0.011917,
+    "gain_at_best_temperatures": 0.01436,
+    "ci95": [
+     0.010954,
+     0.017906
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": 1.205,
+    "temperature_backbone": 0.65,
+    "temperature_coupled": 0.65,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.8,
+     "temperature_coupled": 0.8,
+     "gain": 0.01282,
+     "the_cross_fit_costs_the_backbone": 0.03331,
+     "the_cross_fit_costs_the_coupled_system": 0.03177
+    },
+    "kl_teacher_backbone": 0.44696,
+    "kl_teacher_arm": 0.44213,
+    "arm_is_nearer_the_teacher_than_the_backbone": true,
+    "kl_fraction_removed_at_best_temperatures": 0.0129
+   },
+   "helpful": {
+    "gain_as_evaluated": 0.005964,
+    "gain_at_best_temperatures": 0.005567,
+    "ci95": [
+     0.004395,
+     0.022947
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": 0.9334,
+    "temperature_backbone": 0.8,
+    "temperature_coupled": 0.8,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.65,
+     "temperature_coupled": 0.65,
+     "gain": 0.00567,
+     "the_cross_fit_costs_the_backbone": 0.02554,
+     "the_cross_fit_costs_the_coupled_system": 0.02564
+    },
+    "kl_teacher_backbone": 0.23606,
+    "kl_teacher_arm": 0.23481,
+    "arm_is_nearer_the_teacher_than_the_backbone": true,
+    "kl_fraction_removed_at_best_temperatures": 0.011
+   }
+  },
+  "magmatch2": {
+   "what": "magnitude-matched random 9, draw 2",
+   "n_write": 9,
+   "ok": true,
+   "greedy_redecode_diverged_on": 0,
+   "test": {
+    "gain_as_evaluated": 0.008762,
+    "gain_at_best_temperatures": 0.012153,
+    "ci95": [
+     0.008783,
+     0.015756
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": 1.387,
+    "temperature_backbone": 0.65,
+    "temperature_coupled": 0.65,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.8,
+     "temperature_coupled": 0.8,
+     "gain": 0.01026,
+     "the_cross_fit_costs_the_backbone": 0.03331,
+     "the_cross_fit_costs_the_coupled_system": 0.03141
+    },
+    "kl_teacher_backbone": 0.44696,
+    "kl_teacher_arm": 0.44113,
+    "arm_is_nearer_the_teacher_than_the_backbone": true,
+    "kl_fraction_removed_at_best_temperatures": 0.0135
+   },
+   "helpful": {
+    "gain_as_evaluated": 0.00387,
+    "gain_at_best_temperatures": 0.003893,
+    "ci95": [
+     0.002875,
+     0.021951
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": 1.006,
+    "temperature_backbone": 0.8,
+    "temperature_coupled": 0.8,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.65,
+     "temperature_coupled": 0.65,
+     "gain": 0.00416,
+     "the_cross_fit_costs_the_backbone": 0.02554,
+     "the_cross_fit_costs_the_coupled_system": 0.02581
+    },
+    "kl_teacher_backbone": 0.23606,
+    "kl_teacher_arm": 0.2342,
+    "arm_is_nearer_the_teacher_than_the_backbone": true,
+    "kl_fraction_removed_at_best_temperatures": 0.0102
+   }
+  },
+  "rand": {
+   "what": "random 9",
+   "n_write": 9,
+   "ok": true,
+   "greedy_redecode_diverged_on": 0,
+   "test": {
+    "gain_as_evaluated": 0.002496,
+    "gain_at_best_temperatures": 0.003461,
+    "ci95": [
+     0.002309,
+     0.004796
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": false,
+    "share_kept": 1.3866,
+    "temperature_backbone": 0.65,
+    "temperature_coupled": 0.65,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.8,
+     "temperature_coupled": 0.8,
+     "gain": 0.00293,
+     "the_cross_fit_costs_the_backbone": 0.03331,
+     "the_cross_fit_costs_the_coupled_system": 0.03278
+    },
+    "kl_teacher_backbone": 0.44696,
+    "kl_teacher_arm": 0.44509,
+    "arm_is_nearer_the_teacher_than_the_backbone": true,
+    "kl_fraction_removed_at_best_temperatures": 0.0043
+   },
+   "helpful": {
+    "gain_as_evaluated": 0.000537,
+    "gain_at_best_temperatures": 0.000663,
+    "ci95": [
+     0.000272,
+     0.010332
+    ],
+    "reading": "keeps a gain",
+    "keeps_a_gain": true,
+    "ends_within_the_grids_resolution_of_zero": true,
+    "share_kept": 1.2343,
+    "temperature_backbone": 0.8,
+    "temperature_coupled": 0.8,
+    "backbone_at_the_grids_edge": false,
+    "coupled_at_the_grids_edge": false,
+    "at_the_grids_edge": null,
+    "beside_in_split": {
+     "temperature_backbone": 0.65,
+     "temperature_coupled": 0.65,
+     "gain": 0.00082,
+     "the_cross_fit_costs_the_backbone": 0.02554,
+     "the_cross_fit_costs_the_coupled_system": 0.0257
+    },
+    "kl_teacher_backbone": 0.23606,
+    "kl_teacher_arm": 0.2356,
+    "arm_is_nearer_the_teacher_than_the_backbone": true,
+    "kl_fraction_removed_at_best_temperatures": 0.0018
+   }
+  }
+ },
+ "contrasts": {
+  "C1_plain_partner_at_nine": {
+   "first_arm": "plainpartner",
+   "second_arm": [
+    "vn"
+   ],
+   "test": {
+    "reading": "does not survive",
+    "read_as": "a difference",
+    "at_best_temperatures": 0.005373,
+    "ci95": [
+     -0.000913,
+     0.012337
+    ],
+    "ends_within_the_grids_resolution_of_zero": false,
+    "as_evaluated": 0.004032,
+    "as_evaluated_ci95": [
+     0.00087,
+     0.0079
+    ],
+    "as_evaluated_excluded_zero": true,
+    "as_evaluated_in_the_record": 0.004032,
+    "the_table_reproduces_the_record": true
+   },
+   "helpful": {
+    "reading": "survives",
+    "read_as": "a difference",
+    "at_best_temperatures": 0.001472,
+    "ci95": [
+     0.000244,
+     0.015707
+    ],
+    "ends_within_the_grids_resolution_of_zero": true,
+    "as_evaluated": 0.001336,
+    "as_evaluated_ci95": [
+     0.000427,
+     0.002347
+    ],
+    "as_evaluated_excluded_zero": true
+   }
+  },
+  "C2_plain_partner_at_full_width": {
+   "first_arm": "allplain",
+   "second_arm": [
+    "all"
+   ],
+   "test": {
+    "reading": "still indistinguishable",
+    "read_as": "a null",
+    "at_best_temperatures": -0.004738,
+    "ci95": [
+     -0.038259,
+     0.021211
+    ],
+    "ends_within_the_grids_resolution_of_zero": false,
+    "as_evaluated": 0.009631,
+    "as_evaluated_ci95": [
+     -0.012316,
+     0.029748
+    ],
+    "as_evaluated_excluded_zero": false,
+    "as_evaluated_in_the_record": 0.009631,
+    "the_table_reproduces_the_record": true
+   },
+   "helpful": {
+    "reading": "does not survive",
+    "read_as": "a difference",
+    "at_best_temperatures": 0.008098,
+    "ci95": [
+     -0.007174,
+     0.024373
+    ],
+    "ends_within_the_grids_resolution_of_zero": false,
+    "as_evaluated": 0.010868,
+    "as_evaluated_ci95": [
+     0.001487,
+     0.022839
+    ],
+    "as_evaluated_excluded_zero": true
+   }
+  },
+  "C3_identity_at_nine": {
+   "first_arm": "vn",
+   "second_arm": [
+    "magmatch",
+    "magmatch1",
+    "magmatch2"
+   ],
+   "test": {
+    "reading": "does not survive",
+    "read_as": "a difference",
+    "at_best_temperatures": -0.006697,
+    "ci95": [
+     -0.012414,
+     0.029744
+    ],
+    "ends_within_the_grids_resolution_of_zero": false,
+    "as_evaluated": 0.006761,
+    "as_evaluated_ci95": [
+     0.004146,
+     0.00911
+    ],
+    "as_evaluated_excluded_zero": true,
+    "as_evaluated_in_the_record": 0.006761,
+    "the_table_reproduces_the_record": true
+   },
+   "helpful": {
+    "reading": "does not survive",
+    "read_as": "a difference",
+    "at_best_temperatures": -0.010586,
+    "ci95": [
+     -0.014037,
+     0.00782
+    ],
+    "ends_within_the_grids_resolution_of_zero": false,
+    "as_evaluated": 0.011654,
+    "as_evaluated_ci95": [
+     0.009808,
+     0.013336
+    ],
+    "as_evaluated_excluded_zero": true
+   }
+  },
+  "C4_value_neurons_against_random": {
+   "first_arm": "vn",
+   "second_arm": [
+    "rand"
+   ],
+   "test": {
+    "reading": "survives",
+    "read_as": "a difference",
+    "at_best_temperatures": 0.004625,
+    "ci95": [
+     0.000123,
+     0.041847
+    ],
+    "ends_within_the_grids_resolution_of_zero": true,
+    "as_evaluated": 0.01572,
+    "as_evaluated_ci95": [
+     0.013748,
+     0.017658
+    ],
+    "as_evaluated_excluded_zero": true,
+    "as_evaluated_in_the_record": 0.01572,
+    "the_table_reproduces_the_record": true
+   },
+   "helpful": {
+    "reading": "does not survive",
+    "read_as": "a difference",
+    "at_best_temperatures": -0.005913,
+    "ci95": [
+     -0.009544,
+     0.012535
+    ],
+    "ends_within_the_grids_resolution_of_zero": false,
+    "as_evaluated": 0.016616,
+    "as_evaluated_ci95": [
+     0.015123,
+     0.018064
+    ],
+    "as_evaluated_excluded_zero": true
+   }
+  },
+  "C5_width": {
+   "first_arm": "vn5",
+   "second_arm": [
+    "vn"
+   ],
+   "test": {
+    "reading": "survives",
+    "read_as": "a difference",
+    "at_best_temperatures": 0.0473,
+    "ci95": [
+     0.029953,
+     0.089486
+    ],
+    "ends_within_the_grids_resolution_of_zero": false,
+    "as_evaluated": 0.042135,
+    "as_evaluated_ci95": [
+     0.030958,
+     0.055938
+    ],
+    "as_evaluated_excluded_zero": true,
+    "as_evaluated_in_the_record": 0.042135,
+    "the_table_reproduces_the_record": true
+   },
+   "helpful": {
+    "reading": "survives",
+    "read_as": "a difference",
+    "at_best_temperatures": 0.031747,
+    "ci95": [
+     0.013393,
+     0.035466
+    ],
+    "ends_within_the_grids_resolution_of_zero": false,
+    "as_evaluated": 0.023072,
+    "as_evaluated_ci95": [
+     0.020512,
+     0.026401
+    ],
+    "as_evaluated_excluded_zero": true
+   }
+  }
+ },
+ "beside_C3": {
+  "value_neurons_minus_each_draw": {
+   "magmatch": {
+    "reading": "does not survive",
+    "read_as": "a difference",
+    "at_best_temperatures": -0.009751,
+    "ci95": [
+     -0.015982,
+     0.026132
+    ],
+    "ends_within_the_grids_resolution_of_zero": false,
+    "as_evaluated": 0.004529,
+    "as_evaluated_ci95": [
+     0.001645,
+     0.00714
+    ],
+    "as_evaluated_excluded_zero": true,
+    "as_evaluated_in_the_record": 0.004529,
+    "the_table_reproduces_the_record": true
+   },
+   "magmatch1": {
+    "reading": "does not survive",
+    "read_as": "a difference",
+    "at_best_temperatures": -0.006274,
+    "ci95": [
+     -0.011869,
+     0.030665
+    ],
+    "ends_within_the_grids_resolution_of_zero": false,
+    "as_evaluated": 0.006299,
+    "as_evaluated_ci95": [
+     0.003611,
+     0.008743
+    ],
+    "as_evaluated_excluded_zero": true,
+    "as_evaluated_in_the_record": 0.006299,
+    "the_table_reproduces_the_record": true
+   },
+   "magmatch2": {
+    "reading": "does not survive",
+    "read_as": "a difference",
+    "at_best_temperatures": -0.004067,
+    "ci95": [
+     -0.00977,
+     0.032176
+    ],
+    "ends_within_the_grids_resolution_of_zero": false,
+    "as_evaluated": 0.009454,
+    "as_evaluated_ci95": [
+     0.006892,
+     0.01186
+    ],
+    "as_evaluated_excluded_zero": true,
+    "as_evaluated_in_the_record": 0.009454,
+    "the_table_reproduces_the_record": true
+   }
+  },
+  "draws_whose_interval_excludes_zero_with_the_sign": 0,
+  "draws_below_the_value_neurons_at_best_temperatures": 0,
+  "sd_of_the_draws_gains": {
+   "at_best_temperatures": 0.002866,
+   "as_evaluated": 0.002495
+  }
+ }
+}
