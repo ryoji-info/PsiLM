@@ -309,7 +309,7 @@ def self_test():
 
     # ---- the bridge without its partner: the write and one stored set -------------------
     from psilm.mlx.constitution import (StoredTokenCoupler, load_constitution_write, load_stored_stack,
-                                        load_stored_tokens, stored_tokens_beside)
+                                        load_stored_tokens, stored_tokens_beside, stored_verdict)
     assert stored_tokens_beside(ckpt) == tf
     sc, smeta, srec = load_stored_stack(ckpt)
     assert isinstance(sc, StoredTokenCoupler) and not sc.needs_read and sc.ident == ident
@@ -355,6 +355,29 @@ def self_test():
     tf.with_suffix(".json").write_text(json.dumps(prov))
     assert no(lambda: load_stored_tokens(tmp / "bad.npz", ckpt))          # the wrong shape
     assert no(lambda: StoredTokenCoupler(stack.bridges.inject, mx.zeros((1, M, d + 1))))
+    assert no(lambda: StoredTokenCoupler(stack.bridges.inject, mx.zeros((1, M + 3, d)), m_tokens=M))
+    mx.savez(str(tmp / "named.npz"), other=mean)
+    (tmp / "named.json").write_text(json.dumps({**prov, "tokens_sha256": file_sha256(tmp / "named.npz")}))
+    assert no(lambda: load_stored_tokens(tmp / "named.npz", ckpt))        # not an array named tokens
+    # what a record says of its tokens
+    sha_t = prov["tokens_sha256"]
+    assert stored_verdict(prov) == "unverified"
+    assert stored_verdict({**prov, "verdict": {"verdict": "stands_in", "tokens_sha256": sha_t}}) == "stands_in"
+    assert stored_verdict({**prov, "verdict": {"verdict": "does_not", "tokens_sha256": sha_t}}) == "does_not"
+    assert stored_verdict({**prov, "verdict": {"verdict": "stands_in", "tokens_sha256": "0" * 64}}) == "unverified"
+    assert stored_verdict({**prov, "verdict": {"verdict": "not_run_in_full", "tokens_sha256": sha_t}}) == "unverified"
+    assert stored_verdict({"tokens_sha256": "x", "source_tokens_sha256": sha_t,          # an export's record
+                           "verdict": {"verdict": "stands_in", "tokens_sha256": sha_t}}) == "stands_in"
+    # a mask that is not its index's is refused, by the write's loader and by the bridges'
+    import numpy as np
+    from psilm.mlx.constitution import load_constitution_bridge_weights
+    w = {k: np.array(v) for k, v in mx.load(str(ckpt)).items()}
+    w["inject.write_mask"] = ~w["inject.write_mask"]
+    (tmp / "mask").mkdir()
+    mx.savez(str(tmp / "mask" / "bridges.npz"), **{k: mx.array(v) for k, v in w.items()})
+    Path(str(tmp / "mask" / "bridges.npz") + ".meta").write_text(Path(str(ckpt) + ".meta").read_text())
+    assert no(lambda: load_constitution_write(tmp / "mask" / "bridges.npz"))
+    assert no(lambda: load_constitution_bridge_weights(stack.bridges, tmp / "mask" / "bridges.npz"))
     assert no(lambda: sc.inject(h, got_tokens, "psilm", contentless=3))
     other = tmp / "elsewhere"
     other.mkdir()
@@ -363,7 +386,8 @@ def self_test():
     assert stored_tokens_beside(other / "bridges.npz") is None
     assert no(lambda: load_stored_stack(other / "bridges.npz"))           # nothing stored beside it
     mx.savez(str(other / "fixed_tokens_mean.npz"), tokens=mean)
-    assert stored_tokens_beside(other / "bridges.npz") is None            # tokens without a record
+    assert no(lambda: stored_tokens_beside(other / "bridges.npz"))        # tokens without a record
+    assert no(lambda: load_stored_stack(other / "bridges.npz"))
     assert no(lambda: load_stored_tokens(other / "fixed_tokens_mean.npz", other / "bridges.npz"))
     print("[self-test] stored stack: the write and one set of tokens, no partner and no read; the same "
           "write as the full coupler's bit for bit; tokens of another checkpoint, another shape or "

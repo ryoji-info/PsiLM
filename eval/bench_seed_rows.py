@@ -17,6 +17,12 @@ corrected read cannot hold both. --klpool-rows gives the rescored values
 value, and a row with no rescored value loses its KL rather than keeping a legacy
 one. A row whose KL is already on the corrected read (pool "prompt") keeps it.
 
+A borrowed row's answer is read again by today's parser (bench_common.score) from
+its text, unless the text was stored truncated: a run that adds an arm must score
+every arm with one parser, and rows recorded before 2026-09-17 carry the answers
+of a parser that has since been repaired. A row whose answer changes says what it
+was (`rescored_from`).
+
   python eval/bench_seed_rows.py --from-tag const_qwen35_all_rt400 --arms base,psilm \\
       --klpool-rows results/bench/const_qwen35_all_rt400_klpool_guardrail.rows.jsonl \\
       --tasks-cache results/bench/tasks_rt400_qwen35_n400.json --skip-first 40 \\
@@ -29,15 +35,30 @@ import sys
 import tempfile
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 
 def read_rows(path):
     return [json.loads(ln) for ln in Path(path).read_text().splitlines() if ln.strip()]
 
 
+def rescore(r):
+    """The row with its answer as today's parser reads it."""
+    from bench_common import score
+    if r.get("protocol") in (None, "freeform") or r.get("text_truncated") or "gold" not in r:
+        return r
+    pred, ok = score(r["protocol"], r.get("text") or "", r["gold"])
+    if (pred, bool(ok)) == (r.get("pred"), bool(r.get("ok"))):
+        return r
+    return {**r, "pred": pred, "ok": bool(ok), "rescored_from": {"pred": r.get("pred"), "ok": r.get("ok")}}
+
+
 def seed(rows, arms, order, skip_first=0, klpool=None, source="?"):
     """Borrowed copies of `rows` for `arms`, in task order, minus the first prompts."""
     keep = set(order[skip_first:])
-    rescored = {(r["dataset"], r["qid"], r["arm"]): r["kl_prompt"] for r in (klpool or [])}
+    # `kl_prompt` IS the corrected read, whether or not the entry repeats it in a label
+    rescored = {(r["dataset"], r["qid"], r["arm"]): {**r["kl_prompt"], "pool": "prompt"}
+                for r in (klpool or []) if r.get("kl_prompt") and r["kl_prompt"].get("mean") is not None}
     by = {(r["dataset"], r["qid"], r["arm"]): r for r in rows}
     out, dropped_kl = [], 0
     for ds, qid in order:
@@ -49,10 +70,10 @@ def seed(rows, arms, order, skip_first=0, klpool=None, source="?"):
                 raise SystemExit(f"{source}: no {arm} row for {qid}")
             if arm == "base" and "gen_ids" not in r:
                 raise SystemExit(f"{source}: the base row of {qid} has no gen_ids (was it run with --kl?)")
-            r = {**r, "borrowed_from": source}
+            r = {**rescore(r), "borrowed_from": source}
             if r.get("kl") is not None:
                 k = rescored.get((ds, qid, arm))
-                if k is not None and k.get("pool") == "prompt":
+                if k is not None:
                     r["kl"] = k
                 elif r["kl"].get("pool") != "prompt":           # a run on the corrected read keeps its own
                     del r["kl"]
@@ -87,6 +108,22 @@ def self_test():
     assert none == 0 and all(r["kl"] == {"mean": 0.3, "pool": "prompt"} for r in kept if r["arm"] == "psilm")
     nul = [{**r, "kl": None} if r["arm"] == "base" else r for r in rows]      # a base row records no KL
     assert seed(nul, ["base"], order, source="rec")[1] == 0
+    # a rescored value written without its label is still the corrected read
+    bare = [{**k, "kl_prompt": {"mean": 0.19}} for k in kl] + [
+        {"dataset": "redteam", "qid": "q5", "arm": "psilm", "kl_prompt": {"mean": None}}]
+    got, lost = seed(rows, ["psilm"], order, klpool=bare, source="rec")
+    assert lost == 1 and [r.get("kl") for r in got] == [{"mean": 0.19, "pool": "prompt"}] * 5 + [None]
+    # the answers are today's parser's: a bare letter is an answer, a truncated text is left alone
+    mm = [{"dataset": "mmlu", "qid": "m0", "arm": "base", "protocol": "letter", "gold": "B", "text": "B",
+           "pred": None, "ok": False, "gen_ids": [1]},
+          {"dataset": "mmlu", "qid": "m1", "arm": "base", "protocol": "letter", "gold": "B", "text": "B",
+           "pred": None, "ok": False, "gen_ids": [1], "text_truncated": True},
+          {"dataset": "mmlu", "qid": "m2", "arm": "base", "protocol": "letter", "gold": "C", "text": "Answer: C",
+           "pred": "C", "ok": True, "gen_ids": [1]}]
+    got, _ = seed(mm, ["base"], [("mmlu", "m0"), ("mmlu", "m1"), ("mmlu", "m2")], source="rec")
+    assert (got[0]["pred"], got[0]["ok"], got[0]["rescored_from"]) == ("B", True, {"pred": None, "ok": False})
+    assert (got[1]["pred"], got[1]["ok"]) == (None, False) and "rescored_from" not in got[1]
+    assert got[2]["ok"] is True and "rescored_from" not in got[2] and mm[0]["pred"] is None
     none, _ = seed(rows, ["base"], order, skip_first=6, source="rec")
     assert none == []
     for bad_arms, bad_rows in ((["fixed"], rows), (["base"], [{k: v for k, v in r.items() if k != "gen_ids"}

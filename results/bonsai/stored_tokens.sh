@@ -110,14 +110,20 @@ TS=$($PY -c "import json;d=json.load(open('$D/fixed_tokens_mean.json'))['spread_
 step "TOKENS: the prompts' own tokens against their mean: $TS"
 
 # ---- 2. teacher-forced: the stored sets against the trained system --------------------------
-if [ ! -s $D/stored_tokens.json ]; then
+# on the evaluator's own items and as many of them, or its check of the forward cannot be made
+N=$(jget $D/eval_test.json n)
+[ -n "$N" ] && [ "$N" = "$(jget $D/eval_helpful.json n)" ] \
+  || { step "PREREQ the 50-item evaluations of $D are not there (eval_test.json, eval_helpful.json)"; exit 1; }
+if [ "$(jget $D/stored_tokens.json ok)" != "True" ]; then
   $PY eval/constitution_compress.py --ckpt $D/bridges.npz --model $M --const-model $CM --data $TE,$HE \
-      --noharm $NEG --heldout-rows results/bench/${REC}_guardrail.rows.jsonl --tasks-cache $CACHE \
+      --n $N --noharm $NEG --heldout-rows results/bench/${REC}_guardrail.rows.jsonl --tasks-cache $CACHE \
       --variants fp32+native --no-real \
       --stored-tokens mean=$D/fixed_tokens_mean.npz,softzero=$D/fixed_tokens_softzero.npz \
       --out $D/stored_tokens.json > $D/stored_tokens.log 2>&1 \
     || { step "TEACHER-FORCED FAILED ($D/stored_tokens.log)"; exit 1; }
 fi
+[ "$(jget $D/stored_tokens.json ok)" = "True" ] \
+  || step "NOTE: the evaluator's cross-entropies were not reproduced ($D/stored_tokens.json): the teacher-forced criterion cannot be computed"
 step "TEACHER-FORCED: $(grep -E '^stored:' $D/stored_tokens.log | tr -s ' ' | tr '\n' '|' | cut -c1-600)"
 
 bench() {   # $1 tag, $2 arms, the rest: flags. --fresh only when the run has no rows.

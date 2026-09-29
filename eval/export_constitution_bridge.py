@@ -59,23 +59,57 @@ def scrub_meta(meta: dict, backbone_name: str | None) -> dict:
     return out
 
 
-def export_tokens(src: Path, out: Path, bridges_sha: str, backbone_name=None):
+REPO = Path(__file__).resolve().parents[1]
+RECORD_FIELDS = ("kind", "n", "tokens_sha256", "ckpt", "ckpt_step", "ckpt_sha256")
+
+
+def shown(path) -> str:
+    """A path as an export may print it: relative to the repository, or its last name."""
+    try:
+        return str(Path(path).resolve().relative_to(REPO))
+    except ValueError:
+        return Path(path).name
+
+
+def check_tokens(src: Path, npz: Path, meta: dict):
+    """The tokens and their record, or SystemExit: they must be THIS run's. The
+    export names the exported bridges in the record by hash, and a loader then takes
+    that hash as the tokens' origin, so it is written only for tokens that were
+    made from the checkpoint being exported."""
+    from psilm.mlx.constitution import load_stored_tokens
+    rec_f = src.with_suffix(".json")
+    if not rec_f.exists():
+        raise SystemExit(f"{src}: no record beside it ({rec_f.name})")
+    rec = json.loads(rec_f.read_text())
+    missing = [k for k in RECORD_FIELDS if k not in rec]
+    if missing:
+        raise SystemExit(f"{rec_f}: the record lacks {missing}")
+    if rec["ckpt_sha256"] != hashlib.sha256(npz.read_bytes()).hexdigest():
+        raise SystemExit(f"{src}: made from {rec['ckpt']} (step {rec['ckpt_step']}), which is not {npz}")
+    try:
+        load_stored_tokens(src, npz, meta)              # the file, its record, the step, the shape
+    except ValueError as e:
+        raise SystemExit(str(e))
+    return rec
+
+
+def export_tokens(src: Path, out: Path, bridges_sha: str, rec: dict, backbone_name=None):
     """The stored tokens of a bridge, in the Hugging Face layout, with their record."""
-    rec = json.loads(src.with_suffix(".json").read_text())
-    if hashlib.sha256(src.read_bytes()).hexdigest() != rec["tokens_sha256"]:
-        raise SystemExit(f"{src}: not the file its record describes")
     t = np.load(src)["tokens"]
     st = out / "tokens.safetensors"
     mx.save_safetensors(str(st), {"tokens": mx.array(t)})
     b = np.array(mx.load(str(st))["tokens"])
     assert b.dtype == t.dtype and b.shape == t.shape and np.array_equal(b, t), "tokens: round-trip differs"
     new = scrub_meta(rec, backbone_name)
-    new.update(ckpt="bridges.safetensors", source_ckpt=str(rec["ckpt"]),
+    if isinstance(new.get("verdict"), dict):             # the verdict travels with the tokens
+        new["verdict"] = {**new["verdict"], **{k: shown(new["verdict"][k]) for k in ("report", "criteria")
+                                               if k in new["verdict"]}}
+    new.update(ckpt="bridges.safetensors", source_ckpt=shown(rec["ckpt"]),
                source_tokens_sha256=rec["tokens_sha256"], bridges_sha256=bridges_sha,
                tokens_sha256=hashlib.sha256(st.read_bytes()).hexdigest(),
                format="psilm2-constitution-tokens/v1",
                load_with="psilm.mlx.constitution.load_stored_stack(<this dir>/bridges.safetensors)")
-    assert str(Path.home()) not in json.dumps(new), "a local path survived the scrub"
+    clean(new, "tokens.json")
     (out / "tokens.json").write_text(json.dumps(new, indent=1) + "\n")
     from psilm.mlx.constitution import load_stored_stack
     coupler, _, _ = load_stored_stack(out / "bridges.safetensors")
@@ -83,8 +117,17 @@ def export_tokens(src: Path, out: Path, bridges_sha: str, backbone_name=None):
     return new
 
 
+def clean(payload: dict, name: str):
+    """Nothing of this machine in what an export writes: no home directory, no user name."""
+    text = json.dumps(payload)
+    for what in (str(Path.home()), f"/{Path.home().name}/"):
+        if what in text:
+            raise SystemExit(f"{name}: a local path survived ({what!r}); nothing of it was kept")
+
+
 def export(run: Path, out: Path, backbone_name=None, tokens=None):
     npz, meta_f = run / "bridges.npz", run / "bridges.npz.meta"
+    rec = check_tokens(Path(tokens), npz, json.loads(meta_f.read_text())) if tokens is not None else None
     z = np.load(npz)
     arrays = {k: z[k] for k in z.files}
     out.mkdir(parents=True, exist_ok=True)
@@ -96,7 +139,7 @@ def export(run: Path, out: Path, backbone_name=None, tokens=None):
         b = np.array(back[k])
         assert b.dtype == v.dtype and b.shape == v.shape and np.array_equal(b, v), f"{k}: round-trip differs"
     meta = scrub_meta(json.loads(meta_f.read_text()), backbone_name)
-    assert str(Path.home()) not in json.dumps(meta), "a local path survived the scrub"
+    clean(meta, "the meta")
     # Every reader in this project resolves the meta as "<checkpoint> + .meta",
     # so the same payload sits beside the safetensors under that name too.
     (out / "bridges.safetensors.meta").write_text(json.dumps(meta, indent=1) + "\n")
@@ -108,19 +151,22 @@ def export(run: Path, out: Path, backbone_name=None, tokens=None):
            "load_with": ("psilm.mlx.constitution.load_constitution_stack(<this dir>/bridges.safetensors, <partner dir>)"
                          if kind == "constitution" else
                          "eval/bench_guardrail.py --phys-ckpt <this dir>/bridges.safetensors, or psilm2.dual.load_dual_stack"),
-           "source_run": str(run), "step": meta.get("step"),
+           "source_run": shown(run), "step": meta.get("step"),
            "n_tensors": len(arrays), "n_params": n_params,
            "backbone": backbone_name or meta.get("model"),
            "sha256_safetensors": hashlib.sha256(st.read_bytes()).hexdigest(),
            "meta": meta}
+    clean(cfg, "config.json")
     (out / "config.json").write_text(json.dumps(cfg, indent=1) + "\n")
     if tokens is not None:
         if kind != "constitution":
             raise SystemExit("stored tokens belong to a constitution bridge")
-        rec = export_tokens(Path(tokens), out, cfg["sha256_safetensors"], backbone_name)
+        new = export_tokens(Path(tokens), out, cfg["sha256_safetensors"], rec, backbone_name)
         cfg["stored_tokens"] = {"file": "tokens.safetensors", "record": "tokens.json",
-                                "sha256": rec["tokens_sha256"], "kind": rec["kind"], "prompts": rec["n"],
-                                "load_with": rec["load_with"]}
+                                "sha256": new["tokens_sha256"], "kind": new["kind"], "prompts": new["n"],
+                                "verdict": (new.get("verdict") or {}).get("verdict", "unverified"),
+                                "load_with": new["load_with"]}
+        clean(cfg, "config.json")
         (out / "config.json").write_text(json.dumps(cfg, indent=1) + "\n")
     return n_params, st.stat().st_size, cfg["sha256_safetensors"]
 

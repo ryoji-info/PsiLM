@@ -538,7 +538,9 @@ def run(args):
               "n": args.n, "sets": {k: len(v) for k, v in {**sets, **neg_sets}.items()},
               "q_group": Q_GROUP, "t_group": T_GROUP, "t_thresh": T_THRESH,
               "thresholds": THRESHOLDS, "evaluator_checks": checks,
-              "ok": all(c["reproduced"] for c in checks.values()),
+              # no check that could be made is not a check that passed
+              "evaluator_checks_made": sorted(checks), "evaluator_checks_missing": sorted(set(sets) - set(checks)),
+              "ok": bool(checks) and set(checks) == set(sets) and all(c["reproduced"] for c in checks.values()),
               "partner_frame_rows": extras["n_frame_rows"], "trunk_sec": extras["trunk_sec"],
               "stored_tokens": stored_rec, "variants": table}
     out.write_text(json.dumps(report, indent=1) + "\n")

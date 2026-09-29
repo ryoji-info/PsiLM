@@ -532,7 +532,7 @@ def load_constitution_bridge_weights(bridges: ConstitutionBridgesMLX, path,
         raise ValueError(f"{path}: tensor shapes do not match the module: {lines}")
     if strict and (missing or unexpected):
         raise ValueError(f"{path}: missing {missing}, unexpected {unexpected}")
-    for key in ("inject.write_idx", "fwd.read_idx"):
+    for key in ("inject.write_idx", "inject.write_mask", "fwd.read_idx"):
         if key in weights and key in params:
             if not bool(mx.all(weights[key] == params[key]).item()):
                 raise ValueError(
@@ -832,11 +832,13 @@ class StoredTokenCoupler:
     supports_contentless = False
     needs_read = False
 
-    def __init__(self, write: "MaskedGatedCrossAttentionMLX", tokens, ident: Optional[str] = None):
-        want = (1, None, int(write.to_k.weight.shape[1]))
-        if tokens.ndim != 3 or tokens.shape[0] != 1 or tokens.shape[2] != want[2]:
+    def __init__(self, write: "MaskedGatedCrossAttentionMLX", tokens, ident: Optional[str] = None,
+                 m_tokens: Optional[int] = None):
+        d = int(write.to_k.weight.shape[1])
+        if tokens.ndim != 3 or tokens.shape[0] != 1 or tokens.shape[2] != d \
+                or (m_tokens is not None and tokens.shape[1] != int(m_tokens)):
             raise ValueError(f"stored tokens of shape {tuple(tokens.shape)}; the write takes "
-                             f"(1, m_tokens, {want[2]})")
+                             f"(1, {m_tokens if m_tokens is not None else 'm_tokens'}, {d})")
         self.write = write
         self.stored = tokens.astype(mx.float32)
         self.ident = ident
@@ -872,14 +874,32 @@ def _ckpt_meta(ckpt: Path) -> Dict[str, Any]:
     return json.loads(Path(str(ckpt) + ".meta").read_text())
 
 
+STORED_NAMES = ("tokens.safetensors", "fixed_tokens_mean.npz")
+
+
 def stored_tokens_beside(ckpt_path) -> Optional[Path]:
     """Where a checkpoint's stored tokens are, if it has any: `tokens.safetensors`
-    in the Hugging Face layout, `fixed_tokens_mean.npz` in a training run's."""
+    in the Hugging Face layout, `fixed_tokens_mean.npz` in a training run's. A file
+    without its record is an error, not an absence: the tokens are there, and what
+    is missing is the statement of what they were made from."""
     d = Path(ckpt_path).parent
-    for name in ("tokens.safetensors", "fixed_tokens_mean.npz"):
-        if (d / name).exists() and (d / name).with_suffix(".json").exists():
-            return d / name
-    return None
+    there = [d / n for n in STORED_NAMES if (d / n).exists()]
+    bare = [f for f in there if not f.with_suffix(".json").exists()]
+    if bare:
+        raise ValueError(f"{bare[0]}: no record beside it ({bare[0].with_suffix('.json').name}); stored "
+                         f"tokens are used only with the record of what they were made from")
+    return there[0] if there else None
+
+
+def stored_verdict(rec: Dict[str, Any]) -> str:
+    """What the record says of its tokens: `stands_in` (they were shown to stand in
+    for the partner, by eval/stored_tokens_report.py), `does_not`, or `unverified`
+    (no verdict, or a verdict on other tokens)."""
+    v = rec.get("verdict") or {}
+    mine = {rec.get("tokens_sha256"), rec.get("source_tokens_sha256")} - {None}
+    if v.get("verdict") not in ("stands_in", "does_not") or v.get("tokens_sha256") not in mine:
+        return "unverified"
+    return v["verdict"]
 
 
 def load_stored_tokens(path, ckpt_path, meta: Optional[Dict[str, Any]] = None):
@@ -906,7 +926,10 @@ def load_stored_tokens(path, ckpt_path, meta: Optional[Dict[str, Any]] = None):
             or int(rec.get("ckpt_step", -1)) != int(meta["step"]):
         raise ValueError(f"{path}: made from {rec.get('ckpt')} at step {rec.get('ckpt_step')}, "
                          f"which is not {ckpt} (step {meta['step']})")
-    tokens = mx.load(str(path))["tokens"]
+    z = mx.load(str(path))
+    if set(z) != {"tokens"}:
+        raise ValueError(f"{path}: one array named 'tokens' was expected, the file holds {sorted(z)}")
+    tokens = z["tokens"]
     want = (1, int(meta["m_tokens"]), int(meta["d_model"]))
     if tuple(tokens.shape) != want:
         raise ValueError(f"{path}: tokens of shape {tuple(tokens.shape)}, the bridges take {want}")
@@ -933,6 +956,8 @@ def load_constitution_write(ckpt_path):
                          f"unexpected {unexpected}, shapes {wrong[:4]}")
     if not bool(mx.all(weights["write_idx"] == params["write_idx"]).item()):
         raise ValueError(f"{ckpt}: inject.write_idx is a different dimension set than the meta's")
+    if not bool(mx.all(weights["write_mask"] == params["write_mask"]).item()):
+        raise ValueError(f"{ckpt}: inject.write_mask is not the mask of inject.write_idx")
     write.load_weights(list(weights.items()), strict=False)
     write.freeze()
     mx.eval(write.parameters())
@@ -948,7 +973,7 @@ def load_stored_stack(ckpt_path, tokens_path=None):
                          f"eval/constitution_fixed_tokens.py makes them")
     write, meta = load_constitution_write(ckpt_path)
     tokens, rec, ident = load_stored_tokens(tokens_path, ckpt_path, meta)
-    return StoredTokenCoupler(write, tokens, ident), meta, rec
+    return StoredTokenCoupler(write, tokens, ident, m_tokens=int(meta["m_tokens"])), meta, rec
 
 
 def load_constitution_stack(ckpt_path, const_model_path: Optional[str] = None):
