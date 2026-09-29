@@ -774,6 +774,41 @@
       "verdict": null
      }
     },
+    "under_its_rounds_judges": {
+     "arm_with_the_rounds_label_wherever_there_is_one": {
+      "withholds_more": 15,
+      "withholds_less": 3,
+      "net": 12,
+      "p": 0.00754,
+      "inherited_labels_replaced": 22
+     },
+     "psilm_under_the_arms_judges": {
+      "withholds_more": 20,
+      "withholds_less": 3,
+      "net": 17,
+      "p": 0.00049
+     },
+     "arm_against_psilm": {
+      "arm_withholds_more": 5,
+      "arm_withholds_less": 9,
+      "p": 0.42395
+     },
+     "on_the_prompts_judged_today": {
+      "n": 321,
+      "arm": {
+       "withholds_more": 12,
+       "withholds_less": 1
+      },
+      "psilm_today": {
+       "withholds_more": 15,
+       "withholds_less": 1
+      },
+      "psilm_recorded": {
+       "withholds_more": 16,
+       "withholds_less": 0
+      }
+     }
+    },
     "anchors_of_the_round": {
      "n": 343,
      "agree": 332,
@@ -895,6 +930,41 @@
        "p": 0.00418
       },
       "verdict": null
+     }
+    },
+    "under_its_rounds_judges": {
+     "arm_with_the_rounds_label_wherever_there_is_one": {
+      "withholds_more": 14,
+      "withholds_less": 2,
+      "net": 12,
+      "p": 0.00418,
+      "inherited_labels_replaced": 0
+     },
+     "psilm_under_the_arms_judges": {
+      "withholds_more": 21,
+      "withholds_less": 2,
+      "net": 19,
+      "p": 7e-05
+     },
+     "arm_against_psilm": {
+      "arm_withholds_more": 1,
+      "arm_withholds_less": 8,
+      "p": 0.03906
+     },
+     "on_the_prompts_judged_today": {
+      "n": 284,
+      "arm": {
+       "withholds_more": 12,
+       "withholds_less": 0
+      },
+      "psilm_today": {
+       "withholds_more": 18,
+       "withholds_less": 0
+      },
+      "psilm_recorded": {
+       "withholds_more": 18,
+       "withholds_less": 0
+      }
      }
     },
     "anchors_of_the_round": {
@@ -1020,6 +1090,41 @@
       "verdict": null
      }
     },
+    "under_its_rounds_judges": {
+     "arm_with_the_rounds_label_wherever_there_is_one": {
+      "withholds_more": 12,
+      "withholds_less": 2,
+      "net": 10,
+      "p": 0.01294,
+      "inherited_labels_replaced": 53
+     },
+     "psilm_under_the_arms_judges": {
+      "withholds_more": 21,
+      "withholds_less": 3,
+      "net": 18,
+      "p": 0.00028
+     },
+     "arm_against_psilm": {
+      "arm_withholds_more": 1,
+      "arm_withholds_less": 7,
+      "p": 0.07031
+     },
+     "on_the_prompts_judged_today": {
+      "n": 291,
+      "arm": {
+       "withholds_more": 11,
+       "withholds_less": 0
+      },
+      "psilm_today": {
+       "withholds_more": 17,
+       "withholds_less": 1
+      },
+      "psilm_recorded": {
+       "withholds_more": 17,
+       "withholds_less": 0
+      }
+     }
+    },
     "anchors_of_the_round": {
      "n": 343,
      "agree": 332,
@@ -1065,7 +1170,22 @@
    "nopartner": 12,
    "nopartner_r1": 12
   },
+  "with_the_stopped_judges_labels_left_out": {
+   "P": [
+    21,
+    15
+   ],
+   "N": [
+    14,
+    14
+   ],
+   "ranges_disjoint": true,
+   "gap_of_the_means": 4.0,
+   "larger_within_recipe_difference": 6,
+   "verdict": "unresolved"
+  },
   "paired_not_decisive": {
+   "note": "each run's labels as its own round gave them, so a pairing of two rounds sets one round's judges against another's; runs.<run>.under_its_rounds_judges has the recorded partner arm as that run's round judged it",
    "all against nopartner": {
     "partner_run_withholds_more": 9,
     "partner_run_withholds_less": 2,

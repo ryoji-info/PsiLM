@@ -324,6 +324,8 @@ def replicates(a, recorded):
             plan, judged, anchors = round_of(a.labels_dir, ld)
             r["without_the_stopped_judges_labels"] = stopped_bound(
                 ld, plan, events_of(a.labels_dir, ld), lambda x: None)
+            # against the recorded partner arm as THIS run's round judged it
+            r["under_its_rounds_judges"] = same_judges(ld, plan, judged, recorded)
             r["anchors_of_the_round"] = {k: anchors[k] for k in ("n", "agree", "unlabelled", "recorded", "today")}
         meta, ceil = Path(d) / "bridges.npz.meta", Path(d) / "teacher_ceiling.json"
         if meta.exists() and ceil.exists():
@@ -337,7 +339,14 @@ def replicates(a, recorded):
     more = lambda n: out["runs"][n]["adjudicated"]["withholds_more"]
     out.update(replicate_reading([more("all"), more("all_r1")], [more("nopartner"), more("nopartner_r1")]))
     out["net"] = {n: out["runs"][n]["adjudicated"]["net"] for n in runs}
-    out["paired_not_decisive"] = {}
+    left = lambda n: (out["runs"][n].get("without_the_stopped_judges_labels", {}).get("left_out")
+                      or out["runs"][n]["adjudicated"])["withholds_more"]
+    out["with_the_stopped_judges_labels_left_out"] = replicate_reading(
+        [left("all"), left("all_r1")], [left("nopartner"), left("nopartner_r1")])
+    out["paired_not_decisive"] = {"note": "each run's labels as its own round gave them, so a pairing of two "
+                                          "rounds sets one round's judges against another's; "
+                                          "runs.<run>.under_its_rounds_judges has the recorded partner arm "
+                                          "as that run's round judged it"}
     for p_ in ("all", "all_r1"):
         for n_ in ("nopartner", "nopartner_r1"):
             up = sum(SCORE[labels[p_][q]] > SCORE[labels[n_][q]] for q in labels[p_] if q in labels[n_])

@@ -78,8 +78,9 @@ def resampled(cs, short, seed=0):
 
 
 def ci(v):
+    """Six decimals: a value rounded here and again where it is printed can land on the wrong digit."""
     lo, hi = np.percentile(v, [2.5, 97.5])
-    return [round(float(lo), 4), round(float(hi), 4)]
+    return [round(float(lo), 6), round(float(hi), 6)]
 
 
 def variant(comp, name):
@@ -144,12 +145,19 @@ def intervals(rows):
             point = float(best_tau_gain(cs[r["arm"]], short, full, other))
             if abs(point - r[short]["ce_gain_at_best_tau"]) > 2e-5:
                 raise SystemExit(f"{r['arm']} {short}: {point:.5f} here, {r[short]['ce_gain_at_best_tau']} recorded")
+            one = TAUS.index(1.0)
+            raw = float(cs[r["arm"]][short][1][:, one].mean() - cs[r["arm"]][short][2][:, one].mean())
+            if abs(raw - r[short]["ce_gain"]) > 2e-5:
+                raise SystemExit(f"{r['arm']} {short}: raw gain {raw:.5f} here, {r[short]['ce_gain']} recorded")
+            # from the rows, unrounded: what a table should be printed from
+            r[short]["ce_gain"], r[short]["ce_gain_at_best_tau"] = round(raw, 6), round(point, 6)
+            r[short]["share_surviving"] = round(point / raw, 4) if abs(raw) > 1e-9 else None
             r[short]["ce_gain_at_best_tau_ci95"] = ci(got[:, k])
         for a, bs in PAIRS:
             d = got[:, ARMS.index(a)] - np.mean([got[:, ARMS.index(b)] for b in bs], axis=0)
             pt = (next(r for r in rows if r["arm"] == a)[short]["ce_gain_at_best_tau"]
                   - np.mean([next(r for r in rows if r["arm"] == b)[short]["ce_gain_at_best_tau"] for b in bs]))
-            contrasts.append({"split": short, "arm": a, "minus": bs, "difference": round(float(pt), 4),
+            contrasts.append({"split": short, "arm": a, "minus": bs, "difference": round(float(pt), 6),
                               "ci95": ci(d)})
     return contrasts
 

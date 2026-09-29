@@ -11,10 +11,10 @@
    "minus": [
     "allplain"
    ],
-   "difference": 0.0031,
+   "difference": 0.003063,
    "ci95": [
-    -0.0002,
-    0.0089
+    -0.000181,
+    0.008877
    ]
   },
   {
@@ -25,10 +25,10 @@
     "match1",
     "match2"
    ],
-   "difference": -0.0012,
+   "difference": -0.001168,
    "ci95": [
-    -0.0081,
-    0.0039
+    -0.008065,
+    0.003898
    ]
   },
   {
@@ -37,10 +37,10 @@
    "minus": [
     "vn10ebot"
    ],
-   "difference": -0.0047,
+   "difference": -0.004672,
    "ci95": [
-    -0.0111,
-    0.0043
+    -0.011147,
+    0.004316
    ]
   },
   {
@@ -49,10 +49,10 @@
    "minus": [
     "match205"
    ],
-   "difference": -0.0046,
+   "difference": -0.004637,
    "ci95": [
-    -0.0107,
-    0.0035
+    -0.010694,
+    0.003542
    ]
   },
   {
@@ -61,10 +61,10 @@
    "minus": [
     "match41"
    ],
-   "difference": 0.0046,
+   "difference": 0.004555,
    "ci95": [
-    -0.004,
-    0.0115
+    -0.004022,
+    0.01148
    ]
   },
   {
@@ -73,10 +73,10 @@
    "minus": [
     "allplain"
    ],
-   "difference": 0.0023,
+   "difference": 0.002304,
    "ci95": [
-    -0.0004,
-    0.0038
+    -0.000392,
+    0.003775
    ]
   },
   {
@@ -87,10 +87,10 @@
     "match1",
     "match2"
    ],
-   "difference": -0.0002,
+   "difference": -0.000232,
    "ci95": [
-    -0.0057,
-    0.005
+    -0.005676,
+    0.005022
    ]
   },
   {
@@ -99,10 +99,10 @@
    "minus": [
     "vn10ebot"
    ],
-   "difference": 0.0002,
+   "difference": 0.000232,
    "ci95": [
-    -0.006,
-    0.0048
+    -0.006012,
+    0.004806
    ]
   },
   {
@@ -111,10 +111,10 @@
    "minus": [
     "match205"
    ],
-   "difference": -0.0029,
+   "difference": -0.002886,
    "ci95": [
-    -0.0096,
-    0.0029
+    -0.009585,
+    0.002864
    ]
   },
   {
@@ -123,10 +123,10 @@
    "minus": [
     "match41"
    ],
-   "difference": 0.0015,
+   "difference": 0.001504,
    "ci95": [
-    -0.0035,
-    0.0085
+    -0.003526,
+    0.008516
    ]
   }
  ],
@@ -155,7 +155,7 @@
     "base_ce_at_tau": 0.42092,
     "psilm_ce_at_tau": 0.38057,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": 0.04035,
+    "ce_gain_at_best_tau": 0.040349,
     "share_surviving": 0.4299,
     "kl_teacher_base": 0.13973,
     "kl_teacher_psilm": 0.21244,
@@ -172,15 +172,15 @@
     "same_top1_shuffle": 0.993087,
     "same_top1_softzero": 0.99056,
     "ce_gain_at_best_tau_ci95": [
-     0.0285,
-     0.0575
+     0.028464,
+     0.057528
     ]
    },
    "helpful": {
     "base_ce": 0.41303,
     "teacher_ce": 0.29898,
     "psilm_ce": 0.35539,
-    "ce_gain": 0.05764,
+    "ce_gain": 0.057642,
     "ce_gain_ci95": [
      0.0499,
      0.066
@@ -190,8 +190,8 @@
     "base_ce_at_tau": 0.34438,
     "psilm_ce_at_tau": 0.34025,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": 0.00413,
-    "share_surviving": 0.0717,
+    "ce_gain_at_best_tau": 0.004129,
+    "share_surviving": 0.0716,
     "kl_teacher_base": 0.1143,
     "kl_teacher_psilm": 0.18418,
     "kl_fraction": -0.6114,
@@ -207,8 +207,8 @@
     "same_top1_shuffle": 0.995855,
     "same_top1_softzero": 0.99074,
     "ce_gain_at_best_tau_ci95": [
-     -0.0025,
-     0.0121
+     -0.002502,
+     0.012061
     ]
    },
    "noharm_heldout": {
@@ -233,7 +233,7 @@
     "base_ce": 0.4829,
     "teacher_ce": 0.31694,
     "psilm_ce": 0.38978,
-    "ce_gain": 0.09313,
+    "ce_gain": 0.093126,
     "ce_gain_ci95": [
      0.0829,
      0.1035
@@ -243,7 +243,7 @@
     "base_ce_at_tau": 0.42092,
     "psilm_ce_at_tau": 0.38363,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": 0.03729,
+    "ce_gain_at_best_tau": 0.037286,
     "share_surviving": 0.4004,
     "kl_teacher_base": 0.13973,
     "kl_teacher_psilm": 0.22748,
@@ -260,15 +260,15 @@
     "same_top1_shuffle": 0.99602,
     "same_top1_softzero": 0.996461,
     "ce_gain_at_best_tau_ci95": [
-     0.0261,
-     0.0525
+     0.026073,
+     0.052537
     ]
    },
    "helpful": {
     "base_ce": 0.41303,
     "teacher_ce": 0.29898,
     "psilm_ce": 0.35354,
-    "ce_gain": 0.05949,
+    "ce_gain": 0.059495,
     "ce_gain_ci95": [
      0.0509,
      0.0686
@@ -278,8 +278,8 @@
     "base_ce_at_tau": 0.34438,
     "psilm_ce_at_tau": 0.34255,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": 0.00183,
-    "share_surviving": 0.0308,
+    "ce_gain_at_best_tau": 0.001825,
+    "share_surviving": 0.0307,
     "kl_teacher_base": 0.1143,
     "kl_teacher_psilm": 0.1979,
     "kl_fraction": -0.7314,
@@ -295,8 +295,8 @@
     "same_top1_shuffle": 0.995355,
     "same_top1_softzero": 0.994531,
     "ce_gain_at_best_tau_ci95": [
-     -0.0048,
-     0.0109
+     -0.004797,
+     0.010886
     ]
    },
    "noharm_heldout": {
@@ -321,7 +321,7 @@
     "base_ce": 0.4829,
     "teacher_ce": 0.31694,
     "psilm_ce": 0.42498,
-    "ce_gain": 0.05793,
+    "ce_gain": 0.057926,
     "ce_gain_ci95": [
      0.0507,
      0.0651
@@ -331,7 +331,7 @@
     "base_ce_at_tau": 0.42092,
     "psilm_ce_at_tau": 0.41359,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": 0.00733,
+    "ce_gain_at_best_tau": 0.007326,
     "share_surviving": 0.1265,
     "kl_teacher_base": 0.13973,
     "kl_teacher_psilm": 0.19607,
@@ -348,8 +348,8 @@
     "same_top1_shuffle": 0.996269,
     "same_top1_softzero": 0.995536,
     "ce_gain_at_best_tau_ci95": [
-     0.0018,
-     0.0163
+     0.001766,
+     0.016334
     ]
    },
    "helpful": {
@@ -366,8 +366,8 @@
     "base_ce_at_tau": 0.34438,
     "psilm_ce_at_tau": 0.34717,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": -0.00279,
-    "share_surviving": -0.0579,
+    "ce_gain_at_best_tau": -0.002787,
+    "share_surviving": -0.0578,
     "kl_teacher_base": 0.1143,
     "kl_teacher_psilm": 0.17401,
     "kl_fraction": -0.5224,
@@ -383,8 +383,8 @@
     "same_top1_shuffle": 0.995859,
     "same_top1_softzero": 0.997031,
     "ce_gain_at_best_tau_ci95": [
-     -0.0074,
-     0.0038
+     -0.007446,
+     0.003813
     ]
    },
    "noharm_heldout": {
@@ -409,7 +409,7 @@
     "base_ce": 0.4829,
     "teacher_ce": 0.31694,
     "psilm_ce": 0.4333,
-    "ce_gain": 0.04961,
+    "ce_gain": 0.049605,
     "ce_gain_ci95": [
      0.0435,
      0.0555
@@ -419,7 +419,7 @@
     "base_ce_at_tau": 0.42092,
     "psilm_ce_at_tau": 0.40892,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": 0.012,
+    "ce_gain_at_best_tau": 0.011998,
     "share_surviving": 0.2419,
     "kl_teacher_base": 0.13973,
     "kl_teacher_psilm": 0.16993,
@@ -436,15 +436,15 @@
     "same_top1_shuffle": 0.996265,
     "same_top1_softzero": 0.994119,
     "ce_gain_at_best_tau_ci95": [
-     0.0048,
-     0.0198
+     0.004844,
+     0.019752
     ]
    },
    "helpful": {
     "base_ce": 0.41303,
     "teacher_ce": 0.29898,
     "psilm_ce": 0.37965,
-    "ce_gain": 0.03339,
+    "ce_gain": 0.033386,
     "ce_gain_ci95": [
      0.0284,
      0.0384
@@ -454,7 +454,7 @@
     "base_ce_at_tau": 0.34438,
     "psilm_ce_at_tau": 0.3474,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": -0.00302,
+    "ce_gain_at_best_tau": -0.003019,
     "share_surviving": -0.0904,
     "kl_teacher_base": 0.1143,
     "kl_teacher_psilm": 0.144,
@@ -471,8 +471,8 @@
     "same_top1_shuffle": 0.996173,
     "same_top1_softzero": 0.995781,
     "ce_gain_at_best_tau_ci95": [
-     -0.0069,
-     0.004
+     -0.00689,
+     0.003985
     ]
    },
    "noharm_heldout": {
@@ -497,7 +497,7 @@
     "base_ce": 0.4829,
     "teacher_ce": 0.31694,
     "psilm_ce": 0.4349,
-    "ce_gain": 0.04801,
+    "ce_gain": 0.048009,
     "ce_gain_ci95": [
      0.0429,
      0.0531
@@ -507,8 +507,8 @@
     "base_ce_at_tau": 0.42092,
     "psilm_ce_at_tau": 0.41298,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": 0.00794,
-    "share_surviving": 0.1654,
+    "ce_gain_at_best_tau": 0.007936,
+    "share_surviving": 0.1653,
     "kl_teacher_base": 0.13973,
     "kl_teacher_psilm": 0.16912,
     "kl_fraction": -0.2103,
@@ -524,15 +524,15 @@
     "same_top1_shuffle": 0.995269,
     "same_top1_softzero": 0.995575,
     "ce_gain_at_best_tau_ci95": [
-     0.0037,
-     0.0172
+     0.00365,
+     0.017235
     ]
    },
    "helpful": {
     "base_ce": 0.41303,
     "teacher_ce": 0.29898,
     "psilm_ce": 0.37932,
-    "ce_gain": 0.03371,
+    "ce_gain": 0.033712,
     "ce_gain_ci95": [
      0.029,
      0.0382
@@ -542,7 +542,7 @@
     "base_ce_at_tau": 0.34438,
     "psilm_ce_at_tau": 0.34528,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": -0.0009,
+    "ce_gain_at_best_tau": -0.000899,
     "share_surviving": -0.0267,
     "kl_teacher_base": 0.1143,
     "kl_teacher_psilm": 0.14005,
@@ -559,8 +559,8 @@
     "same_top1_shuffle": 0.996657,
     "same_top1_softzero": 0.994531,
     "ce_gain_at_best_tau_ci95": [
-     -0.0051,
-     0.0062
+     -0.005086,
+     0.006184
     ]
    },
    "noharm_heldout": {
@@ -585,7 +585,7 @@
     "base_ce": 0.4829,
     "teacher_ce": 0.31694,
     "psilm_ce": 0.44081,
-    "ce_gain": 0.04209,
+    "ce_gain": 0.042094,
     "ce_gain_ci95": [
      0.0368,
      0.0472
@@ -595,7 +595,7 @@
     "base_ce_at_tau": 0.42092,
     "psilm_ce_at_tau": 0.41061,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": 0.01031,
+    "ce_gain_at_best_tau": 0.010313,
     "share_surviving": 0.245,
     "kl_teacher_base": 0.13973,
     "kl_teacher_psilm": 0.15901,
@@ -612,15 +612,15 @@
     "same_top1_shuffle": 0.994404,
     "same_top1_softzero": 0.991247,
     "ce_gain_at_best_tau_ci95": [
-     0.0044,
-     0.021
+     0.004376,
+     0.021048
     ]
    },
    "helpful": {
     "base_ce": 0.41303,
     "teacher_ce": 0.29898,
     "psilm_ce": 0.38695,
-    "ce_gain": 0.02608,
+    "ce_gain": 0.026078,
     "ce_gain_ci95": [
      0.0226,
      0.0296
@@ -630,8 +630,8 @@
     "base_ce_at_tau": 0.34438,
     "psilm_ce_at_tau": 0.34852,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": -0.00414,
-    "share_surviving": -0.1587,
+    "ce_gain_at_best_tau": -0.004143,
+    "share_surviving": -0.1589,
     "kl_teacher_base": 0.1143,
     "kl_teacher_psilm": 0.1378,
     "kl_fraction": -0.2056,
@@ -647,8 +647,8 @@
     "same_top1_shuffle": 0.995376,
     "same_top1_softzero": 0.993906,
     "ce_gain_at_best_tau_ci95": [
-     -0.0082,
-     0.0011
+     -0.008244,
+     0.001149
     ]
    },
    "noharm_heldout": {
@@ -673,7 +673,7 @@
     "base_ce": 0.4829,
     "teacher_ce": 0.31694,
     "psilm_ce": 0.43998,
-    "ce_gain": 0.04293,
+    "ce_gain": 0.042927,
     "ce_gain_ci95": [
      0.0384,
      0.0474
@@ -683,8 +683,8 @@
     "base_ce_at_tau": 0.42092,
     "psilm_ce_at_tau": 0.41369,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": 0.00723,
-    "share_surviving": 0.1684,
+    "ce_gain_at_best_tau": 0.007233,
+    "share_surviving": 0.1685,
     "kl_teacher_base": 0.13973,
     "kl_teacher_psilm": 0.1629,
     "kl_fraction": -0.1658,
@@ -700,15 +700,15 @@
     "same_top1_shuffle": 0.993561,
     "same_top1_softzero": 0.992878,
     "ce_gain_at_best_tau_ci95": [
-     0.0034,
-     0.0158
+     0.003369,
+     0.015801
     ]
    },
    "helpful": {
     "base_ce": 0.41303,
     "teacher_ce": 0.29898,
     "psilm_ce": 0.38391,
-    "ce_gain": 0.02912,
+    "ce_gain": 0.029123,
     "ce_gain_ci95": [
      0.0252,
      0.0331
@@ -718,8 +718,8 @@
     "base_ce_at_tau": 0.34438,
     "psilm_ce_at_tau": 0.347,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": -0.00262,
-    "share_surviving": -0.09,
+    "ce_gain_at_best_tau": -0.002624,
+    "share_surviving": -0.0901,
     "kl_teacher_base": 0.1143,
     "kl_teacher_psilm": 0.13991,
     "kl_fraction": -0.224,
@@ -735,8 +735,8 @@
     "same_top1_shuffle": 0.99442,
     "same_top1_softzero": 0.994531,
     "ce_gain_at_best_tau_ci95": [
-     -0.0067,
-     0.0018
+     -0.006701,
+     0.001792
     ]
    },
    "noharm_heldout": {
@@ -761,7 +761,7 @@
     "base_ce": 0.4829,
     "teacher_ce": 0.31694,
     "psilm_ce": 0.42803,
-    "ce_gain": 0.05487,
+    "ce_gain": 0.054873,
     "ce_gain_ci95": [
      0.0482,
      0.0614
@@ -771,7 +771,7 @@
     "base_ce_at_tau": 0.42092,
     "psilm_ce_at_tau": 0.41609,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": 0.00483,
+    "ce_gain_at_best_tau": 0.004831,
     "share_surviving": 0.088,
     "kl_teacher_base": 0.13973,
     "kl_teacher_psilm": 0.1973,
@@ -788,15 +788,15 @@
     "same_top1_shuffle": 0.995715,
     "same_top1_softzero": 0.993534,
     "ce_gain_at_best_tau_ci95": [
-     -0.001,
-     0.0141
+     -0.000957,
+     0.014139
     ]
    },
    "helpful": {
     "base_ce": 0.41303,
     "teacher_ce": 0.29898,
     "psilm_ce": 0.36495,
-    "ce_gain": 0.04808,
+    "ce_gain": 0.048079,
     "ce_gain_ci95": [
      0.0415,
      0.0547
@@ -806,8 +806,8 @@
     "base_ce_at_tau": 0.34438,
     "psilm_ce_at_tau": 0.34777,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": -0.00339,
-    "share_surviving": -0.0705,
+    "ce_gain_at_best_tau": -0.003394,
+    "share_surviving": -0.0706,
     "kl_teacher_base": 0.1143,
     "kl_teacher_psilm": 0.17629,
     "kl_fraction": -0.5424,
@@ -823,8 +823,8 @@
     "same_top1_shuffle": 0.995386,
     "same_top1_softzero": 0.994203,
     "ce_gain_at_best_tau_ci95": [
-     -0.0083,
-     0.0032
+     -0.00829,
+     0.00324
     ]
    },
    "noharm_heldout": {
@@ -849,7 +849,7 @@
     "base_ce": 0.4829,
     "teacher_ce": 0.31694,
     "psilm_ce": 0.4479,
-    "ce_gain": 0.035,
+    "ce_gain": 0.035001,
     "ce_gain_ci95": [
      0.0319,
      0.0382
@@ -859,8 +859,8 @@
     "base_ce_at_tau": 0.42092,
     "psilm_ce_at_tau": 0.41145,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": 0.00947,
-    "share_surviving": 0.2706,
+    "ce_gain_at_best_tau": 0.009468,
+    "share_surviving": 0.2705,
     "kl_teacher_base": 0.13973,
     "kl_teacher_psilm": 0.15345,
     "kl_fraction": -0.0982,
@@ -876,15 +876,15 @@
     "same_top1_shuffle": 0.982517,
     "same_top1_softzero": 0.984035,
     "ce_gain_at_best_tau_ci95": [
-     0.0051,
-     0.0169
+     0.005109,
+     0.016894
     ]
    },
    "helpful": {
     "base_ce": 0.41303,
     "teacher_ce": 0.29898,
     "psilm_ce": 0.3887,
-    "ce_gain": 0.02434,
+    "ce_gain": 0.024337,
     "ce_gain_ci95": [
      0.0208,
      0.0281
@@ -894,8 +894,8 @@
     "base_ce_at_tau": 0.34438,
     "psilm_ce_at_tau": 0.34489,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": -0.00051,
-    "share_surviving": -0.021,
+    "ce_gain_at_best_tau": -0.000508,
+    "share_surviving": -0.0209,
     "kl_teacher_base": 0.1143,
     "kl_teacher_psilm": 0.12964,
     "kl_fraction": -0.1342,
@@ -911,8 +911,8 @@
     "same_top1_shuffle": 0.992033,
     "same_top1_softzero": 0.982484,
     "ce_gain_at_best_tau_ci95": [
-     -0.004,
-     0.0049
+     -0.003975,
+     0.004936
     ]
    },
    "noharm_heldout": {
@@ -937,7 +937,7 @@
     "base_ce": 0.4829,
     "teacher_ce": 0.31694,
     "psilm_ce": 0.45522,
-    "ce_gain": 0.02769,
+    "ce_gain": 0.027689,
     "ce_gain_ci95": [
      0.0248,
      0.0306
@@ -947,8 +947,8 @@
     "base_ce_at_tau": 0.42092,
     "psilm_ce_at_tau": 0.41967,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": 0.00125,
-    "share_surviving": 0.0451,
+    "ce_gain_at_best_tau": 0.001246,
+    "share_surviving": 0.045,
     "kl_teacher_base": 0.13973,
     "kl_teacher_psilm": 0.15287,
     "kl_fraction": -0.094,
@@ -964,15 +964,15 @@
     "same_top1_shuffle": 0.993006,
     "same_top1_softzero": 0.990487,
     "ce_gain_at_best_tau_ci95": [
-     -0.0012,
-     0.0069
+     -0.001246,
+     0.006918
     ]
    },
    "helpful": {
     "base_ce": 0.41303,
     "teacher_ce": 0.29898,
     "psilm_ce": 0.38771,
-    "ce_gain": 0.02533,
+    "ce_gain": 0.025326,
     "ce_gain_ci95": [
      0.0225,
      0.0282
@@ -982,8 +982,8 @@
     "base_ce_at_tau": 0.34438,
     "psilm_ce_at_tau": 0.3462,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": -0.00182,
-    "share_surviving": -0.0719,
+    "ce_gain_at_best_tau": -0.001819,
+    "share_surviving": -0.0718,
     "kl_teacher_base": 0.1143,
     "kl_teacher_psilm": 0.13071,
     "kl_fraction": -0.1435,
@@ -999,8 +999,8 @@
     "same_top1_shuffle": 0.99442,
     "same_top1_softzero": 0.992349,
     "ce_gain_at_best_tau_ci95": [
-     -0.0042,
-     0.0026
+     -0.004192,
+     0.002581
     ]
    },
    "noharm_heldout": {
@@ -1025,7 +1025,7 @@
     "base_ce": 0.4829,
     "teacher_ce": 0.31694,
     "psilm_ce": 0.4363,
-    "ce_gain": 0.0466,
+    "ce_gain": 0.046603,
     "ce_gain_ci95": [
      0.0416,
      0.0514
@@ -1035,7 +1035,7 @@
     "base_ce_at_tau": 0.42092,
     "psilm_ce_at_tau": 0.4166,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": 0.00432,
+    "ce_gain_at_best_tau": 0.004318,
     "share_surviving": 0.0927,
     "kl_teacher_base": 0.13973,
     "kl_teacher_psilm": 0.1777,
@@ -1052,15 +1052,15 @@
     "same_top1_shuffle": 0.994382,
     "same_top1_softzero": 0.995398,
     "ce_gain_at_best_tau_ci95": [
-     -0.0001,
-     0.0137
+     -0.000125,
+     0.013672
     ]
    },
    "helpful": {
     "base_ce": 0.41303,
     "teacher_ce": 0.29898,
     "psilm_ce": 0.37129,
-    "ce_gain": 0.04175,
+    "ce_gain": 0.041746,
     "ce_gain_ci95": [
      0.0362,
      0.0472
@@ -1070,8 +1070,8 @@
     "base_ce_at_tau": 0.34438,
     "psilm_ce_at_tau": 0.3468,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": -0.00242,
-    "share_surviving": -0.058,
+    "ce_gain_at_best_tau": -0.002424,
+    "share_surviving": -0.0581,
     "kl_teacher_base": 0.1143,
     "kl_teacher_psilm": 0.15826,
     "kl_fraction": -0.3846,
@@ -1087,8 +1087,8 @@
     "same_top1_shuffle": 0.995536,
     "same_top1_softzero": 0.996563,
     "ce_gain_at_best_tau_ci95": [
-     -0.0069,
-     0.0036
+     -0.006897,
+     0.003567
     ]
    },
    "noharm_heldout": {
@@ -1113,7 +1113,7 @@
     "base_ce": 0.4829,
     "teacher_ce": 0.31694,
     "psilm_ce": 0.46023,
-    "ce_gain": 0.02267,
+    "ce_gain": 0.022674,
     "ce_gain_ci95": [
      0.0188,
      0.0266
@@ -1123,8 +1123,8 @@
     "base_ce_at_tau": 0.42092,
     "psilm_ce_at_tau": 0.42116,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": -0.00024,
-    "share_surviving": -0.0106,
+    "ce_gain_at_best_tau": -0.000237,
+    "share_surviving": -0.0104,
     "kl_teacher_base": 0.13973,
     "kl_teacher_psilm": 0.15182,
     "kl_fraction": -0.0865,
@@ -1140,15 +1140,15 @@
     "same_top1_shuffle": 0.993317,
     "same_top1_softzero": 0.99321,
     "ce_gain_at_best_tau_ci95": [
-     -0.0036,
-     0.0084
+     -0.003581,
+     0.00839
     ]
    },
    "helpful": {
     "base_ce": 0.41303,
     "teacher_ce": 0.29898,
     "psilm_ce": 0.39942,
-    "ce_gain": 0.01361,
+    "ce_gain": 0.013612,
     "ce_gain_ci95": [
      0.0107,
      0.0167
@@ -1158,8 +1158,8 @@
     "base_ce_at_tau": 0.34438,
     "psilm_ce_at_tau": 0.34831,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": -0.00393,
-    "share_surviving": -0.2888,
+    "ce_gain_at_best_tau": -0.003928,
+    "share_surviving": -0.2886,
     "kl_teacher_base": 0.1143,
     "kl_teacher_psilm": 0.12656,
     "kl_fraction": -0.1073,
@@ -1175,8 +1175,8 @@
     "same_top1_shuffle": 0.993463,
     "same_top1_softzero": 0.993599,
     "ce_gain_at_best_tau_ci95": [
-     -0.0086,
-     0.0005
+     -0.008637,
+     0.000452
     ]
    },
    "noharm_heldout": {
@@ -1201,7 +1201,7 @@
     "base_ce": 0.4829,
     "teacher_ce": 0.31694,
     "psilm_ce": 0.47021,
-    "ce_gain": 0.0127,
+    "ce_gain": 0.012699,
     "ce_gain_ci95": [
      0.0113,
      0.014
@@ -1211,8 +1211,8 @@
     "base_ce_at_tau": 0.42092,
     "psilm_ce_at_tau": 0.42228,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": -0.00136,
-    "share_surviving": -0.1071,
+    "ce_gain_at_best_tau": -0.001358,
+    "share_surviving": -0.1069,
     "kl_teacher_base": 0.13973,
     "kl_teacher_psilm": 0.1442,
     "kl_fraction": -0.032,
@@ -1228,15 +1228,15 @@
     "same_top1_shuffle": 0.994353,
     "same_top1_softzero": 0.993852,
     "ce_gain_at_best_tau_ci95": [
-     -0.0041,
-     0.0038
+     -0.004127,
+     0.003766
     ]
    },
    "helpful": {
     "base_ce": 0.41303,
     "teacher_ce": 0.29898,
     "psilm_ce": 0.40012,
-    "ce_gain": 0.01291,
+    "ce_gain": 0.012912,
     "ce_gain_ci95": [
      0.0114,
      0.0144
@@ -1246,8 +1246,8 @@
     "base_ce_at_tau": 0.34438,
     "psilm_ce_at_tau": 0.34461,
     "tau_at_edge": false,
-    "ce_gain_at_best_tau": -0.00023,
-    "share_surviving": -0.0178,
+    "ce_gain_at_best_tau": -0.000235,
+    "share_surviving": -0.0182,
     "kl_teacher_base": 0.1143,
     "kl_teacher_psilm": 0.12023,
     "kl_fraction": -0.0519,
@@ -1263,8 +1263,8 @@
     "same_top1_shuffle": 0.996971,
     "same_top1_softzero": 0.993594,
     "ce_gain_at_best_tau_ci95": [
-     -0.002,
-     0.0036
+     -0.001965,
+     0.00364
     ]
    },
    "noharm_heldout": {
