@@ -39,10 +39,12 @@ BACKBONE_NAME = {"qwen35": "ryoji-info/Qwen3.5-9B-PsiLM",
 def scrub_meta(meta: dict, backbone_name: str | None) -> dict:
     """The meta is copied into the export verbatim except for local paths: the
     backbone's path (meta["model"], and every field equal to it, such as
-    hf_tokenizer and args.model) becomes the published backbone name, and any
-    other path under the exporting user's home directory is written with `~`.
+    hf_tokenizer and args.model) becomes the published backbone name, a path
+    inside this checkout is written relative to it, and any other path under
+    the exporting user's home directory is written with `~`.
     Nothing a loader reads (shapes, mask, cap, const_model, step) changes."""
     home = str(Path.home())
+    repo = str(Path(__file__).resolve().parents[1])
     local_backbone = meta.get("model")
 
     def fix(d):
@@ -52,6 +54,8 @@ def scrub_meta(meta: dict, backbone_name: str | None) -> dict:
             elif isinstance(v, str):
                 if backbone_name and local_backbone and v == local_backbone:
                     d[k] = backbone_name
+                elif v.startswith(repo + "/"):          # as a run started inside the checkout records it
+                    d[k] = v[len(repo) + 1:]
                 elif v.startswith(home + "/"):
                     d[k] = "~" + v[len(home):]
     out = json.loads(json.dumps(meta))
