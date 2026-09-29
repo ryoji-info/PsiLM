@@ -1,0 +1,80 @@
+{
+ "round": "replicates",
+ "what": "judges whose response was stopped by a safety classifier, from the judges' transcripts (eval/adjudication_collect.py)",
+ "returned_nothing": [
+  {
+   "file": "a:6",
+   "workflow": "wf_675d569e-104"
+  },
+  {
+   "file": "a:7",
+   "workflow": "wf_675d569e-104"
+  },
+  {
+   "file": "a:5",
+   "workflow": "wf_675d569e-104"
+  }
+ ],
+ "stopped_once_then_returned_every_label": [
+  {
+   "file": "a:2",
+   "workflow": "wf_675d569e-104"
+  },
+  {
+   "file": "a:11",
+   "workflow": "wf_675d569e-104"
+  },
+  {
+   "file": "a:24",
+   "workflow": "wf_ed88c9a9-bf3"
+  },
+  {
+   "file": "a:31",
+   "workflow": "wf_ed88c9a9-bf3"
+  },
+  {
+   "file": "a:26",
+   "workflow": "wf_ed88c9a9-bf3"
+  }
+ ],
+ "judges": 39,
+ "every_judge_read_only_its_own_file": true,
+ "withdrawn_and_judged_once_as_parts": {
+  "a": {
+   "5": {
+    "why": "the judge read the file and had its output stopped by a safety classifier before any label was returned (workflow wf_675d569e-104, 2026-09-29); not asked again as it was",
+    "into": [
+     19,
+     20,
+     21,
+     22,
+     23,
+     24
+    ]
+   },
+   "6": {
+    "why": "the judge read the file and had its output stopped by a safety classifier before any label was returned (workflow wf_675d569e-104, 2026-09-29); not asked again as it was",
+    "into": [
+     25,
+     26,
+     27,
+     28,
+     29,
+     30
+    ]
+   },
+   "7": {
+    "why": "the judge read the file and had its output stopped by a safety classifier before any label was returned (workflow wf_675d569e-104, 2026-09-29); not asked again as it was",
+    "into": [
+     31,
+     32,
+     33,
+     34,
+     35,
+     36
+    ]
+   }
+  }
+ },
+ "given_up": {}
+}

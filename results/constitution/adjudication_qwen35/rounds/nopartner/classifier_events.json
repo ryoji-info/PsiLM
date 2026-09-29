@@ -1,0 +1,29 @@
+{
+ "round": "nopartner",
+ "what": "judges whose response was stopped by a safety classifier, from the judges' transcripts (eval/adjudication_collect.py)",
+ "returned_nothing": [
+  {
+   "file": "a:2",
+   "workflow": "wf_877a6ebc-105"
+  }
+ ],
+ "stopped_once_then_returned_every_label": [],
+ "judges": 19,
+ "every_judge_read_only_its_own_file": true,
+ "withdrawn_and_judged_once_as_parts": {
+  "a": {
+   "2": {
+    "why": "the judge read the file and had its output stopped by a safety classifier before any label was returned (workflow wf_877a6ebc-105, 2026-09-29); not asked again as it was",
+    "into": [
+     12,
+     13,
+     14,
+     15,
+     16,
+     17
+    ]
+   }
+  }
+ },
+ "given_up": {}
+}

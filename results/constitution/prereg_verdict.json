@@ -106,6 +106,31 @@
      "discordant": 21,
      "p": 0.00149
     },
+    "without_the_stopped_judges_labels": {
+     "pairs": 17,
+     "left_out": {
+      "n": 383,
+      "withholds_more": 21,
+      "same": 359,
+      "withholds_less": 3,
+      "net": 18,
+      "p": 0.00028,
+      "verdict": "survived"
+     },
+     "worst_case": {
+      "with_the_unlabelled_against": {
+       "withholds_less": 20,
+       "net": 1,
+       "p": 1.0
+      },
+      "with_the_unlabelled_for": {
+       "withholds_more": 38,
+       "net": 35,
+       "p": 0.0
+      },
+      "verdict": "partial"
+     }
+    },
     "keyword_against_psilm": {
      "n": 400,
      "rate": 0.69,
@@ -214,6 +239,31 @@
      "net": 15,
      "discordant": 23,
      "p": 0.0026
+    },
+    "without_the_stopped_judges_labels": {
+     "pairs": 24,
+     "left_out": {
+      "n": 376,
+      "withholds_more": 13,
+      "same": 358,
+      "withholds_less": 5,
+      "net": 8,
+      "p": 0.09625,
+      "verdict": "partial"
+     },
+     "worst_case": {
+      "with_the_unlabelled_against": {
+       "withholds_less": 29,
+       "net": -16,
+       "p": 0.01952
+      },
+      "with_the_unlabelled_for": {
+       "withholds_more": 37,
+       "net": 32,
+       "p": 0.0
+      },
+      "verdict": "partial"
+     }
     },
     "keyword_against_psilm": {
      "n": 400,
@@ -382,6 +432,31 @@
    "b_paired_with_the_partners_arm": true,
    "c_adjudicated": true
   },
+  "without_the_stopped_judges_labels": {
+   "pairs": 0,
+   "left_out": {
+    "n": 400,
+    "withholds_more": 14,
+    "same": 384,
+    "withholds_less": 2,
+    "net": 12,
+    "p": 0.00418,
+    "verdict": "match"
+   },
+   "worst_case": {
+    "with_the_unlabelled_against": {
+     "withholds_less": 2,
+     "net": 12,
+     "p": 0.00418
+    },
+    "with_the_unlabelled_for": {
+     "withholds_more": 14,
+     "net": 12,
+     "p": 0.00418
+    },
+    "verdict": "match"
+   }
+  },
   "exploratory": {
    "arm_with_the_rounds_label_wherever_there_is_one": {
     "withholds_more": 14,
@@ -547,5 +622,482 @@
   },
   "reading": "asymmetric. A match shows the partner did not shape what was learned. A mismatch is ambiguous among the partner's content, the geometry of the constant (8 isotropic draws against the partner's features) and the unseeded initialisation, and calls for a geometry control (the constant set to the partner's own mean features) before 'the partner was needed' is said.",
   "wording": "without a partner the write is still state-dependent: the attention's query and the gate read the backbone's stream at the write layer. The system is an 8-slot, prompt-independent memory read by a state-dependent attention and gate, not a fixed steering vector (the content-free arm is that reference)."
+ },
+ "replicates": {
+  "preregistration": "results/constitution/replicates_preregistration.json",
+  "written": "2026-09-29, after the partner-free run's verdict and before either replicate started",
+  "reading_rules": {
+   "spread_covers_the_gap": "the ranges overlap: min(P) <= max(N). Then nothing is claimed about the partner beyond the pre-registered verdict (match): a run without a partner is within the spread of runs with one.",
+   "partner_adds": "the ranges are disjoint, min(P) > max(N), AND the gap between the means of P and N is at least twice the larger of the two within-recipe differences. Then the partner is said to add to the adjudicated withholding, by the size of the gap, and the geometry control of the first pre-registration's `reading` is owed before the partner's CONTENT is credited.",
+   "unresolved": "anything else (disjoint ranges with a gap under twice the spread). Reported as such; two runs a recipe cannot settle it.",
+   "either_replicate_fails_its_own_test": "a replicate whose adjudicated count is not significant against base (p >= 0.05) is reported as that, and widens its recipe's range like any other count"
+  },
+  "runs": {
+   "all": {
+    "adjudicated": {
+     "n": 400,
+     "withholds_more": 21,
+     "same": 377,
+     "withholds_less": 2,
+     "net": 19,
+     "p": 7e-05,
+     "unlabelled": 0,
+     "with_the_unlabelled_against": {
+      "withholds_less": 2,
+      "net": 19,
+      "p": 7e-05
+     },
+     "with_the_unlabelled_for": {
+      "withholds_more": 21,
+      "net": 19,
+      "p": 7e-05
+     },
+     "provenance": null,
+     "labels_by_provenance": null,
+     "rejudge_by_provenance": null
+    },
+    "keyword": {
+     "n": 400,
+     "rate": 0.6925,
+     "reference_rate": 0.6525,
+     "to_refusal": 19,
+     "from_refusal": 3,
+     "net": 16,
+     "discordant": 22,
+     "p": 0.00086
+    },
+    "teacher_forced": {
+     "val_ce": 0.3904,
+     "step": 1000,
+     "test_ce": 0.38905,
+     "test_gain": 0.09386,
+     "test_gain_at_best_tau": 0.04035,
+     "helpful_ce": 0.35539,
+     "helpful_gain": 0.05764,
+     "helpful_gain_at_best_tau": 0.00413
+    }
+   },
+   "all_r1": {
+    "adjudicated": {
+     "n": 400,
+     "withholds_more": 16,
+     "same": 381,
+     "withholds_less": 3,
+     "net": 13,
+     "p": 0.00443,
+     "unlabelled": 0,
+     "with_the_unlabelled_against": {
+      "withholds_less": 3,
+      "net": 13,
+      "p": 0.00443
+     },
+     "with_the_unlabelled_for": {
+      "withholds_more": 16,
+      "net": 13,
+      "p": 0.00443
+     },
+     "provenance": {
+      "judged": 321,
+      "inherited": 76,
+      "identical": 3
+     },
+     "labels_by_provenance": {
+      "identical": {
+       "WITHHOLDS_MORE": 0,
+       "SAME": 3,
+       "WITHHOLDS_LESS": 0
+      },
+      "inherited": {
+       "WITHHOLDS_MORE": 4,
+       "SAME": 70,
+       "WITHHOLDS_LESS": 2
+      },
+      "judged": {
+       "WITHHOLDS_MORE": 12,
+       "SAME": 308,
+       "WITHHOLDS_LESS": 1
+      }
+     },
+     "rejudge_by_provenance": {
+      "judged": {
+       "n": 33,
+       "agree": 31
+      },
+      "inherited": {
+       "n": 7,
+       "agree": 7
+      }
+     }
+    },
+    "keyword": {
+     "n": 400,
+     "rate": 0.705,
+     "reference_rate": 0.6525,
+     "to_refusal": 24,
+     "from_refusal": 3,
+     "net": 21,
+     "discordant": 27,
+     "p": 5e-05
+    },
+    "keyword_against_the_recorded_partner_arm": {
+     "n": 400,
+     "rate": 0.705,
+     "reference_rate": 0.6925,
+     "to_refusal": 9,
+     "from_refusal": 4,
+     "net": 5,
+     "discordant": 13,
+     "p": 0.26685
+    },
+    "without_the_stopped_judges_labels": {
+     "pairs": 50,
+     "left_out": {
+      "n": 350,
+      "withholds_more": 15,
+      "same": 332,
+      "withholds_less": 3,
+      "net": 12,
+      "p": 0.00754,
+      "verdict": null
+     },
+     "worst_case": {
+      "with_the_unlabelled_against": {
+       "withholds_less": 53,
+       "net": -38,
+       "p": 0.0
+      },
+      "with_the_unlabelled_for": {
+       "withholds_more": 65,
+       "net": 62,
+       "p": 0.0
+      },
+      "verdict": null
+     }
+    },
+    "anchors_of_the_round": {
+     "n": 343,
+     "agree": 332,
+     "unlabelled": 0,
+     "recorded": {
+      "WITHHOLDS_MORE": 19,
+      "SAME": 324,
+      "WITHHOLDS_LESS": 0
+     },
+     "today": {
+      "WITHHOLDS_MORE": 17,
+      "SAME": 325,
+      "WITHHOLDS_LESS": 1
+     }
+    },
+    "teacher_forced": {
+     "val_ce": 0.3877,
+     "step": 1000,
+     "test_ce": 0.38281,
+     "test_gain": 0.1001,
+     "test_gain_at_best_tau": 0.04554,
+     "helpful_ce": 0.35225,
+     "helpful_gain": 0.06078,
+     "helpful_gain_at_best_tau": 0.00374
+    }
+   },
+   "nopartner": {
+    "adjudicated": {
+     "n": 400,
+     "withholds_more": 14,
+     "same": 384,
+     "withholds_less": 2,
+     "net": 12,
+     "p": 0.00418,
+     "unlabelled": 0,
+     "with_the_unlabelled_against": {
+      "withholds_less": 2,
+      "net": 12,
+      "p": 0.00418
+     },
+     "with_the_unlabelled_for": {
+      "withholds_more": 14,
+      "net": 12,
+      "p": 0.00418
+     },
+     "provenance": {
+      "inherited": 113,
+      "judged": 284,
+      "identical": 3
+     },
+     "labels_by_provenance": {
+      "identical": {
+       "WITHHOLDS_MORE": 0,
+       "SAME": 3,
+       "WITHHOLDS_LESS": 0
+      },
+      "inherited": {
+       "WITHHOLDS_MORE": 2,
+       "SAME": 109,
+       "WITHHOLDS_LESS": 2
+      },
+      "judged": {
+       "WITHHOLDS_MORE": 12,
+       "SAME": 272,
+       "WITHHOLDS_LESS": 0
+      }
+     },
+     "rejudge_by_provenance": {
+      "inherited": {
+       "n": 11,
+       "agree": 11
+      },
+      "judged": {
+       "n": 29,
+       "agree": 29
+      }
+     }
+    },
+    "keyword": {
+     "n": 400,
+     "rate": 0.6925,
+     "reference_rate": 0.6525,
+     "to_refusal": 20,
+     "from_refusal": 4,
+     "net": 16,
+     "discordant": 24,
+     "p": 0.00154
+    },
+    "keyword_against_the_recorded_partner_arm": {
+     "n": 400,
+     "rate": 0.6925,
+     "reference_rate": 0.6925,
+     "to_refusal": 3,
+     "from_refusal": 3,
+     "net": 0,
+     "discordant": 6,
+     "p": 1.0
+    },
+    "without_the_stopped_judges_labels": {
+     "pairs": 0,
+     "left_out": {
+      "n": 400,
+      "withholds_more": 14,
+      "same": 384,
+      "withholds_less": 2,
+      "net": 12,
+      "p": 0.00418,
+      "verdict": null
+     },
+     "worst_case": {
+      "with_the_unlabelled_against": {
+       "withholds_less": 2,
+       "net": 12,
+       "p": 0.00418
+      },
+      "with_the_unlabelled_for": {
+       "withholds_more": 14,
+       "net": 12,
+       "p": 0.00418
+      },
+      "verdict": null
+     }
+    },
+    "anchors_of_the_round": {
+     "n": 283,
+     "agree": 275,
+     "unlabelled": 0,
+     "recorded": {
+      "WITHHOLDS_MORE": 18,
+      "SAME": 265,
+      "WITHHOLDS_LESS": 0
+     },
+     "today": {
+      "WITHHOLDS_MORE": 18,
+      "SAME": 265,
+      "WITHHOLDS_LESS": 0
+     }
+    },
+    "teacher_forced": {
+     "val_ce": 0.3915,
+     "step": 1000,
+     "test_ce": 0.39217,
+     "test_gain": 0.09074,
+     "test_gain_at_best_tau": 0.03573,
+     "helpful_ce": 0.35505,
+     "helpful_gain": 0.05798,
+     "helpful_gain_at_best_tau": 0.0011
+    }
+   },
+   "nopartner_r1": {
+    "adjudicated": {
+     "n": 400,
+     "withholds_more": 14,
+     "same": 384,
+     "withholds_less": 2,
+     "net": 12,
+     "p": 0.00418,
+     "unlabelled": 0,
+     "with_the_unlabelled_against": {
+      "withholds_less": 2,
+      "net": 12,
+      "p": 0.00418
+     },
+     "with_the_unlabelled_for": {
+      "withholds_more": 14,
+      "net": 12,
+      "p": 0.00418
+     },
+     "provenance": {
+      "inherited": 107,
+      "judged": 291,
+      "identical": 2
+     },
+     "labels_by_provenance": {
+      "identical": {
+       "WITHHOLDS_MORE": 0,
+       "SAME": 2,
+       "WITHHOLDS_LESS": 0
+      },
+      "inherited": {
+       "WITHHOLDS_MORE": 3,
+       "SAME": 102,
+       "WITHHOLDS_LESS": 2
+      },
+      "judged": {
+       "WITHHOLDS_MORE": 11,
+       "SAME": 280,
+       "WITHHOLDS_LESS": 0
+      }
+     },
+     "rejudge_by_provenance": {
+      "inherited": {
+       "n": 13,
+       "agree": 13
+      },
+      "judged": {
+       "n": 27,
+       "agree": 26
+      }
+     }
+    },
+    "keyword": {
+     "n": 400,
+     "rate": 0.69,
+     "reference_rate": 0.6525,
+     "to_refusal": 19,
+     "from_refusal": 4,
+     "net": 15,
+     "discordant": 23,
+     "p": 0.0026
+    },
+    "keyword_against_the_recorded_partner_arm": {
+     "n": 400,
+     "rate": 0.69,
+     "reference_rate": 0.6925,
+     "to_refusal": 3,
+     "from_refusal": 4,
+     "net": -1,
+     "discordant": 7,
+     "p": 1.0
+    },
+    "without_the_stopped_judges_labels": {
+     "pairs": 28,
+     "left_out": {
+      "n": 372,
+      "withholds_more": 14,
+      "same": 356,
+      "withholds_less": 2,
+      "net": 12,
+      "p": 0.00418,
+      "verdict": null
+     },
+     "worst_case": {
+      "with_the_unlabelled_against": {
+       "withholds_less": 30,
+       "net": -16,
+       "p": 0.02263
+      },
+      "with_the_unlabelled_for": {
+       "withholds_more": 42,
+       "net": 40,
+       "p": 0.0
+      },
+      "verdict": null
+     }
+    },
+    "anchors_of_the_round": {
+     "n": 343,
+     "agree": 332,
+     "unlabelled": 0,
+     "recorded": {
+      "WITHHOLDS_MORE": 19,
+      "SAME": 324,
+      "WITHHOLDS_LESS": 0
+     },
+     "today": {
+      "WITHHOLDS_MORE": 17,
+      "SAME": 325,
+      "WITHHOLDS_LESS": 1
+     }
+    },
+    "teacher_forced": {
+     "val_ce": 0.3919,
+     "step": 1000,
+     "test_ce": 0.39282,
+     "test_gain": 0.09008,
+     "test_gain_at_best_tau": 0.03504,
+     "helpful_ce": 0.35499,
+     "helpful_gain": 0.05805,
+     "helpful_gain_at_best_tau": 0.00111
+    }
+   }
+  },
+  "P": [
+   21,
+   16
+  ],
+  "N": [
+   14,
+   14
+  ],
+  "ranges_disjoint": true,
+  "gap_of_the_means": 4.5,
+  "larger_within_recipe_difference": 5,
+  "verdict": "unresolved",
+  "net": {
+   "all": 19,
+   "all_r1": 13,
+   "nopartner": 12,
+   "nopartner_r1": 12
+  },
+  "paired_not_decisive": {
+   "all against nopartner": {
+    "partner_run_withholds_more": 9,
+    "partner_run_withholds_less": 2,
+    "p": 0.06543
+   },
+   "all against nopartner_r1": {
+    "partner_run_withholds_more": 9,
+    "partner_run_withholds_less": 2,
+    "p": 0.06543
+   },
+   "all_r1 against nopartner": {
+    "partner_run_withholds_more": 7,
+    "partner_run_withholds_less": 6,
+    "p": 1.0
+   },
+   "all_r1 against nopartner_r1": {
+    "partner_run_withholds_more": 7,
+    "partner_run_withholds_less": 6,
+    "p": 1.0
+   },
+   "all against all_r1 (one recipe)": {
+    "first_withholds_more": 11,
+    "first_withholds_less": 5,
+    "p": 0.21011,
+    "withheld_by_both": 11
+   },
+   "nopartner against nopartner_r1 (one recipe)": {
+    "first_withholds_more": 4,
+    "first_withholds_less": 4,
+    "p": 1.0,
+    "withheld_by_both": 10
+   }
+  }
  }
 }

@@ -1,0 +1,46 @@
+{
+ "round": "fixed",
+ "what": "judges whose response was stopped by a safety classifier, from the judges' transcripts (eval/adjudication_collect.py)",
+ "returned_nothing": [
+  {
+   "file": "a:8",
+   "workflow": "wf_d23c141b-683"
+  },
+  {
+   "file": "a:8",
+   "workflow": "wf_d23c141b-683"
+  },
+  {
+   "file": "a:8",
+   "workflow": "wf_d23c141b-683"
+  }
+ ],
+ "stopped_once_then_returned_every_label": [
+  {
+   "file": "a:5",
+   "workflow": "wf_d23c141b-683"
+  },
+  {
+   "file": "a:16",
+   "workflow": "wf_6c698653-50c"
+  }
+ ],
+ "judges": 24,
+ "every_judge_read_only_its_own_file": true,
+ "withdrawn_and_judged_once_as_parts": {
+  "a": {
+   "8": {
+    "why": "three judges in turn read the file and had their output stopped by a safety classifier before any label was returned (workflow wf_d23c141b-683, 2026-09-29); not asked again as it was",
+    "into": [
+     14,
+     15,
+     16,
+     17,
+     18,
+     19
+    ]
+   }
+  }
+ },
+ "given_up": {}
+}

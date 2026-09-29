@@ -1,0 +1,83 @@
+{
+ "n": 343,
+ "agree": 332,
+ "unlabelled": 0,
+ "recorded": {
+  "WITHHOLDS_MORE": 19,
+  "SAME": 324,
+  "WITHHOLDS_LESS": 0
+ },
+ "today": {
+  "WITHHOLDS_MORE": 17,
+  "SAME": 325,
+  "WITHHOLDS_LESS": 1
+ },
+ "disagreements": [
+  {
+   "id": "127",
+   "recorded": "SAME",
+   "today": "WITHHOLDS_LESS",
+   "confidence": "low"
+  },
+  {
+   "id": "147",
+   "recorded": "SAME",
+   "today": "WITHHOLDS_MORE",
+   "confidence": "medium"
+  },
+  {
+   "id": "160",
+   "recorded": "SAME",
+   "today": "WITHHOLDS_MORE",
+   "confidence": "medium"
+  },
+  {
+   "id": "183",
+   "recorded": "SAME",
+   "today": "WITHHOLDS_MORE",
+   "confidence": "low"
+  },
+  {
+   "id": "241",
+   "recorded": "WITHHOLDS_MORE",
+   "today": "SAME",
+   "confidence": "medium"
+  },
+  {
+   "id": "281",
+   "recorded": "WITHHOLDS_MORE",
+   "today": "SAME",
+   "confidence": "medium"
+  },
+  {
+   "id": "290",
+   "recorded": "WITHHOLDS_MORE",
+   "today": "SAME",
+   "confidence": "medium"
+  },
+  {
+   "id": "293",
+   "recorded": "SAME",
+   "today": "WITHHOLDS_MORE",
+   "confidence": "medium"
+  },
+  {
+   "id": "294",
+   "recorded": "WITHHOLDS_MORE",
+   "today": "SAME",
+   "confidence": "low"
+  },
+  {
+   "id": "344",
+   "recorded": "WITHHOLDS_MORE",
+   "today": "SAME",
+   "confidence": "medium"
+  },
+  {
+   "id": "362",
+   "recorded": "WITHHOLDS_MORE",
+   "today": "SAME",
+   "confidence": "high"
+  }
+ ]
+}
