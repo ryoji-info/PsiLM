@@ -31,6 +31,9 @@ Controls, on the trained system, that say what the numbers mean:
               specific to the prompt that was read
   softzero    the partner fed zeros in place of the forward bridge's tokens: what
               is left when nothing of the prompt reaches the partner
+  stored:<k>  (--stored-tokens k=<file>,...) ONE stored set of tokens for every item
+              (eval/constitution_fixed_tokens.py): the system a partner-free app
+              runs. Held to the thresholds a compressed variant is held to.
 
 Per variant, against the trained system on the same items: ce (to the teacher's
 continuation), the paired difference d_ce with a 95% interval, the share of the
@@ -241,9 +244,11 @@ def paired(d, draws=2000, seed=0):
 
 
 def evaluate(backbone, tok, meta, make_bridges, make_partner, sets, neg_sets, variants,
-             log=print, rows_path=None):
+             log=print, rows_path=None, stored=None):
     """sets: {name: constitution items (prompt_ids, teacher_ids)}; neg_sets: {name:
-    no-harm items (prompt_ids, target_ids)}. Returns (table, extras)."""
+    no-harm items (prompt_ids, target_ids)}; stored: {name: tokens (1, M, d)}, each a
+    control `stored:<name>`. Returns (table, extras)."""
+    stored = {f"stored:{k}": v for k, v in (stored or {}).items()}
     import mlx.core as mx
     from psilm.mlx.constitution import PsiConstitutionMLX
 
@@ -263,7 +268,7 @@ def evaluate(backbone, tok, meta, make_bridges, make_partner, sets, neg_sets, va
                                      l_fwd=l_fwd, l_rev=l_rev) for v in variants}
     ref_key = variants[0]
     ref = systems[ref_key]
-    names = [f"{b}+{p}" for b, p in variants] + list(CONTROLS)
+    names = [f"{b}+{p}" for b, p in variants] + list(CONTROLS) + list(stored)
     acc = {n: {} for n in names}
     fh = open(rows_path, "a") if rows_path else None
     work = [(s, it, "teacher_ids") for s, items in sets.items() for it in items]
@@ -290,6 +295,8 @@ def evaluate(backbone, tok, meta, make_bridges, make_partner, sets, neg_sets, va
             out["shuffle"] = trunk.logp(ref, tokens=prev_tokens)
         zero_tokens, _ = trunk.tokens(ref, soft_zero=True)
         out["softzero"] = trunk.logp(ref, tokens=zero_tokens)
+        for sn, st in stored.items():
+            out[sn] = trunk.logp(ref, tokens=st)
         for vn, (lp, g) in out.items():
             r = {**score(lp, lp_ref, cont), "gate_cont": g["cont"], "gate_all": g["all"],
                  "kl_to_base": score(lp_base, lp, cont)["kl"], "ce_base": ce_base}
@@ -327,7 +334,7 @@ def evaluate(backbone, tok, meta, make_bridges, make_partner, sets, neg_sets, va
             gain = mean([r["ce_base"] - b["ce"] for r, b in zip(rs, refs)])
             cell["gain_retained"] = round(mean([r["ce_base"] - r["ce"] for r in rs]) / gain, 4) if gain else None
             row[s] = cell
-        if is_var and vn != ref_name and con:
+        if (is_var or vn in stored) and vn != ref_name and con:
             pooled = [a["ce"] - b["ce"] for s in con for a, b in zip(acc[vn][s], acc[ref_name][s])]
             row["d_ce_pooled"] = paired(pooled)
         table.append(row)
@@ -337,7 +344,7 @@ def evaluate(backbone, tok, meta, make_bridges, make_partner, sets, neg_sets, va
     by = {r["variant"]: r for r in table}
     held = "noharm_heldout" if "noharm_heldout" in neg_sets else next(iter(neg_sets), None)
     for r in table:
-        if "+" not in r["variant"]:
+        if "+" not in r["variant"] and r["variant"] not in stored:
             continue
         ref_r, base_r = by[ref_name], by["base"]
         t = {"T1_ce": all(r[s]["d_ce"]["mean"] <= T["d_ce_max"] for s in con)
@@ -504,8 +511,16 @@ def run(args):
     rows_path.unlink(missing_ok=True)
     print(f"[compress] {len(variants)} variants + {len(CONTROLS)} controls x "
           f"{ {k: len(v) for k, v in {**sets, **neg_sets}.items()} }", flush=True)
+    stored, stored_rec = {}, {}
+    if args.stored_tokens:
+        from psilm.mlx.constitution import load_stored_tokens
+        for kv in args.stored_tokens.split(","):
+            k, f = kv.split("=", 1)
+            stored[k], rec, ident = load_stored_tokens(f, ckpt, meta)
+            stored_rec[f"stored:{k}"] = {"file": f, "id": ident, "kind": rec.get("kind"),
+                                         "made_from": rec.get("data"), "n": rec.get("n")}
     table, extras = evaluate(tower, tok, meta, make_bridges, make_partner, sets, neg_sets, variants,
-                             log=lambda m: print(m, flush=True), rows_path=rows_path)
+                             log=lambda m: print(m, flush=True), rows_path=rows_path, stored=stored)
     by = {r["variant"]: r for r in table}
     ref = by[f"{variants[0][0]}+{variants[0][1]}"]
     checks = {}
@@ -525,7 +540,7 @@ def run(args):
               "thresholds": THRESHOLDS, "evaluator_checks": checks,
               "ok": all(c["reproduced"] for c in checks.values()),
               "partner_frame_rows": extras["n_frame_rows"], "trunk_sec": extras["trunk_sec"],
-              "variants": table}
+              "stored_tokens": stored_rec, "variants": table}
     out.write_text(json.dumps(report, indent=1) + "\n")
     print(fmt(table, list(sets), list(neg_sets)), flush=True)
     print(f"evaluator checks: {json.dumps(checks)}", flush=True)
@@ -604,9 +619,21 @@ def self_test():
         assert float(mx.max(mx.abs(c - a))) < 1e-5                # given its own tokens: the same
     print("[self-test] shared trunk == PsiConstitutionMLX.logits in both modes  OK")
 
+    # two stored sets: the first item's own tokens, and the mean over the set
+    own_tokens = []
+    for it in sets["constitution_test_x"]:
+        t, _ = SharedTrunk(stack.model, it["prompt_ids"], it["teacher_ids"], l_fwd, l_rev).tokens(psi)
+        own_tokens.append(t.astype(mx.float32))
+    stored = {"first": own_tokens[0], "mean": mx.stack(own_tokens).mean(axis=0)}
     table, extras = evaluate(stack.model, stack.tok, stack.meta, make_bridges, make_partner, sets, neg,
-                             variants, log=lambda m: None)
+                             variants, log=lambda m: None, stored=stored)
     by = {r["variant"]: r for r in table}
+    assert [r["variant"] for r in table][-2:] == ["stored:first", "stored:mean"]
+    for k in ("stored:first", "stored:mean"):
+        assert by[k]["constitution_test_x"]["n"] == 5 and by[k]["noharm_heldout"]["n"] == 3
+        assert "d_ce_pooled" in by[k] and set(by[k]["thresholds"]) >= {"T1_ce", "T2_kl", "T4_gate", "T5_noharm"}
+        assert "ship" in by[k] and by[k]["constitution_test_x"]["kl"] > 0
+    assert "thresholds" not in by["shuffle"] and "thresholds" not in by["softzero"]
     ref, s = by["fp32+native"], "constitution_test_x"
     assert ref[s]["kl"] == 0.0 and ref[s]["same_top1"] == 1.0 and ref["noharm_heldout"]["kl"] == 0.0
     assert ref[s]["d_ce"]["mean"] == 0.0 and ref[s]["gain_retained"] == 1.0 and ref["ship"]
@@ -661,6 +688,8 @@ def main():
                     help="comma-separated bridges+partner pairs, e.g. fp32+native,fp16+q4 "
                          "(the first is the reference); default: the built-in sweep")
     ap.add_argument("--no-real", action="store_true", help="skip the packed-partner section")
+    ap.add_argument("--stored-tokens", default=None,
+                    help="<name>=<file>,...: stored token sets scored as controls `stored:<name>`")
     ap.add_argument("--out", default=None, help="default: <checkpoint dir>/compress.json")
     ap.add_argument("--self-test", action="store_true")
     a = ap.parse_args()

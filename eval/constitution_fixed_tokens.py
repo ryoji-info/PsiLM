@@ -307,6 +307,68 @@ def self_test():
     print("[self-test] harness: tokens load only for the checkpoint they were made from, as the file "
           "their record describes, in the bridges' shape, and never over rows of another set  OK")
 
+    # ---- the bridge without its partner: the write and one stored set -------------------
+    from psilm.mlx.constitution import (StoredTokenCoupler, load_constitution_write, load_stored_stack,
+                                        load_stored_tokens, stored_tokens_beside)
+    assert stored_tokens_beside(ckpt) == tf
+    sc, smeta, srec = load_stored_stack(ckpt)
+    assert isinstance(sc, StoredTokenCoupler) and not sc.needs_read and sc.ident == ident
+    assert not hasattr(sc, "const") and not hasattr(sc, "phi")            # no partner, no read
+    assert srec["kind"] == "mean" and int(smeta["step"]) == 7
+    got_tokens, diag = sc.tokens(None)
+    assert float(mx.abs(got_tokens - mean).max()) == 0.0 and diag == {"stored_tokens": ident}
+    h = mx.random.normal((1, 5, d))
+    for mode in ("psilm", "zeroed"):
+        a1, s1 = coupler.inject(h, mean, mode)
+        a2, s2 = sc.inject(h, got_tokens, mode)
+        assert float(mx.abs(a1 - a2).max()) == 0.0 and float(mx.abs(s1 - s2).max()) == 0.0, mode
+    assert float(mx.abs(sc.inject(h, got_tokens, "zeroed")[0] - h).max()) == 0.0
+    # the decoder cannot tell it from the full coupler given the same tokens
+    dec.coupler, keep = sc, dec.coupler
+    dec.set_fixed_tokens(None)
+    it0 = items[0]
+    own0 = prompt_tokens(stack.model, coupler, it0["prompt_ids"], l_fwd)
+    dec.coupler = StoredTokenCoupler(stack.bridges.inject, own0, "own")
+    g_stored = dec.generate(it0["prompt_ids"], mode="psilm", max_new=6)
+    dec.coupler = keep
+    g_full = dec.generate(it0["prompt_ids"], mode="psilm", max_new=6)
+    assert g_stored.gen_ids == g_full.gen_ids
+    w, _ = load_constitution_write(ckpt)
+    flat = dict(tree_flatten(w.parameters()))
+    full = dict(tree_flatten(stack.bridges.inject.parameters()))
+    assert set(flat) == set(full) and all(float(mx.abs(flat[k].astype(mx.float32)
+                                                       - full[k].astype(mx.float32)).max()) == 0.0 for k in flat)
+
+    def no(fn):
+        try:
+            fn()
+        except ValueError:
+            return True
+        return False
+    for change in ({"ckpt_step": 8}, {"ckpt_sha256": "0" * 64}, {"tokens_sha256": "0" * 64}):
+        tf.with_suffix(".json").write_text(json.dumps({**prov, **change}))
+        assert no(lambda: load_stored_stack(ckpt)), change
+    # the Hugging Face layout: the exported bridges have another hash, which the record names
+    tf.with_suffix(".json").write_text(json.dumps({**prov, "ckpt_sha256": "0" * 64,
+                                                   "bridges_sha256": file_sha256(ckpt)}))
+    assert load_stored_stack(ckpt)[0].ident == ident
+    tf.with_suffix(".json").write_text(json.dumps(prov))
+    assert no(lambda: load_stored_tokens(tmp / "bad.npz", ckpt))          # the wrong shape
+    assert no(lambda: StoredTokenCoupler(stack.bridges.inject, mx.zeros((1, M, d + 1))))
+    assert no(lambda: sc.inject(h, got_tokens, "psilm", contentless=3))
+    other = tmp / "elsewhere"
+    other.mkdir()
+    stack.bridges.save_weights(str(other / "bridges.npz"))
+    Path(str(other / "bridges.npz") + ".meta").write_text(Path(str(ckpt) + ".meta").read_text())
+    assert stored_tokens_beside(other / "bridges.npz") is None
+    assert no(lambda: load_stored_stack(other / "bridges.npz"))           # nothing stored beside it
+    mx.savez(str(other / "fixed_tokens_mean.npz"), tokens=mean)
+    assert stored_tokens_beside(other / "bridges.npz") is None            # tokens without a record
+    assert no(lambda: load_stored_tokens(other / "fixed_tokens_mean.npz", other / "bridges.npz"))
+    print("[self-test] stored stack: the write and one set of tokens, no partner and no read; the same "
+          "write as the full coupler's bit for bit; tokens of another checkpoint, another shape or "
+          "without a record are refused  OK")
+
     # ---- no partner at all: the constant stand-in ---------------------------------------
     dc = stack.bridges.d_const
     cp = make_partner(f"constant:3:{dc}", m_tokens=M)

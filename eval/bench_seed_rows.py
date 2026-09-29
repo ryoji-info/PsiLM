@@ -11,10 +11,11 @@ generates only what is missing. Every borrowed row says where it came from
 regenerates them: that is the reproduction check, made by the run itself
 (eval/const_arm_compare.py --repro).
 
-The recorded runs' KLs are on the legacy read; a run on the corrected read cannot
-hold both. --klpool-rows gives the rescored values (eval/kl_rescore_all.py): each
-borrowed row's KL is replaced by its corrected-read value, and a row with no
-rescored value loses its KL rather than keeping a legacy one.
+The runs recorded before 2026-09-22 have their KLs on the legacy read; a run on the
+corrected read cannot hold both. --klpool-rows gives the rescored values
+(eval/kl_rescore_all.py): each borrowed row's KL is replaced by its corrected-read
+value, and a row with no rescored value loses its KL rather than keeping a legacy
+one. A row whose KL is already on the corrected read (pool "prompt") keeps it.
 
   python eval/bench_seed_rows.py --from-tag const_qwen35_all_rt400 --arms base,psilm \\
       --klpool-rows results/bench/const_qwen35_all_rt400_klpool_guardrail.rows.jsonl \\
@@ -49,11 +50,11 @@ def seed(rows, arms, order, skip_first=0, klpool=None, source="?"):
             if arm == "base" and "gen_ids" not in r:
                 raise SystemExit(f"{source}: the base row of {qid} has no gen_ids (was it run with --kl?)")
             r = {**r, "borrowed_from": source}
-            if "kl" in r:
+            if r.get("kl") is not None:
                 k = rescored.get((ds, qid, arm))
                 if k is not None and k.get("pool") == "prompt":
                     r["kl"] = k
-                else:
+                elif r["kl"].get("pool") != "prompt":           # a run on the corrected read keeps its own
                     del r["kl"]
                     dropped_kl += 1
             out.append(r)
@@ -81,6 +82,11 @@ def self_test():
     assert "kl" not in next(r for r in out if r["arm"] == "psilm" and r["qid"] == "q5")    # never a legacy KL
     assert "kl" not in out[0] and out[0]["gen_ids"] == [1, 2]
     assert "borrowed_from" not in rows[0]                                      # the record is not touched
+    own = [{**r, "kl": {"mean": 0.3, "pool": "prompt"}} if r["arm"] == "psilm" else r for r in rows]
+    kept, none = seed(own, ["base", "psilm"], order, source="rec")           # already on the corrected read
+    assert none == 0 and all(r["kl"] == {"mean": 0.3, "pool": "prompt"} for r in kept if r["arm"] == "psilm")
+    nul = [{**r, "kl": None} if r["arm"] == "base" else r for r in rows]      # a base row records no KL
+    assert seed(nul, ["base"], order, source="rec")[1] == 0
     none, _ = seed(rows, ["base"], order, skip_first=6, source="rec")
     assert none == []
     for bad_arms, bad_rows in ((["fixed"], rows), (["base"], [{k: v for k, v in r.items() if k != "gen_ids"}

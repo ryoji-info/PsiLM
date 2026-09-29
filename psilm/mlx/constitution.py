@@ -35,6 +35,7 @@ Nothing here loads weights at import time. ``python -m psilm.mlx.constitution``
 runs the CPU-only self-test on a tiny synthetic backbone.
 """
 
+import hashlib
 import json
 import math
 import random
@@ -811,6 +812,143 @@ class ConstitutionCoupler:
         if mode == "psilm":
             return h_inj, sigma
         return h, sigma                             # zeroed: gate measured, no write
+
+
+class StoredTokenCoupler:
+    """The constitution channel with its read taken away.
+
+    eval/constitution_compress.py found that on the 9B and on the 27B a full-width
+    bridge writes the same thing whatever prompt it read, and on the 9B one stored
+    set of tokens for every prompt reproduced the withholding the full system shows
+    (PsiLM-2 paper, "What the channel reads"). So this coupler holds ONE set of
+    tokens and the write: the forward bridge, the partner model and the reverse
+    bridge do not exist here. What still reads the conversation is the write itself,
+    whose gate and attention query look at the backbone's stream at every position.
+
+    The two calls are ConstitutionCoupler's, so a decoder cannot tell them apart;
+    `needs_read` says that tokens() wants no hidden states.
+    """
+
+    supports_contentless = False
+    needs_read = False
+
+    def __init__(self, write: "MaskedGatedCrossAttentionMLX", tokens, ident: Optional[str] = None):
+        want = (1, None, int(write.to_k.weight.shape[1]))
+        if tokens.ndim != 3 or tokens.shape[0] != 1 or tokens.shape[2] != want[2]:
+            raise ValueError(f"stored tokens of shape {tuple(tokens.shape)}; the write takes "
+                             f"(1, m_tokens, {want[2]})")
+        self.write = write
+        self.stored = tokens.astype(mx.float32)
+        self.ident = ident
+        mx.eval(self.stored)
+
+    def tokens(self, h_prompt=None, x0_span=None, sub_value=None):
+        if sub_value is not None:
+            raise ValueError("the constitution channel has no scalar to substitute")
+        return self.stored, {"stored_tokens": self.ident or True}
+
+    def inject(self, h, tokens, mode, floor=None, contentless=None):
+        if contentless is not None:
+            raise ValueError("the stored-token coupler has no contentless arm")
+        self.write.gate_floor = floor
+        try:
+            h_inj, sigma = self.write(h, tokens)
+        finally:
+            self.write.gate_floor = None
+        return (h_inj, sigma) if mode == "psilm" else (h, sigma)
+
+
+def _file_sha256(path) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _ckpt_meta(ckpt: Path) -> Dict[str, Any]:
+    if ckpt.suffix == ".safetensors":
+        return json.loads((ckpt.parent / "config.json").read_text())["meta"]
+    return json.loads(Path(str(ckpt) + ".meta").read_text())
+
+
+def stored_tokens_beside(ckpt_path) -> Optional[Path]:
+    """Where a checkpoint's stored tokens are, if it has any: `tokens.safetensors`
+    in the Hugging Face layout, `fixed_tokens_mean.npz` in a training run's."""
+    d = Path(ckpt_path).parent
+    for name in ("tokens.safetensors", "fixed_tokens_mean.npz"):
+        if (d / name).exists() and (d / name).with_suffix(".json").exists():
+            return d / name
+    return None
+
+
+def load_stored_tokens(path, ckpt_path, meta: Optional[Dict[str, Any]] = None):
+    """(tokens (1, M, d_model) float32, record, id) of a stored set, checked against
+    its own record and against the checkpoint it is about to be used with.
+
+    The record is the .json beside the file (eval/constitution_fixed_tokens.py, or
+    eval/export_constitution_bridge.py for the Hugging Face layout). Tokens made
+    from another checkpoint have the right shape and mean nothing, so the
+    checkpoint's hash and step are part of the check, not a courtesy.
+    """
+    path, ckpt = Path(path), Path(ckpt_path)
+    meta = meta if meta is not None else _ckpt_meta(ckpt)
+    rec_f = path.with_suffix(".json")
+    if not rec_f.exists():
+        raise ValueError(f"{path}: no record beside it ({rec_f.name}); stored tokens are used "
+                         f"only with the record of what they were made from")
+    rec = json.loads(rec_f.read_text())
+    sha = _file_sha256(path)
+    if rec.get("tokens_sha256") != sha:
+        raise ValueError(f"{path}: not the file its record {rec_f.name} describes")
+    ck_sha = _file_sha256(ckpt)
+    if ck_sha not in (rec.get("ckpt_sha256"), rec.get("bridges_sha256")) \
+            or int(rec.get("ckpt_step", -1)) != int(meta["step"]):
+        raise ValueError(f"{path}: made from {rec.get('ckpt')} at step {rec.get('ckpt_step')}, "
+                         f"which is not {ckpt} (step {meta['step']})")
+    tokens = mx.load(str(path))["tokens"]
+    want = (1, int(meta["m_tokens"]), int(meta["d_model"]))
+    if tuple(tokens.shape) != want:
+        raise ValueError(f"{path}: tokens of shape {tuple(tokens.shape)}, the bridges take {want}")
+    return tokens.astype(mx.float32), rec, f"{rec.get('kind', 'stored')}:{sha[:16]}"
+
+
+def load_constitution_write(ckpt_path):
+    """(the write module, meta) from a bridge checkpoint: the gated attention and
+    nothing else. The forward and reverse bridges in the file are not built and
+    no partner is loaded."""
+    ckpt = Path(ckpt_path)
+    meta = _ckpt_meta(ckpt)
+    write = MaskedGatedCrossAttentionMLX(int(meta["d_model"]), write_idx=meta["write_dims"],
+                                         gate_bias=float(meta["gate_bias"]), inj_cap=meta["inj_cap"])
+    weights = {k[len("inject."):]: v for k, v in dict(mx.load(str(ckpt))).items()
+               if k.startswith("inject.")}
+    params = dict(tree_flatten(write.parameters()))
+    missing = sorted(k for k in params if k not in weights)
+    unexpected = sorted(k for k in weights if k not in params)
+    wrong = [(k, tuple(weights[k].shape), tuple(params[k].shape)) for k in weights
+             if k in params and tuple(weights[k].shape) != tuple(params[k].shape)]
+    if missing or unexpected or wrong:
+        raise ValueError(f"{ckpt}: the write's tensors do not match the module: missing {missing}, "
+                         f"unexpected {unexpected}, shapes {wrong[:4]}")
+    if not bool(mx.all(weights["write_idx"] == params["write_idx"]).item()):
+        raise ValueError(f"{ckpt}: inject.write_idx is a different dimension set than the meta's")
+    write.load_weights(list(weights.items()), strict=False)
+    write.freeze()
+    mx.eval(write.parameters())
+    return write, meta
+
+
+def load_stored_stack(ckpt_path, tokens_path=None):
+    """(StoredTokenCoupler, meta, the tokens' record): a bridge without its partner."""
+    tokens_path = tokens_path or stored_tokens_beside(ckpt_path)
+    if tokens_path is None:
+        raise ValueError(f"{ckpt_path}: no stored tokens beside it (tokens.safetensors or "
+                         f"fixed_tokens_mean.npz, each with its .json); "
+                         f"eval/constitution_fixed_tokens.py makes them")
+    write, meta = load_constitution_write(ckpt_path)
+    tokens, rec, ident = load_stored_tokens(tokens_path, ckpt_path, meta)
+    return StoredTokenCoupler(write, tokens, ident), meta, rec
 
 
 def load_constitution_stack(ckpt_path, const_model_path: Optional[str] = None):
