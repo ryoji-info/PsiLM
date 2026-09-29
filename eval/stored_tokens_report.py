@@ -55,6 +55,8 @@ NOTES = [
     "borrowed rows: the partner path's and the base's benchmark rows, and their red-team rows after the "
     "40th, are the recorded run's. `reproduction` says whether the first 40 red-team prompts, generated "
     "again, were the recorded generations; no benchmark item was generated again.",
+    "what was known: results/constitution/stored_tokens_criteria.json, `added_after_the_runs`, says which of a "
+    "bridge's criteria were a test and which the reproduction of a result already on disk (the 9B's red-team ones).",
 ]
 
 

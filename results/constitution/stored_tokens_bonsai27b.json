@@ -474,7 +474,8 @@
  "notes": [
   "gate: the gate is computed from the backbone's stream at the write layer and not from the tokens (psilm/mlx/constitution.py, MaskedGatedCrossAttentionMLX). At a prompt's positions the stored-token arm's gate is the partner path's by construction, and the two differ only where the generated text does. T4 and the gate terms of T5 cannot fail for a stored set: what the teacher-forced criterion tests is T1, T2 and the KL term of T5. A gate criterion that fails, fails in both arms alike and says that the bridge's gate opens on benchmark items, with or without its partner.",
   "other stored sets: `teacher_forced.other_stored_sets` holds the zero-fed set's KLs to the trained system. Where that set is as close as the mean set, the verdict says that this write takes little from its tokens, not that the mean set is a particular one.",
-  "borrowed rows: the partner path's and the base's benchmark rows, and their red-team rows after the 40th, are the recorded run's. `reproduction` says whether the first 40 red-team prompts, generated again, were the recorded generations; no benchmark item was generated again."
+  "borrowed rows: the partner path's and the base's benchmark rows, and their red-team rows after the 40th, are the recorded run's. `reproduction` says whether the first 40 red-team prompts, generated again, were the recorded generations; no benchmark item was generated again.",
+  "what was known: results/constitution/stored_tokens_criteria.json, `added_after_the_runs`, says which of a bridge's criteria were a test and which the reproduction of a result already on disk (the 9B's red-team ones)."
  ],
  "reproduction_note": null
 }
