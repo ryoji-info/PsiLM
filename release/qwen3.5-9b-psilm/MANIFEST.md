@@ -11,7 +11,7 @@ it sits in as the backbone when `config.json` is beside it, else the Hub id.
 
 | path in the HF repo | source in the GitHub checkout | size | sha256 |
 |---|---|---:|---|
-| `README.md` | written for this release (the HF model card, YAML front matter) | 23,569 B | `a619d59a6dac0645caed60c40b15300422e0a30a6641f906fedf1d8e6099816d` |
+| `README.md` | written for this release (the HF model card, YAML front matter) | 23,536 B | `f2628834c13ea55ff5507cb7baa5b694020f95b20c66072f236be46b1ba83115` |
 | `psilm_infer.py` | `release/gemma-4-12b-psilm/psilm_infer.py` with the default backbone and the 1d bridges directory changed (docstring, `DEFAULT_BACKBONE`, `TASKS["1d"]`); the multimode/2d code paths are untouched and unused here | 43,401 B | `d9e047e2e460ffb73aa298ca26763827511072f2b28e1723bd2da3a94e72e161` |
 | `requirements.txt` | written for this release (`mlx>=0.32.2` for native NVFP4; `mlx-lm==0.31.3` for `qwen3_5.py`) | 1,011 B | `9f14b111f7058a42724181601f38d2e04d96073d23786297148a98085d118266` |
 | `MANIFEST.md` | this file (harmless to upload; drop it if you prefer) | — | — |

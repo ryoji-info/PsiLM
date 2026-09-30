@@ -26,8 +26,8 @@ It is the ΨLM-2 constitution bridge
 ([code](https://github.com/ryoji-info/PsiLM),
 [paper](https://github.com/ryoji-info/PsiLM-2/blob/main/paper/psilm2.pdf)),
 full-width recipe, trained on this backbone for a chat application. It was not
-part of the paper's campaign; the paper cites two of its measurements as
-controls.
+part of the paper's campaign; the paper cites three of its measurements
+beside its own.
 
 **What it is not.** Nothing measured here shows that the bridge makes this model
 safer, or closer to the document its partner was trained on. On this backbone it

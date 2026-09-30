@@ -10,6 +10,19 @@ document — see [Limitations](#limitations).
 *Written by the agent that built the model (2026-09-12). Every number below
 comes from `check.json`, `finetune.log`, or `data/constitution/ft/corpus_meta.json`.*
 
+*Added 2026-09-30. This is the card as it was written on 2026-09-12, before any bridge to
+this model had been measured (corrected on 2026-09-19 for tense, the physics partner's
+equation and the weights' size only). It is published, under a preface that says what the measurements found
+about this model's role, as
+[`constitution_model/README.md` of ryoji-info/PsiLM-2](https://huggingface.co/ryoji-info/PsiLM-2/blob/main/constitution_model/README.md)
+(its source here is `results/hf_export/psilm2_partner_card.md`). In short: at 0.5B and at
+9B a bridge to the untouched base model did as well as the bridge to this one, so the
+document in these weights was not what the channel carried; and at 9B the write does not
+register how this model's tokens differ from prompt to prompt, so that one stored set of
+eight tokens stands in for this model on the full-width bridge there, which it does not
+at 0.5B. What is said below of what the bridge needs from this model, and of its intended
+use, is the design as it was intended, and should be read with that.*
+
 ## What it is, and why it exists
 
 PsiLM couples a **frozen** language model to a **frozen** partner model through small

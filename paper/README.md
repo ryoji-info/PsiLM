@@ -19,3 +19,12 @@ write-budget accounting, and the dual-channel results are reported.
 
 Nothing in this manuscript needs to change for that: the constitution material was
 never part of the version published here.
+
+## Revisions since September 11
+
+Two corrections were first made in the copy of this manuscript that PsiLM-2 carries,
+on 2026-09-23 and 24: the recomputed read of the leaky sweep's divergences (the
+section on the leaky gate) and the memory of the checkpointed forward (the section on
+Qwen3.5 9B). They were brought into this copy on 2026-09-30, when the manuscript's
+date and its disclosure were revised to cover them, and the two copies are the same
+file again. Revise here, then copy to PsiLM-2.
