@@ -60,7 +60,195 @@ Variants on the 9B, all at layer 24, 1,000 steps, two 500-step chunks:
 1. **The value-neuron probe reproduces at both scales; its causal justification does not.** At 0.5B, ablation damage tracks activation magnitude and magnitude-matched controls reproduce it in full; at 9B the ablation is a flat null.
 2. **The probe's signal occupies a roughly fixed number of coordinates, about 100–200, at d = 896 and at d = 4096** — a falling fraction as models grow.
 3. **Width was budget, and identity costs collateral.** At the saturated 0.2 cap the narrow writes leave the keyword refusal count where it was (1:1 and 2:3 flips) and carry the teacher's manner rather than its judgment. At matched energy, 410 coordinates carry 62% of full width's cross-entropy gain and 55% of its divergence. The probe's own 410 fit the teacher 1.3× better than four matched controls (z ≈ 3.9) and pay 98× their MMLU divergence for it. On 400 red-team prompts, adjudicated on substance by blind judges, the wide write withholds assistance on 21 pairs and supplies it on 2 (p = 0.0001); both 410 writes at parity do the same (16:5, 15:2), and what is withheld is legitimate information 40 times, dual-use material 7 times, harmful specifics 4 times — while the writes also release content the backbone had refused: racist tropes on one prompt (the wide write and the probe-best 410) and a partial methamphetamine precursor list on another (both 410 writes). A content-free injection of the same size changes 8 decisions one way and 4 the other: the withholding is the document's content.
+   *Added 2026-09-30: the cross-entropy statements of this result are of the gain as evaluated, and a temperature control shows most of that gain, at 9B, to be sharpening. Read them, and the heading, with [the caveat below](#what-the-cross-entropy-numbers-measure).*
 4. **Two bridges of different kinds compose on one backbone without joint training**, and joint training makes the composition worse. Neither channel costs the other its payload (physics accuracy stays at 1.000); the composition raises MMLU divergence to 0.072 where the constitution channel alone stayed at 0.005 and the physics channel alone sits at 0.041, with no significant accuracy change (MMLU 75 → 77, 3:1, p = 0.63).
+
+## What the cross-entropy numbers measure
+
+Added 2026-09-30, from the paper's section "What the channel reads, and what its
+fit measures", which the paper now counts as a fifth result after the four
+above. **At 9B, most of the cross-entropy gain is sharpening.** The teacher is the same
+frozen 9B backbone given a 2,848-word excerpt of the constitution as its system
+prompt; the student is that backbone under a plain system prompt with the
+bridges attached, so the document reaches the bridges through the teacher's
+context. The bridges are trained on cross-entropy to the teacher's *greedy*
+tokens, and that falls when a model is merely made surer of the tokens it mostly
+picks anyway. So all thirteen single-channel 9B arms of the campaign (the eight
+9B bridges here, and five parity and plain-partner arms that are in the paper
+and not in this repository) were scored again with the backbone and the coupled
+system each read at its own best temperature, chosen on the other split (50
+red-team and 50 helpful prompts).
+
+| full-width write | cross-entropy gain as evaluated | left at best temperature | 95% interval |
+|---|---:|---:|---|
+| red-team prompts | 0.0939 | 0.0403 | 0.028 to 0.058 |
+| helpful prompts | 0.0576 | 0.0041 | −0.003 to 0.012 |
+
+With no bridge at all, a temperature of 0.60 takes the backbone's cross-entropy
+on the red-team prompts from 0.4829 to 0.4209. The narrow writes keep 0.012 or
+less of their red-team gain, and on the helpful prompts every arm's interval
+includes zero.
+
+Three statements of result 3, and with them part of its heading, rest on
+cross-entropy, and this is how to read them:
+
+- *"410 coordinates carry 62% of full width's cross-entropy gain …"* Of the gain
+  as evaluated (0.0579 of 0.0939). Of the part that no temperature gives the
+  backbone, the probe-best 410 keep 0.0073 of full width's 0.0403, under a fifth.
+  So on the part that survives, the heading's reading does not hold: there width
+  is the larger term by far. For the paper's 41- and 205-coordinate writes
+  (their parity arms are in the paper, not among the bridges here), raising the
+  cap to full width's energy adds 0.006 and 0.004 to what survives, and widening
+  them to the whole stream at that energy adds 0.036. On divergence and the
+  keyword count, most of what read as a width effect was budget, though a
+  residue survives parity.
+- *"The probe's own 410 fit the teacher 1.3× better than four matched controls
+  (z ≈ 3.9) …"* That ratio is from the 32-item validation split, which was not
+  scored again. On the red-team split the ratio as evaluated was 1.27×, and at
+  best temperature it is gone: the probe-best 410 keep 0.0073 and their four
+  controls 0.0120, 0.0079, 0.0103 and 0.0072. What the probe's coordinates add is
+  confidence. The 98× of MMLU divergence they pay is not a cross-entropy to the
+  teacher, and stands.
+- *"The narrow writes … carry the teacher's manner rather than its judgment."* The
+  manner was read off the cross-entropy gain on the two splits. At best
+  temperature the 41- and 205-coordinate writes at the 0.2 cap keep −0.0014 and
+  0.0012 of their red-team gain and −0.0002 and −0.0018 of their helpful one,
+  every interval including zero. They carry none of the teacher's judgment, and
+  nothing measured shows that they carry its manner.
+
+Beneath all three: measured by divergence from the teacher's own distribution,
+no arm moves the backbone measurably toward the teacher. KL(teacher ‖ backbone)
+is 0.140 on the red-team prompts and 0.114 on the helpful ones; every coupled
+arm's is larger (0.144 to 0.227, and 0.120 to 0.198, over the thirteen arms; 0.144
+to 0.212 and 0.120 to 0.184 over the eight bridges here), and at each system's
+best temperature none is nearer than the backbone by more than half a percent.
+
+What does not move: every adjudicated count, every keyword count, every
+benchmark score and every divergence from the stock model in results 3 and 4.
+None of them rested on cross-entropy to the teacher.
+
+What is left after the control is small, and it is where the adjudicated result
+is. On the red-team prompts two full-width arms keep a gain that no temperature
+reproduces: 0.0403 for the `all` write, and 0.0373 (0.026 to 0.053) for its twin
+trained against the untouched Qwen2.5-0.5B-Instruct as partner, which is not in
+this repository. Both intervals are well clear of zero. These are the two arms
+that withhold on substance at p ≤ 0.001 (21:2 and 19:3 on the 400 red-team
+prompts). The two 410 writes at parity keep 0.0073 and 0.0120 (0.002 to 0.016,
+and 0.005 to 0.020) and withhold on 16 and 15 pairs (result 3's 16:5 and 15:2,
+p = 0.027 and 0.0023). The paper's 41- and 205-coordinate writes keep 0.0048 or
+less, and their withholding does not reach significance. On the helpful prompts
+no arm keeps a gain whose interval excludes zero. The counts should be read
+with the spread training alone gives them: a second training of the full-width
+recipe kept 0.046 and withheld on 16 pairs against 3.
+
+At 0.5B the control was run after the paper, on 2026-09-30, on the nine 0.5B
+bridges here (100 red-team and 100 helpful prompts), and read by rules that were
+committed before it ran (commit `32aee47` of the ΨLM checkout). Temperatures are
+tried on a grid from 0.30 to 1.60 in steps of 0.05, and the rules read a set of
+prompts with the backbone and the coupled system each at its best temperature
+on the *other* set (the cross-fit). They read the red-team prompts, the set the
+paper's paired numbers are on, and report the helpful prompts beside them.
+
+There most of the full-width gain is not sharpening. As the rules read it the
+`all` write keeps a gain on both sets of prompts; how much it keeps is described
+here and not read, for the rules set no threshold on it. On the red-team
+prompts it gains 0.359 as evaluated and keeps 0.373 (95% 0.285 to 0.507), more
+than it had because the cross-fit costs the backbone more than it costs the
+coupled system; with both read at the red-team prompts' own best temperatures
+it keeps 0.344 (0.271 to 0.418). On the helpful prompts it keeps 0.142 of 0.197
+(0.093 to 0.204), and 0.118 (0.047 to 0.191) at those prompts' own best
+temperatures, so there between 28% and 40% of the gain is sharpening. (The
+rules report a gain at a set's own best temperatures without an interval; here
+and below, the intervals at those temperatures were worked out after the run.)
+By divergence from the teacher's own distribution the picture is mixed: at
+temperature 1 that write is further from the teacher than the backbone is (KL
+0.503 against 0.447 on the red-team prompts, 0.423 against 0.236 on the helpful
+ones), and with each read at its best temperature for that distance, chosen on
+the other set, it removes 21% of the backbone's distance on the red-team
+prompts and adds 16% to it on the helpful ones (reported, with no threshold).
+
+The paper's comparisons at nine coordinates do less well. As the rules read
+them, on the red-team prompts:
+
+- The nine value neurons keep a gain (0.0081, 95% 0.0034 to 0.0453, of 0.0182).
+  On the helpful prompts, as the rules report them, they keep none that is
+  distinguishable from zero (−0.0053, −0.0090 to 0.0133, of 0.0172); worked out
+  after the run, at those prompts' own best temperatures they keep 0.0055
+  (0.0021 to 0.0086), and with both sides read at one temperature their
+  interval is above zero from 0.60 to 1.00.
+- The plain partner's advantage that `constitution_model/README.md` quotes does
+  not survive (0.0054, −0.0009 to 0.0123; a difference of gains, positive where
+  the plain partner's bridge is the better).
+- The identity term does not survive: against the mean of three
+  magnitude-matched draws the value neurons are at −0.0067 (−0.012 to 0.030),
+  from +0.0068 as evaluated. So the rules do not state the paper's split of the
+  nine-coordinate gain into 63% magnitude and 37% identity as a split; they
+  label it "identity term not distinguishable from zero at best temperature"
+  (magnitude share 1.83, 95% 0.30 to 4.42).
+- At full width the two partners stay indistinguishable, as the paper had them
+  (−0.0047, −0.038 to 0.021).
+
+These are weak readings, and the two that fail do not fail the same way. The
+rules had each write's gain at its own set's best temperatures, and what the
+cross-fit costs each side, reported beside the readings; the rest of what
+follows was worked out after the run and is not itself a reading, except where
+it names a reading or a cross-fitted number as such. At 0.5B the
+two sets of prompts disagree about the best temperature (0.80 for the backbone
+on the red-team prompts, 0.65 on the helpful ones), so the cross-fit reads each
+set well away from its own best and costs the backbone 0.033 and 0.026 of
+cross-entropy, where the largest gain of a nine-coordinate write as evaluated
+is 0.022. Between 84% and 96% of the variance of a nine-coordinate write's
+bootstrap draws lies between the pairs of temperatures the draws chose for it
+and for the backbone, which in every draw are equal or one step of the grid
+apart. On the red-team prompts unless said otherwise:
+
+- The plain partner's advantage at nine coordinates is positive wherever it
+  was looked for. With both sides read at one temperature it is 0.0040 to
+  0.0068 over 0.50 to 1.00, with an interval clear of zero from 0.70 to 1.00.
+  With both at the red-team prompts' own best temperatures it is 0.0044 (0.0003
+  to 0.0092), which clears zero by less than the grid resolves (a minimum
+  taken over the grid can lie above its curve's own by up to about 0.0004 of
+  cross-entropy at 9B, and by 0.0006 on these prompts).
+- The identity term changes sign with the temperature. With both sides read at
+  one temperature, over the same 0.50 to 1.00, its interval lies below zero
+  from 0.50 to 0.70 (−0.0136 at 0.50) and above zero only at 0.95 and 1.00
+  (+0.0068 at 1.00, its value as evaluated). At 0.65, where the cross-fit reads the value neurons and all three
+  draws, it is −0.0067 (−0.011 to −0.003). At the red-team prompts' own best
+  temperatures it is −0.0007 (−0.003 to 0.002). What the paper measured as
+  identity is there at temperature 1, and is not there at the temperatures that
+  are best for these prompts.
+- At full width the null stands however it is read. On the helpful prompts the
+  plain partner's bridge keeps more as evaluated (0.0109, 0.0015 to 0.0228), at
+  those prompts' own best temperatures (0.0141, 0.0011 to 0.0287) and at every
+  one temperature from 0.50 to 1.00; cross-fitted it does not (0.0081, −0.0072
+  to 0.0244). Nowhere, at either width or on either set of prompts, does the
+  fine-tuned partner's bridge keep more with an interval clear of zero.
+- Two further readings, the value neurons against nine random coordinates
+  (0.0046, 0.0001 to 0.0418) and the first matched draw's own gain (0.0178,
+  0.0001 to 0.0225), end so near zero that another seed of the bootstrap puts
+  zero inside their intervals. Both hold at the red-team prompts' own best
+  temperatures and at every one temperature from 0.65 to 1.00.
+- Width holds: the 45-coordinate write keeps more than the nine-coordinate one
+  as read (0.047, 0.030 to 0.089), on both sets of prompts, and in everything
+  reported beside.
+
+Not checked: the control was not run on the dual stack of result 4. There,
+"compose" rests in part on cross-entropy as evaluated; its other supports,
+physics accuracy and the constitution channel's red-team behaviour with both
+channels open, do not. "Makes the composition worse" rests on cross-entropy as
+evaluated alone: physics accuracy was 1.000 in every arm. Outside this
+repository the control was also run on the Ternary Bonsai 2 27B bridge, where
+it leaves nothing of the red-team gain.
+
+In the ΨLM checkout the 9B numbers are in `results/constitution/arms_controls.json`
+and the 0.5B ones in `arms_controls_qwen0.5b.json` beside it, with the rules
+(`tempcontrol_qwen0.5b_preregistration.json`), the readings
+(`tempcontrol_qwen0.5b_reading.json`), what was worked out beside them after
+the run (`tempcontrol_qwen0.5b_beside.json`) and three independent
+recomputations, which reproduce the table and the readings; one of them, of
+what the intervals are made of, finds the cross-fit, the grid's resolution and
+the identity term badly posed at 0.5B
+(`tempcontrol_qwen0.5b_recomputation.json`).
 
 ## The full-width bridge without its partner
 

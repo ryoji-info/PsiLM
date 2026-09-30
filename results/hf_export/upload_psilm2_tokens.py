@@ -194,7 +194,10 @@ def pushed(p: Path) -> bool:
     """The file here is, byte for byte, the blob origin/main holds at its path."""
     rel = p.resolve().relative_to(REPO).as_posix()
     git = lambda *a: subprocess.run(["git", *a], cwd=REPO, capture_output=True, text=True)   # noqa: E731
-    git("fetch", "--quiet", "origin", "main")
+    f = git("fetch", "--quiet", "origin", "main")
+    if f.returncode != 0:                      # a stale origin/main would let a file pass that is not there
+        raise SystemExit("git fetch origin main failed; what origin/main holds cannot be told: "
+                         + f.stderr.strip()[:200])
     held = git("rev-parse", "--verify", "--quiet", f"origin/main:{rel}")
     return held.returncode == 0 and held.stdout.strip() == git("hash-object", rel).stdout.strip()
 

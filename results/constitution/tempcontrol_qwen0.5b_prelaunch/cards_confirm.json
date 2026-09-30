@@ -1,0 +1,204 @@
+[
+ {
+  "lens": "numbers",
+  "result": {
+   "findings": [
+    {
+     "card": "main",
+     "passage": "On the helpful prompts they keep none that is distinguishable from zero (−0.0053, −0.0090 to 0.0133, of 0.0172).",
+     "what_is_wrong": "The numbers are right: this is the cross-fitted gain, and the unrounded values give −0.0053 and −0.0090. But it is the only nine-coordinate helpful-prompt number the card prints, and it is the one number that says the value neurons keep nothing there. Everything the files report beside it says the opposite. At the helpful prompts' own best temperatures the value neurons keep a gain with an interval clear of zero. With both sides at one temperature they keep a gain at every temperature from 0.60 to 1.00. The negative point comes entirely from a one-step temperature mismatch: backbone at 0.80, coupled system at 0.85. For the full-width write and for C1, C2 and C3 the card gives the own-best-temperature number next to the cross-fitted one. Here it does not. A reader will conclude that the value neurons' signal is specific to the red-team prompts, and the files do not support that.",
+     "evidence": "arms_controls_qwen0.5b.json arms[vn].helpful: ce_gain_at_best_tau −0.00525 (unrounded −0.0052500246, recomputed from the rows with arms_controls.best_tau_gain), ci95 [−0.00895, 0.013345] (unrounded −0.0089503294), tau_base 0.8, tau_psilm 0.85. tempcontrol_qwen0.5b_beside.json in_split.helpful.arms.vn: gain 0.005543, ci95 [0.002063, 0.008643], label 'keeps a gain'. one_temperature.helpful.where_the_interval_lies.vn: above [0.6 … 1.0]. tempcontrol_qwen0.5b_recomputation.json, intervals checker note: 'vn on helpful: cross-fitted -0.005250 …; with both sides at 0.80, +0.010125 [+0.008144, +0.012216]; in-split +0.005543 … That mismatch alone turns a positive gain negative.'",
+     "severity": "misleads",
+     "proposed_text": "On the helpful prompts they keep none that is distinguishable from zero (−0.0053, −0.0090 to 0.0133, of 0.0172), though at those prompts' own best temperatures they keep 0.0055 (0.0021 to 0.0086)."
+    },
+    {
+     "card": "main",
+     "passage": "With both sides read at one temperature its interval lies below zero from 0.50 to 0.70 (−0.0136 at 0.50) and above zero only at 0.95 and 1.00 (+0.0068 at 1.00, its value as evaluated).",
+     "what_is_wrong": "The claim is correct over 0.50 to 1.00, the only range beside.json computes. This bullet does not name that range, though; it is stated only in the bullet before. The card gives the grid as 0.30 to 1.60, so 'only at 0.95 and 1.00' reads as a narrow window. From the rows, the identity term's interval lies above zero at every grid temperature from 0.95 to 1.60, and the term rises steadily with temperature.",
+     "evidence": "Recomputed from results/stage2c_qwen0.5b_<arm>/teacher_ceiling.rows.jsonl with arms_controls.curves on the table's own draws (default_rng(0), 2000 draws). The output is in scratchpad/cards_confirm/numbers/onetemp_grid.json, and it reproduces beside.json exactly at 0.50 to 1.00 (0.65: −0.006697 [−0.010898, −0.003024]). Red-team C3: 1.05 +0.008839 [+0.006321, +0.011144]; 1.30 +0.021356 [+0.018694, +0.023963]; 1.60 +0.042510 [+0.038645, +0.046114]. Every temperature from 0.95 to 1.60 is above zero. beside.json one_temperature.test.where_the_interval_lies.C3_identity_at_nine: above [0.95, 1.0], below [0.5 … 0.7].",
+     "severity": "minor",
+     "proposed_text": "With both sides read at one temperature from 0.50 to 1.00 its interval lies below zero from 0.50 to 0.70 (−0.0136 at 0.50) and above zero only at 0.95 and 1.00 (+0.0068 at 1.00, its value as evaluated)."
+    },
+    {
+     "card": "main",
+     "passage": "the rest of what follows was worked out after the run, and none of it is a reading.",
+     "what_is_wrong": "The bullets that follow contradict this. One of them opens 'Two further readings'. Its 0.0046 (0.0001 to 0.0418) and 0.0178 (0.0001 to 0.0225) are the rules' cross-fitted readings from the reading file, not something worked out after the run. The helpful full-width numbers 0.0109 (as evaluated) and 0.0081 (cross-fitted) are also the table's own, not post-run work. A reader cannot tell from this sentence which of the numbers below come from the rules.",
+     "evidence": "tempcontrol_qwen0.5b_reading.json contrasts.C4_value_neurons_against_random.test: reading 'survives', at_best_temperatures 0.004625, ci95 [0.000123, 0.041847]. arms.magmatch.test: reading 'keeps a gain', gain_at_best_temperatures 0.017837, ci95 [0.000122, 0.0225]. arms_controls_qwen0.5b.json contrasts[helpful, allplain−all]: difference 0.008098, as_evaluated.difference 0.010868.",
+     "severity": "minor",
+     "proposed_text": "the rest of what follows was worked out after the run and is not a reading, except the two numbers a bullet below calls readings and the table's own numbers it quotes."
+    },
+    {
+     "card": "partner",
+     "passage": "They keep more than they gained only because reading each set at the other's best temperatures costs the backbone more than it costs a bridge;",
+     "what_is_wrong": "'A bridge' reads as any bridge, and for the nine-coordinate bridges that this card discusses a few lines earlier it is false. On the red-team prompts the cross-fit costs the nine-value-neuron bridge and its plain-partner twin more than it costs the backbone. On the helpful prompts every nine-coordinate bridge pays more than the backbone. The statement is true for the two full-width bridges the sentence is about.",
+     "evidence": "arms_controls_qwen0.5b.json, crossfit_cost_base: test 0.03331, helpful 0.02554. crossfit_cost_psilm, test: all 0.00353, allplain 0.00917, vn 0.03736, plainpartner 0.03638. crossfit_cost_psilm, helpful: vn 0.03633, plainpartner 0.03661, magmatch 0.02587, magmatch1 0.02564, magmatch2 0.02581, rand 0.0257.",
+     "severity": "minor",
+     "proposed_text": "They keep more than they gained only because reading each set at the other's best temperatures costs the backbone more than it costs either of these two bridges (0.033 against 0.004 and 0.009 on the red-team prompts);"
+    },
+    {
+     "card": "partner",
+     "passage": "On the helpful prompts the same two readings give 0.0018 (−0.0001 to 0.0035)",
+     "what_is_wrong": "The 'two readings' are the own-best-temperature and one-temperature numbers. The paragraph opens by saying these were worked out after the run and are 'not itself a reading'. Calling them readings contradicts that and blurs the line the card draws between what the rules read (the cross-fit) and what is reported beside it. The numbers themselves are correct.",
+     "evidence": "tempcontrol_qwen0.5b_beside.json 'written': 'Nothing here is a reading'. in_split.helpful.contrasts.C1_plain_partner_at_nine: 0.001753 [−0.000051, 0.003548]. one_temperature.helpful.where_the_interval_lies.C1: above [0.7 … 1.0].",
+     "severity": "minor",
+     "proposed_text": "On the helpful prompts the same two give 0.0018 (−0.0001 to 0.0035)"
+    },
+    {
+     "card": "main",
+     "passage": "and three independent recomputations, which find the cross-fit, the grid's resolution and the identity term badly posed at 0.5B",
+     "what_is_wrong": "The clause credits the finding to all three recomputations. Only one of them, the 'intervals' checker, finds these three things badly posed. The 'table' and 'reading' checkers raise notes only.",
+     "evidence": "tempcontrol_qwen0.5b_recomputation.json checkers[*].result.findings[*].severity: table: 8 × 'note'; reading: 8 × 'note'; intervals: 3 × 'badly_posed' (the cross-fit's premise, the 0.0004 grid-resolution flag, C3 having no temperature-free sign) and 6 × 'note'.",
+     "severity": "minor",
+     "proposed_text": "and three independent recomputations, one of which finds the cross-fit, the grid's resolution and the identity term badly posed at 0.5B"
+    }
+   ],
+   "checked_and_right": [
+    "Extracted every number in the 0.5B passages of both drafts: 122 numbers, each with its sentence, file, key path and stored value, plus the unrounded value where needed. The list is in /private/tmp/claude-501/-Users-rxiii/26c75c8e-376c-4746-8737-4c73082cb28c/scratchpad/cards_confirm/numbers/numbers_list.json and was built by numbers_list.py. Every printed value is the correct rounding (half up), and none failed.",
+    "Unrounded recomputation from the rows, using the table's own functions (imported read-only after vars(m).update(SETS['qwen0.5b'])), in scratchpad/cards_confirm/numbers/unrounded.json. vn helpful cross-fitted gain is −0.0052500246, so −0.0053 is right. Its interval ends are −0.0089503294 (so −0.0090) and 0.0133450914 (so 0.0133). C4 red-team is 0.0046253584 (so 0.0046). magmatch red-team upper end is 0.0224995785 (so 0.0225). all red-team is 0.3733955 (0.373) with lower end 0.2849948 (0.285). all helpful lower end is 0.0930946 (0.093). allplain helpful as evaluated is 0.2082252 (0.208).",
+    "Splits, arms, contrasts and signs: C1 is plainpartner − vn, and positive means the plain partner's bridge is better. C2 is allplain − all. C3 is vn minus the mean of magmatch, magmatch1 and magmatch2. C4 is vn − rand. C5 is vn5 − vn. Each sign matches its card wording. The partner card's 'opposite sign to the interval quoted above' is correct: the published [−0.0079, −0.0009] is the negated as-evaluated C1 interval [0.00087, 0.0079].",
+    "How the temperatures were chosen: cross-fit numbers come from arms_controls_qwen0.5b.json; 'own best temperatures' numbers from beside.json in_split (0.344/0.271–0.418, 0.118/0.047–0.191, 0.345, 0.132, C1 0.0044/0.0003–0.0092, C3 −0.0007/−0.003–0.002, C2 helpful 0.0141/0.0011–0.0287, C1 helpful 0.0018/−0.0001–0.0035); 'one temperature' numbers from beside.json one_temperature. Every interval belongs to the point printed beside it.",
+    "KL numbers: 0.503/0.447 and 0.423/0.236 are at temperature 1. 0.21 and 'adds 0.16' are the cross-fitted, KL-best fractions of the backbone's distance (0.2072 and −0.1603, from teacher_ceiling.py's temperature_crossfit). The in-split values would be 0.1997 and −0.1804.",
+    "Ranges checked against every value they cover: '0.0040 to 0.0068 over 0.50 to 1.00' (0.004032 to 0.006832); 'clear of zero from 0.70 to 1.00' (lower end +0.000009 at 0.70, −0.000164 at 0.65); 'below zero from 0.50 to 0.70'; 'above zero only at 0.95 and 1.00' (true within 0.50–1.00); helpful C2 'at every one temperature from 0.50 to 1.00' (all 11 survive); C4 and magmatch 'from 0.65 to 1.00'; partner card helpful C1 'clear of zero from 0.70 to 1.00'.",
+    "'Between 84% and 96%': variance_between_temperature_pairs for the six nine-coordinate arms on both splits runs from 0.8428 to 0.9611. It is the between-(backbone τ, coupled τ)-pair share per eval/tempcontrol_beside.py explained(), which is the quantity the sentence names. 'Equal or one step of the grid apart': modes.*.other = 0 for all six arms on both splits.",
+    "'Between 28% and 40%': share lost is 0.2794 and 0.4035 for all, and 0.2782 and 0.3671 for allplain. '0.033 and 0.026' are crossfit_cost_base 0.03331 and 0.02554. The largest nine-coordinate gain as evaluated, 0.022, is plainpartner red-team 0.022248. '0.344 and 0.345' and '0.118 and 0.132' come from in_split.",
+    "The 0.80 and 0.65 backbone best temperatures are right. The 0.30–1.60 grid in steps of 0.05 matches TAUS and the rules. There are 100 items per split. The nine 0.5B bridges match the nine arms and the nine variant folders in the published MANIFEST. 63%/37% is the as-evaluated share 0.6289. The share 1.83 (0.30 to 4.42) and the label 'identity term not distinguishable from zero at best temperature' match reading.json.",
+    "The narrative claims check out against the files. 'Another seed of the bootstrap puts zero inside their intervals': other_draws seeds 1 and 2 put zero inside both, and whose_side_of_zero_changes = [C4, magmatch]. 'Nowhere does the fine-tuned partner's bridge keep more with an interval clear of zero': true over every reading, beside number and other seed, and over the whole grid on both splits in my recomputation. 'Width holds … in everything reported beside': true. 'Clears zero by less than the grid resolves': 0.00032 and 0.000244 are both below the rules' 0.0004.",
+    "Both cards give the same number for the same thing: C1 0.0054, C2 −0.0047, 0.80/0.65, 0.0044, 0.0040–0.0068, 0.0141, 0.0081, 0.359/0.373/0.285/0.507, 0.344, 0.142/0.197, 0.118, 28–40%, and commit 32aee47.",
+    "Commit 32aee47 (2026-09-30 08:13:02 +0900) is the only commit touching tempcontrol_qwen0.5b_preregistration.json, and the file has no diff against it. All nine teacher_ceiling.commit files read 32aee47b1d6c. The chain log records the rules as commit 32aee47 before the first arm, at 08:13.",
+    "All the flagged passages are new text: none of them appears in the published README.md or constitution_model/README.md."
+   ],
+   "not_checked": [
+    "Whether the per-item cross-entropies in the rows are correct. No model was loaded and nothing was measured.",
+    "KL fractions were not recomputed from per-temperature KL rows. They were only compared with teacher_ceiling.json and the table.",
+    "Whether the bridge files in the published repository (bridges/qwen2.5-0.5b/<variant>) are the checkpoints the control evaluated. No hash comparison against results/stage2c_qwen0.5b_<arm>/bridges.npz was made.",
+    "The 9B numbers and every non-0.5B passage of both cards, including the 9B paragraphs that surround the 0.5B passages in the partner card.",
+    "The claim 'after the paper': the paper was not opened.",
+    "Wording outside the numbers, except where a label (reading or not a reading, which recomputation found what) decides how a number was obtained.",
+    "One-temperature values outside 0.50 to 1.00 are my own recomputation on the table's draw scheme. beside.json does not hold them. They reproduce beside.json exactly inside 0.50 to 1.00.",
+    "The uploader script and the published cards' structure. upload_psilm2_card.py was not run."
+   ]
+  }
+ },
+ {
+  "lens": "claims",
+  "result": {
+   "findings": [
+    {
+     "card": "main",
+     "passage": "what was worked out beside them after the run (`tempcontrol_qwen0.5b_beside.json`) and three independent recomputations, which find the cross-fit, the grid's resolution and the identity term badly posed at 0.5B (`tempcontrol_qwen0.5b_recomputation.json`).",
+     "what_is_wrong": "The sentence says the three recomputations find these rules badly posed. Only one of them does. The other two report notes only, and all three reproduce the table and the readings. A reader takes away that three independent checks each judged the rules badly posed.",
+     "evidence": "tempcontrol_qwen0.5b_recomputation.json: checkers[2] (lens 'intervals') has findings[0] (cross-fit), findings[1] (grid resolution, GRID = 0.0004) and findings[2] (C3, identity sign, 63/37 split) with severity 'badly_posed'. checkers[0] (lens 'table') has 8 findings and checkers[1] (lens 'reading') has 8, all with severity 'note'. agrees.table, agrees.reading and agrees.intervals are all true.",
+     "severity": "misleads",
+     "proposed_text": "what was worked out beside them after the run (`tempcontrol_qwen0.5b_beside.json`) and three independent recomputations, which reproduce the table and the readings; one of them, of what the intervals are made of, finds the cross-fit, the grid's resolution and the identity term badly posed at 0.5B (`tempcontrol_qwen0.5b_recomputation.json`)."
+    },
+    {
+     "card": "main",
+     "passage": "On the helpful prompts they keep none that is distinguishable from zero\n  (−0.0053, −0.0090 to 0.0133, of 0.0172).",
+     "what_is_wrong": "This is the only helpful-prompt number for the value neurons that the card gives, and the card never qualifies it. The files show it comes from the cross-fit alone. At the helpful prompts' own best temperatures, and at every one temperature from 0.60 to 1.00, the value neurons keep a gain with an interval clear of zero. The card adds numbers worked out after the run to qualify C1, C2, C3 and C4, but not this one. A reader therefore concludes that on the helpful prompts the whole nine-value-neuron gain is sharpening.",
+     "evidence": "beside.json in_split.helpful.arms.vn: gain 0.005543, ci95 [0.002063, 0.008643], 'keeps a gain'. one_temperature.helpful.where_the_interval_lies.vn.above = [0.6 … 1.0]. Table arms[vn].helpful: tau_base 0.8, tau_psilm 0.85. recomputation checkers[2].findings[5]: the helpful cross-fitted point comes from a one-step mismatch; 'That mismatch alone turns a positive gain negative'; with both sides at 0.80 it is +0.010125 [0.008144, 0.012216].",
+     "severity": "misleads",
+     "proposed_text": "On the helpful prompts, as the rules report them, they keep none that is distinguishable from zero\n  (−0.0053, −0.0090 to 0.0133, of 0.0172); worked out after the run, at those\n  prompts' own best temperatures they keep 0.0055 (0.0021 to 0.0086), and with\n  both sides at one temperature their interval is above zero from 0.60 to 1.00."
+    },
+    {
+     "card": "main",
+     "passage": "The\nrules had each write's gain at its own set's best temperatures, and what the\ncross-fit costs each side, reported beside the readings; the rest of what\nfollows was worked out after the run, and none of it is a reading.",
+     "what_is_wrong": "The sentence says nothing that follows is a reading, but the bullets that follow contain readings. One opens 'Two further readings' (C4, and matched draw 0's own gain); the width bullet says 'as read'. The helpful-prompt C2 numbers are also there: 'as evaluated' and 'cross-fitted it does not'. Those are table numbers the rules report and label, not work done after the run. So a reader cannot tell which statements in the list are pre-registered.",
+     "evidence": "reading.json contrasts.C4_value_neurons_against_random.test.reading = 'survives'; arms.magmatch.test.reading = 'keeps a gain' (both with ends_within_the_grids_resolution_of_zero = true); contrasts.C5_width.test.reading = 'survives'; contrasts.C2_plain_partner_at_full_width.helpful.reading = 'does not survive' (0.008098 [−0.007174, 0.024373]; as_evaluated 0.010868 [0.001487, 0.022839]); preregistration reading.a_contrast: helpful contrasts are 'reported, not read'.",
+     "severity": "minor",
+     "proposed_text": "The\nrules had each write's gain at its own set's best temperatures, and what the\ncross-fit costs each side, reported beside the readings; the rest of what\nfollows was worked out after the run and is not itself a reading, except where\nit names a reading or a cross-fitted number of the table as such."
+    },
+    {
+     "card": "main",
+     "passage": "with both read at the red-team prompts' own best temperatures\nit keeps 0.344 (0.271 to 0.418). On the helpful prompts it keeps 0.142 of 0.197\n(0.093 to 0.204), and 0.118 (0.047 to 0.191) at those prompts' own best\ntemperatures",
+     "what_is_wrong": "The pre-registration reports the in-split gains beside the readings, but not their intervals. The intervals 0.271 to 0.418 and 0.047 to 0.191 were computed after the run. The card later says the rules reported 'each write's gain at its own set's best temperatures', so a reader takes these intervals to be pre-registered too. The file they come from also says they carry no correction for choosing the temperatures on the items scored.",
+     "evidence": "Table arms[all].test.ce_gain_at_in_split_tau = 0.34362 and helpful 0.11771 have no interval, and reading.json arms.all.*.beside_in_split has gain only. The intervals are beside.json in_split.test.arms.all.ci95 [0.271084, 0.418325] and in_split.helpful.arms.all.ci95 [0.047091, 0.191132]. in_split.what: 'with no correction for that choice'.",
+     "severity": "minor",
+     "proposed_text": "with both read at the red-team prompts' own best temperatures\nit keeps 0.344 (0.271 to 0.418, an interval worked out after the run). On the helpful prompts it keeps 0.142 of 0.197\n(0.093 to 0.204), and 0.118 (0.047 to 0.191) at those prompts' own best\ntemperatures"
+    },
+    {
+     "card": "partner",
+     "passage": "On the helpful\n> prompts the same two readings give 0.0018 (−0.0001 to 0.0035) and, again, an interval\n> clear of zero from 0.70 to 1.00;",
+     "what_is_wrong": "The paragraph opens by saying that what follows 'was worked out after the run and is not itself a reading'. This clause then calls the in-split and one-temperature numbers 'the same two readings'. A reader of this card alone can no longer tell whether they are readings.",
+     "evidence": "beside.json 'written': 'Nothing here is a reading'; in_split.helpful.contrasts.C1_plain_partner_at_nine 0.001753 [−5.1e-05, 0.003548] and one_temperature.helpful are both in beside.json, which was written after the run.",
+     "severity": "minor",
+     "proposed_text": "On the helpful\n> prompts the same two descriptions give 0.0018 (−0.0001 to 0.0035) and, again, an interval\n> clear of zero from 0.70 to 1.00;"
+    },
+    {
+     "card": "both",
+     "passage": "which clears\n  zero by less than the grid resolves. (main); an interval that clears zero by less than the grid\n> resolves (partner; also 'which also clears zero by less than the grid\n> resolves')",
+     "what_is_wrong": "Neither card says how finely the grid resolves in cross-entropy. The grid is given only in temperature steps of 0.05, while the interval end it is compared with is a cross-entropy of 0.0003 (0.0002 on the helpful prompts). A reader cannot check the claim, and in the main card cannot tell what 'the grid's resolution' means when the recomputations are said to find it badly posed. The claim holds under both the rules' figure and the one measured at 0.5B.",
+     "evidence": "Preregistration runs.temperatures: a minimum over the grid lies above its curve's own 'by up to about 0.0004 at 9B'. beside.json curves.test.largest_grid_minimum_above_its_vertex 0.000616 and helpful 0.000272. The ends are in_split.test C1 lower 0.00032 and table helpful C1 lower 0.000244.",
+     "severity": "minor",
+     "proposed_text": "which clears\n  zero by less than the grid resolves (a minimum taken over the grid can lie up to about 0.0004 of cross-entropy above the curve's own, 0.0006 on these prompts). [partner: the same parenthesis at its first use]"
+    },
+    {
+     "card": "main",
+     "passage": "and with each read at its best temperature for that distance it removes\n0.21 of it on the red-team prompts and adds 0.16 on the helpful ones.",
+     "what_is_wrong": "The clause does not say the temperatures are chosen on the other set, which is how the rules define them. '0.16' is a fraction of the backbone's distance, but it comes right after KL values of 0.423 and 0.236, so it reads as a KL increment. The sentence also does not say that this is reported, not read.",
+     "evidence": "Preregistration divergence_from_the_teacher: 'each side is at the temperature that minimises its own KL to the teacher on the other split'; the fraction is 'reported beside it'. reading.json arms.all.test.kl_fraction_removed_at_best_temperatures 0.2072; helpful −0.1603.",
+     "severity": "minor",
+     "proposed_text": "and with each read at its best temperature for that distance, chosen on the other set, it removes\n21% of it on the red-team prompts and adds 16% to it on the helpful ones (reported, with no threshold)."
+    },
+    {
+     "card": "main",
+     "passage": "- The plain partner's advantage is positive wherever it was looked for.",
+     "what_is_wrong": "The bullet list covers both widths, and this sentence generalises without naming its width. At full width the plain partner's advantage (C2) is negative at the cross-fit and at several single temperatures on the red-team prompts. The sentence is true only of the nine-coordinate advantage (C1).",
+     "evidence": "Table contrasts_at_best_tau[test, allplain minus all] −0.004738; beside.json one_temperature.test.at.{0.5…0.8}.contrasts.C2 −0.021209 to −0.001867. Every C1 point is positive: cross-fit +0.005373 and +0.001472; as evaluated +0.004032 and +0.001336; in-split +0.004396 and +0.001753; one temperature +0.0040 to +0.0068 and +0.0013 to +0.0021; vertices +0.00448 and +0.00175. The only negative C1 number in beside.json is modes.test.C1.otherwise.mean −0.009523, over the 32 of 2000 bootstrap draws in which the two arms chose different temperatures; it is not a point estimate.",
+     "severity": "minor",
+     "proposed_text": "- The plain partner's advantage at nine coordinates is positive wherever it was looked for."
+    },
+    {
+     "card": "partner",
+     "passage": "> Unlike at 9B, most of the full-width gain at 0.5B is not sharpening.",
+     "what_is_wrong": "The main card says of the same statement that 'how much it keeps is described here and not read, for the rules set no threshold on it'. This card never says so. Its previous paragraph separates readings from things worked out after the run, so a reader of this card alone will take 'most … is not sharpening' as a reading.",
+     "evidence": "Preregistration reading.share_kept: 'reported; no threshold is set on it'. reading.json arms.all.test.share_kept 1.0411; helpful 0.7206.",
+     "severity": "minor",
+     "proposed_text": "> Unlike at 9B, most of the full-width gain at 0.5B is not sharpening (described, not read: the rules set no threshold on how much is kept)."
+    },
+    {
+     "card": "partner",
+     "passage": "> falls when a model is merely made surer of the tokens it mostly picks anyway. There, with\n> the backbone and the coupled system each read at its own best temperature, 0.040 of the\n> full-width bridge's gain of 0.094 is left",
+     "what_is_wrong": "At 9B 'its own best temperature' means a temperature chosen on the other split. The 0.5B paragraphs below use 'those prompts' own best temperatures' for the in-split temperatures, which they report beside the readings and do not read. A reader of this card alone meets the same words for opposite choices, and can take the 9B 0.040 for an in-split number.",
+     "evidence": "Main card, 9B section: 'each read at its own best temperature, chosen on the other split'. Partner card lines 57 and 77 use 'own best temperatures' for beside.json in_split.",
+     "severity": "minor",
+     "proposed_text": "> falls when a model is merely made surer of the tokens it mostly picks anyway. There, with\n> the backbone and the coupled system each read at its own best temperature, chosen on the other set of prompts, 0.040 of the\n> full-width bridge's gain of 0.094 is left"
+    },
+    {
+     "card": "partner",
+     "passage": "> the two keep 0.040 and 0.037 of their gain, a difference whose interval includes zero\n> (0.003, 95% −0.0002 to 0.009;",
+     "what_is_wrong": "The 0.5B paragraphs just above state their convention: a difference of gains is 'positive where the untouched model's bridge is the better'. This next difference of the same kind has the opposite sign convention (this model's bridge minus the untouched one), and the text does not say so.",
+     "evidence": "results/constitution/arms_controls.json contrasts_at_best_tau[split test, arm 'all', minus ['allplain']] difference 0.003063, ci95 [−0.000181, 0.008877].",
+     "severity": "minor",
+     "proposed_text": "> the two keep 0.040 and 0.037 of their gain, a difference whose interval includes zero\n> (0.003 in favour of the bridge to this model, 95% −0.0002 to 0.009;"
+    }
+   ],
+   "checked_and_right": [
+    "Every number in the 0.5B passages of both cards matches the table, reading.json or beside.json at the stated rounding. Main card: all 0.359/0.373 (0.285–0.507), in-split 0.344 (0.271–0.418), helpful 0.142 of 0.197 (0.093–0.204), in-split 0.118 (0.047–0.191), 28%–40% (1−0.1422/0.1974=0.279, 1−0.1177/0.1974=0.404; allplain 0.278 and 0.367); KL 0.503/0.447 and 0.423/0.236, fractions 0.2072 and −0.1603; vn 0.0081 (0.0034–0.0453) of 0.0182 and helpful −0.0053 (−0.0090–0.0133) of 0.0172; C1 0.0054 (−0.0009–0.0123); C3 −0.0067 (−0.012–0.030) from +0.0068; share 1.83 (0.30–4.42), 63/37 from 0.6289; C2 −0.0047 (−0.038–0.021); temperatures 0.80/0.65; cross-fit costs 0.033/0.026; largest nine-coordinate gain 0.022 (plainpartner test 0.022248); variance share 84–96% (0.8428 to 0.9611 over the six nine-coordinate arms and both splits); C1 one-temperature 0.0040–0.0068, clear of zero from 0.70 (lower end 9e-06) to 1.00; in-split 0.0044 (0.00032–0.009167); C3 one-temperature below at 0.50–0.70, above at 0.95 and 1.00, −0.0136 at 0.50, −0.0067 (−0.0109 to −0.0030) at 0.65, in-split −0.0007 (−0.0029–0.0021); C2 helpful 0.0109 (0.0015–0.0228) as evaluated, 0.0141 (0.0011–0.0287) in-split, above at all 11 temperatures, cross-fitted 0.0081 (−0.0072–0.0244); C4 0.0046 (0.0001–0.0418); magmatch 0.0178 (0.0001–0.0225); C5 0.047 (0.030–0.089). Partner card: the same C1, C2 and full-width numbers, allplain 0.369 of 0.368, in-split 0.345, helpful 0.150 of 0.208 and 0.132, helpful C1 in-split 0.0018 (−5.1e-05–0.0035) and cross-fitted 0.0015 (0.000244–0.015707).",
+    "'There most of the full-width gain is not sharpening': the share kept is 0.96 in-split and 1.04 cross-fitted on red-team, and 0.60 and 0.72 on helpful. The 'more than it had' is explained arithmetically: in-split gain + 0.03331 − 0.00353 = 0.3734.",
+    "'The two that fail do not fail the same way': C1 and C3 are the two failing named readings (reading.json named: does not survive, not firm / identity term not distinguishable). C1 is positive at every point; C3 changes sign (one_temperature.test C3 below at 0.50–0.70, above at 0.95–1.00).",
+    "'What the paper measured as identity is there at temperature 1, and is not there at the temperatures that are best for these prompts': on red-team, C3 is +0.0068 [0.0041, 0.0091] at 1.00 and includes zero in-split and at one temperature 0.80 and 0.85. On helpful the same holds at its own best temperature 0.65 (one-temperature −0.0000 [−0.0031, 0.0026]; in-split −0.00003 [−0.0030, 0.0025]), though there C3 is above zero from 0.75 up. Vertex-based C3 is −0.00028 (test) and −0.00012 (helpful).",
+    "'At full width the null stands however it is read' (red-team): C2 includes zero cross-fitted, as evaluated [−0.0123, 0.0297], in-split [−0.0244, 0.0245], at all 11 one-temperature points, in the three other_draws runs and in both modes.",
+    "'Nowhere … does the fine-tuned partner's bridge keep more with an interval clear of zero' (main) and 'Nowhere … read or reported beside …' (partner): no C1 or C2 interval in the table, in_split, one_temperature (both splits), other_draws (seed 1, seed 2, seed 0 with 10000 draws) or modes has its upper end below zero.",
+    "'Two further readings … another seed of the bootstrap puts zero inside their intervals. Both hold at the red-team prompts' own best temperatures and at every one temperature from 0.65 to 1.00': other_draws.test.whose_side_of_zero_changes = [C4, magmatch]; in-split C4 0.0092 [0.0067, 0.0122] and magmatch 0.0155 [0.0129, 0.0177]; C4 above from 0.65 to 1.00, magmatch above from 0.50 to 1.00.",
+    "'Width holds … on both sets of prompts, and in everything reported beside': C5 is positive with a positive interval cross-fitted (test and helpful), as evaluated, in-split, at all 22 one-temperature points, in all six other_draws intervals and in all four mode intervals.",
+    "'Between 84% and 96% … equal or one step of the grid apart': modes.<split>.<arm>.other = 0 for every nine-coordinate arm on both splits.",
+    "'The rules had each write's gain at its own set's best temperatures, and what the cross-fit costs each side, reported beside the readings' matches preregistration runs.temperatures word for word in substance.",
+    "'So \"matched\" stands at both widths and \"beat\" does not, as posed' is consistent with the published sentence ('matched or beat … at every write width'). The C1 reading is 'does not survive' and C2 is 'still indistinguishable'; plain twins exist only at 9 and 896 coordinates.",
+    "'so the conclusion above … does not rest on the 0.0040' follows: the conclusion needs only that the fine-tuned partner is never distinguishably better, which holds everywhere.",
+    "'read by rules that were committed before it ran (commit 32aee47)': git log gives 32aee47 at 2026-09-30 08:13:02, containing the preregistration, and tempcontrol_qwen0.5b.log records 'the rules as applied are commit 32aee47' and START 08:13.",
+    "'the nine 0.5B bridges here': MANIFEST.md lists all nine bridges/qwen2.5-0.5b/<arm>/ folders.",
+    "No contradiction found with the published text of either card. That includes the published partner-card 'matched or beat' sentence, the published main-card 'At 0.5B the stored set does not stand in', the 9B caveat of the main card, the partner card's 9B paragraphs, 'At 9B the paper explains the twin differently from the 0.5B result above', and the last 0.5B sentence (0.035 of 0.222, as in preregistration known_beforehand).",
+    "Markdown was rendered with markdown-it-py 4.2.0 (CommonMark plus tables; 'markdown' and 'mistune' are not installed). Main card: the two bullet lists parse as 4 and 5 items with their two-space continuation lines inside. Partner card: every line of the passages starts with '>'; the block quote runs from line 16 to 112 as one quote with seven paragraphs split at the '>' lines. The bold 'does not survive' across a line break renders as strong. No heading, rule or HTML block arises in either passage. The only rules are the YAML front-matter fences."
+   ],
+   "not_checked": [
+    "I did not recompute any bootstrap interval or gain from the teacher_ceiling rows. I relied on the table, reading.json, beside.json and the recomputation file. Nothing was re-measured and no model was loaded.",
+    "The 9B numbers of the main card's caveat and of the partner card's 9B paragraphs were not checked, except the sign of the 9B twin contrast in arms_controls.json.",
+    "The Ternary Bonsai 2 27B and dual-stack statements in the main card's 'Not checked' paragraph were not checked.",
+    "Rendering was checked with markdown-it-py (CommonMark), not with Hugging Face's own renderer. Anchor links and external links were not followed.",
+    "I did not read eval/tempcontrol_beside.py, eval/tempcontrol_reading.py or arms_controls.py. What beside.json's fields mean was taken from their own 'what' strings and from the recomputation checkers' descriptions.",
+    "I checked 'as evaluated', 'gain' and 'keeps' as terms only for whether a reader can follow them. They are not defined formally in the partner card, and 'as evaluated' is tied to temperature 1 only in the main card (line 206). I did not count that as a defect.",
+    "In the result-3 caveat line of the main card (line 63), the italic sentence renders as part of item 3's paragraph, not on a line of its own. It is outside the checked passages and was not assessed further."
+   ]
+  }
+ }
+]
