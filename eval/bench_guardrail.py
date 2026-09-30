@@ -805,6 +805,32 @@ def self_test():
     print(f"[self-test] zeroed == base (logits diff {dz:.1e}, {len(rb.gen_ids)} tokens); "
           f"psilm logits diff {dp:.2e}, tokens differ: {rp.gen_ids != rb.gen_ids}  OK")
 
+    # 3b. the shut gate (psilm/mlx/bridges.py gate_shut: PsiLM-Chat's leak with the
+    #     physics bridge off). The gate's decision is replaced by zero before the
+    #     floor, so with a floor eps the write is exactly eps of the fully open
+    #     write, with no floor nothing is written, the sigma returned is still the
+    #     gate's own decision, and the module is the trained one again afterwards.
+    inj = bridges.inject
+    h_t, tk_t = mx.random.normal((1, 7, 64)), mx.random.normal((1, 8, 64))
+    plain, s_ref = inj(h_t, tk_t)
+    inj.gate_floor = 1.0
+    full, _ = inj(h_t, tk_t)
+    inj.gate_floor, inj.gate_shut = None, True
+    none, s_shut = inj(h_t, tk_t)
+    inj.gate_floor = 0.3
+    part, _ = inj(h_t, tk_t)
+    inj.gate_floor, inj.gate_shut = None, False
+    again, _ = inj(h_t, tk_t)
+    mx.eval(plain, s_ref, full, none, s_shut, part, again)
+    assert float(mx.abs(none - h_t).max().item()) == 0.0, "shut gate with no floor wrote something"
+    d_lin = float(mx.abs((part - h_t) - 0.3 * (full - h_t)).max().item())
+    assert d_lin < 1e-5, f"shut gate with floor 0.3 is not 0.3 of the open write: {d_lin}"
+    assert float(mx.abs(s_shut - s_ref).max().item()) == 0.0, "the shut gate changed the sigma reported"
+    assert bool(mx.all(again == plain).item()), "the module did not come back trained"
+    assert float(mx.abs(plain - h_t).max().item()) > 0, "the trained write did nothing"
+    print(f"[self-test] shut gate: no floor writes nothing, floor 0.3 is 0.3 of the open write "
+          f"(max dev {d_lin:.1e}), sigma unchanged, module restored  OK")
+
     # 4. parsers / scoring
     assert parse_number("so 16-3-4=9 eggs.\nAnswer: 18") == 18.0
     assert parse_number("**Answer:** $1,234.50") == 1234.5

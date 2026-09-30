@@ -181,6 +181,14 @@ class GatedCrossAttentionMLX(nn.Module):
         # returned is always the PRE-floor value, so the gate's own decision
         # stays observable.
         self.gate_floor = None
+        # gate_shut: the gate's own decision replaced by zero BEFORE the floor is
+        # applied, so with a floor eps the write is eps of the tokens' write at
+        # every position, whatever the gate would have opened to -- the leak of a
+        # channel that is switched off (PsiLM-Chat's leak slider with the physics
+        # bridge off). False, the trained module, everywhere else: no training or
+        # evaluation path sets it. As with the floor, the sigma returned is the
+        # gate's own decision.
+        self.gate_shut = False
         self.to_q = nn.Linear(d_model, d_attn)
         self.to_k = nn.Linear(d_model, d_attn)
         self.to_v = nn.Linear(d_model, d_attn)
@@ -206,8 +214,9 @@ class GatedCrossAttentionMLX(nn.Module):
         # scale the injection to the receiver's local stream magnitude, so
         # the channel is scale-free across backbone widths
         scale = mx.sqrt((h_raw * h_raw).mean(axis=-1, keepdims=True) + 1e-6)
-        sigma_eff = sigma if self.gate_floor is None else \
-            self.gate_floor + (1.0 - self.gate_floor) * sigma
+        decided = mx.zeros_like(sigma) if self.gate_shut else sigma
+        sigma_eff = decided if self.gate_floor is None else \
+            self.gate_floor + (1.0 - self.gate_floor) * decided
         delta = sigma_eff * inj * scale
         out = (h_raw + delta).astype(dtype)
         if return_ratio:
