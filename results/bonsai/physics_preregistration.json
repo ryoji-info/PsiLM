@@ -1,0 +1,60 @@
+{
+ "what": "A physics bridge (the 1D Burgers / FNO value channel of PsiLM) on Ternary Bonsai 2 27B, for the chat app's Physics bridge switch. Written before any training step on this backbone; nothing in this file changes after the first step. Later additions go under `added_after_the_runs`.",
+ "written": "2026-09-30",
+ "backbone": "prism-ml/Ternary-Bonsai-2-27B-mlx-2bit@3f926b415992eaa2ae9dd7b573706494d6bbf787 (64 layers, width 5120), loaded by psilm/mlx/bonsai_loader.py",
+ "recipe": {
+  "source": "the Qwen3.5 9B physics bridge's: results/qwen35/phaseA_recipe.sh and results/qwen35/coupled_recipe.sh (eval/mlx_stage2_train.py)",
+  "chain": "results/bonsai/physics_bonsai.sh",
+  "run_directory": "results/stage2_bonsai27b",
+  "coupling": {"read_layer": 26, "write_layer": 48, "of": 64},
+  "construct": "--channel value --inj-cap 0.2 --gate-bias 0.0 --lam-x0 1.0 --clip module --detach-x0 --readout-norm dim --calib-n 32 --readout-only 2000",
+  "phase_A": {"steps": 2000, "batch": 8, "lr": 3e-4, "what": "readout warm-up: the forward bridge and the lookup only, through layers 0..26"},
+  "coupled": {"steps": 8000, "batch": 2, "lr": 3e-4},
+  "selective_gate": {"steps": 1500, "batch": 2, "lr": 1e-4, "negatives": "data/noharm_bonsai27b_all.json (the 9B run's 1,194 prompts with Bonsai's own continuations)", "flags": "--noharm-every 2 --noharm-gate-only 1 --lam-gate 1.0"},
+  "data": "data/stage2_qa_train.json (16,384 questions), data/stage2_qa_val.json (512); the physics model is results/stage2/fno.pt, frozen",
+  "the_bridge_evaluated": "the checkpoint at step 11,500, the end of the last selective-gate chunk. No checkpoint is chosen by any score: the per-chunk rollouts (8 held-out questions) are for watching the run only."
+ },
+ "deviations_from_the_9b_recipe": [
+  "read layer 26, given with the new --l-fwd (the Stage-2 rule round(64*10/24) gives 27): 26 is the 9B's 13 of 32 doubled and the layer the Bonsai constitution bridge reads",
+  "write layer 48 of 64 (75%), not the 9B's 26 of 32 (81%, which was set by that backbone's memory cliff): 48 is the Bonsai constitution bridge's write layer and the window results/bonsai/precheck.json checked; with the recomputed backward the 16 layers above it do not set the memory",
+  "--checkpoint-from -1: the layers from the write layer up are recomputed in the backward pass, not taped (the 9B taped them)",
+  "--init-seed 0 on the first chunk, so the initialization can be reproduced (the 9B's was unseeded)",
+  "--save-every 100: the checkpoint is also written inside a 500-step chunk, so a crash costs at most 100 steps; checked to change nothing (eval/stage2_train_selftest.py)",
+  "--eval-n 8, not 16: a rollout re-runs the whole 64-layer stack for every token; these rollouts select nothing",
+  "the per-chunk rollouts are scored on the Metal scan (the deployment numerics), as the trainer now does; the 9B campaign scored them on the ops scan"
+ ],
+ "stops_decided_in_advance": {
+  "precheck": "results/bonsai/precheck_physics.py must pass (questions tokenized as on the 9B, negatives in place, the two copies of the physics model equal, the staged stream equal to the stock model on physics questions)",
+  "memory": "a two-step smoke on the longest negative batch (513 tokens, batch 2) must peak at or under 50 GB (swap-backed peaks up to there trained the constitution bridge); otherwise the chain stops for a person",
+  "time": "phase A, coupled and selective-gate steps together must project to at most 96 hours from the timing smokes; otherwise the chain stops for a person",
+  "pointer": "after phase A (step 2,000) the exact-bin accuracy of the x0 pointer, averaged over the last four log records, must be at least 0.5 (the 9B ended at 0.91, Gemma at 0.69, the 8B at 0.53); otherwise the chain stops for a person before the coupled phase",
+  "non_finite": "a non-finite loss in the last log record of a chunk stops the chain"
+ },
+ "evaluations": {
+  "held_out": "eval/mlx_stage2_eval.py --n 60 --arms baseline,oracle,psilm --max-new 768 on the Metal scan (the first 60 held-out questions; correct = within 0.05 of the solver), and the psilm arm again with --ops-path",
+  "guard_rail": "eval/bench_guardrail.py --n 100 --datasets physics,mmlu,gsm8k,boolq --arms base,psilm,zeroed with the 9B's task cache (results/bench/tasks_qwen35_n100.json: the same prompts, which Bonsai's tokenizer renders to the same ids) and its flags (results/bench/guardrail_qwen35.sh)"
+ },
+ "criteria": {
+  "A_answers": "held-out accuracy of the coupled model at least 0.90, and at least 0.50 above the backbone alone under its own answer protocol (n = 60)",
+  "B_answers_in_the_decoder_the_app_runs": "guard-rail physics accuracy of the psilm arm at least 0.90 (n = 100)",
+  "C_no_harm": "on each of GSM8K, MMLU and BoolQ (n = 100 each): accuracy of the psilm arm no more than 0.03 below the base arm, and, where it is below, an exact two-sided McNemar p of at least 0.05 on the paired items",
+  "D_selective_gate": "mean gate of the psilm arm at least 0.5 on the physics questions with at least 0.9 of them open (gate mean over 0.1), and at most 0.05 on each of GSM8K, MMLU and BoolQ with at most 0.05 of their items open"
+ },
+ "verdicts": {
+  "works": "A, B, C and D hold",
+  "answers_but_is_not_selective": "A and B hold; C or D does not",
+  "does_not": "A or B does not hold"
+ },
+ "what_follows": {
+  "works": "the bridge is named in the chat app's Bonsai stack (the Physics bridge switch becomes live), and its numbers go into the app's README",
+  "answers_but_is_not_selective": "reported as such; whether the app gets it is a person's decision",
+  "does_not": "reported as such; the switch stays off on Bonsai"
+ },
+ "not_measured_by_this_run": [
+  "the leak (the leaky arm) on this bridge",
+  "the physics bridge beside the constitution bridge's stored tokens on Bonsai, beyond a functional check in the app",
+  "replicates: one run, one seed"
+ ],
+ "computed_by": "results/bonsai/physics_verdict.py -> results/bonsai/physics_verdict.json",
+ "added_after_the_runs": []
+}

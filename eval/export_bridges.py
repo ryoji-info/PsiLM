@@ -164,7 +164,10 @@ def main():
 
     steps_total = int(meta["step"])
     warmup = int(a.get("readout_only", 0))
-    per_chunk = int(a.get("steps", 500))
+    # a no-harm chunk's length: the spacing of the kept no-harm checkpoints (the last invocation's
+    # --steps is a partial chunk when a run was resumed from a mid-chunk save)
+    nh = sorted(int(re.search(r"step(\d+)", p.name).group(1)) for p in run.glob("bridges_step*_noharm.npz"))
+    per_chunk = (nh[-1] - nh[0]) // (len(nh) - 1) if len(nh) > 1 else int(a.get("steps", 500))
     noharm_steps = n_noharm * per_chunk
     coupled_steps = (last_coupled or steps_total - noharm_steps) - warmup
     cfg = {

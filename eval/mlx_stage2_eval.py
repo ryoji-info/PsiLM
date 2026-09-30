@@ -139,7 +139,9 @@ def main():
     # PsiLMMLX would fall back to the Stage-2 fraction, which is wrong for any
     # backbone that injected elsewhere (Qwen3.5 trained at 26/32, the rule says 20)
     l_rev = args.l_rev if args.l_rev is not None else meta.get("l_rev")
-    psi = PsiLMMLX(model, tok, fno, bridges, l_rev=l_rev)
+    # the read layer too: a checkpoint trained with --l-fwd (Bonsai reads at 26 of 64,
+    # the rule says 27) must be scored at the layer its readout was calibrated on
+    psi = PsiLMMLX(model, tok, fno, bridges, l_fwd=meta.get("l_fwd"), l_rev=l_rev)
     scan_path = "kernel"
     if args.ops_path:
         if not hasattr(model, "set_grad_window"):

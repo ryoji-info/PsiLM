@@ -1,0 +1,51 @@
+{
+ "created": "2026-09-30T17:32:16+0900",
+ "read": 26,
+ "write": 48,
+ "model_checked": false,
+ "qa": {
+  "train": {
+   "n": 16384,
+   "x0_span_not_found": 0,
+   "same_ids_and_labels_as_9b": 16384,
+   "same_x0_span_as_9b": 16384,
+   "tokens_min": 122,
+   "tokens_max": 126,
+   "ok": true
+  },
+  "val": {
+   "n": 512,
+   "x0_span_not_found": 0,
+   "same_ids_and_labels_as_9b": 512,
+   "same_x0_span_as_9b": 512,
+   "tokens_min": 123,
+   "tokens_max": 126,
+   "ok": true
+  },
+  "ok": true
+ },
+ "noharm": {
+  "n": 1194,
+  "layout": true,
+  "longest_tokens": 513,
+  "checked_by_precheck_json": true,
+  "precheck_json_not_older": true,
+  "ok": true
+ },
+ "infra": {
+  "precheck_json_ok": true,
+  "covers_write_layer": true,
+  "write": 48,
+  "recomputed_peak_gb": [
+   1.37,
+   1.38
+  ],
+  "ok": true
+ },
+ "fno": {
+  "max_abs_difference": 0.0,
+  "fields": 8,
+  "ok": true
+ },
+ "ok": true
+}

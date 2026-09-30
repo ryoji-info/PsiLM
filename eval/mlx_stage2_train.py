@@ -102,6 +102,15 @@ def main():
     ap.add_argument("--tag", required=True)
     ap.add_argument("--gate-bias", type=float, default=-2.0)
     ap.add_argument("--l-rev", type=int, default=None)
+    ap.add_argument("--l-fwd", type=int, default=None,
+                    help="the layer the forward bridge reads at (default: the Stage-2 rule, "
+                         "round(n*10/24)); a checkpoint read at another layer is refused")
+    ap.add_argument("--save-every", type=int, default=0,
+                    help="also write the checkpoint (bridges, optimizer, meta) every N global steps "
+                         "inside an invocation, so a crash costs at most N steps; 0: at the end only")
+    ap.add_argument("--init-seed", type=int, default=None,
+                    help="seed MLX's generator before the bridges are built, so a fresh run's "
+                         "initialization can be reproduced (default: unseeded, as every earlier run)")
     ap.add_argument("--lam-x0", type=float, default=0.3)
     ap.add_argument("--detach-x0", action="store_true",
                     help="stop_gradient on the pointer fed to the reverse bridge")
@@ -150,6 +159,8 @@ def main():
 
     hf_tok = AutoTokenizer.from_pretrained(args.hf_tokenizer)
     fno = convert_from_torch("results/stage2/fno.pt")
+    if args.init_seed is not None:
+        mx.random.seed(args.init_seed)
     bridges = PsiBridgesMLX(d_model=model.args.hidden_size, gate_bias=args.gate_bias,
                             inj_cap=args.inj_cap, channel=args.channel,
                             readout_norm=args.readout_norm)
@@ -187,8 +198,12 @@ def main():
             if k in prev and prev[k] != getattr(args, k):
                 print(f"[WARN] --{k.replace('_', '-')}={getattr(args, k)} differs from the checkpoint's {prev[k]}")
 
-    psi = PsiLMMLX(model, tok, fno, bridges, l_rev=args.l_rev, lam_x0=args.lam_x0)
+    psi = PsiLMMLX(model, tok, fno, bridges, l_fwd=args.l_fwd, l_rev=args.l_rev, lam_x0=args.lam_x0)
     psi.detach_x0 = args.detach_x0
+    if ckpt.exists() and not args.fresh and meta.get("l_fwd") is not None and meta["l_fwd"] != psi.l_fwd:
+        # a readout (and its calibration) belongs to the layer it was trained at
+        raise SystemExit(f"the checkpoint reads at layer {meta['l_fwd']}, this invocation at {psi.l_fwd}: "
+                         f"pass --l-fwd {meta['l_fwd']}")
 
     if getattr(model, "needs_train_mode_for_grad", False):
         # This backbone's SSM scan is a Metal kernel with no VJP, so the layers
@@ -236,6 +251,18 @@ def main():
 
     loss_and_grad = nn.value_and_grad(bridges, wrapped)
 
+    def save():
+        # written beside, then renamed: a crash mid-write leaves the previous checkpoint whole
+        tb, to, tm = ckpt.with_name("bridges.tmp.npz"), ckpt.with_name("opt.tmp.npz"), Path(str(ckpt) + ".meta.tmp")
+        bridges.save_weights(str(tb))
+        mx.savez(str(to), **dict(tree_flatten(opt.state)))
+        tm.write_text(json.dumps({
+            "step": global_step, "model": args.model, "l_rev": psi.l_rev, "l_fwd": psi.l_fwd,
+            "args": vars(args)}))
+        tb.replace(ckpt)
+        to.replace(opt_path)
+        tm.replace(Path(str(ckpt) + ".meta"))
+
     t0 = time.time()
     run = {"B": {}, "N": {}}          # running sums per phase between log points
     def _acc(phase, **kv):
@@ -269,7 +296,10 @@ def main():
             _acc("B", loss_ans=aux[0].item(), gate_ans=aux[7].item(), inj_ratio=aux[8].item())
         elif ph == "N":
             _acc("N", ce=aux[0].item(), gate_ans=aux[7].item(), gate_all=aux[5].item(), inj_ratio=aux[8].item())
-        if global_step % 25 == 0:
+        if args.save_every and global_step % args.save_every == 0 and i < args.steps - 1:
+            save()                  # the meta last: a crash between the files leaves the older step
+            print(f"SAVED step={global_step}", flush=True)
+        if global_step % 25 == 0 or i == args.steps - 1:
             rec = {"step": global_step,
                    "loss_ans": round(aux[0].item(), 4),
                    "loss_param": round(aux[1].item(), 5),
@@ -310,11 +340,7 @@ def main():
         acc, mae = rollout_eval(psi, builder, val_items, n=args.eval_n)
         if getattr(model, "needs_train_mode_for_grad", False):
             model.set_grad_window(psi.l_rev)
-    bridges.save_weights(str(ckpt))
-    mx.savez(str(opt_path), **dict(tree_flatten(opt.state)))
-    Path(str(ckpt) + ".meta").write_text(json.dumps({
-        "step": global_step, "model": args.model, "l_rev": psi.l_rev, "l_fwd": psi.l_fwd,
-        "args": vars(args)}))
+    save()
     with log.open("a") as f:
         f.write(json.dumps({"step": global_step, "eval_acc": acc, "eval_mae": mae}) + "\n")
     # MLX allocates through Metal, which ps does not account for: this is the
