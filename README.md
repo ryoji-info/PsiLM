@@ -287,9 +287,10 @@ a correlate from the prompt, and the channel is decoration. Two controls answer
 that, and the second one is decisive.
 
 **Zero the injection** and run everything else — readout, FNO, value tokens,
-gate — and the physics result disappears (0% for Qwen3-8B, 10% for Gemma and 10%
-for Qwen3.5, which is what the reply template alone recovers). So the injection
-is load-bearing.
+gate — and the physics result disappears (0% for Qwen3-8B; 10% for Gemma and for
+Qwen3.5, whose zeroed replies all give 0.5, a number the question contains, which
+lies within ±0.05 of the answer on 10 of the 100). So the injection is
+load-bearing.
 
 **Corrupt only the number.** Feed the value encoder another question's answer,
 at matched magnitude, leaving the prompt, the readout, the gate, reply length

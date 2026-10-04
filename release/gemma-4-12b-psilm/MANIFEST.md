@@ -11,7 +11,7 @@ against the hub on 2026-10-04. Not uploaded: `__pycache__/`, `.DS_Store`.
 
 | path in the HF repo | source in the GitHub checkout | bytes | sha256 |
 |---|---|---:|---|
-| `README.md` | `release/gemma-4-12b-psilm/README.md` (the model card) | 21,355 | `806a562876fd39de1b882e39600e17117575ac5c873960a3173089d8b0e0e044` |
+| `README.md` | `release/gemma-4-12b-psilm/README.md` (the model card) | 21,655 | `e9026608c382a2adcf90e7e9fadbf134ae42918efcd288bbf8426def704b627e` |
 | `bridges/gemma-4-12b-4bit-mlx-1d-value-selective/bridges.safetensors` | `results/stage2_gemma12b/bridges.npz`, step 7000, learned-pointer tensors dropped | 102,068,660 | `f6ef8946c41b3cfa17df7c22bcab2c5cffbd856c2dd608970a364cc14d5e8f7d` |
 | `bridges/gemma-4-12b-4bit-mlx-1d-value-selective/config.json` | `release/gemma-4-12b-psilm/bridges/gemma-4-12b-4bit-mlx-1d-value-selective/config.json` (= `results/hf_export/bridges/…/config.json`) | 1,750 | `e61fed462dfd0d8c369b4e21dda9b0c6eead6bff94f5d505428401ba5512a34d` |
 | `bridges/gemma-4-12b-4bit-mlx-2d-dpot/bridges.safetensors` | `results/stage2d_gemma12b_2d/bridges.npz` through `eval/export_bridges.py` | 55,302,128 | `dadf52b9227964ec7db04a1fc6a9c076b6b54faa674b7862f99dccb22889a20b` |
@@ -19,24 +19,17 @@ against the hub on 2026-10-04. Not uploaded: `__pycache__/`, `.DS_Store`.
 | `bridges/gemma-4-12b-4bit-mlx-multimode/bridges.safetensors` | `results/stage2b_gemma12b_2b/bridges.npz` through `eval/export_bridges.py` | 102,071,633 | `300829f886f14755f567e142a1994735b73e252daca23657fad9c6403e6a2ca5` |
 | `bridges/gemma-4-12b-4bit-mlx-multimode/config.json` | `release/gemma-4-12b-psilm/bridges/gemma-4-12b-4bit-mlx-multimode/config.json` | 1,375 | `7cde6410055575896ffe86a80e9ab04368891d3019359825715b62b1cebb0a20` |
 | `physics/fno_burgers_singlemode.safetensors` | `results/hf_export/physics/fno_burgers_singlemode.safetensors` (= `results/stage2/fno.pt`) | 552,076 | `7bb0076c85cdcf2505a9079c05964e3eb77ac4a776eccf34216953f3c37bfcdd` |
+| `physics/fno_burgers_multimode.safetensors` | `results/hf_export/physics/fno_burgers_multimode.safetensors` (= `results/stage2b/fno.pt`; also in ryoji-info/PsiLM-physics) | 552,076 | `8cebd7a82d0f5da13ae1cfb74848d74d43b98b98cd09767655f6c4ac069f879b` |
+| `physics/dpot_tiny_fisher2d_finetuned.safetensors` | `results/hf_export/physics/dpot_tiny_fisher2d_finetuned.safetensors` (= `results/stage2d/dpot_ft.pt`; also in ryoji-info/PsiLM-physics) | 30,144,524 | `88472c199fed489c05ac5ceaf9113c607dd28d95e45385f62e52fac6494b15d8` |
 | `psilm-banner.png` | `assets/psilm-banner.png` | 1,352,073 | `4cd65f32fe4aab5b49b66681a841b0128628e8d94c75494ae84f941b49c48089` |
 | `psilm_infer.py` | `release/gemma-4-12b-psilm/psilm_infer.py` | 42,690 | `e3a04bf1e3cd70e554f910ec3fbb5efbdd8a6fdc5f28a19f4d23b773344f0329` |
 | `requirements.txt` | `release/gemma-4-12b-psilm/requirements.txt` | 1,004 | `ea0eefebfd4f3af5714c61d49ebf54528f627beb46c71e996dde26a9702510e5` |
 
 ### Not in this repository
 
-The multi-mode and 2D tasks' physics models are in
-[ryoji-info/PsiLM-physics](https://huggingface.co/ryoji-info/PsiLM-physics), not here:
-
-| file in ryoji-info/PsiLM-physics | bytes | sha256 |
-|---|---:|---|
-| `fno_burgers_multimode.safetensors` | 552,076 | `8cebd7a82d0f5da13ae1cfb74848d74d43b98b98cd09767655f6c4ac069f879b` |
-| `dpot_tiny_fisher2d_finetuned.safetensors` | 30,144,524 | `88472c199fed489c05ac5ceaf9113c607dd28d95e45385f62e52fac6494b15d8` |
-
-`psilm_infer.py --task multimode` and `--task 2d` look for them under `physics/` beside the
-script, or wherever `--physics` points. The 2D task's upstream DPOT-Tiny base checkpoint
-(`physics/model_Ti.pth`) is not here either: the script downloads it from `hzk17/DPOT` when
-the file is absent.
+The 2D task's upstream DPOT-Tiny base checkpoint (`physics/model_Ti.pth`, from
+[hzk17/DPOT](https://huggingface.co/hzk17/DPOT), Apache-2.0): `psilm_infer.py --task 2d` downloads it
+when the file is absent, and `--dpot-base` names another copy.
 
 ## How the multi-mode and 2D bridges were packaged (2026-09-06 to 2026-09-08)
 

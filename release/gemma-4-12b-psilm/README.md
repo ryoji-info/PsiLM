@@ -208,6 +208,8 @@ MANIFEST.md
     bridges.safetensors     the trained bridges (25.5M params, fp32, 97 MB)
     config.json             construction, coupling depths, training record, per-chunk held-out scores
 physics/fno_burgers_singlemode.safetensors   the frozen FNO (torch key names; complex spectral weights as .real/.imag)
+physics/fno_burgers_multimode.safetensors    the frozen FNO of the multi-mode task (the same architecture)
+physics/dpot_tiny_fisher2d_finetuned.safetensors   DPOT-Tiny fine-tuned for 2D Fisher–KPP (torch; the upstream base checkpoint model_Ti.pth is downloaded from hzk17/DPOT at the first 2D run)
 psilm-banner.png        banner
 README.md               this card
 ```

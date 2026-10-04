@@ -116,8 +116,8 @@ The PyTorch directories (`qwen2.5-0.5b-*`, `qwen3-1.7b-1d`) hold `bridges.safete
 
 Two controls, and the second is decisive. **Zeroing the injection** while running
 everything else — readout, FNO, value tokens, gate — removes the physics result
-(0% for Qwen3-8B, 10% for Gemma, which is what the reply template alone
-recovers). **Corrupting only the number** — feeding the value encoder another
+(0% for Qwen3-8B; 10% for Gemma, whose zeroed replies all give 0.5, a number the
+question contains, which lies within ±0.05 of the answer on 10 of the 100). **Corrupting only the number** — feeding the value encoder another
 question's answer at matched magnitude, with prompt, readout, gate, reply length
 and parsing untouched — makes the frozen model report the corruption: the spoken
 answer lands within ±0.05 of the *injected* value on **99 of 100** held-out

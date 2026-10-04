@@ -527,8 +527,9 @@ and 13.5 s), GSM8K@384 83 / 83 / 83% — item-identical across the three arms
 (two items gained, none lost, p = 0.5, from a parse rate of 0.86 against 0.82;
 gate 0.014), BoolQ 90 / 89 / 90% (one item lost, p = 1; gate 0.008). The
 bench's parity check on its KV-cached prefill passes at 5.8e-4 relative,
-argmax unchanged. The zeroed arm's 10% on physics is the reply-template floor,
-the same as Gemma's.
+argmax unchanged. The zeroed arm's 10% on physics is not physics: it answers
+0.5, a number the question contains, on all 100 items, and 10 of the answers lie
+within ±0.05 of 0.5, the same 10 as Gemma's.
 
 ## Guard-rail: does the coupled model still do everything else?
 
