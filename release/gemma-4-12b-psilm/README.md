@@ -146,7 +146,7 @@ Guard-rail: does the coupled model still do everything else? 100 questions per d
 | GSM8K, no `Answer:` line in the prompt | 83% | **83%** | 83% | 0.002 | 0% |
 | MMLU, 5 subjects, 256 tokens | 53% | **55%** | 53% | 0.008 | 0% |
 
-On MMLU the two arms agree at 79.1% / 79.1% on the 67 items both answer within the budget; the raw 53 vs 55 is parse noise. The gate selectivity comes from a **no-harm training arm**: 1,046 non-physics items from 1,004 questions (681 from GSM8K's training split and 323 from MMLU's validation split; 19 of the GSM8K questions appear with and without the `Answer:` nudge and 23 of the MMLU questions twice unchanged, so 1,023 distinct prompts) paired with the first 32 tokens of Gemma's own greedy continuations, on which only the gate receives gradients, under a mean-gate penalty (`config.json` → `training`). The 10% of the zeroed arm on physics is what the reply template alone recovers; the coupled 97% is against that floor.
+On MMLU the two arms agree at 79.1% / 79.1% on the 67 items both answer within the budget; the raw 53 vs 55 is parse noise. The gate selectivity comes from a **no-harm training arm**: 1,046 non-physics items from 1,004 questions (681 from GSM8K's training split and 323 from MMLU's validation split; 19 of the GSM8K questions appear with and without the `Answer:` nudge and 23 of the MMLU questions twice unchanged, so 1,023 distinct prompts) paired with the first 32 tokens of Gemma's own greedy continuations, on which only the gate receives gradients, under a mean-gate penalty (`config.json` → `training`). The zeroed arm's 10% on physics is not physics: every zeroed reply runs to the 32-token cap and gives 0.5, a number the question contains, which lies within ±0.05 of the answer on 10 of the 100 items; the coupled 97% is against that floor.
 
 Training: 7,000 steps at batch 4 on one Apple M2 (24 GB) — 2,000 readout-only warm-up steps, 3,500 coupled steps (lr 3e-4; the coupled phase ran on to step 6,000 but the no-harm phase resumed from the step-5,500 checkpoint), then 1,500 no-harm steps at lr 1e-4 (`results/gemma12b/noharm_recipe.sh`); 12 s per step at a 13 GB peak. One backbone-specific adjustment, measured rather than tuned: Gemma's massive-activation dimensions are nearly constant across prompts, so the readout standardizes each hidden dimension with statistics from a 32-prompt calibration pass (`readout_norm: "dim"`; the two frozen vectors `fwd.dim_mu`, `fwd.dim_sigma` are in the checkpoint).
 
@@ -168,8 +168,8 @@ The prompt runs through Gemma's first 20 layers. The **forward bridge** reads th
 
 Two controls, and the second is decisive. **Zeroing the injection** while running
 everything else — readout, FNO, value tokens, gate — removes the physics result
-(0% for Qwen3-8B, 10% for Gemma, which is what the reply template alone
-recovers). **Corrupting only the number** — feeding the value encoder another
+(0% for Qwen3-8B; 10% for Gemma, whose zeroed replies all give 0.5, a number the
+question contains, which lies within ±0.05 of the answer on 10 of the 100). **Corrupting only the number** — feeding the value encoder another
 question's answer at matched magnitude, with prompt, readout, gate, reply length
 and parsing untouched — makes the frozen model report the corruption: the spoken
 answer lands within ±0.05 of the *injected* value on **99 of 100** held-out

@@ -29,7 +29,7 @@
   "no_harm_resumed_from": 5500,
   "batch": 4,
   "lr": "3e-4 (warm-up, coupled), 1e-4 (no-harm phase, from the step-5500 checkpoint)",
-  "no_harm_arm": "1046 non-physics prompts (GSM8K train, MMLU validation; with/without the Answer nudge) paired with the backbone's own greedy continuation; gate-only updates + mean-gate penalty",
+  "no_harm_arm": "1,046 non-physics items from 1,004 questions (681 GSM8K train, 323 MMLU validation; 19 GSM8K questions with and without the Answer nudge, 23 MMLU questions twice unchanged; 1,023 distinct prompts) paired with the first 32 tokens of the backbone's own greedy continuations; gradients to the gate only (AdamW still steps every parameter) + mean-gate penalty",
   "note": "phase lengths sum to 7,500 against a 7,000 step counter: the no-harm phase resumed from the step-5,500 checkpoint, so 500 coupled steps were replayed"
  },
  "held_out_n48_per_chunk": {

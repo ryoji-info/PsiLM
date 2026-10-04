@@ -1,45 +1,44 @@
 # MANIFEST — Hugging Face repo `ryoji-info/Gemma-4-12B-PsiLM`
 
-Everything in this directory (`release/gemma-4-12b-psilm/`) is uploaded as-is to the
-model repo; nothing outside it is needed. The backbone (`mlx-community/gemma-4-12B-it-4bit`)
-is **not** uploaded — the script downloads it at first run.
+The files of the model repo, where each came from in the GitHub checkout, and how the
+release was packaged. The backbone (`mlx-community/gemma-4-12B-it-4bit`) is **not**
+uploaded — the script downloads it at first run.
 
-## Files to upload (and where each one came from)
+## Files
 
-| path in the HF repo | source in the GitHub checkout | size | sha256 |
+Every file in the repository but this one, its size in bytes and its sha256, checked
+against the hub on 2026-10-04. Not uploaded: `__pycache__/`, `.DS_Store`.
+
+| path in the HF repo | source in the GitHub checkout | bytes | sha256 |
 |---|---|---:|---|
-| `README.md` | written for this release (the HF model card, YAML front matter) | 17 KB | — |
-| `psilm_infer.py` | written for this release | 42 KB | — |
-| `requirements.txt` | written for this release | 1 KB | — |
-| `MANIFEST.md` | this file (harmless to upload; drop it if you prefer) | — | — |
-| `psilm-banner.png` | `assets/psilm-banner.png` (1600 px wide) | 1.35 MB | `4cd65f32fe4aab5b49b66681a841b0128628e8d94c75494ae84f941b49c48089` |
-| `bridges/gemma-4-12b-4bit-mlx-1d-value-selective/bridges.safetensors` | `results/hf_export/bridges/gemma-4-12b-4bit-mlx-1d-value-selective/bridges.safetensors` (= `results/stage2_gemma12b/bridges.npz`, step 7000, learned-pointer tensors dropped) | 102,068,660 B | `f6ef8946c41b3cfa17df7c22bcab2c5cffbd856c2dd608970a364cc14d5e8f7d` |
-| `bridges/gemma-4-12b-4bit-mlx-1d-value-selective/config.json` | `results/hf_export/bridges/gemma-4-12b-4bit-mlx-1d-value-selective/config.json` | 1,287 B | `8a5add382beb65a0214f5e8b0b640e5d5df6f19e9a6caf1945400d2fe1e6bba5` |
-| `physics/fno_burgers_singlemode.safetensors` | `results/hf_export/physics/fno_burgers_singlemode.safetensors` (= `results/stage2/fno.pt`; loaders verified identical, max weight and field difference 0.0) | 552,076 B | `7bb0076c85cdcf2505a9079c05964e3eb77ac4a776eccf34216953f3c37bfcdd` |
+| `README.md` | `release/gemma-4-12b-psilm/README.md` (the model card) | 21,355 | `806a562876fd39de1b882e39600e17117575ac5c873960a3173089d8b0e0e044` |
+| `bridges/gemma-4-12b-4bit-mlx-1d-value-selective/bridges.safetensors` | `results/stage2_gemma12b/bridges.npz`, step 7000, learned-pointer tensors dropped | 102,068,660 | `f6ef8946c41b3cfa17df7c22bcab2c5cffbd856c2dd608970a364cc14d5e8f7d` |
+| `bridges/gemma-4-12b-4bit-mlx-1d-value-selective/config.json` | `release/gemma-4-12b-psilm/bridges/gemma-4-12b-4bit-mlx-1d-value-selective/config.json` (= `results/hf_export/bridges/…/config.json`) | 1,750 | `e61fed462dfd0d8c369b4e21dda9b0c6eead6bff94f5d505428401ba5512a34d` |
+| `bridges/gemma-4-12b-4bit-mlx-2d-dpot/bridges.safetensors` | `results/stage2d_gemma12b_2d/bridges.npz` through `eval/export_bridges.py` | 55,302,128 | `dadf52b9227964ec7db04a1fc6a9c076b6b54faa674b7862f99dccb22889a20b` |
+| `bridges/gemma-4-12b-4bit-mlx-2d-dpot/config.json` | `release/gemma-4-12b-psilm/bridges/gemma-4-12b-4bit-mlx-2d-dpot/config.json` | 1,404 | `07f8ec34e81561315fd398311744d33e34e603b8ffd918aab4f127d53e03e427` |
+| `bridges/gemma-4-12b-4bit-mlx-multimode/bridges.safetensors` | `results/stage2b_gemma12b_2b/bridges.npz` through `eval/export_bridges.py` | 102,071,633 | `300829f886f14755f567e142a1994735b73e252daca23657fad9c6403e6a2ca5` |
+| `bridges/gemma-4-12b-4bit-mlx-multimode/config.json` | `release/gemma-4-12b-psilm/bridges/gemma-4-12b-4bit-mlx-multimode/config.json` | 1,375 | `7cde6410055575896ffe86a80e9ab04368891d3019359825715b62b1cebb0a20` |
+| `physics/fno_burgers_singlemode.safetensors` | `results/hf_export/physics/fno_burgers_singlemode.safetensors` (= `results/stage2/fno.pt`) | 552,076 | `7bb0076c85cdcf2505a9079c05964e3eb77ac4a776eccf34216953f3c37bfcdd` |
+| `psilm-banner.png` | `assets/psilm-banner.png` | 1,352,073 | `4cd65f32fe4aab5b49b66681a841b0128628e8d94c75494ae84f941b49c48089` |
+| `psilm_infer.py` | `release/gemma-4-12b-psilm/psilm_infer.py` | 42,690 | `e3a04bf1e3cd70e554f910ec3fbb5efbdd8a6fdc5f28a19f4d23b773344f0329` |
+| `requirements.txt` | `release/gemma-4-12b-psilm/requirements.txt` | 1,004 | `ea0eefebfd4f3af5714c61d49ebf54528f627beb46c71e996dde26a9702510e5` |
 
-The copies were made with `cp` on 2026-09-06 and the hashes match the sources
-(`shasum -a 256`). Not uploaded: `__pycache__/`, `.DS_Store`.
+### Not in this repository
 
-### To add later (the two runs in progress)
+The multi-mode and 2D tasks' physics models are in
+[ryoji-info/PsiLM-physics](https://huggingface.co/ryoji-info/PsiLM-physics), not here:
 
-`psilm_infer.py` has the `--task {1d,multimode,2d}` switch (2026-09-06; the 1D path is
-unchanged: on the 0.5B the previous script and this one print the same numbers and text,
-`--question-only` byte-for-byte, full runs differing only in the timings). When the Gemma
-multi-mode and 2D runs finish, export them and add:
+| file in ryoji-info/PsiLM-physics | bytes | sha256 |
+|---|---:|---|
+| `fno_burgers_multimode.safetensors` | 552,076 | `8cebd7a82d0f5da13ae1cfb74848d74d43b98b98cd09767655f6c4ac069f879b` |
+| `dpot_tiny_fisher2d_finetuned.safetensors` | 30,144,524 | `88472c199fed489c05ac5ceaf9113c607dd28d95e45385f62e52fac6494b15d8` |
 
-| path in the HF repo | source in the GitHub checkout | size | sha256 |
-|---|---|---:|---|
-| `bridges/gemma-4-12b-4bit-mlx-multimode/bridges.safetensors` | the stage-2b Gemma checkpoint `results/stage2b_gemma12b_2b/bridges.npz` (see the export recipe below) | — | — |
-| `bridges/gemma-4-12b-4bit-mlx-multimode/config.json` | written from `results/stage2b_gemma12b_2b/bridges.npz.meta` in the schema below | — | — |
-| `physics/fno_burgers_multimode.safetensors` | `results/hf_export/physics/fno_burgers_multimode.safetensors` (= `results/stage2b/fno.pt`; loads with `load_fno_safetensors`, verified against the torch FNO1d to 4e-7 in the smoke below) | 552,076 B | `8cebd7a82d0f5da13ae1cfb74848d74d43b98b98cd09767655f6c4ac069f879b` |
-| `bridges/gemma-4-12b-4bit-mlx-2d-dpot/bridges.safetensors` | the stage-2d Gemma checkpoint `results/stage2d_gemma12b_2d/bridges.npz` (tag as in `eval/mlx_stage2d_train.py`'s docstring) | — | — |
-| `bridges/gemma-4-12b-4bit-mlx-2d-dpot/config.json` | written from its `bridges.npz.meta` in the schema below | — | — |
-| `physics/dpot_tiny_fisher2d_finetuned.safetensors` | `results/hf_export/physics/dpot_tiny_fisher2d_finetuned.safetensors` (= `results/stage2d/dpot_ft.pt`, bare DPOT-Tiny state-dict keys; verified identical to the .pt in the smoke below) | 30,144,524 B | `88472c199fed489c05ac5ceaf9113c607dd28d95e45385f62e52fac6494b15d8` |
-| `physics/model_Ti.pth` | `results/stage2d/model_Ti.pth` -- the upstream DPOT-Tiny base checkpoint (hzk17/DPOT, Apache-2.0). **Ship it, or rely on the download:** `psilm_infer.py --task 2d` looks for it at `--dpot-base` (default `physics/model_Ti.pth`) and, when absent, downloads `model_Ti.pth` from the Hugging Face repo `hzk17/DPOT` (the repo `psilm/physics/dpot_wrapper.py` names; the file is listed there, download verified 2026-09-06) into the HF cache. `DPOTPhysics` loads the base first and the fine-tuned safetensors then replaces every one of its 67 tensors (`strict=True`), so the base only satisfies the wrapper's constructor. | 90,475,962 B | `074c337f9b3a3c70253f8022ce6be7e7dfb809a91a7b00e46fbfedf9611d767f` |
+`psilm_infer.py --task multimode` and `--task 2d` look for them under `physics/` beside the
+script, or wherever `--physics` points. The 2D task's upstream DPOT-Tiny base checkpoint
+(`physics/model_Ti.pth`) is not here either: the script downloads it from `hzk17/DPOT` when
+the file is absent.
 
-Then fill the two *in progress* rows of `README.md` ("Bridges in this repository") from their
-`final_eval.json`, and add `einops>=0.8` to `requirements.txt` (the vendored DPOT definition
-imports it; only the 2D task needs it).
+## How the multi-mode and 2D bridges were packaged (2026-09-06 to 2026-09-08)
 
 **The 2D task needs a clone.** `psilm/physics/dpot_wrapper.py` imports `dpot_model` from
 `<repo>/vendor/`, which the pip package (`[tool.setuptools.packages.find] include = ["psilm*"]`)
@@ -48,7 +47,7 @@ points at a clone (even with the package installed) and exits with a message nam
 otherwise; the README's usage section says so. Packaging `vendor/dpot_model.py` inside `psilm`
 would lift the requirement.
 
-#### `config.json` schema (multimode and 2d)
+### `config.json` schema (multimode and 2d)
 
 `psilm_infer.py` requires every key below for `--task multimode` / `--task 2d` and exits naming
 the missing one (e.g. `config.json: missing key(s) ['coupling.l_rev', 'physics']`). The 1D
@@ -88,7 +87,7 @@ retired learned pointer `fwd.x0_query`, `fwd.x0_key.*`, as the 1D export did; th
 have no such tensors). `fwd.dim_mu` / `fwd.dim_sigma` (the `readout_norm: "dim"` calibration)
 are ordinary tensors of the checkpoint and must be included.
 
-#### Export recipe (maintainer, from the checkout root)
+### Export recipe (maintainer, from the checkout root)
 
 ```bash
 python eval/export_bridges.py --run results/stage2b_gemma12b_2b \
@@ -107,7 +106,7 @@ falls back to; the file itself is copied from `results/hf_export/physics/`.
 Then `python psilm_infer.py --task multimode` / `--task 2d` from `release/gemma-4-12b-psilm`
 must print the three sections with a `PsiLM match` verdict on the defaults before upload.
 
-#### Smoke record (2026-09-06, mechanics only)
+### Smoke record (2026-09-06, mechanics only)
 
 Run with randomly initialised bridges of the right shapes for `mlx-community/Qwen2.5-0.5B-Instruct-4bit`
 (d_model 896, 24 layers, coupling 10/15), built with the trainers' own constructors
