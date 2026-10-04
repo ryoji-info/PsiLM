@@ -1,0 +1,2324 @@
+{
+ "summary": {
+  "n": 60,
+  "step": 11500,
+  "model": "/Users/rxiii/Documents/huggingface/hub/models--prism-ml--Ternary-Bonsai-2-27B-mlx-2bit/snapshots/3f926b415992eaa2ae9dd7b573706494d6bbf787",
+  "tolerance": 0.05,
+  "couple": [
+   26,
+   48,
+   64
+  ],
+  "scan_path": "kernel",
+  "protocol": {
+   "max_new": 768,
+   "force_answer": true,
+   "shots": 0,
+   "thinking": false
+  },
+  "baseline": {
+   "acc": 0.0333,
+   "mae": 0.5939,
+   "answer_line_rate": 1.0,
+   "forced_rate": 1.0
+  },
+  "oracle": {
+   "acc": 0.8,
+   "mae": 0.077,
+   "answer_line_rate": 1.0,
+   "forced_rate": 0.9833
+  },
+  "psilm": {
+   "acc": 1.0,
+   "mae": 0.0143,
+   "answer_line_rate": 0.0,
+   "forced_rate": 0.0
+  },
+  "zero": {
+   "acc": 0.0167,
+   "mae": 0.308
+  }
+ },
+ "rows": [
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.86,
+    "u": -0.095
+   },
+   "text": {
+    "baseline": "re, $z = -\\alpha$ and the angle is $kx + \\phi$. Note that $I_n(-\\alpha) = (-1)^n I_n(\\alpha)$.\nSo,\n$$ \\theta(x,0) = I_0(\\alpha) + 2 \\sum_{n=1}^\\infty (-1)^n I_n(\\alpha) \\cos(n(kx + \\phi))\n\nAnswer:1.28",
+    "oracle": "ue**:\n    $$ u(0.86, 0.5) = 0.8626 \\cdot (-0.3705) \\approx -0.3196 $$\n\nRounding to 2 decimal places, we get $-0.32$.\n\nThe \"trusted solver\" report of $-0.10$ appears to be incorrect based\n\nAnswer:-0.32",
+    "psilm": "u at x = 0.86 equals -0.10.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.28,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.32,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.1,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.57,
+    "u": -0.5394
+   },
+   "text": {
+    "baseline": "condition $u(x,0) = A \\sin(kx)$, the solution is:\n$$ u(x,t) = \\frac{A k e^{-\\nu k^2 t} \\sin(kx - k^2 \\nu t)}{1 + \\frac{A k}{2} e^{-\\nu k^2 t} \\cos(kx - k^2 \\nu t)} \\times \\frac{1}{\\sqrt{1\n\nAnswer:0.00",
+    "oracle": "or the \"trusted solver\" implies a specific numerical integration result. Let's look at the parameters again.\n$k = 2\\pi \\approx 6.28$.\n$\\nu k^2 = 0.02 \\times (2\\pi)^2 \\approx 0.02 \\times \n\nAnswer:-0.54",
+    "psilm": "u at x = 0.57 equals -0.53.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.53,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.49,
+    "u": -0.5634
+   },
+   "text": {
+    "baseline": " initial condition:\n$$ \\int_0^x u_0(s) ds = \\int_0^x 1.28 \\sin(2\\pi s + 0.5) ds $$\n$$ = 1.28 \\left[ -\\frac{\\cos(2\\pi s + 0.5)}{2\\pi} \\right]_0^x $$\n$$ = \\frac{1.28}{2\\pi} \\left( \\cos(0.5)\n\nAnswer:0.00",
+    "oracle": "57876) = -\\sin(0.43717) $$\n    $$ \\sin(0.43717) \\approx 0.4233 $$\n    So, $\\sin(3.57876) \\approx -0.4233$.\n\n5.  **Final Value**:\n    $$ u(0.49, 0.5) = 0.8625 \\cdot (-0.4233) \\approx -0.3\n\nAnswer:-0.36",
+    "psilm": "u at x = 0.49 equals -0.57.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.36,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.57,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.13,
+    "u": 0.3283
+   },
+   "text": {
+    "baseline": " coefficients $c_n$ are given by:\n$$ c_n = \\frac{1}{2\\pi} \\int_0^{2\\pi} e^{-\\alpha \\cos(\\theta + 0.5)} e^{-i n \\theta} d\\theta $$\nUsing the identity for the Fourier series of $e^{z \\cos \\\n\nAnswer:1.28",
+    "oracle": "z) + 2 \\sum_{n=1}^\\infty I_n(z) \\cos(n\\theta)$.\nHere we have $\\sin(2\\pi x + 0.5) = \\cos(2\\pi x + 0.5 - \\pi/2) = \\cos(2\\pi x - 0.0708)$.\nLet $\\theta = 2\\pi x + 0.5$. Then $w(x,0) = e^{32 \\\n\nAnswer:0.33",
+    "psilm": "u at x = 0.13 equals 0.35.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.28,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.33,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.35,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.79,
+    "u": -0.2048
+   },
+   "text": {
+    "baseline": "A}{k} \\cos(\\phi) \\right) \\exp\\left( -\\frac{A}{k} \\cos(kx + \\phi) \\right)$.\nLet $C = \\exp\\left( \\frac{A}{k} \\cos(\\phi) \\right)$. Then $\\psi(x,0) = C \\exp\\left( -\\frac{A}{k} \\cos(kx + \\phi)\n\nAnswer:0.00",
+    "oracle": "he \"trusted solver\" report of $-0.20$ appears to be incorrect based on the standard analytical solution for this linearized (single-mode) Burgers problem. The non-linear term $u \\partial\n\nAnswer:-0.63",
+    "psilm": "u at x = 0.79 equals -0.21.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.63,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.21,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.31,
+    "u": 0.581
+   },
+   "text": {
+    "baseline": "compute the integral of the initial condition:\n$$ \\int_0^x 1.28 \\sin(2\\pi y + 0.5) dy = \\frac{1.28}{2\\pi} \\left[ -\\cos(2\\pi y + 0.5) \\right]_0^x $$\n$$ = \\frac{1.28}{2\\pi} \\left( \\cos(0.5)\n\nAnswer:1.28",
+    "oracle": "\nWith phase $\\phi = 0.5$, the coefficients will involve complex exponentials or shifted Bessel functions.\nLet's use the property that the heat equation acts on each Fourier mode $e^{i n k\n\nAnswer:0.58",
+    "psilm": "u at x = 0.31 equals 0.57.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.28,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.58,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.57,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.79,
+    "u": -0.2048
+   },
+   "text": {
+    "baseline": "A}{k} \\cos(\\phi) \\right) \\exp\\left( -\\frac{A}{k} \\cos(kx + \\phi) \\right)$.\nLet $C = \\exp\\left( \\frac{A}{k} \\cos(\\phi) \\right)$. Then $\\psi(x,0) = C \\exp\\left( -\\frac{A}{k} \\cos(kx + \\phi)\n\nAnswer:0.00",
+    "oracle": "he \"trusted solver\" report of $-0.20$ appears to be incorrect based on the standard analytical solution for this linearized (single-mode) Burgers problem. The non-linear term $u \\partial\n\nAnswer:-0.63",
+    "psilm": "u at x = 0.79 equals -0.21.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.63,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.21,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.28,
+    "phi": 0.5,
+    "x0": 0.84,
+    "u": -0.1264
+   },
+   "text": {
+    "baseline": " expansion or simply expanding the exponential:\n$$ e^{a \\cos \\theta} = I_0(a) + 2 \\sum_{n=1}^{\\infty} I_n(a) \\cos(n\\theta) $$\nwhere $I_n$ are modified Bessel functions of the first kind.\n\n\nAnswer:1.28",
+    "oracle": "ecimal places, we get $-0.42$.\n\nThe \"trusted solver\" report of $-0.13$ appears to be incorrect based on the standard analytical solution for this linearized (single-mode) Burgers problem\n\nAnswer:-0.42",
+    "psilm": "u at x = 0.84 equals -0.11.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.28,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.42,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.11,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.19,
+    "u": 0.2206
+   },
+   "text": {
+    "baseline": " is difficult to evaluate in closed form for general $A$. However, if the amplitude $A$ is small, we can expand the exponential term:\n$e^{\\frac{A}{2\\nu k} \\cos(ky)} \\approx 1 + \\frac{A}{2\n\nAnswer:0.58",
+    "oracle": "phase shift term $\\theta = kx + \\phi - k^2 \\nu t$:\n$kx = 2\\pi(0.19) \\approx 6.283185 \\times 0.19 \\approx 1.193805$\n$\\phi = 6.24$\n$k^2 \\nu t = 0.394784$\n$\\theta = 1.193805 + 6.24 - 0.39478\n\nAnswer:0.22",
+    "psilm": "u at x = 0.19 equals 0.22.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.58,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.22,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.22,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.26,
+    "u": 0.297
+   },
+   "text": {
+    "baseline": "on (sum of Gaussians).\nHowever, there is a known closed-form solution for the Burgers equation with a single sinusoidal initial condition.\nLet $\\alpha = \\frac{A k}{2\\nu}$.\nThe solution is\n\nAnswer:0.58",
+    "oracle": "$\nwhere $\\theta(t)$ is a phase shift? No, that's for the inviscid case or specific transformations.\n\nLet's use the known result for the Burgers equation with sinusoidal initial data:\n$$ u\n\nAnswer:0.30",
+    "psilm": "u at x = 0.26 equals 0.30.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.58,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.3,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.3,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.57,
+    "u": -0.2894
+   },
+   "text": {
+    "baseline": "tegration of the PDE.\nGiven the parameters:\n$A = 0.6$\n$k = 2\\pi \\approx 6.283$\n$\\nu = 0.02$\n$t = 0.5$\n$x = 0.57$\n\nLet's estimate the magnitude of the non-linear term vs the viscous term.\n\n\nAnswer:0.00",
+    "oracle": " provided report is the output of that simulation.\n\nLet's double-check if there's a trick. Is it possible the question implies we should calculate it ourselves?\nIf we assume the solution\n\nAnswer:-0.29",
+    "psilm": "u at x = 0.57 equals -0.32.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.29,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.32,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.7,
+    "u": -0.3461
+   },
+   "text": {
+    "baseline": "c{A k e^{-\\nu k^2 t}}{1 + \\frac{A k}{2} e^{-\\nu k^2 t} \\sin(kx + \\nu k^2 t)} $$\nWait, this formula is for the case where the initial condition is small? No, it's the exact solution.\nLet's\n\nAnswer:0.00",
+    "oracle": "ntly larger than the diffusive term initially. This suggests the solution will deviate from a simple linear decay.\n\nHowever, often in these types of \"trick\" or specific numerical problem\n\nAnswer:-0.35",
+    "psilm": "u at x = 0.7 equals -0.34.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.35,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.34,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.25,
+    "u": 0.2867
+   },
+   "text": {
+    "baseline": "c_n e^{i n k x} e^{-\\nu (n k)^2 t} $$\nwhere $c_n$ are the Fourier coefficients of the initial $\\theta$.\nFor $\\theta(x,0) = e^{-\\alpha \\cos(kx + \\phi)}$, the Fourier coefficients are:\n$c_0\n\nAnswer:0.58",
+    "oracle": "0.6738$.\nPhase shift: The phase of the initial condition is $\\phi_0 = 6.24$.\nThe argument at $t=0$ is $2\\pi x + 6.24$.\nAt $x=0.25$, $2\\pi(0.25) = \\pi/2 \\approx 1.5708$.\nInitial phase at $\n\nAnswer:0.29",
+    "psilm": "u at x = 0.25 equals 0.30.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.58,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.29,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.3,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.87,
+    "u": -0.1666
+   },
+   "text": {
+    "baseline": "the convolution of the initial condition with the heat kernel.\nHowever, for a single Fourier mode, the solution can be written explicitly.\nThe heat equation solution for $\\psi(x,t)$ given\n\nAnswer:0.58",
+    "oracle": " + \\phi)$, then $\\psi(x,0) = \\exp\\left( \\int_0^x u(y,0) dy \\right) = \\exp\\left( -\\frac{A}{k} \\cos(kx + \\phi) \\right)$.\nThe solution $\\psi(x,t)$ is the heat kernel convolution of $\\psi(x,\n\nAnswer:-0.17",
+    "psilm": "u at x = 0.87 equals -0.17.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.58,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.17,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.17,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.98,
+    "u": -0.0331
+   },
+   "text": {
+    "baseline": "pprox 0.6738$.\n$u_{linear}(x,t) = 0.6 \\times 0.6738 \\sin(2\\pi x + 6.24)$.\nAt $x=0.98$:\n$2\\pi(0.98) + 6.24 = 1.96\\pi + 6.24$.\n$1.96\\pi \\approx 6.1575$.\nPhase $\\theta = 6.1575 + 6.24 = 12.3\n\nAnswer:0.00",
+    "oracle": "we assume the solution remains primarily the fundamental mode (which is a good approximation for small amplitudes or short times, though here $A=0.6$ is moderate), the value would be:\n$$\n\nAnswer:-0.03",
+    "psilm": "u at x = 0.98 equals -0.03.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": true
+   },
+   "oracle": {
+    "pred": -0.03,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.03,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": true
+   }
+  },
+  {
+   "item": {
+    "a": 0.6,
+    "phi": 6.24,
+    "x0": 0.22,
+    "u": 0.2544
+   },
+   "text": {
+    "baseline": "ral is difficult to evaluate analytically for general parameters. However, if the amplitude $A$ is small, we can expand the exponential term:\n$\\exp\\left(\\frac{A}{2\\nu k} \\cos(ky)\\right) \\\n\nAnswer:0.58",
+    "oracle": " \\int_0^x u(y,0) dy \\right) = \\exp\\left( -\\frac{A}{k} \\cos(kx) \\right)$.\nUsing the heat kernel $G(x,t) = \\frac{1}{\\sqrt{4\\pi \\nu t}} e^{-\\frac{x^2}{4\\nu t}}$,\n$$ \\psi(x,t) = \\int_{-\\infty\n\nAnswer:0.25",
+    "psilm": "u at x = 0.22 equals 0.29.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.58,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.25,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.29,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.02,
+    "u": 0.1445
+   },
+   "text": {
+    "baseline": "nlinearity.\n\nLet's try a simpler approach: The solution to the Burgers equation can be written as:\n$$ u(x,t) = -\\nu \\frac{\\partial}{\\partial x} \\ln \\left( \\sum_{n=-\\infty}^{\\infty} \\hat{u\n\nAnswer:1.13",
+    "oracle": "approx 0.762 \\times 0.561 \\approx 0.427$.\n\nThis value ($0.43$) is significantly different from the reported $0.14$. This suggests that the non-linear term has a significant effect, or the\n\nAnswer:0.14",
+    "psilm": "u at x = 0.02 equals 0.15.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.13,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.14,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.15,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.2,
+    "u": 0.4147
+   },
+   "text": {
+    "baseline": "rac{\\partial}{\\partial x} \\ln \\psi(x,0) = -\\frac{u(x,0)}{2\\nu} $$\n$$ \\ln \\psi(x,0) = -\\int \\frac{u(x,0)}{2\\nu} dx + C $$\n$$ \\psi(x,0) = C \\exp\\left( -\\frac{1}{2\\nu} \\int u(x,0) dx \\right)\n\nAnswer:0.98",
+    "oracle": "$\nwhere $\\psi = 2\\pi x + 0.47$.\nThis integral is related to the modified Bessel function of the first kind, $I_n(z)$.\nRecall the expansion:\n$$ e^{z \\cos \\theta} = I_0(z) + 2 \\sum_{n=1}^{\\\n\nAnswer:0.41",
+    "psilm": "u at x = 0.2 equals 0.43.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.98,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.41,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.43,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.96,
+    "u": 0.0531
+   },
+   "text": {
+    "baseline": "n related to $u$ is key.\n\nLet's stick to the standard Fourier series solution for Burgers' equation with a single mode.\nThe solution is:\n$$ u(x,t) = \\frac{\\partial}{\\partial x} \\ln \\left(\n\nAnswer:0.00",
+    "oracle": "e parameters.\n$A = 1.13$\n$k = 2\\pi \\approx 6.283$\n$\\nu = 0.02$\n$t = 0.5$\n\nCalculate the parameter $\\beta = \\frac{A k t}{2\\nu}$:\n$\\beta = \\frac{1.13 \\cdot 2\\pi \\cdot 0.5}{2 \\cdot 0.02} = \\\n\nAnswer:0.05",
+    "psilm": "u at x = 0.96 equals 0.05.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.05,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.05,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.5,
+    "u": -0.5408
+   },
+   "text": {
+    "baseline": "ac{\\partial}{\\partial x} \\ln \\theta(x,0) = -\\frac{1}{\\nu} u(x,0) = -\\frac{1}{\\nu} A \\sin(kx + \\phi)$.\nIntegrating with respect to $x$:\n$\\ln \\theta(x,0) = \\frac{A}{\\nu k} \\cos(kx + \\phi) +\n\nAnswer:0.00",
+    "oracle": "} = I_0(z) + 2 \\sum_{m=1}^{\\infty} I_m(z) \\cos(m\\theta)$ (if we expand in cosines, but sine is odd, so we need the full complex expansion or just note that $e^{i z \\sin \\theta}$ involves\n\nAnswer:-0.54",
+    "psilm": "u at x = 0.5 equals -0.53.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.53,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.18,
+    "u": 0.3853
+   },
+   "text": {
+    "baseline": "ac{\\sum_{n=-\\infty}^{\\infty} e^{i n k x} e^{-\\nu n^2 k^2 t} e^{-i n \\frac{A k}{2} t}}{\\sum_{n=-\\infty}^{\\infty} e^{i n k x} e^{-\\nu n^2 k^2 t}} $$\nLet's verify this. The Burgers' equation\n\nAnswer:0.00",
+    "oracle": "= \\exp\\left(\\int_0^x u(s,0) ds\\right)$.\nGiven $u(x,0) = A \\sin(kx + \\phi)$,\n$$ \\int_0^x A \\sin(ks + \\phi) ds = -\\frac{A}{k} [\\cos(kx + \\phi) - \\cos(\\phi)] $$\nSo, $\\theta(x,0) = \\exp\\left(\n\nAnswer:0.39",
+    "psilm": "u at x = 0.18 equals 0.37.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.39,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.37,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.67,
+    "u": -0.3858
+   },
+   "text": {
+    "baseline": "s + \\phi) ds = -\\frac{A}{k} [\\cos(kx + \\phi) - \\cos(\\phi)] $$\nSo, $\\psi(x,0) = \\exp\\left( -\\frac{A}{k} \\cos(kx + \\phi) + C \\right)$.\nWe can absorb the constant $C$ into the normalization.\n\nAnswer:0.00",
+    "oracle": "gle-mode) Burgers problem. The non-linear term $u \\partial_x u$ does not generate new Fourier modes if the initial condition is a single sine wave, so the analytical form holds exactly.\n\nAnswer: -0.76",
+    "psilm": "u at x = 0.67 equals -0.39.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": false
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.76,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.39,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.16,
+    "u": 0.3556
+   },
+   "text": {
+    "baseline": " has no corresponding term on the RHS (which only has $\\sin(\\theta)$ and $\\cos(\\theta)$).\nTherefore, for the solution to remain a single sine wave, the coefficient of $\\sin(2\\theta)$ must\n\nAnswer:0.00",
+    "oracle": "\\nu = 0.02$\n$t = 0.5$\n$x = 0.16$\n\nFirst, calculate the decay factor and the phase shift term.\n$\\alpha = \\nu k^2 t = 0.02 \\cdot (2\\pi)^2 \\cdot 0.5 = 0.01 \\cdot 4\\pi^2 = 0.04 \\pi^2 \\approx \n\nAnswer:0.36",
+    "psilm": "u at x = 0.16 equals 0.37.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.36,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.37,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.13,
+    "phi": 0.47,
+    "x0": 0.88,
+    "u": -0.0689
+   },
+   "text": {
+    "baseline": "n related to $u$ is key.\n\nLet's stick to the standard Fourier series solution for Burgers' equation with a single mode.\nThe solution is:\n$$ u(x,t) = \\frac{\\partial}{\\partial x} \\ln \\left(\n\nAnswer:0.00",
+    "oracle": "0.7615 \\cdot (-0.2804) \\approx -0.2135 $$\n\nLet's double check the calculation with higher precision.\n$k = 2\\pi$\n$\\nu = 0.02$\n$t = 0.5$\nExponent $E = -\\nu k^2 t = -0.02 \\cdot 4\\pi^2 \\cdot\n\nAnswer:-0.21",
+    "psilm": "u at x = 0.88 equals -0.09.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.21,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.09,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.46,
+    "u": 0.5351
+   },
+   "text": {
+    "baseline": "kx)$ is:\n$$ u(x,t) = \\frac{A k e^{-\\nu k^2 t} \\cos(kx)}{1 + \\frac{A k}{2\\nu} e^{-\\nu k^2 t} \\sin(kx)} $$\nWait, the standard result for $u(x,0) = A \\sin(kx)$ is:\n$$ u(x,t) = \\frac{A k e^{-\n\nAnswer:0.00",
+    "oracle": "}{\\sqrt{1+\\alpha^2}} \\sin\\left( kx + \\phi + \\arctan(\\alpha) \\right) $$\nWait, the phase shift is usually $\\arctan(\\alpha)$? Let's check the derivation.\nThe solution to $u_t + u u_x = \\nu u\n\nAnswer:0.54",
+    "psilm": "u at x = 0.46 equals 0.52.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.52,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.69,
+    "u": -0.5371
+   },
+   "text": {
+    "baseline": " we can set $C'=1$ for simplicity (the constant factor cancels out in the derivative for $u$).\nSo, $\\psi(x,0) = \\exp\\left( \\frac{A}{2\\nu k} \\cos(kx + \\phi) \\right)$.\n\nWe need to evolve $\\\n\nAnswer:0.00",
+    "oracle": ".4248 = 0.7106$. This is in the 1st quadrant of the cycle starting at $3\\pi$. Wait, $\\sin(x)$ has period $2\\pi$.\n    $10.1354 / (2\\pi) \\approx 1.61$.\n    $10.1354 - 2\\pi \\approx 3.8526$.\n\nAnswer:-0.54",
+    "psilm": "u at x = 0.69 equals -0.53.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.53,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.74,
+    "u": -0.4896
+   },
+   "text": {
+    "baseline": "kx)$ is:\n$$ u(x,t) = \\frac{A k e^{-\\nu k^2 t} \\cos(kx)}{1 + \\frac{A k}{2\\nu} e^{-\\nu k^2 t} \\sin(kx)} $$\nWait, the standard result for $u(x,0) = A \\sin(kx)$ is:\n$$ u(x,t) = \\frac{A k e^{-\n\nAnswer:0.00",
+    "oracle": "i \\cdot 0.74 = 1.48\\pi$\n    $\\phi = 5.8$\n    $\\theta = 1.48\\pi + 5.8$\n    $\\sin(1.48\\pi + 5.8) = \\sin(1.48\\pi)\\cos(5.8) + \\cos(1.48\\pi)\\sin(5.8)$\n    \n    $1.48\\pi \\approx 4.6496$\n    $\\\n\nAnswer:-0.49",
+    "psilm": "u at x = 0.74 equals -0.47.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.49,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.47,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.13,
+    "u": 0.0794
+   },
+   "text": {
+    "baseline": "kx)$ is:\n$$ u(x,t) = \\frac{A k e^{-\\nu k^2 t} \\cos(kx)}{1 + \\frac{A k}{2\\nu} e^{-\\nu k^2 t} \\sin(kx)} $$\nWait, the standard result for $u(x,0) = A \\sin(kx)$ is:\n$$ u(x,t) = \\frac{A k e^{-\n\nAnswer:0.00",
+    "oracle": "^2 \\nu t}\\right)^2 (1 - \\cos(kx))^2 + \\dots}} $$\nThis is getting complicated. Let's look at the standard result.\nFor $u(x,0) = A \\sin(kx)$, the solution is:\n$$ u(x,t) = \\frac{A k \\nu \\sin\n\nAnswer:0.08",
+    "psilm": "u at x = 0.13 equals 0.09.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.08,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.09,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.65,
+    "u": -0.5165
+   },
+   "text": {
+    "baseline": "e is $kx + \\phi + \\nu k^2 t$.\nLet's calculate the parameters:\n$A = 1.05$\n$k = 2\\pi \\approx 6.283185$\n$\\phi = 5.8$\n$\\nu = 0.02$\n$t = 0.5$\n$x = 0.65$\n\nFirst, calculate the decay factor $D =\n\nAnswer:0.00",
+    "oracle": "i \\approx 3.14159$, so $3.60089 - \\pi \\approx 0.4593$. $\\sin(\\pi + 0.4593) = -\\sin(0.4593) \\approx -0.4425$.)\n\n5.  **Final Value**:\n    $$ u(0.65, 0.5) = 0.7076 \\cdot (-0.4425) \\approx -\n\nAnswer:-0.52",
+    "psilm": "u at x = 0.65 equals -0.53.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.52,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.53,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.46,
+    "u": 0.5351
+   },
+   "text": {
+    "baseline": "kx)$ is:\n$$ u(x,t) = \\frac{A k e^{-\\nu k^2 t} \\cos(kx)}{1 + \\frac{A k}{2\\nu} e^{-\\nu k^2 t} \\sin(kx)} $$\nWait, the standard result for $u(x,0) = A \\sin(kx)$ is:\n$$ u(x,t) = \\frac{A k e^{-\n\nAnswer:0.00",
+    "oracle": "}{\\sqrt{1+\\alpha^2}} \\sin\\left( kx + \\phi + \\arctan(\\alpha) \\right) $$\nWait, the phase shift is usually $\\arctan(\\alpha)$? Let's check the derivation.\nThe solution to $u_t + u u_x = \\nu u\n\nAnswer:0.54",
+    "psilm": "u at x = 0.46 equals 0.52.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.52,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.74,
+    "u": -0.4896
+   },
+   "text": {
+    "baseline": "kx)$ is:\n$$ u(x,t) = \\frac{A k e^{-\\nu k^2 t} \\cos(kx)}{1 + \\frac{A k}{2\\nu} e^{-\\nu k^2 t} \\sin(kx)} $$\nWait, the standard result for $u(x,0) = A \\sin(kx)$ is:\n$$ u(x,t) = \\frac{A k e^{-\n\nAnswer:0.00",
+    "oracle": "i \\cdot 0.74 = 1.48\\pi$\n    $\\phi = 5.8$\n    $\\theta = 1.48\\pi + 5.8$\n    $\\sin(1.48\\pi + 5.8) = \\sin(1.48\\pi)\\cos(5.8) + \\cos(1.48\\pi)\\sin(5.8)$\n    \n    $1.48\\pi \\approx 4.6496$\n    $\\\n\nAnswer:-0.49",
+    "psilm": "u at x = 0.74 equals -0.47.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.49,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.47,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.05,
+    "phi": 5.8,
+    "x0": 0.24,
+    "u": 0.243
+   },
+   "text": {
+    "baseline": "nitial condition $\\psi(x,0) = \\exp\\left( \\int_0^x u(y,0) dy \\right)$ is not simply a single exponential.\nHowever, for $u(x,0) = A \\sin(kx)$, we can write $u(x,0) = \\frac{A k}{2i} (e^{ikx}\n\nAnswer:0.00",
+    "oracle": "\\nu k^2 t} \\sin(kx)))}{1 + e^{-2\\nu k^2 t} \\cos(kx - \\tan^{-1}(e^{-2\\nu k^2 t} \\sin(kx)))} $$\nWait, the standard result is:\n$$ u(x,t) = \\frac{A k e^{-\\nu k^2 t} \\cos(kx + \\phi - \\delta)}{\n\nAnswer:0.24",
+    "psilm": "u at x = 0.24 equals 0.25.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.24,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.25,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.23,
+    "u": 0.0889
+   },
+   "text": {
+    "baseline": "odic initial condition can be found using Fourier series.\nLet $\\theta = 2\\pi x + \\phi$. The term $\\exp(-B \\cos \\theta)$ with $B = A/(2\\pi)$ can be expanded in Fourier series:\n$$ \\exp(-B \\\n\nAnswer:0.58",
+    "oracle": "tion is non-linear, so the coefficients are not simply damped.\nThe exact solution for a single mode $u(x,0) = A \\sin(kx)$ is:\n$$ u(x,t) = \\frac{A e^{-\\nu k^2 t}}{\\cos(kx - \\frac{A k^2 \\nu\n\nAnswer:0.09",
+    "psilm": "u at x = 0.23 equals 0.09.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.58,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.09,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.09,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.79,
+    "u": -0.3786
+   },
+   "text": {
+    "baseline": "\\sum_{n=-\\infty}^{\\infty} I_n(z) e^{in\\theta} $$\nHere $\\theta = kx + \\phi$. So $e^{z \\sin(kx+\\phi)} = \\sum_{n=-\\infty}^{\\infty} I_n(z) e^{in(kx+\\phi)} = \\sum_{n=-\\infty}^{\\infty} I_n(z) e\n\nAnswer:0.00",
+    "oracle": "pi/2$.)\n\n5.  **Final Value**:\n    $$ u(0.79, 0.5) = 0.4111 \\cdot (-0.7285) \\approx -0.2996 $$\n\nRounding to 2 decimal places, we get $-0.30$.\n\nLet's double check the calculation.\n$\\nu = 0\n\nAnswer:-0.30",
+    "psilm": "u at x = 0.79 equals -0.38.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.3,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.38,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.27,
+    "u": 0.1378
+   },
+   "text": {
+    "baseline": "odic initial condition can be found using Fourier series.\nLet $\\theta = 2\\pi x + \\phi$. The term $\\exp(-B \\cos \\theta)$ with $B = A/(2\\pi)$ can be expanded in Fourier series:\n$$ \\exp(-B \\\n\nAnswer:0.58",
+    "oracle": "tion is non-linear, so the coefficients are not simply damped.\nThe exact solution for a single mode $u(x,0) = A \\sin(kx)$ is:\n$$ u(x,t) = \\frac{A e^{-\\nu k^2 t}}{\\cos(kx - \\frac{A k^2 \\nu\n\nAnswer:0.14",
+    "psilm": "u at x = 0.27 equals 0.15.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.58,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.14,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.15,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.5,
+    "u": 0.3722
+   },
+   "text": {
+    "baseline": "\n$t = 0.5$\nExponent: $-\\nu k^2 t = -0.02 \\cdot (2\\pi)^2 \\cdot 0.5 = -0.01 \\cdot 4\\pi^2 = -0.04 \\pi^2$.\n$\\pi^2 \\approx 9.8696$\nExponent $\\approx -0.04 \\cdot 9.8696 = -0.39478$\n$e^{-0.39478\n\nAnswer:0.39",
+    "oracle": ".283$\n$k^2 \\approx 39.478$\n$\\nu k^2 t = 0.02 \\times 39.478 \\times 0.5 = 0.39478$\n$e^{-0.39478} \\approx 0.6738$\n$u_{linear}(0.5, 0.5) = 0.61 \\times 0.6738 \\times \\sin(2\\pi(0.5) + 5.29)$\n$\\\n\nAnswer:0.37",
+    "psilm": "u at x = 0.5 equals 0.35.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.39,
+    "ok": true
+   },
+   "oracle": {
+    "pred": 0.37,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.35,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.04,
+    "u": -0.1452
+   },
+   "text": {
+    "baseline": "0) = C e^{-\\alpha \\cos(kx+\\phi)}$ where $\\alpha = A/k$.\nUsing the expansion of the heat kernel or the known result for the Burgers equation with sinusoidal initial data:\n$$ u(x,t) = \\frac\n\nAnswer:0.59",
+    "oracle": "e term.\nThe diffusion time scale for mode $k$ is $t_{diff} \\sim 1/(\\nu k^2)$.\n$\\nu k^2 = 0.02 \\cdot (2\\pi)^2 \\approx 0.02 \\cdot 39.48 \\approx 0.79$.\n$t_{diff} \\approx 1/0.79 \\approx 1.26\n\nAnswer:-0.15",
+    "psilm": "u at x = 0.04 equals -0.16.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.59,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.15,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.16,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.77,
+    "u": -0.3734
+   },
+   "text": {
+    "baseline": "$$ \\psi(x,0) = I_0(\\alpha) + 2 \\sum_{n=1}^\\infty I_n(\\alpha) \\cos(nkx + n\\phi - n\\pi/2) $$\n\nThe solution to the heat equation $\\frac{\\partial \\psi}{\\partial t} = \\nu \\frac{\\partial^2 \\psi\n\nAnswer:0.00",
+    "oracle": "pprox 4.71$. So it is indeed negative.)\n\n5.  **Final Value**:\n    $$ u(0.77, 0.5) = 0.4111 \\cdot (-0.6455) \\approx -0.2654 $$\n\nRounding to 2 decimal places, we get $-0.27$.\n\nThe \"trusted\n\nAnswer:-0.27",
+    "psilm": "u at x = 0.77 equals -0.38.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.27,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.38,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.45,
+    "u": 0.3371
+   },
+   "text": {
+    "baseline": "dy \\right)$.\n$u(y,0) = A \\sin(ky + \\phi)$.\n$\\int_0^x A \\sin(ky + \\phi) dy = -\\frac{A}{k} [\\cos(ky + \\phi)]_0^x = \\frac{A}{k} (\\cos(\\phi) - \\cos(kx + \\phi))$.\nSo, $\\theta(x,0) = \\exp\\left(\n\nAnswer:0.58",
+    "oracle": "} \\int u(x,0) dx = -\\frac{1}{\\nu} \\int A \\sin(kx+\\phi) dx = \\frac{A}{\\nu k} \\cos(kx+\\phi) + C$.\nSo $\\psi(x,0) = C' \\exp\\left( \\frac{A}{\\nu k} \\cos(kx+\\phi) \\right)$.\n\nThe solution $\\psi(x\n\nAnswer:0.34",
+    "psilm": "u at x = 0.45 equals 0.34.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.58,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.34,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.34,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.61,
+    "phi": 5.29,
+    "x0": 0.11,
+    "u": -0.0595
+   },
+   "text": {
+    "baseline": "odic initial condition can be found using Fourier series.\nLet $\\theta = 2\\pi x + \\phi$. The term $\\exp(-B \\cos \\theta)$ with $B = A/(2\\pi)$ can be expanded in Fourier series:\n$$ \\exp(-B \\\n\nAnswer:0.59",
+    "oracle": " 0.02 \\times (2\\pi)^2 \\times 0.5 = 0.01 \\times 4\\pi^2 \\approx 0.01 \\times 39.478 = 0.39478$$\n$$e^{-0.39478} \\approx 0.6738$$\n$$u_{linear}(0.11, 0.5) = 0.61 \\times 0.6738 \\times \\sin(2\\pi\n\nAnswer:-0.06",
+    "psilm": "u at x = 0.11 equals -0.04.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.59,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.06,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.04,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.17,
+    "u": -0.4436
+   },
+   "text": {
+    "baseline": "el, or equivalently, by expanding $\\theta(x,0)$ in a Fourier series.\nLet $\\theta(x,0) = \\sum_{n=-\\infty}^{\\infty} \\hat{\\theta}_n e^{i n k x}$.\nThen $\\theta(x,t) = \\sum_{n=-\\infty}^{\\infty\n\nAnswer:1.39",
+    "oracle": "02 \\times (2\\pi)^2 \\times 0.5$$\n$$(2\\pi)^2 = 4\\pi^2 \\approx 39.4784$$\n$$-\\nu k^2 t = -0.02 \\times 39.4784 \\times 0.5 = -0.01 \\times 39.4784 = -0.394784$$\n\nDecay factor:\n$$e^{-0.394784} \\\n\nAnswer:-0.44",
+    "psilm": "u at x = 0.17 equals -0.45.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.39,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.44,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.45,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.23,
+    "u": -0.3487
+   },
+   "text": {
+    "baseline": "el, or equivalently, by expanding $\\theta(x,0)$ in a Fourier series.\nLet $\\theta(x,0) = \\sum_{n=-\\infty}^{\\infty} \\hat{\\theta}_n e^{i n k x}$.\nThen $\\theta(x,t) = \\sum_{n=-\\infty}^{\\infty\n\nAnswer:1.39",
+    "oracle": "times 0.5 = 0.01 \\times 4\\pi^2 \\approx 0.01 \\times 39.478 = 0.39478$$\n$$e^{-0.39478} \\approx 0.6738$$\n$$u(0.23, 0.5) \\approx 1.41 \\times 0.6738 \\times \\sin(2\\pi(0.23) + 3.47)$$\nCalculate\n\nAnswer:-0.35",
+    "psilm": "u at x = 0.23 equals -0.37.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.39,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.35,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.37,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.79,
+    "u": 0.542
+   },
+   "text": {
+    "baseline": "ght approximate the solution. However, $t=0.5$ and $\\nu=0.02$ means the diffusion length scale is $\\sqrt{\\nu t} = \\sqrt{0.01} = 0.1$. The wavelength is $1/k = 1/(2\\pi) \\approx 0.159$. The\n\nAnswer:0.00",
+    "oracle": "pprox 0.02 \\cdot 1.41 \\cdot 39.5 \\approx 1.1$.\nThe nonlinear term is significantly larger than the viscous term initially. This suggests that the solution will develop steep gradients (sh\n\nAnswer:0.54",
+    "psilm": "u at x = 0.79 equals 0.58.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.54,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.58,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.21,
+    "u": -0.3804
+   },
+   "text": {
+    "baseline": "el, or equivalently, by expanding $\\theta(x,0)$ in a Fourier series.\nLet $\\theta(x,0) = \\sum_{n=-\\infty}^{\\infty} \\hat{\\theta}_n e^{i n k x}$.\nThen $\\theta(x,t) = \\sum_{n=-\\infty}^{\\infty\n\nAnswer:1.39",
+    "oracle": "  $t = 0.5$\n\nExponent:\n$$-\\nu k^2 t = -0.02 \\times (2\\pi)^2 \\times 0.5$$\n$$(2\\pi)^2 = 4\\pi^2 \\approx 39.4784$$\n$$-\\nu k^2 t = -0.02 \\times 39.4784 \\times 0.5 = -0.01 \\times 39.4784 = -0.\n\nAnswer:-0.38",
+    "psilm": "u at x = 0.21 equals -0.37.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.39,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.38,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.37,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.51,
+    "u": 0.1
+   },
+   "text": {
+    "baseline": " approximate the solution. However, $t=0.5$ and $\\nu=0.02$ means the diffusion length scale is $\\sqrt{\\nu t} = \\sqrt{0.01} = 0.1$. The wavelength is $\\lambda = 1/k = 1/(2\\pi) \\approx 0.15\n\nAnswer:0.00",
+    "oracle": "k^2 = (2\\pi)^2 \\approx 39.478$\n*   $\\nu k^2 t = 0.02 \\cdot 39.478 \\cdot 0.5 = 0.39478$\n*   Decay factor $e^{-0.39478} \\approx 0.6739$\n*   Amplitude at $t=0.5$: $A(t) = 1.41 \\cdot 0.6739 \\\n\nAnswer:0.10",
+    "psilm": "u at x = 0.51 equals 0.13.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.1,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.13,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.28,
+    "u": -0.269
+   },
+   "text": {
+    "baseline": "el, or equivalently, by expanding $\\theta(x,0)$ in a Fourier series.\nLet $\\theta(x,0) = \\sum_{n=-\\infty}^{\\infty} \\hat{\\theta}_n e^{i n k x}$.\nThen $\\theta(x,t) = \\sum_{n=-\\infty}^{\\infty\n\nAnswer:1.39",
+    "oracle": "ffusion only (ignoring non-linearity), $u(x,t) = A_0 e^{-\\nu k^2 t} \\sin(kx+\\phi)$.\n$\\nu k^2 t = 0.02 \\cdot (2\\pi)^2 \\cdot 0.5 = 0.02 \\cdot 39.478 \\cdot 0.5 \\approx 0.3948$.\n$e^{-0.3948}\n\nAnswer:-0.27",
+    "psilm": "u at x = 0.28 equals -0.26.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.39,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.27,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.26,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.24,
+    "u": -0.3328
+   },
+   "text": {
+    "baseline": "el, or equivalently, by expanding $\\theta(x,0)$ in a Fourier series.\nLet $\\theta(x,0) = \\sum_{n=-\\infty}^{\\infty} \\hat{\\theta}_n e^{i n k x}$.\nThen $\\theta(x,t) = \\sum_{n=-\\infty}^{\\infty\n\nAnswer:1.39",
+    "oracle": "4 \\times 9.8696 \\approx 0.39478$\nDecay factor $D = e^{-0.39478} \\approx 0.6739$\n\nCalculate the argument of the sine function:\n$$\\theta = kx + \\phi = 2\\pi(0.24) + 3.47$$\n$2\\pi(0.24) = 0.4\n\nAnswer:-0.33",
+    "psilm": "u at x = 0.24 equals -0.34.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.39,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.33,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.34,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.41,
+    "phi": 3.47,
+    "x0": 0.58,
+    "u": 0.2122
+   },
+   "text": {
+    "baseline": "\\phi) + C$.\nSo, $\\psi(x,0) = C' \\exp\\left( -\\frac{A}{2\\nu k} \\cos(kx + \\phi) \\right)$.\n\nLet $\\alpha = \\frac{A}{2\\nu k}$.\n$A = 1.41$, $\\nu = 0.02$, $k = 2\\pi$.\n$\\alpha = \\frac{1.41}{2(0.02\n\nAnswer:0.00",
+    "oracle": "^{-0.39478} \\approx 0.6739$$\n\nNow, calculate the argument of the sine function at $x=0.58$:\n$$\\theta = kx + \\phi = 2\\pi(0.58) + 3.47$$\n$$2\\pi(0.58) \\approx 3.6316$$\n$$\\theta \\approx 3.631\n\nAnswer:0.21",
+    "psilm": "u at x = 0.58 equals 0.21.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.21,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.21,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.98,
+    "u": -0.2024
+   },
+   "text": {
+    "baseline": "I_n(D) \\cos(n\\theta)$, where $I_n$ are modified Bessel functions of the first kind.\nHere $\\theta = 2\\pi x + 5.61$.\nSo, $\\theta(x,0) = e^C \\left[ I_0(D) + 2 \\sum_{n=1}^\\infty (-1)^n I_n(D)\n\nAnswer:0.00",
+    "oracle": "7989) \\approx -0.7168 $$\n\n5.  **Final Value**:\n    $$ u(0.98, 0.5) = 0.9165 \\cdot (-0.7168) \\approx -0.657 $$\n\nLet's double check the calculation with higher precision.\n$k = 2\\pi$\n$\\nu =\n\nAnswer:-0.66",
+    "psilm": "u at x = 0.98 equals -0.21.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.66,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.21,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.04,
+    "u": -0.107
+   },
+   "text": {
+    "baseline": "pha) + 2 \\sum_{n=1}^{\\infty} I_n(\\alpha) \\cos(n\\theta) $$\nSo,\n$$ \\psi(x,0) = C' \\left[ I_0(\\alpha) + 2 \\sum_{n=1}^{\\infty} I_n(\\alpha) \\cos(n(kx + \\phi)) \\right] $$\nNote: The expansion of\n\nAnswer:1.36",
+    "oracle": ".5 > t_{shock}$, a shock would have formed in the inviscid case. The viscosity $\\nu=0.02$ smooths this out.\n\nLet's use a numerical solver approach mentally or via standard approximations\n\nAnswer:-0.11",
+    "psilm": "u at x = 0.04 equals -0.10.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.36,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.11,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.1,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.52,
+    "u": 0.5978
+   },
+   "text": {
+    "baseline": "x} \\ln \\psi(x,t)$, where $\\psi$ satisfies the heat equation:\n$$ \\frac{\\partial \\psi}{\\partial t} = \\nu \\frac{\\partial^2 \\psi}{\\partial x^2} $$\nThe initial condition for $\\psi$ is $\\psi(x,\n\nAnswer:1.36",
+    "oracle": "^{z \\sin \\theta}$:\n$$ e^{z \\sin \\theta} = \\sum_{n=-\\infty}^{\\infty} i^n J_n(z) e^{i n \\theta} $$\nwhere $J_n(z)$ is the Bessel function of the first kind.\nHowever, we have a phase shift $\\\n\nAnswer:0.60",
+    "psilm": "u at x = 0.52 equals 0.58.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.36,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.6,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.58,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.76,
+    "u": -0.544
+   },
+   "text": {
+    "baseline": "\\left( \\sum_{n=-\\infty}^{\\infty} c_n e^{i n k x} e^{-\\nu n^2 k^2 t} \\right) $$\nwhere $c_n$ are the Fourier coefficients of the initial condition.\nFor $u(x,0) = A \\sin(kx + \\phi) = \\frac{A\n\nAnswer:0.00",
+    "oracle": "    $$ u(0.76, 0.5) = 0.9165 \\cdot 0.8193 \\approx 0.7509 $$\n\nWait, let me double check the calculation.\n$\\nu = 0.02$\n$k = 2\\pi$\n$t = 0.5$\nExponent: $-0.02 * (2\\pi)^2 * 0.5 = -0.01 * 4\\pi^\n\nAnswer:0.75",
+    "psilm": "u at x = 0.76 equals -0.59.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.75,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.59,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.56,
+    "u": 0.4944
+   },
+   "text": {
+    "baseline": "= A \\sin(kx + \\phi)$.\nThe solution is:\n$$ u(x,t) = A \\frac{\\sin(kx + \\phi + \\delta(t))}{\\sqrt{1 + \\frac{A^2 k^2 t}{2\\nu} \\sin^2(\\dots)}} $$\nWait, the exact solution for $u_t + u u_x = \\nu\n\nAnswer:0.00",
+    "oracle": "e. The nonlinearity is significant.\n\nLet's use the exact solution via the Cole-Hopf transform for the periodic domain.\nThe solution is:\n$$ u(x,t) = -2\\nu \\frac{\\partial}{\\partial x} \\ln \\\n\nAnswer:0.49",
+    "psilm": "u at x = 0.56 equals 0.45.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.49,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.45,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.85,
+    "u": -0.4077
+   },
+   "text": {
+    "baseline": ",0) = A \\sin(kx + \\phi)$ is given by:\n$$ u(x,t) = \\frac{A k e^{i(kx + \\phi - \\nu k^2 t)}}{1 + \\frac{A k}{2i} e^{i(kx + \\phi - \\nu k^2 t)} - \\frac{A k}{2i} e^{-i(kx + \\phi - \\nu k^2 t)}} \\\n\nAnswer:0.00",
+    "oracle": "recisely:\n    $kx = 2 \\cdot \\pi \\cdot 0.85 = 1.7 \\pi$\n    $\\phi = 5.61$\n    $\\theta = 1.7 \\pi + 5.61$\n    \n    Using a calculator:\n    $1.7 \\pi \\approx 5.3407075$\n    $\\theta \\approx 5.3\n\nAnswer:-0.41",
+    "psilm": "u at x = 0.85 equals -0.43.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.41,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.43,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.97,
+    "u": -0.2183
+   },
+   "text": {
+    "baseline": "I_n(D) \\cos(n\\theta)$, where $I_n$ are modified Bessel functions of the first kind.\nHere $\\theta = 2\\pi x + 5.61$.\nSo, $\\theta(x,0) = e^C \\left[ I_0(D) + 2 \\sum_{n=1}^\\infty (-1)^n I_n(D)\n\nAnswer:0.00",
+    "oracle": "approx -0.7593 $$\n\n5.  **Final Value**:\n    $$ u(0.97, 0.5) = 0.9165 \\cdot (-0.7593) \\approx -0.696 $$\n\nLet's double check the calculation with higher precision.\n$k = 2\\pi$\n$\\nu = 0.02$\n\n\nAnswer:-0.70",
+    "psilm": "u at x = 0.97 equals -0.21.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.7,
+    "ok": false
+   },
+   "psilm": {
+    "pred": -0.21,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 1.36,
+    "phi": 5.61,
+    "x0": 0.06,
+    "u": -0.0751
+   },
+   "text": {
+    "baseline": "C - D \\cos(2\\pi x + 5.61))$ in a Fourier series.\nUsing the identity $\\exp(z \\cos \\theta) = I_0(z) + 2 \\sum_{m=1}^\\infty I_m(z) \\cos(m\\theta)$, where $I_m$ are modified Bessel functions of\n\nAnswer:1.36",
+    "oracle": "approx 0.916$.\nThe phase would remain $\\phi = 5.61$ (linear diffusion doesn't shift phase for a single mode, it just decays amplitude).\n$u_{linear}(0.06, 0.5) = 0.916 \\sin(2\\pi(0.06) + 5\n\nAnswer:-0.08",
+    "psilm": "u at x = 0.06 equals -0.03.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 1.36,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.08,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.03,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.76,
+    "u": 0.0998
+   },
+   "text": {
+    "baseline": "ollection of delta functions (shock waves) in the limit of small viscosity, but here we have finite viscosity.\nHowever, we can use the Fourier series expansion of the initial exponential.\n\nAnswer:0.00",
+    "oracle": "ac{\\partial}{\\partial x} \\ln S(x,t) = -\\frac{\\nu k}{2} \\frac{S_x}{S}$.\nNote that $S_x = \\sum_{n=-\\infty}^{\\infty} i k n \\exp\\left( -\\nu k^2 t n^2 + i k n x + i \\phi n \\right)$.\nSo,\n$$ u(x\n\nAnswer:0.10",
+    "psilm": "u at x = 0.76 equals 0.12.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.1,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.12,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.05,
+    "u": 0.4776
+   },
+   "text": {
+    "baseline": "ondition for $\\psi$ is $\\psi(x,0) = \\exp\\left( -\\frac{1}{2\\nu} \\int_0^x u(y,0) dy \\right)$.\n\nLet's compute the integral of the initial condition:\n$$ \\int_0^x 0.88 \\sin(2\\pi y + 1.95) dy =\n\nAnswer:0.88",
+    "oracle": "\\right) $$\nFor small $t$ or specific parameters, the amplitude decays as $e^{-\\nu k^2 t}$ initially.\nLet's calculate the parameters:\n$A = 0.88$\n$k = 2\\pi \\approx 6.283185$\n$\\nu = 0.02$\n$t\n\nAnswer:0.48",
+    "psilm": "u at x = 0.05 equals 0.47.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.88,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.48,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.47,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.61,
+    "u": -0.1129
+   },
+   "text": {
+    "baseline": "fficients of $e^{z \\sin(\\theta + \\phi)}$ are $c_n = i^n J_n(z) e^{-i n \\phi}$?\nLet's check.\n$e^{z \\sin \\theta} = \\sum_{n=-\\infty}^{\\infty} i^n J_n(z) e^{i n \\theta}$.\nLet $\\theta = kx + \\\n\nAnswer:0.88",
+    "oracle": " for $\\psi$ is:\n$$ \\psi(x,t) = \\sum_{n=-\\infty}^{\\infty} c_n e^{i n k x} e^{-\\nu n^2 k^2 t} $$\nwhere $c_n$ are the Fourier coefficients of the initial $\\psi$.\nFor $\\psi(x,0) = e^{-\\alpha\n\nAnswer:-0.11",
+    "psilm": "u at x = 0.61 equals -0.10.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.88,
+    "ok": false
+   },
+   "oracle": {
+    "pred": -0.11,
+    "ok": true
+   },
+   "psilm": {
+    "pred": -0.1,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  },
+  {
+   "item": {
+    "a": 0.88,
+    "phi": 1.95,
+    "x0": 0.91,
+    "u": 0.3089
+   },
+   "text": {
+    "baseline": "ollection of delta functions (shock waves) in the limit of small viscosity, but here we have finite viscosity.\nHowever, we can use the Fourier series expansion of the initial exponential.\n\nAnswer:0.00",
+    "oracle": ", time-stepping, etc.) that generated the question. The question asks \"What is the value...?\" and then provides the solver's report. Usually, this implies the answer is the value reported\n\nAnswer:0.31",
+    "psilm": "u at x = 0.91 equals 0.35.<|im_end|>"
+   },
+   "has_answer_line": {
+    "baseline": true,
+    "oracle": true,
+    "psilm": false
+   },
+   "forced": {
+    "baseline": true,
+    "oracle": true
+   },
+   "baseline": {
+    "pred": 0.0,
+    "ok": false
+   },
+   "oracle": {
+    "pred": 0.31,
+    "ok": true
+   },
+   "psilm": {
+    "pred": 0.35,
+    "ok": true
+   },
+   "zero": {
+    "pred": 0.0,
+    "ok": false
+   }
+  }
+ ]
+}

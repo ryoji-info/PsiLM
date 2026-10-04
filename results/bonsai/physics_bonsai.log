@@ -1,0 +1,69 @@
+BONSAI-PHYSICS WAITING for the GPU 2026-09-30 18:06
+BONSAI-PHYSICS START (read 26, write 48 of 64) 2026-09-30 18:06
+SELF-TESTS OK 2026-09-30 18:07
+PRECHECK OK: qa 16384 512 fno 0.0 stream [1e-06, 1e-06, 1e-06, 1e-06] 2026-09-30 18:08
+TASK CACHE OK: 400 tasks restored from results/bench/tasks_qwen35_n100.json 2026-09-30 18:08
+SMOKE long: batch 2, write 48, longest negative batch: peak 24.8 GB 2026-09-30 18:13
+SMOKE times: warm-up 9.65 s/step (peak 9.3 GB), coupled 20.1 s/step (peak 12.9 GB), selective gate 21.7 s/step (peak 14.4 GB) -> about 62.4 h of training 2026-09-30 18:41
+BONSAI-PHYSICS ENDED rc=143 2026-09-30 18:49
+PAUSED at the user's request during the first warm-up chunk, before its first checkpoint (about 40 steps in); the partial logs were removed and the run restarts at step 0 with the same seed 2026-09-30 18:49
+BONSAI-PHYSICS WAITING for the GPU 2026-09-30 20:16
+BONSAI-PHYSICS START (read 26, write 48 of 64) 2026-09-30 20:16
+BONSAI-PHYSICS ENDED rc=143 2026-09-30 20:18
+PAUSED again at the user's request a minute into the first warm-up chunk, before any checkpoint; the run restarts at step 0 with the same seed 2026-09-30 20:18
+BONSAI-PHYSICS WAITING for the GPU 2026-09-30 21:04
+BONSAI-PHYSICS START (read 26, write 48 of 64) 2026-09-30 21:04
+CHUNK step=500 phase=A x0_ce=2.436 exact=0.125 ans=0.000 gate=0.0000 inj=0.000 s/step=9.6 acc=None mae=None peak=9.3GB [81 min] 2026-09-30 22:25
+CHUNK step=1000 phase=A x0_ce=1.352 exact=0.750 ans=0.000 gate=0.0000 inj=0.000 s/step=9.5 acc=None mae=None peak=9.2GB [80 min] 2026-09-30 23:45
+CHUNK step=1500 phase=A x0_ce=0.662 exact=0.875 ans=0.000 gate=0.0000 inj=0.000 s/step=9.43 acc=None mae=None peak=9.2GB [79 min] 2026-10-01 01:04
+CHUNK step=2000 phase=A x0_ce=0.159 exact=1.000 ans=0.000 gate=0.0000 inj=0.000 s/step=9.43 acc=None mae=None peak=9.2GB [79 min] 2026-10-01 02:23
+PHASE-A POINTER exact 0.9375, x0 cross-entropy 0.332 (last four records; the stop is below 0.5 exact) 2026-10-01 02:23
+PHASE-A POINTER OK 2026-10-01 02:23
+CHUNK step=2500 phase=B x0_ce=0.114 exact=1.000 ans=0.325 gate=1.0000 inj=0.200 s/step=19.56 acc=0.375 mae=0.25106249999999997 peak=12.8GB [171 min] 2026-10-01 05:14
+CHUNK step=3000 phase=B x0_ce=0.334 exact=1.000 ans=0.302 gate=1.0000 inj=0.200 s/step=20.49 acc=0.75 mae=0.049362500000000004 peak=12.8GB [179 min] 2026-10-01 08:13
+CHUNK step=3500 phase=B x0_ce=0.043 exact=1.000 ans=0.272 gate=1.0000 inj=0.200 s/step=18.9 acc=0.25 mae=0.0920625 peak=12.8GB [165 min] 2026-10-01 10:58
+CHUNK step=4000 phase=B x0_ce=0.085 exact=1.000 ans=0.320 gate=1.0000 inj=0.200 s/step=19.23 acc=0.75 mae=0.0461125 peak=13.0GB [168 min] 2026-10-01 13:47
+CHUNK step=4500 phase=B x0_ce=0.001 exact=1.000 ans=0.278 gate=1.0000 inj=0.200 s/step=18.61 acc=0.625 mae=0.04956250000000001 peak=12.8GB [163 min] 2026-10-01 16:30
+BONSAI-PHYSICS ENDED rc=143 2026-10-01 16:44
+PAUSED at the user's request 14 min into the chunk 4500->5000 (coupled phase); the checkpoint is step 4500 (bridges.npz + opt.npz), so the relaunch resumes there and about 42 steps are redone 2026-10-01 16:44
+BONSAI-PHYSICS WAITING for the GPU 2026-10-02 06:36
+BONSAI-PHYSICS START (read 26, write 48 of 64) 2026-10-02 06:36
+RESUMING from step 4500 2026-10-02 06:36
+the paused run's step-4525 log record (written before the pause) moved to results/stage2_bonsai27b/train_log_paused_2026-10-01.jsonl so the redone steps are logged once 2026-10-02 06:37
+CHUNK step=5000 phase=B x0_ce=0.064 exact=1.000 ans=0.824 gate=1.0000 inj=0.200 s/step=20.28 acc=0.875 mae=0.033412499999999984 peak=13.0GB [177 min] 2026-10-02 09:33
+CHUNK step=5500 phase=B x0_ce=0.001 exact=1.000 ans=0.268 gate=1.0000 inj=0.200 s/step=18.66 acc=0.875 mae=0.028412499999999986 peak=12.8GB [163 min] 2026-10-02 12:16
+CHUNK step=6000 phase=B x0_ce=0.003 exact=1.000 ans=0.236 gate=1.0000 inj=0.200 s/step=18.64 acc=0.875 mae=0.02856249999999999 peak=12.8GB [163 min] 2026-10-02 14:59
+CHUNK step=6500 phase=B x0_ce=0.001 exact=1.000 ans=0.244 gate=1.0000 inj=0.200 s/step=18.67 acc=0.75 mae=0.025912499999999998 peak=12.8GB [163 min] 2026-10-02 17:42
+CHUNK step=7000 phase=B x0_ce=0.000 exact=1.000 ans=0.294 gate=1.0000 inj=0.200 s/step=19.85 acc=1.0 mae=0.019312499999999993 peak=12.8GB [173 min] 2026-10-02 20:35
+CHUNK step=7500 phase=B x0_ce=0.001 exact=1.000 ans=0.222 gate=1.0000 inj=0.200 s/step=18.68 acc=1.0 mae=0.016062499999999993 peak=12.8GB [163 min] 2026-10-02 23:19
+CHUNK step=8000 phase=B x0_ce=0.009 exact=1.000 ans=0.347 gate=1.0000 inj=0.200 s/step=18.68 acc=0.625 mae=0.032637499999999986 peak=12.8GB [163 min] 2026-10-03 02:02
+CHUNK step=8500 phase=B x0_ce=0.000 exact=1.000 ans=0.250 gate=1.0000 inj=0.200 s/step=18.71 acc=0.75 mae=0.026362500000000004 peak=12.8GB [164 min] 2026-10-03 04:46
+CHUNK step=9000 phase=B x0_ce=0.000 exact=1.000 ans=0.216 gate=1.0000 inj=0.200 s/step=18.68 acc=1.0 mae=0.017262499999999972 peak=12.8GB [163 min] 2026-10-03 07:29
+CHUNK step=9500 phase=B x0_ce=0.000 exact=1.000 ans=0.235 gate=1.0000 inj=0.200 s/step=19.09 acc=1.0 mae=0.009187499999999986 peak=12.8GB [167 min] 2026-10-03 10:16
+BONSAI-PHYSICS ENDED rc=143 2026-10-03 11:53
+PAUSED at the user's request right after the step-9800 save (coupled phase, chunk 9500->10000); the relaunch resumes at 9800 with nothing to redo 2026-10-03 11:54
+BONSAI-PHYSICS WAITING for the GPU 2026-10-03 12:06
+BONSAI-PHYSICS START (read 26, write 48 of 64) 2026-10-03 12:06
+RESUMING from step 9800 2026-10-03 12:06
+CHUNK step=10000 phase=B x0_ce=0.000 exact=1.000 ans=0.250 gate=1.0000 inj=0.200 s/step=20.4 acc=0.875 mae=0.022362499999999983 peak=12.8GB [76 min] 2026-10-03 13:22
+COUPLED DONE 2026-10-03 13:22
+CHUNK step=10500 phase=N x0_ce=0.000 exact=0.000 ans=0.101 gate=0.0007 inj=0.000 s/step=22.61 acc=1.0 mae=0.01621249999999998 peak=23.9GB [196 min] 2026-10-03 16:38
+CHUNK step=11000 phase=N x0_ce=0.000 exact=0.000 ans=0.129 gate=0.0002 inj=0.000 s/step=22.69 acc=1.0 mae=0.012937499999999975 peak=24.7GB [197 min] 2026-10-03 19:55
+CHUNK step=11500 phase=N x0_ce=0.000 exact=0.000 ans=0.153 gate=0.0001 inj=0.000 s/step=22.34 acc=1.0 mae=0.010062499999999986 peak=23.1GB [194 min] 2026-10-03 23:10
+TRAINING COMPLETE at step 11500 2026-10-03 23:10
+HELD-OUT (Metal scan) FINAL {"n": 60, "step": 11500, "model": "/Users/rxiii/Documents/huggingface/hub/models--prism-ml--Ternary-Bonsai-2-27B-mlx-2bit/snapshots/3f926b415992eaa2ae9dd7b573706494d6bbf787", "tolerance": 0.05, "couple": [26, 48, 64], "scan_path": "kernel", "protocol": {"max_new": 768, "force_answer": true, "shots": 0, "thinking": false}, "baseline": {"acc": 0.0333, "mae": 0.5939, "answer_line_rate": 1.0, "forced_rate": 1.0}, " 2026-10-04 04:17
+HELD-OUT (final_eval_ops.json) attempt 1 exited; starting it again 2026-10-04 04:18
+HELD-OUT (final_eval_ops.json) attempt 2 exited; starting it again 2026-10-04 04:19
+HELD-OUT (final_eval_ops.json) attempt 3 exited; starting it again 2026-10-04 04:21
+BONSAI-PHYSICS STOPPED: the held-out evaluation on the ops scan failed (results/stage2_bonsai27b/final_eval_ops.log) 2026-10-04 04:21
+BONSAI-PHYSICS ENDED rc=1 2026-10-04 04:21
+BONSAI-PHYSICS WAITING for the GPU 2026-10-04 08:49
+BONSAI-PHYSICS START (read 26, write 48 of 64) 2026-10-04 08:49
+RESUMING from step 11500 2026-10-04 08:49
+HELD-OUT (ops scan) FINAL {"n": 60, "step": 11500, "model": "/Users/rxiii/Documents/huggingface/hub/models--prism-ml--Ternary-Bonsai-2-27B-mlx-2bit/snapshots/3f926b415992eaa2ae9dd7b573706494d6bbf787", "tolerance": 0.05, "couple": [26, 48, 64], "scan_path": "ops from layer 48", "protocol": {"max_new": 768, "force_answer 2026-10-04 10:20
+GUARDRAIL STARTED 2026-10-04 10:20
+tracked summary -> results/bench/guardrail_bonsai27b_guardrail_summary.json
+GUARDRAIL COMPLETE 2026-10-04 19:21
+VERDICT: works 2026-10-04 19:21
+BONSAI-PHYSICS COMPLETE 2026-10-04 19:21
+BONSAI-PHYSICS ENDED rc=0 2026-10-04 19:21

@@ -1,0 +1,91 @@
+{
+ "criteria_from": "results/bonsai/physics_preregistration.json",
+ "criteria": {
+  "A_answers": "held-out accuracy of the coupled model at least 0.90, and at least 0.50 above the backbone alone under its own answer protocol (n = 60)",
+  "B_answers_in_the_decoder_the_app_runs": "guard-rail physics accuracy of the psilm arm at least 0.90 (n = 100)",
+  "C_no_harm": "on each of GSM8K, MMLU and BoolQ (n = 100 each): accuracy of the psilm arm no more than 0.03 below the base arm, and, where it is below, an exact two-sided McNemar p of at least 0.05 on the paired items",
+  "D_selective_gate": "mean gate of the psilm arm at least 0.5 on the physics questions with at least 0.9 of them open (gate mean over 0.1), and at most 0.05 on each of GSM8K, MMLU and BoolQ with at most 0.05 of their items open"
+ },
+ "checkpoint_step": 11500,
+ "couple": [
+  26,
+  48,
+  64
+ ],
+ "guard_rail_checkpoint_step": 11500,
+ "A_answers": {
+  "n": 60,
+  "psilm": 1.0,
+  "baseline": 0.0333,
+  "oracle": 0.8,
+  "psilm_mae": 0.0143,
+  "holds": true
+ },
+ "B_answers_in_the_decoder_the_app_runs": {
+  "n": 100,
+  "psilm": 0.99,
+  "base": 0.01,
+  "zeroed": 0.1,
+  "holds": true
+ },
+ "C_no_harm": {
+  "gsm8k": {
+   "n": 100,
+   "base": 0.83,
+   "psilm": 0.83,
+   "paired_items": 100,
+   "base_only_right": 0,
+   "psilm_only_right": 0,
+   "mcnemar_p": 1.0,
+   "holds": true
+  },
+  "mmlu": {
+   "n": 100,
+   "base": 0.59,
+   "psilm": 0.59,
+   "paired_items": 100,
+   "base_only_right": 0,
+   "psilm_only_right": 0,
+   "mcnemar_p": 1.0,
+   "holds": true
+  },
+  "boolq": {
+   "n": 100,
+   "base": 0.89,
+   "psilm": 0.89,
+   "paired_items": 100,
+   "base_only_right": 0,
+   "psilm_only_right": 0,
+   "mcnemar_p": 1.0,
+   "holds": true
+  },
+  "holds": true
+ },
+ "D_selective_gate": {
+  "physics": {
+   "gate_mean": 0.83755,
+   "open_rate": 1.0
+  },
+  "gsm8k": {
+   "gate_mean": 0.00044,
+   "open_rate": 0.0
+  },
+  "mmlu": {
+   "gate_mean": 0.00069,
+   "open_rate": 0.0
+  },
+  "boolq": {
+   "gate_mean": 7e-05,
+   "open_rate": 0.0
+  },
+  "holds": true
+ },
+ "verdict": "works",
+ "held_out_on_the_training_numerics": {
+  "acc": 1.0,
+  "mae": 0.0143,
+  "answer_line_rate": 0.0,
+  "forced_rate": 0.0
+ },
+ "what_follows": "the bridge is named in the chat app's Bonsai stack (the Physics bridge switch becomes live), and its numbers go into the app's README"
+}

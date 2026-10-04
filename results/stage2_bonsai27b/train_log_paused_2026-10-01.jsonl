@@ -1,0 +1,1 @@
+{"step": 4525, "loss_ans": 0.2764, "loss_param": 0.00831, "loss_x0": 0.1309, "loss_u": 0.0013, "x0_err": 0.0014, "gate": 1.0, "loss_attn": -0.0, "gate_ans": 1.0, "inj_ratio_ans": 0.2, "x0_exact": 1.0, "phase": "B", "sec_per_step": 18.64, "B_loss_ans": 0.3111, "B_gate_ans": 1.0, "B_inj_ratio": 0.2, "B_n": 25}

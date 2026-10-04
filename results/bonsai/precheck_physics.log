@@ -1,0 +1,87 @@
+[transformers] You are using a model of type `prism_hadamard_qwen35` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] The tokenizer you are loading from '/Users/rxiii/Documents/huggingface/hub/models--prism-ml--Ternary-Bonsai-2-27B-mlx-2bit/snapshots/3f926b415992eaa2ae9dd7b573706494d6bbf787' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+[transformers] You are using a model of type `prism_hadamard_qwen35` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] The tokenizer you are loading from '/Users/rxiii/Documents/huggingface/hub/models--prism-ml--Ternary-Bonsai-2-27B-mlx-2bit/snapshots/3f926b415992eaa2ae9dd7b573706494d6bbf787' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+[transformers] You are using a model of type `prism_hadamard_qwen35` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] The tokenizer you are loading from '/Users/rxiii/Documents/huggingface/hub/models--prism-ml--Ternary-Bonsai-2-27B-mlx-2bit/snapshots/3f926b415992eaa2ae9dd7b573706494d6bbf787' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+{
+ "created": "2026-09-30T18:07:39+0900",
+ "read": 26,
+ "write": 48,
+ "model_checked": true,
+ "qa": {
+  "train": {
+   "n": 16384,
+   "x0_span_not_found": 0,
+   "same_ids_and_labels_as_9b": 16384,
+   "same_x0_span_as_9b": 16384,
+   "tokens_min": 122,
+   "tokens_max": 126,
+   "ok": true
+  },
+  "val": {
+   "n": 512,
+   "x0_span_not_found": 0,
+   "same_ids_and_labels_as_9b": 512,
+   "same_x0_span_as_9b": 512,
+   "tokens_min": 123,
+   "tokens_max": 126,
+   "ok": true
+  },
+  "ok": true
+ },
+ "noharm": {
+  "n": 1194,
+  "layout": true,
+  "longest_tokens": 513,
+  "checked_by_precheck_json": true,
+  "precheck_json_not_older": true,
+  "ok": true
+ },
+ "infra": {
+  "precheck_json_ok": true,
+  "covers_write_layer": true,
+  "write": 48,
+  "recomputed_peak_gb": [
+   1.37,
+   1.38
+  ],
+  "ok": true
+ },
+ "fno": {
+  "max_abs_difference": 0.0,
+  "fields": 8,
+  "ok": true
+ },
+ "stream": {
+  "kernel": [
+   {
+    "len": 126,
+    "rel": 1.4081422250455944e-06,
+    "argmax_same": true
+   },
+   {
+    "len": 125,
+    "rel": 1.4515576367557514e-06,
+    "argmax_same": true
+   }
+  ],
+  "ops_above_48": [
+   {
+    "len": 126,
+    "rel": 1.3228003581389203e-06,
+    "argmax_same": true
+   },
+   {
+    "len": 125,
+    "rel": 1.4515576367557514e-06,
+    "argmax_same": true
+   }
+  ],
+  "n_layers": 64,
+  "load_and_check_sec": 23.1,
+  "active_gb": 7.63,
+  "ok": true
+ },
+ "ok": true
+}
