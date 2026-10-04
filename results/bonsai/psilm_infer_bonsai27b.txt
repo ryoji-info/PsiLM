@@ -1,0 +1,24 @@
+# release/qwen3.5-9b-psilm/psilm_infer.py on the Ternary Bonsai 2 27B physics bridge, 2026-10-04, Apple M2 24 GB,
+# mlx 0.32.2, mlx-lm 0.31.3, transformers 5.16.1. The files are the staged release of ryoji-info/Ternary-Bonsai-2-27B-PsiLM
+# (sha256 in its MANIFEST.md; bridges.safetensors 9e70c5a3b572fcb6...) laid out as the card's commands leave them;
+# the local directory is shown as ../hub, as on the card, and transformers' loader warnings are left out. Command:
+#   .venv/bin/python release/qwen3.5-9b-psilm/psilm_infer.py --backbone ../hub/bonsai \
+#       --bridges ../hub/bridge/bridges/physics --physics ../hub/bridge/physics/fno_burgers_singlemode.safetensors
+
+backbone : ../hub/bonsai
+bridges  : ../hub/bridge/bridges/physics
+           channel=value readout_norm=dim gate_bias=0.0 inj_cap=0.2 | 41.4M params in 41 tensors | not in file (unused): ['fwd.x0_key.bias', 'fwd.x0_key.weight', 'fwd.x0_query']
+coupling : read @ layer 26, inject @ layer 48 of 64 (hidden 5120)
+physics  : ../hub/bridge/physics/fno_burgers_singlemode.safetensors (FNO1d, 72K params)
+loaded in 3.1 s
+
+question : A velocity field on the periodic domain [0,1) starts as u(x,0) = 1.28 * sin(2*pi*x + 0.5). It evolves by Burgers' equation with viscosity 0.02 until t = 0.5. What is the value of u at x = 0.76? Answer with a number rounded to 2 decimal places.
+
+[1] PsiLM (coupled)     : 'u at x = 0.76 equals -0.22.'
+    value               : -0.22   (56.1 s)
+[2] backbone alone      : '...s \\theta} = I_0(z) + 2 \\sum_{n=1}^\\infty I_n(z) \\cos(n\\theta) $$\nHere $z = -\\frac{A}{k} = -\\frac{1.28}{2\\pi} \\approx -0.2037$.\nSo, $\\psi(x,0) = I_0(z) + 2 \\sum_{n=1}^\\infty I_n(z) \\cos(n(kx+\\phi))$.\nNote that $I_n(z) = (-1)^n I\n\nAnswer:1.28'
+    value               : 1.28   (132.4 s, 775 tokens, answer forced; protocol: vendored copy (eval/mlx_stage2_eval.py))
+[3] physics model (FNO) : u(0.76) = -0.2522   (5 ms; the reference the coupled answer should match to +-0.05)
+    spectral solver     : u(0.76) = -0.2517   (ground truth)
+
+PsiLM match (|-0.22--0.25| <= 0.05); backbone alone off
